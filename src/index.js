@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 
-import { Root } from './components/app/root.container'
+import { Root } from './app/root.container'
 import { store, history } from './redux/configureStore'
 
 const RootComponent = (
@@ -13,5 +13,4 @@ const RootComponent = (
     </ConnectedRouter>
   </Provider>
 )
-ReactDOM.render(RootComponent, document.getElementById('root')
-)
+ReactDOM.render(RootComponent, document.getElementById('VPL_APP_ROOT'))

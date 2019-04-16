@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { withRouter, Switch, Route } from 'react-router'
 import { Menu } from 'semantic-ui-react'
-import './styles.sass'
+import { MainPage } from './main-page/mainPage.container';
+import { LoginContainer } from './login/login.container'
 
 
-const Login = () => <p>Login</p>
 const ContactUs = () => <p>contact us</p>
 const Configuration = () => <p>config</p>
 const Page404 = () => <p>Error  page not found</p>
@@ -25,11 +25,11 @@ class AppContainer extends Component {
     }
 
     this.ROUTES = [
-      (<Route exact path={match.url + ''} render={(props) => <Login {...props} />} />),
-      (<Route exact path={match.url + '404'} render={(props) => <Page404 {...props} />} />),
-      (<Route exact path={match.url + 'contact_us'} render={(props) => <ContactUs {...props} />} />),
-      (<Route exact path={match.url + 'configuration'} render={(props) => <Configuration {...props} />} />),
-      (<Route exact path={match.url + 'login'} render={(props) => <Login {...props} />} />),
+      (<Route exact path={match.url + ''} render={(props) => <LoginContainer {...props} />} />),
+      (<Route exact path={match.url + 'login'} render={(props) => <LoginContainer {...props} />} />),
+      // (<Route exact path={match.url + '404'} render={(props) => <Page404 {...props} />} />),
+      // (<Route exact path={match.url + 'contact_us'} render={(props) => <ContactUs {...props} />} />),
+      // (<Route exact path={match.url + 'configuration'} render={(props) => <Configuration {...props} />} />),
       (<Route exact path={match.url + ':404'} render={COMPONENT_REDIRECT_TO_DEFAULT} />)
     ]
   }
@@ -38,21 +38,22 @@ class AppContainer extends Component {
     this.setState({ activePage: page })
     this.props.history.push(page)
   }
-
+  Menu = () => (
+    <Menu secondary>
+      <Menu.Item
+        name='Contact Us'
+        active={this.state.activePage === '/contact_us'}
+        onClick={this.go('/contact_us')} />
+      <Menu.Item name='Configuration'
+        active={this.state.activePage === '/configuration'}
+        onClick={this.go('/configuration')} />
+    </Menu>
+  )
   render() {
-    const { activePage } = this.state
-    console.log(this.props, activePage)
+    const { menu } = this
     return (
       <React.Fragment>
-        <Menu secondary>
-          <Menu.Item
-            name='Contact Us'
-            active={activePage === '/contact_us'}
-            onClick={this.go('/contact_us')} />
-          <Menu.Item name='Configuration'
-            active={activePage === '/configuration'}
-            onClick={this.go('/configuration')} />
-        </Menu>
+
         <Switch>
           {
             this.ROUTES.map((route, key) => ({ ...route, key }))
