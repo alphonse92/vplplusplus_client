@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Form } from 'semantic-ui-react'
 import { Form as FinalForm } from 'react-final-form'
 import { Email } from '../../forms/inputs/email'

@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 export const MainPage = () => {
 
-    return (<p>This is the main page</p>)
+	return (<p>This is the main page</p>)
 
 }

@@ -1,15 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 const HORIZONTAL = 'row'
 const VERTICAL = 'column'
 const REVERSE = '-reverse'
-
-const START = 'flex-start'
-const END = 'flex-end'
-const CENTER = 'flex-center'
-const BETWEEN = 'space-between'
-const AROUND = 'space-around'
-const EVENLY = 'space-evenly'
-
 const getDirectionReversed = (direction, isReverse) => direction + (isReverse ? REVERSE : '')
 const getDirection = (horizontal, vertical) =>
 	horizontal

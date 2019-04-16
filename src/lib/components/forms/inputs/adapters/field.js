@@ -1,4 +1,3 @@
-import React from 'react'
 import { FinalFormAdapter } from './base'
 
 export class FieldAdapter extends FinalFormAdapter {

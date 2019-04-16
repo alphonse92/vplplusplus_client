@@ -1,6 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { MvGoogleAuth } from './google/auth.google.component'
 import { MvSingleAuth } from './single/auth.single.component'
+import './styles.sass'
+import { MvAuthHelp } from './help';
+import { MvSignUp } from './signup';
 
 const MvAuthFrame = (props) => {
 	return (
@@ -9,7 +12,13 @@ const MvAuthFrame = (props) => {
 		</div>
 	)
 }
-
+const MvAuthItem = (props) => {
+	return (
+		<div className="mv-login-method">
+			{props.children}
+		</div>
+	)
+}
 const MvAuth = (props) => {
 	return (
 		<MvAuthFrame>
@@ -19,11 +28,13 @@ const MvAuth = (props) => {
 }
 
 export const MvAuthLogin = (props) => {
-	const { gcloud, single, onLogin } = props
+	const { gcloud, single, onLogin = console.log, signup, help } = props
 	return (
 		<MvAuth>
-			{single && <MvSingleAuth onLogin={onLogin} {...single} />}
-			{gcloud && <MvGoogleAuth onLogin={onLogin} {...gcloud} />}
+			{single && <MvAuthItem><MvSingleAuth onLogin={onLogin} {...single} /> </MvAuthItem>}
+			{gcloud && <MvAuthItem> <MvGoogleAuth onLogin={onLogin} /> </MvAuthItem>}
+			{signup && <MvAuthItem><MvSignUp {...signup} /></MvAuthItem>}
+			{help && <MvAuthItem><MvAuthHelp  {...help} /></MvAuthItem>}
 		</MvAuth>
 	)
 }
