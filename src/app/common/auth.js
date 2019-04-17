@@ -18,11 +18,17 @@ class AuthGuard extends React.Component {
 	}
 
 	verifyAccess = () => {
-		const { guards = [], STORE, requireAuth } = this.props
+		const { guards, STORE, requireAuth } = this.props
+		console.log({ guards })
 		const { user } = STORE
-		const basicAccess = !requireAuth || (requireAuth && user)
-		const guardAccess = guards.reduce((access, validator) => access && validator(user), true)
+		const basicAccess = !!(!requireAuth || (requireAuth && user))
+		const guardAccess = guards && guards.length > 0
+			? guards.reduce((access, validator) => access && validator(user), true)
+			//if guards exists then pass without valide nothing
+			//if guards is undefined then does not pass by guards
+			: typeof guards !== 'undefined'
 		const shouldGetAccess = basicAccess || guardAccess
+		console.log({ basicAccess, guardAccess, shouldGetAccess })
 		return shouldGetAccess
 	}
 	render() {
@@ -39,7 +45,7 @@ const AuthGuardRedux = connect(
 )(AuthGuard)
 
 
-export const withAuth = (Component, requireAuth = false, redirectTo = '/', guards = []) => {
+export const withAuth = (Component, requireAuth = false, redirectTo = '/', guards) => {
 	return (props) => (
 		<AuthGuardRedux
 			component={Component}
