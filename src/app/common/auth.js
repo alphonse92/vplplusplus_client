@@ -2,28 +2,21 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
-
 import { ActionCreators } from '../../redux/user/actions';
-
-// import { NotificationScheduleListTable } from './NotificationScheduleListTable';
-// import { ActionCreators } from '../../../../redux/configuration/actions';
 
 class AuthGuard extends React.Component {
 
 	static mapStateToProps = (state) => {
 		const { user } = state.user
-		return { user }
+		return { STORE: { user } }
 	}
 
 	static mapDispatchToProps = (dispatch) => {
-		const { LOGIN } = ActionCreators
-		const CREATORS = { LOGIN }
-		return bindActionCreators(CREATORS, dispatch)
+		const { LOGIN, SET_USER_LOGGED } = ActionCreators
+		const CREATORS = { LOGIN, SET_USER_LOGGED }
+		return { DISPATCHERS: bindActionCreators(CREATORS, dispatch) }
 	}
 
-	constructor(props) {
-		super(props)
-	}
 	verifyAccess = () => {
 		const { guards = [], user, requireAuth } = this.props
 		const basicAccess = !requireAuth || (requireAuth && user)
@@ -32,12 +25,11 @@ class AuthGuard extends React.Component {
 		return shouldGetAccess
 	}
 	render() {
-		const { componentProps, LOGIN, user, component, redirectTo } = this.props
+		const { componentProps, DISPATCHERS, STORE, component, redirectTo } = this.props
 		return this.verifyAccess()
-			? component({ ...componentProps, LOGIN, user })
+			? component({ ...componentProps, DISPATCHERS, STORE })
 			: <Redirect to={redirectTo} />
 	}
-
 }
 
 const AuthGuardRedux = connect(
