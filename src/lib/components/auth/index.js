@@ -28,7 +28,7 @@ const MvAuth = (props) => {
 }
 
 export const MvAuthLogin = (props) => {
-	const { gcloud, single, onLogin = console.log, signup, help } = props
+	const { gcloud, single, onLogin, signup, help } = props
 	return (
 		<MvAuth>
 			{single && <MvAuthItem><MvSingleAuth onLogin={onLogin} {...single} /> </MvAuthItem>}

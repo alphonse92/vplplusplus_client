@@ -9,7 +9,6 @@ import './styles.sass'
 export const LoginContainer = (props) => {
 	const { DISPATCHERS } = props
 	const onLogin = console.log || DISPATCHERS.LOGIN
-	console.log('props from login', props)
 
 	return (
 		<Flex className="bg" horizontal width='100%' height='100%' alignItems='center'>

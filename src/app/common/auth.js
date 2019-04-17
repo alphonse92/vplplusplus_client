@@ -19,7 +19,6 @@ class AuthGuard extends React.Component {
 
 	verifyAccess = () => {
 		const { guards, STORE, requireAuth } = this.props
-		console.log({ guards })
 		const { user } = STORE
 		const basicAccess = !!(!requireAuth || (requireAuth && user))
 		const guardAccess = guards && guards.length > 0
@@ -28,7 +27,6 @@ class AuthGuard extends React.Component {
 			//if guards is undefined then does not pass by guards
 			: typeof guards !== 'undefined'
 		const shouldGetAccess = basicAccess || guardAccess
-		console.log({ basicAccess, guardAccess, shouldGetAccess })
 		return shouldGetAccess
 	}
 	render() {
