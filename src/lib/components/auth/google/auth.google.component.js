@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 
 
 export class MvGoogleAuth extends Component {
-
+	static logout = async () => new Promise(async (resolve, reject) => {
+		const GoogleAuth = await MvGoogleAuth.getGoogleAuth()
+		await GoogleAuth.signOut()
+		resolve()
+	})
 	static getGoogleAuth = async () => new Promise((resolve, reject) => {
 		window.gapi.load('auth2', async () => {
 			const GoogleAuth = await window.gapi.auth2.init()
@@ -12,7 +16,6 @@ export class MvGoogleAuth extends Component {
 	static isSignedIn = async () => {
 		const GoogleAuth = await MvGoogleAuth.getGoogleAuth()
 		const isSignedIn = GoogleAuth.isSignedIn.get()
-		console.log({ isSignedIn })
 		return isSignedIn
 	}
 
@@ -26,9 +29,8 @@ export class MvGoogleAuth extends Component {
 			const isSignedIn = await MvGoogleAuth.isSignedIn()
 			const { forceSignOut = true } = this.props
 			if (forceSignOut && isSignedIn) {
-				const GoogleAuth = await MvGoogleAuth.getGoogleAuth()
-				await GoogleAuth.signOut()
-				console.log("Signed out from google auth2")
+				await MvGoogleAuth.logout()
+				console.warn("Signed out from google auth2. It happened because you dont have a session on the application.")
 			}
 			this.renderGoogleButton()
 		}
