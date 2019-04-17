@@ -5,11 +5,11 @@ export const LoginComponent = (props) => {
 	const singleProps = { url: '' }
 	const gcloudProps = true
 	const signup = {
-		label: 'No tienes una cuenta?',
+		label: 'Do you haven\'t an account?',
 		onClick: () => console.log("signup")
 	}
 	const help = {
-		label: 'Necesitas ayuda?',
+		label: 'Need help?',
 		onClick: () => console.log("help")
 	}
 	

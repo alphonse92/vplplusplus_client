@@ -18,10 +18,11 @@ class AuthGuard extends React.Component {
 	}
 
 	verifyAccess = () => {
-		const { guards = [], user, requireAuth } = this.props
+		const { guards = [], STORE, requireAuth } = this.props
+		const { user } = STORE
 		const basicAccess = !requireAuth || (requireAuth && user)
 		const guardAccess = guards.reduce((access, validator) => access && validator(user), true)
-		const shouldGetAccess = basicAccess && guardAccess
+		const shouldGetAccess = basicAccess || guardAccess
 		return shouldGetAccess
 	}
 	render() {

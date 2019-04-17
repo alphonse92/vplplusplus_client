@@ -3,13 +3,35 @@ import React, { Component } from 'react'
 
 export class MvGoogleAuth extends Component {
 
+	static getGoogleAuth = async () => new Promise((resolve, reject) => {
+		window.gapi.load('auth2', async () => {
+			const GoogleAuth = await window.gapi.auth2.init()
+			resolve(GoogleAuth)
+		})
+	})
+	static isSignedIn = async () => {
+		const GoogleAuth = await MvGoogleAuth.getGoogleAuth()
+		const isSignedIn = GoogleAuth.isSignedIn.get()
+		console.log({ isSignedIn })
+		return isSignedIn
+	}
+
 	constructor(props) {
 		super(props)
 		window.addEventListener('google-loaded', this.renderGoogleButton);
 	}
 
-	componentDidMount() {
-		if (window.gapi) this.renderGoogleButton()
+	async componentDidMount() {
+		if (window.gapi) {
+			const isSignedIn = await MvGoogleAuth.isSignedIn()
+			const { forceSignOut = true } = this.props
+			if (forceSignOut && isSignedIn) {
+				const GoogleAuth = await MvGoogleAuth.getGoogleAuth()
+				await GoogleAuth.signOut()
+				console.log("Signed out from google auth2")
+			}
+			this.renderGoogleButton()
+		}
 	}
 
 	renderGoogleButton = () => {

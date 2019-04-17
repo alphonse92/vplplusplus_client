@@ -16,7 +16,7 @@ export const MvSingleAuth = (props) => {
 					<Form onSubmit={handleSubmit} noValidate={true}>
 						<Email formProps={renderProps} />
 						<Password formProps={renderProps} />
-						<Submit formProps={renderProps} fluid />
+						<Submit label="Login" formProps={renderProps} fluid />
 					</Form>
 				)
 

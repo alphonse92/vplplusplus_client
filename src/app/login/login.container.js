@@ -7,7 +7,8 @@ import { Flex } from "../../lib/components/flex";
 import logo from './../images/logo_ufps.png'
 import './styles.sass'
 export const LoginContainer = (props) => {
-	const onLogin = console.log
+	const { DISPATCHERS } = props
+	const onLogin = console.log || DISPATCHERS.LOGIN
 	console.log('props from login', props)
 
 	return (
