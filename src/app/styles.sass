@@ -1,10 +1,42 @@
 
-div,p,a,span,small,strong,input,button,h1,h2,h3,h4,h5
-	font-family: 'Roboto', sans-serif 
-	font-weight: 300 
 
-p,.ui.input>input
+@import 'theme'
+
+h1,h2,h3,h4,h5
+	font-family: 'Raleway', sans-serif
+	font-weight:: 700
+h1
+	font-size: 35px
+h2
+	font-size: 30px
+h3
+	font-size: 25px
+h4
+	font-size: 20px
+h5
+	font-size: 15px
+
+// fonts
+div,p,a,span,small,strong,input,button
+	font-family: 'Roboto', sans-serif 
+
+// font weight
+div,p,a,span,small,input,button
+	font-weight: 400
+
+// font sizing 
+div,p,a,span,strong,input,button
 	font-size: 13px
+
+//widths
+.w100
+	width: 100%
+.w75
+	width: 75%
+.w50
+	width: 50%
+.w25
+	width: 25%
 
 ui.input
 	font-size: 13px
@@ -23,7 +55,8 @@ ui.input
 body,#VPL_APP_ROOT
   width: 100%
   height: 100%
-p
+
+p,h1,h2,h3,h4,h5,a,div,small,strong,section
 	&.center
 		text-align: center
 	&.justify
@@ -33,9 +66,11 @@ p
 	&.right
 		text-align: right
 
+
 .ui.form .field>label
 		font-size: 11px 
 		font-weight: 500 
+
 .ui.card, .ui.cards>.card
 	-webkit-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12)
 	-moz-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12)

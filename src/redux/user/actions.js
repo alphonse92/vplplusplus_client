@@ -18,6 +18,5 @@ Actions[LOGIN_NAME] = {
   }
 }
 
-
 const ActionCreators = extractActionCreators(Actions)
 export { Actions, ActionCreators }

@@ -8,8 +8,12 @@ export class MvGoogleAuth extends Component {
 		window.addEventListener('google-loaded', this.renderGoogleButton);
 	}
 
+	componentDidMount() {
+		if (window.gapi) this.renderGoogleButton()
+	}
+
 	renderGoogleButton = () => {
-		/* global gapi */
+		const { onLogin, ...gapiProps } = this.props
 		const onSuccessWrapper = (googleUser) => {
 			const profile = googleUser.getBasicProfile();
 			this.props.onLogin({
@@ -22,7 +26,8 @@ export class MvGoogleAuth extends Component {
 				email: profile.getEmail(),
 			})
 		}
-		gapi.signin2.render('mvauth', { ...this.props, onsuccess: onSuccessWrapper })
+
+		window.gapi.signin2.render('mvauth', { ...gapiProps, onsuccess: onSuccessWrapper })
 	}
 
 

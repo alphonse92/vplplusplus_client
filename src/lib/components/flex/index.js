@@ -22,13 +22,14 @@ export const Flex = (props) => {
 		vertical,
 		reverse: isReverse,
 		display = 'flex',
+		className = "",
 		...customStyle
 	} = props
+
+
 	const flexDirection = getDirectionReversed(getDirection(horizontal, vertical), isReverse)
 	const style = { display, flexDirection, ...customStyle }
-	console.log({ ...style })
-
 	return (
-		<div style={style}>{props.children}</div>
+		<div className={className} style={style}>{props.children}</div>
 	)
 }

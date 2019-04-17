@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter, Switch } from 'react-router'
 import getRoutes from './routes'
+
 class AppContainer extends Component {
 
 	constructor(props) {

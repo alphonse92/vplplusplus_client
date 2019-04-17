@@ -12,7 +12,7 @@ export const Password = (props) => {
 	const { formProps, ...InputProps } = props
 	// pick the final form instance from props
 	const { form } = formProps
-	const name = 'email'
+	const name = 'password'
 	return (<FinalField
 		name={name}
 		component={FieldAdapter}
@@ -22,7 +22,7 @@ export const Password = (props) => {
 				RequiredValidator('Email is Required'))
 		}
 		props={{
-			id: "passwprd",
+			id: name,
 			name: name,
 			label: "Password",
 			required: true,
