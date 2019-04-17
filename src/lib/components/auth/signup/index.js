@@ -1,4 +1,3 @@
 import React from 'react'
-import { Button } from 'semantic-ui-react'
 import { NoAccountLabel } from "../../constants";
-export const MvSignUp = ({ label, onClick }) => <Button fluid onClick={onClick}>{label || NoAccountLabel}</Button>
+export const MvSignUp = ({ label, onClick }) =><button className="ui fluid button" onClick={onClick}>{label || NoAccountLabel}</button>
