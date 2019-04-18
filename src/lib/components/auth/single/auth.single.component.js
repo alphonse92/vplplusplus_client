@@ -19,7 +19,6 @@ export const MvSingleAuth = (props) => {
 						<Submit label="Login" formProps={renderProps} fluid />
 					</Form>
 				)
-
 			}}
 		/>
 	)
