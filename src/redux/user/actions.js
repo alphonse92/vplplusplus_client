@@ -3,21 +3,22 @@ import { createRequestActions } from '../../lib/redux'
 import { requestDispatcher } from '../../lib/request'
 import { UserService } from '../../services/user'
 
+const Service = new UserService()
 const Actions = {}
 
 const SET_USER_LOGGED_NAME = 'SET_USER_LOGGED'
 Actions[SET_USER_LOGGED_NAME] = {
-	DISPATCHER: (user_data) => {
-		return dispatch => UserService.storeUserData(user_data)
+	DISPATCHER: (data) => {
+		return dispatch => Service.storeUserData(data)
 			&& dispatch({
 				type: Actions[SET_USER_LOGGED_NAME].ACTIONS.default.name,
-				payload: user_data
+				payload: data
 			})
 	},
 	ACTIONS: {
 		default: {
 			name: SET_USER_LOGGED_NAME,
-			reducer: (state, action) => ({ ...state, user: action.payload })
+			reducer: (state, action) => ({ ...action.payload })
 		}
 	},
 }
@@ -28,20 +29,22 @@ Actions[LOGIN_NAME] = {
 		const actions = Actions[LOGIN_NAME].ACTIONS
 		return dispatch => {
 			const after = (payload) => {
-				const type = Actions[SET_USER_LOGGED_NAME].ACTIONS.default
-				dispatch({ type, payload, })
+				if (!payload.ok) return
+				const type = Actions[SET_USER_LOGGED_NAME].ACTIONS.default.name
+				dispatch({ type, payload: payload.data, })
 			}
-
-			requestDispatcher(
-				dispatch,
-				actions,
-				UserService.login(data),
-				{ after}
-			)
+			const getRequest = () => Service.login(data)
+			requestDispatcher(dispatch, actions, getRequest, { after })
 		}
 	},
 	ACTIONS: createRequestActions(LOGIN_NAME, {
-		fullfilled: (state, action) => ({ ...state, user: action.payload })
+		// SET_USER_LOGGED will handle the state.user data
+		fullfilled: (state, action) => {
+			return state
+		},
+		rejected: (state, action) => {
+			return state
+		}
 	}),
 }
 

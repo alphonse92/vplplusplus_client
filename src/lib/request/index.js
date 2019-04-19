@@ -1,4 +1,5 @@
 import { printErrorByEnv } from './../common'
+import { instanceOf } from 'prop-types';
 
 async function getJSONorTextFromRequest(response) {
 	const { ok, status, statusText } = response
@@ -12,28 +13,26 @@ async function getJSONorTextFromRequest(response) {
 		data = await response.clone().text();
 		isJSON = false
 	}
-	const custom = { data, isJSON }
+	const custom = { data, isJSON, }
 	return { ...custom, ...responseBasic }
 }
 function dispatchInitActions(dispatch, action) {
 	const { init } = action
-	dispatch({ type: init, })
+	dispatch({ type: init.name, })
 }
-function dispatchRequesSuccess(dispatch, { data }, action, lifeCycle = {}, opts = {}) {
-	const { fulfilled } = action
+function dispatchRequesSuccess(dispatch, { data }, action, opts = {}) {
+	const { fullfilled } = action
 	const formattedData = opts.format ? opts.format(data) : data
 	const payload = { ...formattedData, ...opts }
-	dispatch({ type: fulfilled, payload, })
-	after(lifeCycle, payload)
+	dispatch({ type: fullfilled.name, payload, })
 }
 
 function dispatchErrors(dispatch, error, action) {
 	const { stack } = error
 	const dispatchData = {
 		type: action.rejected.name,
-		payload: { error }
+		payload: error
 	}
-
 	printErrorByEnv(stack)
 	dispatch(dispatchData)
 }
@@ -46,18 +45,30 @@ function throwErrorAtRequestError(responseParsed) {
 	throw error
 }
 
-
-async function after({ after }, data) {
-	if (after) await after(data)
+async function setLoading(dispatcher, isLoading) {
+	dispatcher({ type: 'async_loading', payload: isLoading })
 }
 
-export async function requestDispatcher(dispatch, action, request, lifeCycle = {}, opts = {}) {
+async function before(dispatcher, callback) {
+	setLoading(dispatcher, true)
+	if (callback) return callback()
+}
+
+async function after(dispatcher, callback, data) {
+	setLoading(dispatcher, false)
+	if (callback) return callback(data)
+}
+
+export async function requestDispatcher(dispatch, action, getRequest, opts = {}) {
 	try {
+		await before(dispatch, opts.before)
+		const request = getRequest()
 		dispatchInitActions(dispatch, action)
 		const response = await request
 		const responseParsed = await getJSONorTextFromRequest(response.clone())
+		after(dispatch, opts.after, responseParsed)
 		throwErrorAtRequestError(responseParsed)
-		dispatchRequesSuccess(dispatch, responseParsed, action, lifeCycle, opts)
+		dispatchRequesSuccess(dispatch, responseParsed, action, opts)
 	} catch (error) {
 		dispatchErrors(dispatch, error, action)
 	}

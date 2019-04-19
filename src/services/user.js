@@ -6,13 +6,13 @@ export class UserService extends WebService {
 	static localStorageUserKey = "User:data"
 
 	constructor() {
-		super('user')
+		super('users')
 	}
 
 	login(body) {
 		const method = 'POST'
 		const options = { method, body }
-		return super.request(options)
+		return super.request(options, null, '/auth')
 	}
 
 	storeUserData(user_data) {

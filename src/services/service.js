@@ -1,5 +1,4 @@
 export class WebService {
-
 	constructor(url) {
 		this.API = process.env.REACT_APP_API
 		this.url = `${this.API}/${url}`
@@ -30,10 +29,15 @@ export class WebService {
 		return url
 	}
 
-	request(options, token, path = '/') {
+	request(customOpts, token, path = '/') {
+
 		const url = this.encodeQueryParametersFromUrl(`${this.url}${path}`)
 		const headers = this.createHeaders(token)
-		return fetch(url, { headers, ...options })
+		const { body } = customOpts
+		if (body)
+			customOpts.body = JSON.stringify(body)
+		const options = { headers, ...customOpts }
+		return fetch(url, options)
 	}
 
 

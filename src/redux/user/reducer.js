@@ -1,8 +1,6 @@
 import { Actions } from './actions'
 import { getReducerMap } from '../../lib/redux';
-const stateDefault = {
-	data: undefined
-}
+const stateDefault = {}
 export const reducerMap = getReducerMap(Actions)
 export function REDUCER(state = stateDefault, action) {
 	const { type } = action
