@@ -41,13 +41,15 @@ export class MvGoogleAuth extends Component {
 		const onSuccessWrapper = (googleUser) => {
 			const profile = googleUser.getBasicProfile();
 			this.props.onLogin({
-				token: googleUser.getAuthResponse().id_token,
-				id: profile.getId(),
-				fullName: profile.getName(),
-				givenName: profile.getGivenName(),
-				familyName: profile.getFamilyName(),
-				imageURL: + profile.getImageUrl(),
-				email: profile.getEmail(),
+				google: {
+					token: googleUser.getAuthResponse().id_token,
+					id: profile.getId(),
+					fullName: profile.getName(),
+					givenName: profile.getGivenName(),
+					familyName: profile.getFamilyName(),
+					imageURL: + profile.getImageUrl(),
+					email: profile.getEmail(),
+				}
 			})
 		}
 

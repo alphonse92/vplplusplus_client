@@ -15,9 +15,9 @@ export const LoginComponent = (props) => {
 	
 	return (
 		<MvAuthLogin
+			onLogin={props.onLogin}
 			signup={signup}
 			help={help}
-			onLogin={props.onLogin}
 			gcloud={gcloudProps}
 			single={singleProps} />)
 }

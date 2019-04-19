@@ -6,10 +6,15 @@ import { Submit } from '../../forms/inputs/submit'
 import { Password } from '../../forms/inputs/password'
 
 export const MvSingleAuth = (props) => {
+	const onSubmit = (data) => {
+		props.onLogin({
+			single: data
+		})
+	}
 	return (
 		<FinalForm
 			initialValues={{ email: "" }}
-			onSubmit={props.onSubmit || console.log}
+			onSubmit={onSubmit}
 			render={renderProps => {
 				const { handleSubmit } = renderProps
 				return (

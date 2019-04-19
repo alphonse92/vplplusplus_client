@@ -8,8 +8,7 @@ import logo from './../images/logo_ufps.png'
 import './styles.sass'
 export const LoginContainer = (props) => {
 	const { DISPATCHERS } = props
-	const onLogin = console.log || DISPATCHERS.LOGIN
-
+	const onLogin = DISPATCHERS.LOGIN
 	return (
 		<Flex className="bg" horizontal width='100%' height='100%' alignItems='center'>
 			<Flex vertical width='100%' alignItems='center'>

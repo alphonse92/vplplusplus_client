@@ -4,19 +4,6 @@ import { requestDispatcher } from '../../lib/request'
 import { UserService } from '../../services/user'
 
 const Actions = {}
-const LOGIN_NAME = 'LOGIN'
-Actions[LOGIN_NAME] = {
-	DISPATCHER: (data) => {
-		return dispatch => requestDispatcher(
-			dispatch,
-			Actions[LOGIN_NAME].ACTIONS,
-			UserService.login(data)
-		)
-	},
-	ACTIONS: createRequestActions(LOGIN_NAME, {
-		fullfilled: (state, action) => ({ ...state, user: action.payload })
-	}),
-}
 
 const SET_USER_LOGGED_NAME = 'SET_USER_LOGGED'
 Actions[SET_USER_LOGGED_NAME] = {
@@ -34,6 +21,31 @@ Actions[SET_USER_LOGGED_NAME] = {
 		}
 	},
 }
+
+const LOGIN_NAME = 'LOGIN'
+Actions[LOGIN_NAME] = {
+	DISPATCHER: (data) => {
+		const actions = Actions[LOGIN_NAME].ACTIONS
+		return dispatch => {
+			const after = (payload) => {
+				const type = Actions[SET_USER_LOGGED_NAME].ACTIONS.default
+				dispatch({ type, payload, })
+			}
+
+			requestDispatcher(
+				dispatch,
+				actions,
+				UserService.login(data),
+				{ after}
+			)
+		}
+	},
+	ACTIONS: createRequestActions(LOGIN_NAME, {
+		fullfilled: (state, action) => ({ ...state, user: action.payload })
+	}),
+}
+
+
 
 const ActionCreators = extractActionCreators(Actions)
 export { Actions, ActionCreators }

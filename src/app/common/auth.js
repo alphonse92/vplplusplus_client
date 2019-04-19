@@ -14,7 +14,8 @@ class AuthGuard extends React.Component {
 	static mapDispatchToProps = (dispatch) => {
 		const { LOGIN, SET_USER_LOGGED } = ActionCreators
 		const CREATORS = { LOGIN, SET_USER_LOGGED }
-		return { DISPATCHERS: bindActionCreators(CREATORS, dispatch) }
+		const DISPATCHERS = { DISPATCHERS: bindActionCreators(CREATORS, dispatch) }
+		return DISPATCHERS
 	}
 
 	verifyAccess = () => {

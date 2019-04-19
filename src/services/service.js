@@ -1,7 +1,8 @@
 export class WebService {
 
 	constructor(url) {
-		this.url = url
+		this.API = process.env.REACT_APP_API
+		this.url = `${this.API}/${url}`
 	}
 
 	createHeaders(token) {
