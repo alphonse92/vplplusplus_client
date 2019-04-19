@@ -1,5 +1,4 @@
 import { printErrorByEnv } from './../common'
-import { instanceOf } from 'prop-types';
 
 async function getJSONorTextFromRequest(response) {
 	const { ok, status, statusText } = response
