@@ -5,10 +5,9 @@ import { Redirect } from 'react-router'
 import { ActionCreators } from '../../redux/user/actions';
 
 class AuthGuard extends React.Component {
-
 	static mapStateToProps = (state) => {
-		const { user } = state.user
-		return { STORE: { user } }
+		const newprops = { STORE: { user: { ...state.user } } }
+		return newprops
 	}
 
 	static mapDispatchToProps = (dispatch) => {
@@ -17,19 +16,17 @@ class AuthGuard extends React.Component {
 		const DISPATCHERS = { DISPATCHERS: bindActionCreators(CREATORS, dispatch) }
 		return DISPATCHERS
 	}
-
 	verifyAccess = () => {
-		const { guards, STORE, requireAuth } = this.props
+		const { STORE, requireAuth } = this.props
 		const { user } = STORE
-		const basicAccess = !!(!requireAuth || (requireAuth && user))
-		const guardAccess = guards && guards.length > 0
-			? guards.reduce((access, validator) => access && validator(user), true)
-			//if guards exists then pass without valide nothing
-			//if guards is undefined then does not pass by guards
-			: typeof guards !== 'undefined'
+		const basicAccess = !!(!requireAuth || (requireAuth && user._id))
+
+		let { guards = [() => false] } = this.props
+		const guardAccess = guards.reduce((access, validator) => access && validator(user), true)
 		const shouldGetAccess = basicAccess || guardAccess
 		return shouldGetAccess
 	}
+
 	render() {
 		const { componentProps, DISPATCHERS, STORE, component, redirectTo } = this.props
 		return this.verifyAccess()

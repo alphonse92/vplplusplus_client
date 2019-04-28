@@ -4,6 +4,7 @@ import { createBrowserHistory } from 'history'
 import ReduxThunk from 'redux-thunk'
 
 import { getReducer } from './rootReducer'
+import { UserService } from '../services/user';
 // import { logoutByExpiration } from './middlewares'
 
 
@@ -13,7 +14,9 @@ const history = createBrowserHistory({
 })
 
 const rootReducer = getReducer(history)
-const initialState = {}
+const initialState = {
+	user: UserService.getUserLogged()
+}
 const enhancers = []
 const middleware = [
 	ReduxThunk,

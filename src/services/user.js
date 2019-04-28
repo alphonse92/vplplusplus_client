@@ -15,9 +15,15 @@ export class UserService extends WebService {
 		return super.request(options, null, '/auth')
 	}
 
-	storeUserData(user_data) {
-		localStorage(UserService.localStorageUserKey, JSON.stringify(user_data))
+	static saveUserLogged(user_data) {
+		localStorage.setItem(UserService.localStorageUserKey, JSON.stringify(user_data))
 		return user_data
+	}
+
+	static getUserLogged() {
+		const string = localStorage.getItem(UserService.localStorageUserKey)
+		if (!string) return null
+		return JSON.parse(string)
 	}
 
 	getStoredUserData() {

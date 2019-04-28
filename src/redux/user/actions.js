@@ -8,13 +8,7 @@ const Actions = {}
 
 const SET_USER_LOGGED_NAME = 'SET_USER_LOGGED'
 Actions[SET_USER_LOGGED_NAME] = {
-	DISPATCHER: (data) => {
-		return dispatch => Service.storeUserData(data)
-			&& dispatch({
-				type: Actions[SET_USER_LOGGED_NAME].ACTIONS.default.name,
-				payload: data
-			})
-	},
+	DISPATCHER: (data) => (dispatch, getStore) => UserService.saveUserLogged(data),
 	ACTIONS: {
 		default: {
 			name: SET_USER_LOGGED_NAME,
@@ -25,16 +19,23 @@ Actions[SET_USER_LOGGED_NAME] = {
 
 const LOGIN_NAME = 'LOGIN'
 Actions[LOGIN_NAME] = {
-	DISPATCHER: (data) => {
+	DISPATCHER: (data, onLogin) => {
 		const actions = Actions[LOGIN_NAME].ACTIONS
-		return dispatch => {
+		return dispatcher => {
 			const after = (payload) => {
 				if (!payload.ok) return
+				
 				const type = Actions[SET_USER_LOGGED_NAME].ACTIONS.default.name
-				dispatch({ type, payload: payload.data, })
+				const { data } = payload
+				const dispatch = { type, payload: data, }
+				UserService.saveUserLogged(data)
+				dispatcher(dispatch)
+				onLogin(data)
+				
+
 			}
 			const getRequest = () => Service.login(data)
-			requestDispatcher(dispatch, actions, getRequest, { after })
+			requestDispatcher(dispatcher, actions, getRequest, { after })
 		}
 	},
 	ACTIONS: createRequestActions(LOGIN_NAME, {

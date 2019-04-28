@@ -10,9 +10,13 @@ const COMPONENT_REDIRECT_TO_DEFAULT = (props) => {
 	props.history.push('/404')
 	return <React.Fragment></React.Fragment>
 }
+
 export default (match, location) => [
 	(<Route exact path={match.url + ''} render={MainPage} />),
-	(<Route exact path={match.url + 'login'} render={withAuth(LoginContainer, false, '/dashboard')} />),
+	(<Route exact path={match.url + 'login'} render={withAuth(LoginContainer, false, '/dashboard', [
+		// just users that are not logged in could see the login page
+		(user) => !user
+	])} />),
 	(<Route exact path={match.url + 'dashboard'} render={withAuth(Dashboard, true, '/login')} />),
 	(<Route exact path={match.url + '404'} render={PageNotFound} />),
 	(<Route exact path={match.url + ':404'} render={COMPONENT_REDIRECT_TO_DEFAULT} />)
