@@ -1,5 +1,29 @@
 import React from 'react'
+import { DashboardNavbar } from './dashboard.navbar';
+import { Project } from './laboratory/project';
+import './styles.sass'
+
+const DashboardContainer = props => (
+	<div className="dashboard">
+		{props.children}
+	</div>
+)
+
+const DashboardContent = props => (
+	<div className="content">
+		{props.children}
+	</div>
+)
+
 export const Dashboard = (props) => {
-	console.log('props from dash', props)
-	return <p>This is the dashboard</p>
+	return (
+		<React.Fragment>
+			<DashboardNavbar />
+			<DashboardContainer>
+				<DashboardContent>
+					<Project />
+				</DashboardContent>
+			</DashboardContainer>
+		</React.Fragment>
+	)
 }

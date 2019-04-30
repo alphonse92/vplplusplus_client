@@ -15,7 +15,7 @@ export default (match, location) => [
 	(<Route exact path={match.url + ''} render={MainPage} />),
 	(<Route exact path={match.url + 'login'} render={withAuth(LoginContainer, false, '/dashboard', [
 		// just users that are not logged in could see the login page
-		(user) => !user || !(user && user.id)
+		(user) => !user
 	])} />),
 	(<Route exact path={match.url + 'dashboard'} render={withAuth(Dashboard, true, '/login')} />),
 	(<Route exact path={match.url + '404'} render={PageNotFound} />),

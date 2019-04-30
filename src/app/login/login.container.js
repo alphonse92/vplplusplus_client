@@ -11,7 +11,7 @@ export const LoginContainer = (props) => {
 	const redirect = () => props.history.push('/dashboard')
 	const onLogin = (data) => DISPATCHERS.LOGIN(data, redirect)
 	return (
-		<Flex className="bg" horizontal width='100%' height='100%' alignItems='center'>
+		<Flex  horizontal width='100%' height='100%' alignItems='center'>
 			<Flex vertical width='100%' alignItems='center'>
 				<Card>
 					<Card.Content>

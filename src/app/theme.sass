@@ -1,10 +1,44 @@
 //import the theme
 @import 'red'
+@import '../../node_modules/@trendmicro/react-sidenav/dist/react-sidenav.css'
 
 .bg
-	background-color: $background !important
+	background: $background !important
+	position: fixed
+	overflow-y: scroll
+	height: 100%
+.sidebar
+	background: $sidebar !important
+	.toggle
+		&:disabled
+			background-color: transparent !important
+	
+	div[class*="navitem"]
+		div[class*="navtext"]
+			font-weight: 300 !important
+			i
+				color: $primary !important
+				text-align: center
+		i
+			color: $white-light !important
+	div[class*="selected"]
+		background-color: $primary
+		i
+			color: $white !important
+	div[role="presentation"]
+		div[role="menu" ]
+			border: none !important
+			div[role="heading"]
+				border: none
+				text-align: center
+input
+	border-radius: 0px !important
+	background: $white-light !important
+	border: 0px !important 
+	border-bottom: 1px solid $gray-light !important
 
-button
+button.mv
+	&:not()
 	background-color: $primary !important
 	color: $primary-text !important
 	&:disabled

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter, Switch } from 'react-router'
 import getRoutes from './routes'
+import { AppLoading } from './common/loading';
 
 class AppContainer extends Component {
 
@@ -14,11 +15,13 @@ class AppContainer extends Component {
 		const { routes } = this
 		return (
 			<React.Fragment>
-				<Switch> {routes} </Switch>
+				<AppLoading>
+					<Switch> {routes} </Switch>
+				</AppLoading>
 			</React.Fragment>
 		)
 	}
-	
+
 }
 
 export const App = withRouter(AppContainer)
