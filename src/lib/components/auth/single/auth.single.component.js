@@ -5,7 +5,7 @@ import { Email } from '../../forms/inputs/email'
 import { Submit } from '../../forms/inputs/submit'
 import { Password } from '../../forms/inputs/password'
 
-export const MvSingleAuth = (props) => {
+const MvSingleAuth = (props) => {
 	const onSubmit = (data) => {
 		props.onLogin({
 			single: data
@@ -28,3 +28,7 @@ export const MvSingleAuth = (props) => {
 		/>
 	)
 }
+MvSingleAuth.logout = async () => {
+	//implement something, for example delete a token or etc
+}
+export { MvSingleAuth }

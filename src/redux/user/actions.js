@@ -20,8 +20,8 @@ Actions[SET_USER_LOGGED_NAME] = {
 
 const LOGOUT_NAME = 'LOGOUT'
 Actions[LOGOUT_NAME] = {
-	DISPATCHER: () => (dispatcher, getStore) => {
-		MvAuthLogin.logout()
+	DISPATCHER: () => async (dispatcher, getStore) => {
+		await MvAuthLogin.logout()
 		UserService.saveUserLogged(null)
 		const dispatch = { type: SET_USER_LOGGED_NAME, payload: undefined }
 		dispatcher(dispatch)

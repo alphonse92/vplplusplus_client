@@ -19,12 +19,9 @@ const DashboardContent = props => (
 export const DashboardContainer = (props) => {
 	const { history, match, location, STORE, DISPATCHERS } = props
 	const { user } = STORE
-	const { LOGOUT } = DISPATCHERS
-	
 	const onSelect = menu => {
 		const { redirect, action } = menu
 		if (redirect) return history.push(redirect)
-		console.log({ DISPATCHERS, action})
 		if (DISPATCHERS[action]) return DISPATCHERS[action]()
 	}
 	console.log(match)
