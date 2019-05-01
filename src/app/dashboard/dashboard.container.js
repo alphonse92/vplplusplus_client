@@ -1,9 +1,10 @@
 import React from 'react'
+import { Switch } from 'react-router'
 import { DashboardNavbar } from './dashboard.navbar';
-import { Project } from './laboratory/project';
+import getRoutes from './dashboard.routes'
 import './styles.sass'
 
-const DashboardContainer = props => (
+const DashboardWraper = props => (
 	<div className="dashboard">
 		{props.children}
 	</div>
@@ -15,15 +16,28 @@ const DashboardContent = props => (
 	</div>
 )
 
-export const Dashboard = (props) => {
+export const DashboardContainer = (props) => {
+	const { history, match, location, STORE, DISPATCHERS } = props
+	const { user } = STORE
+	const { LOGOUT } = DISPATCHERS
+	
+	const onSelect = menu => {
+		const { redirect, action } = menu
+		if (redirect) return history.push(redirect)
+		if (DISPATCHERS[action]) return DISPATCHERS[action]()
+	}
+	console.log(match)
+	const routes = getRoutes(match, location).map((route, key) => ({ ...route, key }))
 	return (
 		<React.Fragment>
-			<DashboardNavbar />
-			<DashboardContainer>
+			<DashboardNavbar
+				scopes={user.scopes}
+				onSelect={onSelect} />
+			<DashboardWraper>
 				<DashboardContent>
-					<Project />
+					<Switch> {routes} </Switch>
 				</DashboardContent>
-			</DashboardContainer>
+			</DashboardWraper>
 		</React.Fragment>
 	)
 }

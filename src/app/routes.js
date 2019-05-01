@@ -3,7 +3,7 @@ import { Route } from 'react-router'
 import { MainPage } from './main-page/mainPage.container';
 import { LoginContainer } from './login/login.container'
 import { PageNotFound } from './404/404.container';
-import { Dashboard } from './dashboard/dashboard.container';
+import { DashboardContainer } from './dashboard/dashboard.container';
 import { withAuth } from './common/auth'
 
 const COMPONENT_REDIRECT_TO_DEFAULT = (props) => {
@@ -17,7 +17,7 @@ export default (match, location) => [
 		// just users that are not logged in could see the login page
 		(user) => !user || !(user && user.id)
 	])} />),
-	(<Route exact path={match.url + 'dashboard'} render={withAuth(Dashboard, true, '/login')} />),
+	(<Route path={match.url + 'dashboard'} render={withAuth(DashboardContainer, true, '/login')} />),
 	(<Route exact path={match.url + '404'} render={PageNotFound} />),
 	(<Route exact path={match.url + ':404'} render={COMPONENT_REDIRECT_TO_DEFAULT} />)
 ]
