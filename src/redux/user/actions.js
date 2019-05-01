@@ -2,6 +2,7 @@ import { extractActionCreators } from '../../lib'
 import { createRequestActions } from '../../lib/redux'
 import { requestDispatcher } from '../../lib/request'
 import { UserService } from '../../services/user'
+import { MvAuthLogin } from '../../lib/components/auth';
 
 const Service = new UserService()
 const Actions = {}
@@ -17,6 +18,22 @@ Actions[SET_USER_LOGGED_NAME] = {
 	},
 }
 
+const LOGOUT_NAME = 'LOGOUT'
+Actions[LOGOUT_NAME] = {
+	DISPATCHER: () => (dispatcher, getStore) => {
+		MvAuthLogin.logout()
+		UserService.saveUserLogged(null)
+		const dispatch = { type: SET_USER_LOGGED_NAME, payload: undefined }
+		dispatcher(dispatch)
+	},
+	ACTIONS: {
+		default: {
+			name: LOGOUT_NAME,
+			reducer: (state, action) => ({ ...state })
+		}
+	},
+}
+
 const LOGIN_NAME = 'LOGIN'
 Actions[LOGIN_NAME] = {
 	DISPATCHER: (data, onLogin) => {
@@ -24,14 +41,14 @@ Actions[LOGIN_NAME] = {
 		return dispatcher => {
 			const after = (payload) => {
 				if (!payload.ok) return
-				
+
 				const type = Actions[SET_USER_LOGGED_NAME].ACTIONS.default.name
 				const { data } = payload
 				const dispatch = { type, payload: data, }
 				UserService.saveUserLogged(data)
 				dispatcher(dispatch)
 				onLogin(data)
-				
+
 
 			}
 			const getRequest = () => Service.login(data)

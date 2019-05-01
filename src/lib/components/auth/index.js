@@ -27,7 +27,7 @@ const MvAuth = (props) => {
 	)
 }
 
-export const MvAuthLogin = (props) => {
+const MvAuthLogin = (props) => {
 	const { gcloud, single, onLogin, signup, help } = props
 	return (
 		<MvAuth>
@@ -37,6 +37,12 @@ export const MvAuthLogin = (props) => {
 			{help && <MvAuthItem><MvAuthHelp  {...help} /></MvAuthItem>}
 		</MvAuth>
 	)
+}
+MvAuthLogin.logout = () => {
+	MvGoogleAuth.logout()
+}
+export {
+	MvAuthLogin
 }
 
 

@@ -7,7 +7,6 @@ import getRoutes from './routes'
 
 class AppContainer extends Component {
 	static mapStateToProps = (state) => {
-		console.log(state)
 		const newprops = { lib: { ...state.lib } }
 		return newprops
 	}
@@ -24,7 +23,6 @@ class AppContainer extends Component {
 
 	render() {
 		const { routes } = this
-		console.log('app container props', this.props)
 		return (
 			<React.Fragment>
 				{this.props.lib.loading && <AppLoading />}

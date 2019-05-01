@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
 import { ActionCreators } from '../../redux/user/actions';
 
+
 class AuthGuard extends React.Component {
 	static mapStateToProps = (state) => {
 		const newprops = { STORE: { user: { ...state.user } } }
@@ -11,9 +12,10 @@ class AuthGuard extends React.Component {
 	}
 
 	static mapDispatchToProps = (dispatch) => {
-		const { LOGIN, SET_USER_LOGGED } = ActionCreators
-		const CREATORS = { LOGIN, SET_USER_LOGGED }
-		const DISPATCHERS = { DISPATCHERS: bindActionCreators(CREATORS, dispatch) }
+		const { LOGIN, SET_USER_LOGGED, LOGOUT } = ActionCreators
+		const CREATORS = { LOGIN, SET_USER_LOGGED, LOGOUT }
+		const DispatchersFromActionCreators = bindActionCreators(CREATORS, dispatch)
+		const DISPATCHERS = { DISPATCHERS: { ...DispatchersFromActionCreators } }
 		return DISPATCHERS
 	}
 	verifyAccess = () => {

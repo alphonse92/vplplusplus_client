@@ -24,6 +24,7 @@ export const DashboardContainer = (props) => {
 	const onSelect = menu => {
 		const { redirect, action } = menu
 		if (redirect) return history.push(redirect)
+		console.log({ DISPATCHERS, action})
 		if (DISPATCHERS[action]) return DISPATCHERS[action]()
 	}
 	console.log(match)
