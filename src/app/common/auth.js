@@ -17,7 +17,7 @@ class AuthGuard extends React.Component {
 		return DISPATCHERS
 	}
 	verifyAccess = () => {
-		const { STORE, requireAuth, redirectTo } = this.props
+		const { STORE, requireAuth } = this.props
 		const { user } = STORE
 		const basicAccess = !!(!requireAuth || (user && user._id))
 

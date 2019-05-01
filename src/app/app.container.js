@@ -1,9 +1,20 @@
 import React, { Component } from 'react'
 import { withRouter, Switch } from 'react-router'
+import { connect } from 'react-redux'
+
+import { AppLoading } from '../lib/components/loading'
 import getRoutes from './routes'
-import { AppLoading } from './common/loading';
 
 class AppContainer extends Component {
+	static mapStateToProps = (state) => {
+		console.log(state)
+		const newprops = { lib: { ...state.lib } }
+		return newprops
+	}
+
+	static mapDispatchToProps = (dispatch) => {
+		return {}
+	}
 
 	constructor(props) {
 		super(props)
@@ -13,15 +24,18 @@ class AppContainer extends Component {
 
 	render() {
 		const { routes } = this
+		console.log('app container props', this.props)
 		return (
 			<React.Fragment>
-				<AppLoading>
-					<Switch> {routes} </Switch>
-				</AppLoading>
+				{this.props.lib.loading && <AppLoading />}
+				<Switch> {routes} </Switch>
 			</React.Fragment>
 		)
 	}
 
 }
 
-export const App = withRouter(AppContainer)
+export const App = withRouter(connect(
+	AppContainer.mapStateToProps,
+	AppContainer.mapDispatchToProps
+)(AppContainer))

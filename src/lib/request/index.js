@@ -1,4 +1,5 @@
 import { printErrorByEnv } from './../common'
+import { LOADING_ACTION_NAME } from '../redux/actions';
 
 async function getJSONorTextFromRequest(response) {
 	const { ok, status, statusText } = response
@@ -44,16 +45,16 @@ function throwErrorAtRequestError(responseParsed) {
 	throw error
 }
 
-async function setLoading(dispatcher, isLoading) {
-	dispatcher({ type: 'async_loading', payload: isLoading })
+function setLoading(dispatcher, isLoading) {
+	dispatcher({ type: LOADING_ACTION_NAME, payload: isLoading })
 }
 
-async function before(dispatcher, callback) {
+function before(dispatcher, callback) {
 	setLoading(dispatcher, true)
 	if (callback) return callback()
 }
 
-async function after(dispatcher, callback, data) {
+function after(dispatcher, callback, data) {
 	setLoading(dispatcher, false)
 	if (callback) return callback(data)
 }
@@ -65,7 +66,7 @@ export async function requestDispatcher(dispatch, action, getRequest, opts = {})
 		dispatchInitActions(dispatch, action)
 		const response = await request
 		const responseParsed = await getJSONorTextFromRequest(response.clone())
-		after(dispatch, opts.after, responseParsed)
+		await after(dispatch, opts.after, responseParsed)
 		throwErrorAtRequestError(responseParsed)
 		dispatchRequesSuccess(dispatch, responseParsed, action, opts)
 	} catch (error) {
