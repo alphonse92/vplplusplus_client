@@ -1,5 +1,5 @@
 import React from 'react';
-import { MaterialTable } from '../../../../lib/components/tables/material.table';
+import { MaterialTable } from '../../../../lib/components/tables/material/material.table';
 let counter = 0
 function createData(name, calories, fat, carbs, protein) {
 	counter += 1;
@@ -7,10 +7,6 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 export class ProjectTable extends React.Component {
-
-	constructor(props) {
-		super(props)
-	}
 
 	render() {
 		const columns = [
@@ -37,7 +33,7 @@ export class ProjectTable extends React.Component {
 			createData('Oreo', 437, 18.0, 63, 4.0),
 		]
 		const props = { columns, data }
-		return <MaterialTable {...props} />
+		return <MaterialTable {...props} title="Projects"/>
 
 	}
 }
