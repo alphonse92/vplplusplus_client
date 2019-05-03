@@ -14,11 +14,12 @@ export class ProjectTable extends React.Component {
 
 	render() {
 		const columns = [
-			{ id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
-			{ id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-			{ id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-			{ id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-			{ id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+			{ attribute: 'id', key: 'id', numeric: true, disablePadding: false, label: 'Id' },
+			{ attribute: 'name', key: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
+			{ attribute: 'calories', key: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
+			{ attribute: 'fat', key: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
+			{ attribute: 'carbs', key: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
+			{ attribute: 'protein', key: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
 		]
 		const data = [
 			createData('Cupcake', 305, 3.7, 67, 4.3),
