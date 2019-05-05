@@ -163,7 +163,7 @@ class EnhancedTable extends React.Component {
 			handleChangeRowsPerPage
 		} = this
 		const { title, classes, columns, onDelete, onFilter = this.onFilter } = props;
-		const { data, order, orderBy, selected, rowsPerPage, page, columnNames } = state;
+		const { data, order, orderBy, selected, rowsPerPage, page, columnNames, showFilterComponent } = state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		const sliceFrom = page * rowsPerPage
 		const sliceTo = page * rowsPerPage + rowsPerPage
@@ -171,7 +171,6 @@ class EnhancedTable extends React.Component {
 		const rows = stableSort(data, getSorting(order, orderBy))
 			.slice(sliceFrom, sliceTo)
 			.map(this.getRowComponents(columns))
-
 		return (
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
@@ -181,7 +180,7 @@ class EnhancedTable extends React.Component {
 					onFilterPressed={toggleFilter}
 				/>
 
-				<EnhancedTableFilter onFilter={onFilter} options={columnNames} />
+				{showFilterComponent && <EnhancedTableFilter onFilter={onFilter} options={columnNames} />}
 
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">

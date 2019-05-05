@@ -40,8 +40,6 @@ class FilterComponent extends React.Component {
 	// onSelectChange = value => this.setSelected(value)(!this.isSelected(value))
 	onSelectChange = event => {
 		const { value } = event.target
-		console.log('on select change vlaue', value)
-
 		this.setState({ value })
 	}
 
@@ -53,7 +51,6 @@ class FilterComponent extends React.Component {
 		const ToolbarClassNames = classNames(classes.root)
 		const id = Math.random().toString()
 		const COMPONENT_NAME = Math.random().toString()
-
 		return (
 			<React.Fragment>
 				<Toolbar className={ToolbarClassNames}>
