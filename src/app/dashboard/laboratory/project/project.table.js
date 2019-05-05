@@ -1,5 +1,5 @@
 import React from 'react';
-import { MaterialTable } from '../../../../lib/components/tables/material/material.table';
+import { MaterialTable } from '../../../../lib/components/material/tables/material.table';
 let counter = 0
 function createData(name, calories, fat, carbs, protein) {
 	counter += 1;
@@ -7,6 +7,13 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 export class ProjectTable extends React.Component {
+
+	onDelete = (idsToDelete) => {
+		return console.log(idsToDelete)
+		const { data: stateData = [] } = this.state
+		const data = stateData.filter(row => !idsToDelete.includes(row.id))
+		this.setState({ data })
+	}
 
 	render() {
 		const columns = [
@@ -32,8 +39,9 @@ export class ProjectTable extends React.Component {
 			createData('Nougat', 360, 19.0, 9, 37.0),
 			createData('Oreo', 437, 18.0, 63, 4.0),
 		]
-		const props = { columns, data }
-		return <MaterialTable {...props} title="Projects"/>
+		const onFilter = console.log
+		const props = { columns, data, onFilter }
+		return <MaterialTable {...props} title="Projects" />
 
 	}
 }

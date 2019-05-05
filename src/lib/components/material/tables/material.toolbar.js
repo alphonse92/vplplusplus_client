@@ -10,15 +10,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 
+const TableToolbar = (props) => {
 
-let EnhancedTableToolbar = props => {
-	const { numSelected, classes } = props;
+	const { numSelected, classes, onFilterPressed } = props;
+	const ToolbarClassNames = classNames(classes.root, { [classes.highlight]: numSelected > 0 })
+
 	const TypoItemsSelected = <Typography color="inherit" variant="subtitle1">{numSelected} selected</Typography>
 	const TypoNoItemsSelected = <Typography variant="h6" id="tableTitle">{props.title}</Typography>
-	const TitleComponent = numSelected > 0
-		? TypoItemsSelected
-		: TypoNoItemsSelected
-	const ToolbarClassNames = classNames(classes.root, { [classes.highlight]: numSelected > 0 })
 	const DeleteItemButton = (
 		<Tooltip title="Delete">
 			<IconButton aria-label="Delete">
@@ -28,24 +26,29 @@ let EnhancedTableToolbar = props => {
 	)
 	const FilterItemsButton = (
 		<Tooltip title="Filter list">
-			<IconButton aria-label="Filter list">
+			<IconButton aria-label="Filter list" onClick={onFilterPressed}>
 				<FilterListIcon />
 			</IconButton>
 		</Tooltip>
 	)
 
+	const TitleComponent = numSelected > 0
+		? TypoItemsSelected
+		: TypoNoItemsSelected
 	const TitleButton = numSelected > 0
 		? DeleteItemButton
 		: FilterItemsButton
 
 	return (
-		<Toolbar className={ToolbarClassNames}>
-			<div className={classes.title}>{TitleComponent}</div>
-			<div className={classes.spacer} />
-			<div className={classes.actions}>{TitleButton}</div>
-		</Toolbar>
-	);
-};
+		<React.Fragment>
+			<Toolbar className={ToolbarClassNames}>
+				<div className={classes.title}>{TitleComponent}</div>
+				<div className={classes.spacer} />
+				<div className={classes.actions}>{TitleButton}</div>
+			</Toolbar>
+		</React.Fragment>
+	)
+}
 
 const toolbarStyles = theme => ({
 	root: {
@@ -72,12 +75,13 @@ const toolbarStyles = theme => ({
 	},
 });
 
-EnhancedTableToolbar.propTypes = {
+TableToolbar.propTypes = {
 	classes: PropTypes.object.isRequired,
 	numSelected: PropTypes.number.isRequired,
 };
 
-EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
+const EnhancedTableToolbar = withStyles(toolbarStyles)(TableToolbar);
+
 
 export {
 	EnhancedTableToolbar

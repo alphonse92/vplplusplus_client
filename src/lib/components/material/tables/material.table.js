@@ -11,7 +11,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import { EnhancedTableToolbar } from './material.toolbar'
 import { EnhancedTableHead } from './material.table.header'
-
+import { EnhancedTableFilter } from './material.table.dataFilter'
 class EnhancedTable extends React.Component {
 	state = {
 		order: 'asc',
@@ -19,12 +19,21 @@ class EnhancedTable extends React.Component {
 		selected: [],
 		page: 0,
 		rowsPerPage: 5,
+		columnNames: [],
+		data: [],
+		showFilterComponent: false
 	};
 
 	componentDidMount() {
-		const { data } = this.props
-		const newState = { data }
+		const { data = [], columns = [] } = this.props
+		const extractColumnName = colDef => colDef.attribute
+		const columnNames = columns.map(extractColumnName)
+		const newState = { data, columnNames }
 		this.setState(newState)
+	}
+
+	toggleFilter = () => {
+		this.setState({ showFilterComponent: !this.state.showFilterComponent })
 	}
 
 	handleRequestSort = (event, property) => {
@@ -113,32 +122,79 @@ class EnhancedTable extends React.Component {
 		)
 	}
 
+	onFilter = (findFor, filterBy) => {
+		console.log({ findFor, filterBy })
+		const { state } = this
+		const { data } = state
+		const FilterBy = Array.isArray(filterBy) ? filterBy : [filterBy]
+
+		const columnReducer =
+			findFor =>
+				row =>
+					(isMatch, attribute) => {
+						const value = row[attribute]
+						const type = typeof value
+						const matchWithValue = type === "number"
+							? value === findFor
+							: findFor.indexOf(value) >= 0
+						return isMatch || matchWithValue
+					}
+
+		const dataReducer =
+			findFor =>
+				(array, row) => FilterBy
+					.reduce(columnReducer(findFor)(row))
+					? array.concat([row])
+					: array.concat([])
+
+		const dataFiltered = data.reduce(dataReducer(findFor))
+
+		this.setState({ data: dataFiltered })
+	}
 
 	render() {
-		const { classes, data, columns } = this.props;
-		const { order, orderBy, selected, rowsPerPage, page } = this.state;
+		const {
+			state,
+			props,
+			toggleFilter,
+			handleSelectAllClick,
+			handleRequestSort,
+			handleChangePage,
+			handleChangeRowsPerPage
+		} = this
+		const { title, classes, columns, onDelete, onFilter = this.onFilter } = props;
+		const { data, order, orderBy, selected, rowsPerPage, page, columnNames } = state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		const sliceFrom = page * rowsPerPage
 		const sliceTo = page * rowsPerPage + rowsPerPage
+
 		const rows = stableSort(data, getSorting(order, orderBy))
 			.slice(sliceFrom, sliceTo)
 			.map(this.getRowComponents(columns))
-		
+
 		return (
 			<Paper className={classes.root}>
-				<EnhancedTableToolbar numSelected={selected.length} title={this.props.title} />
+				<EnhancedTableToolbar
+					numSelected={selected.length}
+					title={title}
+					onDeletePressed={onDelete}
+					onFilterPressed={toggleFilter}
+				/>
+
+				<EnhancedTableFilter onFilter={onFilter} options={columnNames} />
+
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
 						<EnhancedTableHead
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
-							onSelectAllClick={this.handleSelectAllClick}
-							onRequestSort={this.handleRequestSort}
+							onSelectAllClick={handleSelectAllClick}
+							onRequestSort={handleRequestSort}
 							rowCount={data.length}
 							columns={columns}
-
 						/>
+
 						<TableBody>
 							{rows}
 							{emptyRows > 0 && (
@@ -161,8 +217,8 @@ class EnhancedTable extends React.Component {
 					nextIconButtonProps={{
 						'aria-label': 'Next Page',
 					}}
-					onChangePage={this.handleChangePage}
-					onChangeRowsPerPage={this.handleChangeRowsPerPage}
+					onChangePage={handleChangePage}
+					onChangeRowsPerPage={handleChangeRowsPerPage}
 				/>
 			</Paper>
 		);
