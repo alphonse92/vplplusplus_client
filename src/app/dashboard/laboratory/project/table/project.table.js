@@ -1,12 +1,26 @@
 import React from 'react';
-import { MaterialTable } from '../../../../lib/components/material/tables/material.table';
+import AddIcon from '@material-ui/icons/Add';
+import { withStyles } from '@material-ui/core/styles';
+import { Toolbar, Button, } from '@material-ui/core'
+import { Flex, Item } from '../../../../../lib/components/flex'
+import { MaterialTable } from '../../../../../lib/components/material/tables/material.table';
+
 let counter = 0
 function createData(name, calories, fat, carbs, protein) {
 	counter += 1;
 	return { id: counter, name, calories, fat, carbs, protein };
 }
 
-export class ProjectTable extends React.Component {
+const styles = theme => ({
+	button: {
+		margin: theme.spacing.unit,
+	},
+	input: {
+		display: 'none',
+	},
+});
+
+class ProjectTable extends React.Component {
 
 	onDelete = (idsToDelete) => {
 		return console.log(idsToDelete)
@@ -15,7 +29,15 @@ export class ProjectTable extends React.Component {
 		this.setState({ data })
 	}
 
+	onSelectItem = (item) => {
+		console.log(item)
+	}
+	onRemoveItems = (item) => {
+		console.log(item)
+	}
+
 	render() {
+
 		const columns = [
 			{ attribute: 'id', key: 'id', numeric: true, disablePadding: false, label: 'Id' },
 			{ attribute: 'name', key: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
@@ -39,9 +61,44 @@ export class ProjectTable extends React.Component {
 			createData('Nougat', 360, 19.0, 9, 37.0),
 			createData('Oreo', 437, 18.0, 63, 4.0),
 		]
-		const onFilter = console.log
-		const props = { columns, data, onFilter }
-		return <MaterialTable {...props} title="Projects" />
+
+		const showFilterComponent = false
+
+		const {
+			onSelectItem,
+			onRemoveItems,
+			state,
+			props,
+		} = this
+		const { classes } = props
+
+		const propsTable = {
+			columns,
+			data,
+			showFilterComponent,
+			onSelectItem,
+			onRemoveItems
+		}
+		return (
+			<React.Fragment>
+				<Toolbar disableGutters>
+					<Flex horizontal reverse width='100%' height='100%' >
+						<Item>
+							<Button  >
+								<AddIcon /> Start a New Project
+							</Button>
+						</Item>
+					</Flex>
+				</Toolbar>
+				<MaterialTable {...propsTable} title="Projects" />
+			</React.Fragment>
+		)
+
 
 	}
+}
+const EnhancedProjectTable = withStyles(styles)(ProjectTable);
+
+export {
+	EnhancedProjectTable as ProjectTable
 }

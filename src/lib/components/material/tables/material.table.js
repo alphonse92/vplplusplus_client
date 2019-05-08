@@ -21,14 +21,23 @@ class EnhancedTable extends React.Component {
 		rowsPerPage: 5,
 		columnNames: [],
 		data: [],
+		dataFiltered: [],
 		showFilterComponent: false
 	};
 
 	componentDidMount() {
-		const { data = [], columns = [] } = this.props
+
+		const {
+			data = [],
+			columns = [],
+			showFilterComponent = this.state.showFilterComponent
+		} = this.props
+
+		const dataFiltered = data
 		const extractColumnName = colDef => colDef.attribute
 		const columnNames = columns.map(extractColumnName)
-		const newState = { data, columnNames }
+		const newState = { data, dataFiltered, columnNames, showFilterComponent }
+
 		this.setState(newState)
 	}
 
@@ -123,10 +132,18 @@ class EnhancedTable extends React.Component {
 	}
 
 	onFilter = (findFor, filterBy) => {
-		console.log({ findFor, filterBy })
+
+		const ALL = filterBy.length === 0
 		const { state } = this
-		const { data } = state
-		const FilterBy = Array.isArray(filterBy) ? filterBy : [filterBy]
+		const { data, columnNames } = state
+
+		if (!findFor.length) return this.setState({ dataFiltered: data })
+
+		const FilterBy = ALL
+			? columnNames
+			: Array.isArray(filterBy)
+				? filterBy
+				: [filterBy]
 
 		const columnReducer =
 			findFor =>
@@ -136,23 +153,24 @@ class EnhancedTable extends React.Component {
 						const type = typeof value
 						const matchWithValue = type === "number"
 							? value === findFor
-							: findFor.indexOf(value) >= 0
+							: value.toLowerCase().indexOf(findFor.toLowerCase()) >= 0
 						return isMatch || matchWithValue
 					}
-
 		const dataReducer =
 			findFor =>
-				(array, row) => FilterBy
-					.reduce(columnReducer(findFor)(row))
-					? array.concat([row])
-					: array.concat([])
+				(array, row) => {
+					return FilterBy
+						.reduce(columnReducer(findFor)(row), false)
+						? array.concat([row])
+						: array.concat([])
+				}
 
-		const dataFiltered = data.reduce(dataReducer(findFor))
-
-		this.setState({ data: dataFiltered })
+		const dataFiltered = data.reduce(dataReducer(findFor), [])
+		this.setState({ dataFiltered })
 	}
 
 	render() {
+
 		const {
 			state,
 			props,
@@ -162,8 +180,26 @@ class EnhancedTable extends React.Component {
 			handleChangePage,
 			handleChangeRowsPerPage
 		} = this
-		const { title, classes, columns, onDelete, onFilter = this.onFilter } = props;
-		const { data, order, orderBy, selected, rowsPerPage, page, columnNames, showFilterComponent } = state;
+
+		const {
+			title,
+			classes,
+			columns,
+			onDelete,
+			onFilter = this.onFilter,
+		} = props;
+
+		const {
+			dataFiltered: data,
+			order,
+			orderBy,
+			selected,
+			rowsPerPage,
+			page,
+			columnNames,
+			showFilterComponent,
+		} = state;
+
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		const sliceFrom = page * rowsPerPage
 		const sliceTo = page * rowsPerPage + rowsPerPage
@@ -171,6 +207,7 @@ class EnhancedTable extends React.Component {
 		const rows = stableSort(data, getSorting(order, orderBy))
 			.slice(sliceFrom, sliceTo)
 			.map(this.getRowComponents(columns))
+
 		return (
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar

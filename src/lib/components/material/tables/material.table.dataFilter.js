@@ -102,7 +102,7 @@ class FilterComponent extends React.Component {
 					</FormControl>
 				</Toolbar>
 				<Toolbar>
-					<Button variant="contained" color="primary" onClick={onFilter} className={classes.button}>
+					<Button onClick={onFilter} className={classes.button}>
 						Filter
      			</Button>
 				</Toolbar>
