@@ -1,6 +1,6 @@
 import React from 'react'
-import { ProjectTable } from './project/table/project.table';
 import { Toolbar } from '@material-ui/core';
+import { ProjectTable } from './project/tables/project.table';
 
 export const Main = (props) => {
 	return (
@@ -10,7 +10,7 @@ export const Main = (props) => {
 					Virtual Programming Lab Projects
 				</h1>
 			</Toolbar>
-			<ProjectTable />
+			<ProjectTable/>
 		</React.Fragment>
 	)
 }

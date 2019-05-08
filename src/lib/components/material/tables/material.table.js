@@ -185,7 +185,7 @@ class EnhancedTable extends React.Component {
 			title,
 			classes,
 			columns,
-			onDelete,
+			onRemoveItems,
 			onFilter = this.onFilter,
 		} = props;
 
@@ -213,7 +213,7 @@ class EnhancedTable extends React.Component {
 				<EnhancedTableToolbar
 					numSelected={selected.length}
 					title={title}
-					onDeletePressed={onDelete}
+					onDeletePressed={()=>onRemoveItems(selected)}
 					onFilterPressed={toggleFilter}
 				/>
 

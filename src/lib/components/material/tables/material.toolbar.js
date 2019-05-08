@@ -12,15 +12,15 @@ import { lighten } from '@material-ui/core/styles/colorManipulator';
 
 const TableToolbar = (props) => {
 
-	const { numSelected, classes, onFilterPressed } = props;
+	const { numSelected, classes, onFilterPressed,onDeletePressed } = props;
 	const ToolbarClassNames = classNames(classes.root, { [classes.highlight]: numSelected > 0 })
 
 	const TypoItemsSelected = <Typography color="inherit" variant="subtitle1">{numSelected} selected</Typography>
 	const TypoNoItemsSelected = <Typography variant="h6" id="tableTitle">{props.title}</Typography>
 	const DeleteItemButton = (
 		<Tooltip title="Delete">
-			<IconButton aria-label="Delete">
-				<DeleteIcon />
+			<IconButton aria-label="Delete" onClick={onDeletePressed}>
+				<DeleteIcon  />
 			</IconButton>
 		</Tooltip>
 	)
