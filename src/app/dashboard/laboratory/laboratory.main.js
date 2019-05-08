@@ -1,9 +1,8 @@
 import React from 'react'
-// import { Header } from 'semantic-ui-react'
 import { ProjectTable } from './project/table/project.table';
 import { Toolbar } from '@material-ui/core';
 
-export const LaboratoryContainer = (props) => {
+export const Main = (props) => {
 	return (
 		<React.Fragment>
 			<Toolbar disableGutters>

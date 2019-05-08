@@ -24,8 +24,9 @@ export const DashboardContainer = (props) => {
 		if (redirect) return history.push(redirect)
 		if (DISPATCHERS[action]) return DISPATCHERS[action]()
 	}
-	console.log(match)
+
 	const routes = getRoutes(match, location).map((route, key) => ({ ...route, key }))
+
 	return (
 		<React.Fragment>
 			<DashboardNavbar
