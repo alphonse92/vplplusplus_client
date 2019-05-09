@@ -1,8 +1,5 @@
 import React from 'react';
-import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
-import { Toolbar, Button, } from '@material-ui/core'
-import { Flex, Item } from '../../../../../lib/components/flex'
 import { MaterialTable } from '../../../../../lib/components/material/tables/material.table';
 
 let counter = 0
@@ -24,9 +21,6 @@ class ProjectTable extends React.Component {
 
 	onDelete = (idsToDelete) => {
 		return console.log(idsToDelete)
-		const { data: stateData = [] } = this.state
-		const data = stateData.filter(row => !idsToDelete.includes(row.id))
-		this.setState({ data })
 	}
 
 	onSelectItem = (item) => {
@@ -81,15 +75,6 @@ class ProjectTable extends React.Component {
 		}
 		return (
 			<React.Fragment>
-				<Toolbar disableGutters>
-					<Flex horizontal reverse width='100%' height='100%' >
-						<Item>
-							<Button  >
-								<AddIcon /> Start a New Project
-							</Button>
-						</Item>
-					</Flex>
-				</Toolbar>
 				<MaterialTable {...propsTable} title="Projects" />
 			</React.Fragment>
 		)
