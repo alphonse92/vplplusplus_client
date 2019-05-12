@@ -1,35 +1,72 @@
 import React from 'react'
 import { Toolbar, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Flex, Item } from '../../../..//lib/components/flex'
+import { Flex } from '../../../..//lib/components/flex'
+import { ProjectPreview } from './components/projectPreview';
 
-const ProjectCreateComponent = props => {
-	const { classes } = props
-	return (
-		<React.Fragment>
-			<Flex horizontal className="w100">
-				<Paper className={classes.root}>
-					<Toolbar disableGutters> <h1 className='w100 center'>New Project</h1></Toolbar>
-					<p className="justify">
-						A continuación crearás un caso de prueba para VPL usando VPL++. Una prueba agrupa varios casos
-						de prueba con el fin de evaluar cierto contenido curricular. Normalmente para una actividad de
-						VPL solo necesitarás una prueba, sin embargo podrás crear tantas pruebas necesites. La prueba
-						será convertida a una prueba unitaria en JUnit.
-							</p>
+class ProjectCreateComponent extends React.Component {
+	defaultProject = [
+		{
+			id: Math.random(),
+			name: 'My first project',
+			tags: ['java', 'types'],
+			description: 'Description of my first project',
+			objective: 'Objective of my first project',
+			maxGrade: 5,
+			tests: [
+				{
+					id: Math.random(),
+					name: 'My first Test case',
+					objective: 'Objective of my first test case',
+					grade: 5,
+					successMessage: 'successMessage',
+					successMessageLink: 'successMessageLink',
+					failureMessage: 'failureReferenceLink',
+				}
+			]
+		}
+	]
 
-				</Paper>
-			</Flex>
-			<Flex horizontal className="w100">
-				<Paper className={classes.root + " w50"}>
-					<Toolbar disableGutters> <h1 className='w100 center'>New</h1></Toolbar>
-				</Paper>
-				<Paper className={classes.root + " w50"}>
-					<Toolbar disableGutters> <h1 className='w100 center'>Preview</h1></Toolbar>
-				</Paper>
-			</Flex>
+	componentDidMount() {
 
-		</React.Fragment>
-	)
+	}
+
+	createProject = () => {
+
+	}
+
+	onCreateTest = () => {
+
+	}
+
+	saveAllProject = (project) => {
+		this.props.saveProject(project)
+	}
+
+	onFinish = () => {
+
+	}
+
+	render() {
+		const { props } = this
+		const { classes, projects = this.defaultProject } = props
+
+		return (
+			<React.Fragment>
+				<Flex horizontal width='50%'>
+					<ProjectPreview
+						projects={projects}
+						onSelectProject={this.onSelectProject}
+						onCreateProject={this.onCreateProject}
+
+						onCreateTest={this.onCreateTest}
+						onSelectTest={this.onSelectTest}
+						onFinish={this.onFinish}
+					/>
+				</Flex>
+			</React.Fragment>
+		)
+	}
 }
 
 const styles = theme => {
@@ -43,6 +80,7 @@ const styles = theme => {
 
 const StyledProjectCreateComponent = withStyles(styles)(ProjectCreateComponent)
 export const ProjectCreate = props => <StyledProjectCreateComponent {...props} />
+
 
 
 

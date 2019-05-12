@@ -5,6 +5,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import { App } from './app.container'
 import './styles.sass'
+import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
 
 const HoverAndSelected = 'rgba(247, 83,	 61, 0.17) !important'

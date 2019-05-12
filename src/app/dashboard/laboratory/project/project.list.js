@@ -2,7 +2,7 @@
 import React from 'react'
 import { Toolbar } from '@material-ui/core';
 import { ProjectTable } from './tables/project.table';
-import { NewProjectToolbarComponent } from './components';
+import { NewProjectToolbarComponent } from './components/';
 
 export const ProjectList = props => {
 	const redirects = {
