@@ -9,10 +9,17 @@ import {
 	, ListItemText
 	, ListItemSecondaryAction
 	, Card
+	, CardHeader
 	, CardActions
 	, CardContent
-	, Button
 	, Collapse
+	, Table
+	, TableHead
+	, TableBody
+	, TableRow
+	, TableCell,
+	Button
+
 } from '@material-ui/core';
 
 import {
@@ -22,6 +29,7 @@ import {
 	ExpandLess as ExpandLessIcon,
 	ExpandMore as ExpandMoreIcon,
 	Edit as EditIcon,
+	Close as CloseIcon
 } from '@material-ui/icons';
 
 import Typography from '@material-ui/core/Typography';
@@ -31,6 +39,7 @@ import Typography from '@material-ui/core/Typography';
 
 import './styles.sass'
 import { Flex } from '../../../../../../lib/components/flex';
+import { CodeEditor } from '../../../../../../lib/components/code';
 
 const SubHeader = ({ text }) => <ListSubheader component="div">{text}</ListSubheader>
 
@@ -42,12 +51,11 @@ const TestsWrapper = props => <List component="nav" className="tests" subheader=
 
 
 
-const Test = ({ onDeleteTestCase, test }) => (
-	<ListItem button>
+const ProjectPreviewTestItem = ({ onSelectTestCase, onDeleteTestCase, test }) => (
+	<ListItem button onClick={() => onSelectTestCase(test)}>
 		<ListItemIcon>
-			<i class="fas fa-flask"></i>
+			<i className="fas fa-flask"></i>
 		</ListItemIcon>
-
 		<ListItemText inset primary={test.name} secondary={test.objective} />
 		<ListItemSecondaryAction onClick={() => onDeleteTestCase(test)}>
 			<IconButton aria-label="Remove">
@@ -59,43 +67,51 @@ const Test = ({ onDeleteTestCase, test }) => (
 
 
 
-const ProjectDescription = ({ onToggle, isOpen = false, onEditProject, onDeleteProject, project }) => (
-	<Card elevation={0}>
-		<CardContent>
-			<Typography color="textSecondary" gutterBottom>Project Name</Typography>
-			<Typography variant="h5" component="h2" gutterBottom onClick={onToggle}>
-				{project.name}
-				<IconButton>
-					{isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-				</IconButton>
-			</Typography>
+const ProjectDescriptionCard =
+	({
+		onToggle,
+		isOpen = false,
+		onEditProject,
+		onCreateTestCase,
+		onDeleteProject,
+		project }) => (
+			<Card elevation={0}>
+				<CardContent>
+					<Typography color="textSecondary" gutterBottom>Project Name</Typography>
+					<Typography variant="h5" component="h2" gutterBottom onClick={onToggle}>
+						{project.name}
+						<IconButton>
+							{isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+						</IconButton>
+					</Typography>
 
-			<Collapse in={isOpen} timeout="auto" unmountOnExit>
-				<Typography color="textSecondary" gutterBottom>Description</Typography>
-				<Typography component="p" gutterBottom>{project.description}</Typography>
+					<Collapse in={isOpen} timeout="auto" unmountOnExit>
+						<Typography color="textSecondary" gutterBottom>Description</Typography>
+						<Typography component="p" gutterBottom>{project.description}</Typography>
 
-				<Typography color="textSecondary" gutterBottom>Objective</Typography>
-				<Typography component="p" gutterBottom>{project.objective}</Typography>
+						<Typography color="textSecondary" gutterBottom>Objective</Typography>
+						<Typography component="p" gutterBottom>{project.objective}</Typography>
 
-				<Typography color="textSecondary" gutterBottom>Max Grade</Typography>
-				<Typography component="p" gutterBottom>{project.maxGrade}</Typography>
+						<Typography color="textSecondary" gutterBottom>Max Grade</Typography>
+						<Typography component="p" gutterBottom>{project.maxGrade}</Typography>
 
-				<Typography color="textSecondary" gutterBottom>Tags</Typography>
-				<Typography component="p" gutterBottom>{project.tags && project.tags.join(', ')}</Typography>
-			</Collapse>
-
-
-		</CardContent>
-		<CardActions>
-			<IconButton onClick={onEditProject} aria-label="Edit Project">
-				<DeleteIcon />
-			</IconButton>
-			<IconButton onClick={onDeleteProject} aria-label="Delete Project">
-				<EditIcon />
-			</IconButton>
-		</CardActions>
-	</Card>
-)
+						<Typography color="textSecondary" gutterBottom>Tags</Typography>
+						<Typography component="p" gutterBottom>{project.tags && project.tags.join(', ')}</Typography>
+					</Collapse>
+				</CardContent>
+				<CardActions>
+					<IconButton onClick={onEditProject} aria-label="Edit Project">
+						<DeleteIcon />
+					</IconButton>
+					<IconButton onClick={onDeleteProject} aria-label="Delete Project">
+						<EditIcon />
+					</IconButton>
+					<IconButton onClick={onCreateTestCase}>
+						<i className="fas fa-plus " />
+					</IconButton>
+				</CardActions>
+			</Card>
+		)
 
 class Project extends React.Component {
 	state = {
@@ -107,10 +123,17 @@ class Project extends React.Component {
 	handleClose = window => () => this.setState({ open: Object.assign(this.state.open, { [window]: !this.state.open[window] }) })
 	render() {
 		const { state, props, handleClose } = this
-		const { project, onEditProject, onDeleteProject, onDeleteTestCase } = props
+		const {
+			project,
+			onEditProject,
+			onDeleteProject,
+			onSelectTestCase,
+			onCreateTestCase,
+			onDeleteTestCase,
+		} = props
 		const { open } = state
 		return (
-			<React.Fragment>
+			<div className="project">
 				<ListItem button onClick={handleClose('project')}>
 					<ListItemIcon>
 						<FormatListNumberedIcon />
@@ -119,93 +142,142 @@ class Project extends React.Component {
 					{open.project ? <ExpandLessIcon /> : <ExpandMoreIcon />}
 				</ListItem>
 				<Collapse in={open.project} timeout="auto" unmountOnExit>
-					<ProjectDescription
+					<ProjectDescriptionCard
+						onCreateTestCase={onCreateTestCase}
 						onEditProject={onEditProject}
 						onDeleteProject={onDeleteProject}
 						onToggle={handleClose('description')}
 						isOpen={open.description}
 						project={project} />
-					<Tests project={project} onDeleteTestCase={onDeleteTestCase} />
+					<ProjectPreviewTests
+						project={project}
+						onSelectTestCase={onSelectTestCase}
+						onDeleteTestCase={onDeleteTestCase} />
 				</Collapse>
-			</React.Fragment>
+			</div>
 		)
 	}
 }
 
 
-const extractTestComponents = onDeleteTestCase => test => <Test onDeleteTestCase={onDeleteTestCase} test={test} />
+const extractTestComponents =
+	onSelectTestCase =>
+		onDeleteTestCase =>
+			test => <ProjectPreviewTestItem key={test.id} onSelectTestCase={onSelectTestCase} onDeleteTestCase={onDeleteTestCase} test={test} />
 
-const Tests = ({ project, onDeleteTestCase }) => (
+const ProjectPreviewTests = ({ project, onSelectTestCase, onDeleteTestCase }) => (
 	<TestsWrapper>
-		{project.tests.map(extractTestComponents(onDeleteTestCase))}
+		{project.tests.map(extractTestComponents(onSelectTestCase)(onDeleteTestCase))}
 	</TestsWrapper>
 )
 
 
 const extractProjectComponent =
-	onEditProject =>
-		onDeleteProject =>
-			onDeleteTestCase =>
-				onCreateTestCase =>
-					project =>
-						(
-							<ProjectsWrapper key={project.id}>
-								<Project
-									project={project}
-									onEditProject={onEditProject}
-									onDeleteProject={onDeleteProject}
-									onDeleteTestCase={onDeleteTestCase}
-									onCreateTestCase={onCreateTestCase}
-								/>
-							</ProjectsWrapper>
-						)
+	actions =>
+		project =>
+			(
+				<Paper>
+					<Project
+						key={project.id}
+						project={project}
+						{...actions}
+					/>
+				</Paper>
+			)
 
-const PreviewContent = ({ onEditProject, onDeleteProject, onDeleteTestCase, onCreateTestCase, projects }) =>
-	(
-		<div className="projects">
-			{
-				projects.map(
-					extractProjectComponent
-						(onEditProject)
-						(onDeleteProject)
-						(onDeleteTestCase)
-						(onCreateTestCase)
-				)
-			}
-		</div>
-	)
+const PreviewContent = props => (
+	<ProjectsWrapper>
+		{props.projects.map(extractProjectComponent(props))}
+	</ProjectsWrapper>
+)
 
-const PreviewButtons = ({ onCreateProject }) =>
-	(
-		<Flex horizontal reverse width='100%' >
-			<IconButton onClick={onCreateProject} color="primary" aria-label="Create Project"><CreateNewFolderIcon /></IconButton>
-		</Flex>
-	)
-
-
+const PreviewButtons = ({ onCreateProject }) => (
+	<Flex horizontal reverse width='100%' >
+		<IconButton onClick={onCreateProject} color="primary" aria-label="Create Project"><CreateNewFolderIcon /></IconButton>
+	</Flex>
+)
 
 
 /* <PreviewButtons onCreateProject={onCreateProject} /> */
-const ProjectPreviewBase = ({
+export const ProjectPreview = ({
+
+	projects,
+
 	onCreateProject,
-	onDeleteProject,
 	onEditProject,
+	onDeleteProject,
+
+	onSelectTestCase,
 	onCreateTestCase,
 	onDeleteTestCase,
-	projects
-}) => (
-		<Paper>
-			<PreviewWrapper>
-				<PreviewContent
-					onCreateTestCase={onCreateTestCase}
-					onDeleteProject={onDeleteProject}
-					onEditProject={onEditProject}
-					onDeleteTestCase={onDeleteTestCase}
-					projects={projects} />
-			</PreviewWrapper>
-		</Paper>
 
+}) => (
+		<PreviewWrapper>
+			<PreviewContent
+
+				onCreateProject={onCreateProject}
+				onDeleteProject={onDeleteProject}
+				onEditProject={onEditProject}
+
+				onSelectTestCase={onSelectTestCase}
+				onCreateTestCase={onCreateTestCase}
+				onDeleteTestCase={onDeleteTestCase}
+
+				projects={projects} />
+		</PreviewWrapper>
 	)
 
-export const ProjectPreview = ProjectPreviewBase
 
+
+export const TestCasePreview = ({
+	test,
+	onDeleteTestCase,
+	onEditTestClase,
+	onCloseTestCase
+}) => (
+		<Card>
+			<CardHeader
+				action={<IconButton onClick={onCloseTestCase}><CloseIcon /></IconButton>} title={test.name}
+				subheader={` ${test.grade} Points`}
+			/>
+			<CardContent>
+				<Typography component="p" gutterBottom>{test.objective}</Typography>
+				<Typography color="textSecondary" gutterBottom>Messages</Typography>
+				<Table>
+					<TableHead>
+						<TableRow>
+							<TableCell>Success</TableCell>
+							<TableCell>Failure</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+
+						<TableRow>
+							<TableCell>{test.successMessage}</TableCell>
+							<TableCell>{test.failureMessage}</TableCell>
+						</TableRow>
+
+						<TableRow>
+							<TableCell>
+								<a href={test.successMessageLink} target='_blank'>{test.successMessageLink}</a>
+							</TableCell>
+							<TableCell>
+								<a href={test.failureMessageLink} target='_blank'>{test.failureMessageLink}</a>
+							</TableCell>
+						</TableRow>
+					</TableBody>
+				</Table>
+
+
+				<Typography color="textSecondary" gutterBottom>Code</Typography>
+				<div style={{ height: '200px', width: '100%' }}>
+					<CodeEditor options={{ readOnly: true }} />
+				</div>
+			</CardContent>
+
+			<CardActions>
+				<Button variant="contained" color="primary" onClick={onEditTestClase}>Edit</Button>
+				<Button variant="contained" color="secondary" onClick={onDeleteTestCase}>Delete</Button>
+			</CardActions>
+		</Card>
+	)

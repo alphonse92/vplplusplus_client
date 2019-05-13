@@ -1,5 +1,4 @@
 import React from 'react'
-import { Toolbar, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Flex } from '../../../..//lib/components/flex'
 import { ProjectPreview } from './components/projectPreview';
@@ -7,6 +6,25 @@ import { ProjectPreview } from './components/projectPreview';
 class ProjectCreateComponent extends React.Component {
 	defaultProject = [
 		{
+			id: Math.random(),
+			name: 'My first project',
+			tags: ['java', 'types'],
+			description: 'Description of my first project',
+			objective: 'Objective of my first project',
+			maxGrade: 5,
+			tests: [
+				{
+					id: Math.random(),
+					name: 'My first Test case',
+					objective: 'Objective of my first test case',
+					grade: 5,
+					successMessage: 'successMessage',
+					successMessageLink: 'successMessageLink',
+					failureMessage: 'failureReferenceLink',
+				}
+			]
+		},
+			{
 			id: Math.random(),
 			name: 'My first project',
 			tags: ['java', 'types'],

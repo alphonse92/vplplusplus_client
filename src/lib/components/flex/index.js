@@ -11,7 +11,7 @@ const getDirection = (horizontal, vertical) =>
 			: HORIZONTAL
 
 export const Item = (props) => {
-	const style = {}
+	const style = { ...props }
 	return (
 		<div style={style}>{props.children}</div>
 	)
