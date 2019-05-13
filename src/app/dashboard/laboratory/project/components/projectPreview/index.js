@@ -276,8 +276,8 @@ export const TestCasePreview = ({
 			</CardContent>
 
 			<CardActions>
-				<Button variant="contained" color="primary" onClick={onEditTestClase}>Edit</Button>
 				<Button variant="contained" color="secondary" onClick={onDeleteTestCase}>Delete</Button>
+				<Button variant="contained" color="primary" onClick={onEditTestClase}>Edit</Button>
 			</CardActions>
 		</Card>
 	)
