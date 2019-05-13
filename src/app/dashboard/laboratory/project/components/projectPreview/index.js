@@ -23,13 +23,16 @@ import {
 } from '@material-ui/core';
 
 import {
+	Edit as EditIcon,
+	Save as SaveIcon,
+	Delete as DeleteIcon,
+
+	Close as CloseIcon,
+
 	CreateNewFolder as CreateNewFolderIcon,
 	FormatListNumbered as FormatListNumberedIcon,
-	Delete as DeleteIcon,
 	ExpandLess as ExpandLessIcon,
 	ExpandMore as ExpandMoreIcon,
-	Edit as EditIcon,
-	Close as CloseIcon
 } from '@material-ui/icons';
 
 import Typography from '@material-ui/core/Typography';
@@ -231,8 +234,9 @@ export const ProjectPreview = ({
 
 export const TestCasePreview = ({
 	test,
+	onCreateTestCase,
 	onDeleteTestCase,
-	onEditTestClase,
+	onEditTestCase,
 	onCloseTestCase
 }) => (
 		<Card>
@@ -276,8 +280,24 @@ export const TestCasePreview = ({
 			</CardContent>
 
 			<CardActions>
-				<Button variant="contained" color="secondary" onClick={onDeleteTestCase}>Delete</Button>
-				<Button variant="contained" color="primary" onClick={onEditTestClase}>Edit</Button>
+				{
+					onDeleteTestCase &&
+					<Button variant="contained" color="secondary" onClick={onDeleteTestCase}>
+						<DeleteIcon /> Delete
+				 </Button>
+				}
+				{
+					onEditTestCase &&
+					<Button variant="contained" color="primary" onClick={onEditTestCase}>
+						<EditIcon /> Edit
+					</Button>
+				}
+				{
+					onCreateTestCase &&
+					<Button variant="contained" color="primary" onClick={onCreateTestCase}>
+						<SaveIcon /> Create
+					</Button>
+				}
 			</CardActions>
 		</Card>
 	)

@@ -80,6 +80,9 @@ class ProjectListComponent extends React.Component {
 	onCreateTestCase = () => {
 
 	}
+	onEditTestCase = () => {
+
+	}
 
 	onDeleteTestCase = () => {
 
@@ -94,10 +97,11 @@ class ProjectListComponent extends React.Component {
 			onDeleteProject,
 			onEditProject,
 			// test cases action
-			onCloseTestCase,
 			onSelectTestCase,
 			onCreateTestCase,
-			onDeleteTestCase
+			onDeleteTestCase,
+			onCloseTestCase,
+			onEditTestCase,
 		} = this
 
 		const { classes, projects = this.defaultProject } = props
@@ -123,8 +127,10 @@ class ProjectListComponent extends React.Component {
 						<Item flexGrow='1'>
 							<TestCasePreview
 								test={currentTestCase}
-								onCloseTestCase={onCloseTestCase}
-							/>
+								onCreateTestCase={onCreateTestCase}
+								onDeleteTestCase={onDeleteTestCase}
+								onEditTestCase={onEditTestCase}
+								onCloseTestCase={onCloseTestCase} />
 						</Item>
 
 					}
@@ -136,10 +142,7 @@ class ProjectListComponent extends React.Component {
 
 const styles = theme => {
 	return ({
-		root: {
-			// width: '100%',
-			// marginTop: theme.spacing.unit * 3,
-		}
+		root: {}
 	});
 }
 
