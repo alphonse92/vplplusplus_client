@@ -17,8 +17,8 @@ import {
 	, TableHead
 	, TableBody
 	, TableRow
-	, TableCell,
-	Button
+	, TableCell
+	, Button
 
 } from '@material-ui/core';
 
@@ -196,7 +196,9 @@ const PreviewContent = props => (
 
 const PreviewButtons = ({ onCreateProject }) => (
 	<Flex horizontal reverse width='100%' >
-		<IconButton onClick={onCreateProject} color="primary" aria-label="Create Project"><CreateNewFolderIcon /></IconButton>
+		<IconButton onClick={onCreateProject} aria-label="Create Project">
+			<CreateNewFolderIcon />
+		</IconButton>
 	</Flex>
 )
 
@@ -216,6 +218,7 @@ export const ProjectPreview = ({
 
 }) => (
 		<PreviewWrapper>
+			<PreviewButtons onCreateProject={onCreateProject} />
 			<PreviewContent
 
 				onCreateProject={onCreateProject}
@@ -241,12 +244,17 @@ export const TestCasePreview = ({
 }) => (
 		<Card>
 			<CardHeader
-				action={<IconButton onClick={onCloseTestCase}><CloseIcon /></IconButton>} title={test.name}
-				subheader={` ${test.grade} Points`}
+				action={
+					<React.Fragment>
+						{onDeleteTestCase && <IconButton onClick={onDeleteTestCase}><DeleteIcon /></IconButton>}
+						{onEditTestCase && <IconButton onClick={onEditTestCase}><EditIcon /></IconButton>}
+						<IconButton onClick={onCloseTestCase}><CloseIcon /></IconButton>
+					</React.Fragment>
+				}
+				title={test.name}
+				subheader={` ${test.grade} Points | ${test.objective} `}
 			/>
 			<CardContent>
-				<Typography component="p" gutterBottom>{test.objective}</Typography>
-				<Typography color="textSecondary" gutterBottom>Messages</Typography>
 				<Table>
 					<TableHead>
 						<TableRow>
@@ -272,32 +280,11 @@ export const TestCasePreview = ({
 					</TableBody>
 				</Table>
 
-
-				<Typography color="textSecondary" gutterBottom>Code</Typography>
 				<div style={{ height: '200px', width: '100%' }}>
 					<CodeEditor options={{ readOnly: true }} />
 				</div>
+
 			</CardContent>
 
-			<CardActions>
-				{
-					onDeleteTestCase &&
-					<Button variant="contained" color="secondary" onClick={onDeleteTestCase}>
-						<DeleteIcon /> Delete
-				 </Button>
-				}
-				{
-					onEditTestCase &&
-					<Button variant="contained" color="primary" onClick={onEditTestCase}>
-						<EditIcon /> Edit
-					</Button>
-				}
-				{
-					onCreateTestCase &&
-					<Button variant="contained" color="primary" onClick={onCreateTestCase}>
-						<SaveIcon /> Create
-					</Button>
-				}
-			</CardActions>
 		</Card>
 	)

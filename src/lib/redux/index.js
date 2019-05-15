@@ -63,3 +63,15 @@ export function extractActionCreators(ActionsObject) {
 			return AllActionCreators
 		}, {})
 }
+
+export const createReducer =
+	reducerMap =>
+		defaultState =>
+			(state = defaultState, action) => {
+				const { type } = action
+				const reducerForAction = reducerMap[type]
+				const isValidReducer = reducerForAction && typeof reducerForAction === 'function'
+				return isValidReducer
+					? reducerForAction(state, action)
+					: state
+			}

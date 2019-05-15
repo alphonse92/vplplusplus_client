@@ -2,9 +2,15 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import { Flex, Item } from '../../../..//lib/components/flex'
 import { ProjectPreview, TestCasePreview } from './components/projectPreview';
+import { ProjectFormDialog } from './dialogs/project.create.dialog';
 
 class ProjectListComponent extends React.Component {
-	state = {}
+	state = {
+		dialogs: {
+			project: false,
+			testCase: false
+		}
+	}
 	defaultProject = [
 		{
 			id: Math.random(),
@@ -23,7 +29,37 @@ class ProjectListComponent extends React.Component {
 					successMessageLink: 'http://google.com',
 					failureMessage: 'failureReferenceLink',
 					failureMessageLink: 'http://google.com',
-				}
+				},
+				{
+					id: Math.random(),
+					name: 'My first Test case',
+					objective: 'Objective of my first test case',
+					grade: 5,
+					successMessage: 'successMessage',
+					successMessageLink: 'http://google.com',
+					failureMessage: 'failureReferenceLink',
+					failureMessageLink: 'http://google.com',
+				},
+				{
+					id: Math.random(),
+					name: 'My first Test case',
+					objective: 'Objective of my first test case',
+					grade: 5,
+					successMessage: 'successMessage',
+					successMessageLink: 'http://google.com',
+					failureMessage: 'failureReferenceLink',
+					failureMessageLink: 'http://google.com',
+				},
+				{
+					id: Math.random(),
+					name: 'My first Test case',
+					objective: 'Objective of my first test case',
+					grade: 5,
+					successMessage: 'successMessage',
+					successMessageLink: 'http://google.com',
+					failureMessage: 'failureReferenceLink',
+					failureMessageLink: 'http://google.com',
+				},
 			]
 		},
 		{
@@ -52,12 +88,22 @@ class ProjectListComponent extends React.Component {
 
 	}
 
-	saveAllProject = (project) => {
-		this.props.saveProject(project)
+	// dialogs
+
+	toggleDialog = (dialog, value) => {
+		const state = this.state
+		const isOpen = typeof value === 'undefined'
+			? this.state.dialogs[dialog]
+			: !!value
+		const newState = { ...state }
+		newState.dialogs[dialog] = !isOpen
+		this.setState(newState)
 	}
 
-	onCreateProject = () => {
-
+	// Project events
+	onCreateProject = (project) => {
+		console.log("on Project create", project)
+		this.toggleDialog('project', false)
 	}
 
 	onDeleteProject = () => {
@@ -67,6 +113,13 @@ class ProjectListComponent extends React.Component {
 	onEditProject = () => {
 
 	}
+
+
+	saveAllProject = (project) => {
+		this.props.saveProject(project)
+	}
+
+	// test case events
 
 	onCloseTestCase = () => this.setState({ currentTestCase: undefined })
 	onSelectTestCase = (test) => {
@@ -80,6 +133,7 @@ class ProjectListComponent extends React.Component {
 	onCreateTestCase = () => {
 
 	}
+
 	onEditTestCase = () => {
 
 	}
@@ -96,7 +150,7 @@ class ProjectListComponent extends React.Component {
 			onCreateProject,
 			onDeleteProject,
 			onEditProject,
-			// test cases action
+			// test cases action 
 			onSelectTestCase,
 			onCreateTestCase,
 			onDeleteTestCase,
@@ -104,19 +158,24 @@ class ProjectListComponent extends React.Component {
 			onEditTestCase,
 		} = this
 
+		const {
+			dialogs
+		} = state
+
+		const openProjectDialog = () => this.toggleDialog('project', false)
+
 		const { classes, projects = this.defaultProject } = props
 		const { currentTestCase } = this.state
 
 		return (
 			<React.Fragment>
+				<ProjectFormDialog />
 				<Flex horizontal>
 					<ProjectPreview
 						projects={projects}
-
-						onCreateProject={onCreateProject}
+						onCreateProject={openProjectDialog}
 						onDeleteProject={onDeleteProject}
 						onEditProject={onEditProject}
-
 						onSelectTestCase={onSelectTestCase}
 						onCreateTestCase={onCreateTestCase}
 						onDeleteTestCase={onDeleteTestCase}
