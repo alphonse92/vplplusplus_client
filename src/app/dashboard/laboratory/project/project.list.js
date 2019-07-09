@@ -1,16 +1,20 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles';
-import { Flex, Item } from '../../../..//lib/components/flex'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { get, pick } from 'lodash'
+
+
+
+
+import { Flex, Item } from '../../../../lib/components/flex'
 import { ProjectPreview, TestCasePreview } from './components/projectPreview';
 import { ProjectFormDialog } from './dialogs/project.create.dialog';
 
+import { ActionCreators } from './redux/actions';
+import { PROJECT } from './redux/paths';
+
 class ProjectListComponent extends React.Component {
-	state = {
-		dialogs: {
-			project: false,
-			testCase: false
-		}
-	}
+	state = {}
 	defaultProject = [
 		{
 			id: Math.random(),
@@ -88,16 +92,9 @@ class ProjectListComponent extends React.Component {
 
 	}
 
-	// dialogs
 
-	toggleDialog = (dialog, value) => {
-		const state = this.state
-		const isOpen = typeof value === 'undefined'
-			? this.state.dialogs[dialog]
-			: !!value
-		const newState = { ...state }
-		newState.dialogs[dialog] = !isOpen
-		this.setState(newState)
+	showProjectModal = () => {
+		this.props.TOGGLE_CREATE_PROJECT_DIALOG(true)
 	}
 
 	// Project events
@@ -147,6 +144,7 @@ class ProjectListComponent extends React.Component {
 			props,
 			state,
 			// project actions
+			showProjectModal,
 			onCreateProject,
 			onDeleteProject,
 			onEditProject,
@@ -158,22 +156,16 @@ class ProjectListComponent extends React.Component {
 			onEditTestCase,
 		} = this
 
-		const {
-			dialogs
-		} = state
-
-		const openProjectDialog = () => this.toggleDialog('project', false)
-
-		const { classes, projects = this.defaultProject } = props
+		const { projects = this.defaultProject } = props
 		const { currentTestCase } = this.state
-
+		console.log(this.props)
 		return (
 			<React.Fragment>
 				<ProjectFormDialog />
 				<Flex horizontal>
 					<ProjectPreview
 						projects={projects}
-						onCreateProject={openProjectDialog}
+						onCreateProject={showProjectModal}
 						onDeleteProject={onDeleteProject}
 						onEditProject={onEditProject}
 						onSelectTestCase={onSelectTestCase}
@@ -205,8 +197,28 @@ const styles = theme => {
 	});
 }
 
-const StyledProjectListComponent = withStyles(styles)(ProjectListComponent)
-export const ProjectList = props => <StyledProjectListComponent {...props} />
+
+const mapDispatchToProps = (dispatch) => bindActionCreators(
+	pick(
+		ActionCreators, [
+			'TOGGLE_CREATE_PROJECT_DIALOG'
+		]
+	)
+	, dispatch)
+
+const mapStateToProps = (state) => ({
+	show: get(state, `${PROJECT.root}.${PROJECT.dialogs.create.show}`),
+	data: get(state, `${PROJECT.root}.${PROJECT.dialogs.create.data}`),
+})
+
+const ProjectListConnected = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ProjectListComponent)
+
+
+export const ProjectList = props => <ProjectListConnected {...props} />
+
 
 
 

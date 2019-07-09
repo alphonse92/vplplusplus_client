@@ -8,5 +8,6 @@ export const STATE_DEFAULT = {
 		}
 	}
 }
+
 export const reducerMap = getReducerMap(Actions)
 export const REDUCER = createReducer(reducerMap)(STATE_DEFAULT)
