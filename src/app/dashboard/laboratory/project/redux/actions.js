@@ -15,7 +15,6 @@ const TOGGLE_CREATE_PROJECT_DIALOG_NAME = 'TOGGLE_CREATE_PROJECT_DIALOG'
 Actions[TOGGLE_CREATE_PROJECT_DIALOG_NAME] = {
 	DISPATCHER: (show) =>
 		(dispatcher, getStore) => {
-			console.log({ type: TOGGLE_CREATE_PROJECT_DIALOG_NAME, payload: show })
 			dispatcher({ type: TOGGLE_CREATE_PROJECT_DIALOG_NAME, payload: show })
 		},
 	ACTIONS: {
