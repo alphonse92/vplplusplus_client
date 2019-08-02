@@ -210,12 +210,12 @@ class EnhancedTable extends React.Component {
 
 		return (
 			<Paper className={classes.root}>
-				<EnhancedTableToolbar
+				{emptyRows === 0 && <EnhancedTableToolbar
 					numSelected={selected.length}
 					title={title}
 					onDeletePressed={() => onRemoveItems(selected)}
 					onFilterPressed={toggleFilter}
-				/>
+				/>}
 
 				{showFilterComponent && <EnhancedTableFilter onFilter={onFilter} options={columnNames} />}
 

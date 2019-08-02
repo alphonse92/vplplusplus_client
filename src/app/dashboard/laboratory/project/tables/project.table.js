@@ -3,6 +3,7 @@ import { Toolbar, Button, } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import { MaterialTable } from '../../../../../lib/components/material/tables/material.table';
+
 const styles = theme => ({
 	button: {
 		margin: theme.spacing.unit,
