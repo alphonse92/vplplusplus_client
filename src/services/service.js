@@ -1,38 +1,21 @@
 export class WebService {
-	constructor(url) {
-		this.API = process.env.REACT_APP_API
+	constructor(url,token) {
+		this.API = process.env.REACT_APP_API_BASEURL
 		this.url = `${this.API}/${url}`
+		this.token = token
 	}
 
-	createHeaders(token) {
+	createHeaders() {
 		const headers = new Headers()
+		const {token} = this
 		headers.append('content-type', 'application/json')
-		if (token) headers.append('Authorization', `Bearer ${this.token}`)
+		if (token) headers.append('Authorization', `Bearer ${token}`)
 		return headers
 	}
 
-	encodeQueryParametersFromUrl(url) {
-		if (url.indexOf('?') >= 0) {
-			const parts = url.split('?')
-			const parseParams = parts
-				.slice(1, parts.length)
-				.join('?')
-				.split('&')
-				.map(att => {
-					const attParts = att.split('=')
-					attParts[1] = attParts[1] ? encodeURIComponent(attParts[1]) : ''
-					return attParts.join('=')
-				})
-				.join('&')
-			return parts[0] + '?' + parseParams
-		}
-		return url
-	}
-
-	request(customOpts, token, path = '/') {
-
-		const url = this.encodeQueryParametersFromUrl(`${this.url}${path}`)
-		const headers = this.createHeaders(token)
+	request(customOpts,path = '/') {
+		const url = `${this.url}${path}`
+		const headers = this.createHeaders()
 		const { body } = customOpts
 		if (body)
 			customOpts.body = JSON.stringify(body)

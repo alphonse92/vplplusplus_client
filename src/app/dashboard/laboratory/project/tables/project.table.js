@@ -1,13 +1,8 @@
 import React from 'react';
+import { Toolbar, Button, } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
 import { MaterialTable } from '../../../../../lib/components/material/tables/material.table';
-
-let counter = 0
-function createData(name, calories, fat, carbs, protein) {
-	counter += 1;
-	return { id: counter, name, calories, fat, carbs, protein };
-}
-
 const styles = theme => ({
 	button: {
 		margin: theme.spacing.unit,
@@ -33,27 +28,14 @@ class ProjectTable extends React.Component {
 	render() {
 
 		const columns = [
-			{ attribute: 'id', key: 'id', numeric: true, disablePadding: false, label: 'Id' },
-			{ attribute: 'name', key: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
-			{ attribute: 'calories', key: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-			{ attribute: 'fat', key: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-			{ attribute: 'carbs', key: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-			{ attribute: 'protein', key: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+			{ attribute: 'id', key: 'id', numeric: false, disablePadding: false, label: 'Id' },
+			{ attribute: 'name', key: 'name', numeric: false, disablePadding: true, label: 'Name' },
+			{ attribute: 'description', key: 'calories', numeric: false, disablePadding: false, label: 'Description' },
+			{ attribute: 'is_public', key: 'fat', numeric: false, disablePadding: false, label: 'Public' },
+			{ attribute: 'activity', key: 'carbs', numeric: true, disablePadding: false, label: 'Activity' },
 		]
 		const data = [
-			createData('Cupcake', 305, 3.7, 67, 4.3),
-			createData('Donut', 452, 25.0, 51, 4.9),
-			createData('Eclair', 262, 16.0, 24, 6.0),
-			createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-			createData('Gingerbread', 356, 16.0, 49, 3.9),
-			createData('Honeycomb', 408, 3.2, 87, 6.5),
-			createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-			createData('Jelly Bean', 375, 0.0, 94, 0.0),
-			createData('KitKat', 518, 26.0, 65, 7.0),
-			createData('Lollipop', 392, 0.2, 98, 0.0),
-			createData('Marshmallow', 318, 0, 81, 2.0),
-			createData('Nougat', 360, 19.0, 9, 37.0),
-			createData('Oreo', 437, 18.0, 63, 4.0),
+
 		]
 
 		const showFilterComponent = false
@@ -64,15 +46,22 @@ class ProjectTable extends React.Component {
 			state,
 			props,
 		} = this
-		const { classes } = props
-
+		const { classes, onCreateNewProject } = props
+		const emptyComponent = (
+			<div style={{ textAlign: 'center', width: '100%' }}>
+				<p>No projects to shown.</p>
+				<Button onClick={onCreateNewProject}><AddIcon /> Start a New Project</Button>
+			</div>
+		)
 		const propsTable = {
+			emptyComponent,
 			columns,
 			data,
 			showFilterComponent,
 			onSelectItem,
 			onRemoveItems
 		}
+
 		return (
 			<React.Fragment>
 				<MaterialTable {...propsTable} title="Projects" />

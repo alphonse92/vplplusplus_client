@@ -203,7 +203,7 @@ class EnhancedTable extends React.Component {
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		const sliceFrom = page * rowsPerPage
 		const sliceTo = page * rowsPerPage + rowsPerPage
-
+		const emptyComponent = this.props.emptyComponent || <p style={{ width: '100%', textAlign: 'center' }}> No data to shown</p>
 		const rows = stableSort(data, getSorting(order, orderBy))
 			.slice(sliceFrom, sliceTo)
 			.map(this.getRowComponents(columns))
@@ -213,7 +213,7 @@ class EnhancedTable extends React.Component {
 				<EnhancedTableToolbar
 					numSelected={selected.length}
 					title={title}
-					onDeletePressed={()=>onRemoveItems(selected)}
+					onDeletePressed={() => onRemoveItems(selected)}
 					onFilterPressed={toggleFilter}
 				/>
 
@@ -221,7 +221,7 @@ class EnhancedTable extends React.Component {
 
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
-						<EnhancedTableHead
+						{emptyRows === 0 && <EnhancedTableHead
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
@@ -229,19 +229,19 @@ class EnhancedTable extends React.Component {
 							onRequestSort={handleRequestSort}
 							rowCount={data.length}
 							columns={columns}
-						/>
+						/>}
 
 						<TableBody>
 							{rows}
 							{emptyRows > 0 && (
 								<TableRow style={{ height: 49 * emptyRows }}>
-									<TableCell colSpan={6} />
+									<TableCell colSpan={columns.length + 1} > {emptyComponent}</TableCell>
 								</TableRow>
 							)}
 						</TableBody>
 					</Table>
 				</div>
-				<TablePagination
+				{emptyRows === 0 && <TablePagination
 					rowsPerPageOptions={[5, 10, 25]}
 					component="div"
 					count={data.length}
@@ -255,7 +255,7 @@ class EnhancedTable extends React.Component {
 					}}
 					onChangePage={handleChangePage}
 					onChangeRowsPerPage={handleChangeRowsPerPage}
-				/>
+				/>}
 			</Paper>
 		);
 	}

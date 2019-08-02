@@ -3,6 +3,11 @@ import { Toolbar } from '@material-ui/core';
 import { ProjectTable } from './project/tables/project.table';
 
 export const Main = (props) => {
+	
+	const onCreateNewProject = () => {
+		props.history.push('project/create')
+	}
+
 	return (
 		<React.Fragment>
 			<Toolbar disableGutters>
@@ -10,7 +15,7 @@ export const Main = (props) => {
 					Virtual Programming Lab Projects
 				</h1>
 			</Toolbar>
-			<ProjectTable/>
+			<ProjectTable onCreateNewProject={onCreateNewProject} />
 		</React.Fragment>
 	)
 }

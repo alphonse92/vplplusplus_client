@@ -12,7 +12,7 @@ export class UserService extends WebService {
 	login(body) {
 		const method = 'POST'
 		const options = { method, body }
-		return super.request(options, null, '/auth')
+		return super.request(options, '/auth')
 	}
 
 	static saveUserLogged(user_data) {
