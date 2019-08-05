@@ -1,5 +1,6 @@
+import qs from 'qs'
 export class WebService {
-	constructor(url,token) {
+	constructor(url, token) {
 		this.API = process.env.REACT_APP_API_BASEURL
 		this.url = `${this.API}/${url}`
 		this.token = token
@@ -7,14 +8,15 @@ export class WebService {
 
 	createHeaders() {
 		const headers = new Headers()
-		const {token} = this
+		const { token } = this
 		headers.append('content-type', 'application/json')
 		if (token) headers.append('Authorization', `Bearer ${token}`)
 		return headers
 	}
 
-	request(customOpts,path = '/') {
-		const url = `${this.url}${path}`
+	request(customOpts, path = '/') {
+		const querySearch = customOpts.qs ? '?' + qs.stringify(customOpts.qs) : ''
+		const url = `${this.url}${path}${querySearch}`
 		const headers = this.createHeaders()
 		const { body } = customOpts
 		if (body)

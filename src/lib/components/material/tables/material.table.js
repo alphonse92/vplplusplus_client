@@ -8,52 +8,13 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-
+import { isEqual } from 'lodash'
 import { EnhancedTableToolbar } from './material.toolbar'
 import { EnhancedTableHead } from './material.table.header'
 import { EnhancedTableFilter } from './material.table.dataFilter'
-class EnhancedTable extends React.Component {
+class EnhancedTable extends React.PureComponent {
 	state = {
-		order: 'asc',
-		orderBy: 'calories',
-		selected: [],
-		page: 0,
-		rowsPerPage: 5,
-		columnNames: [],
-		data: [],
-		dataFiltered: [],
-		showFilterComponent: false
-	};
-
-	componentDidMount() {
-
-		const {
-			data = [],
-			columns = [],
-			showFilterComponent = this.state.showFilterComponent
-		} = this.props
-
-		const dataFiltered = data
-		const extractColumnName = colDef => colDef.attribute
-		const columnNames = columns.map(extractColumnName)
-		const newState = { data, dataFiltered, columnNames, showFilterComponent }
-
-		this.setState(newState)
-	}
-
-	toggleFilter = () => {
-		this.setState({ showFilterComponent: !this.state.showFilterComponent })
-	}
-
-	handleRequestSort = (event, property) => {
-		const orderBy = property;
-		let order = 'desc';
-
-		if (this.state.orderBy === property && this.state.order === 'desc') {
-			order = 'asc';
-		}
-
-		this.setState({ order, orderBy });
+		selected: []
 	};
 
 	handleSelectAllClick = event => {
@@ -83,14 +44,6 @@ class EnhancedTable extends React.Component {
 		}
 
 		this.setState({ selected: newSelected });
-	};
-
-	handleChangePage = (event, page) => {
-		this.setState({ page });
-	};
-
-	handleChangeRowsPerPage = event => {
-		this.setState({ rowsPerPage: event.target.value });
 	};
 
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
@@ -131,43 +84,17 @@ class EnhancedTable extends React.Component {
 		)
 	}
 
-	onFilter = (findFor, filterBy) => {
-
-		const ALL = filterBy.length === 0
-		const { state } = this
-		const { data, columnNames } = state
-
-		if (!findFor.length) return this.setState({ dataFiltered: data })
-
-		const FilterBy = ALL
-			? columnNames
-			: Array.isArray(filterBy)
-				? filterBy
-				: [filterBy]
-
-		const columnReducer =
-			findFor =>
-				row =>
-					(isMatch, attribute) => {
-						const value = row[attribute]
-						const type = typeof value
-						const matchWithValue = type === "number"
-							? value === findFor
-							: value.toLowerCase().indexOf(findFor.toLowerCase()) >= 0
-						return isMatch || matchWithValue
-					}
-		const dataReducer =
-			findFor =>
-				(array, row) => {
-					return FilterBy
-						.reduce(columnReducer(findFor)(row), false)
-						? array.concat([row])
-						: array.concat([])
-				}
-
-		const dataFiltered = data.reduce(dataReducer(findFor), [])
-		this.setState({ dataFiltered })
+	onChangePage = (data, value) => {
+		const { handleChangePage, pagination } = this.props
+		const { page: statePage, limit: stateLimit } = this.state
+		const { page: propsPage, limit: propsLimit, } = pagination
+		console.log({ statePage, stateLimit, propsPage, propsLimit})
+		if (statePage !== propsPage || stateLimit !== propsLimit) {
+			handleChangePage(data, value)
+			this.setState({ page: propsPage, limit: propsLimit })
+		}
 	}
+
 
 	render() {
 
@@ -176,113 +103,88 @@ class EnhancedTable extends React.Component {
 			props,
 			toggleFilter,
 			handleSelectAllClick,
-			handleRequestSort,
-			handleChangePage,
-			handleChangeRowsPerPage
+			onChangePage
 		} = this
 
 		const {
+			pagination = {},
 			title,
 			classes,
 			columns,
 			onRemoveItems,
-			onFilter = this.onFilter,
+			handleRequestSort,
+			handleChangeRowsPerPage,
+			handleChangeFilter: onFilter = this.onFilter,
 		} = props;
-
+		const { limit, page, total, docs: data = [] } = pagination
 		const {
-			dataFiltered: data,
 			order,
 			orderBy,
 			selected,
-			rowsPerPage,
-			page,
 			columnNames,
 			showFilterComponent,
 		} = state;
 
-		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-		const sliceFrom = page * rowsPerPage
-		const sliceTo = page * rowsPerPage + rowsPerPage
 		const emptyComponent = this.props.emptyComponent || <p style={{ width: '100%', textAlign: 'center' }}> No data to shown</p>
-		const rows = stableSort(data, getSorting(order, orderBy))
-			.slice(sliceFrom, sliceTo)
-			.map(this.getRowComponents(columns))
+		const rows = data.map(this.getRowComponents(columns))
 
 		return (
 			<Paper className={classes.root}>
-				{emptyRows === 0 && <EnhancedTableToolbar
-					numSelected={selected.length}
-					title={title}
-					onDeletePressed={() => onRemoveItems(selected)}
-					onFilterPressed={toggleFilter}
-				/>}
-
-				{showFilterComponent && <EnhancedTableFilter onFilter={onFilter} options={columnNames} />}
-
 				<div className={classes.tableWrapper}>
-					<Table className={classes.table} aria-labelledby="tableTitle">
-						{emptyRows === 0 && <EnhancedTableHead
-							numSelected={selected.length}
-							order={order}
-							orderBy={orderBy}
-							onSelectAllClick={handleSelectAllClick}
-							onRequestSort={handleRequestSort}
-							rowCount={data.length}
-							columns={columns}
-						/>}
 
-						<TableBody>
-							{rows}
-							{emptyRows > 0 && (
-								<TableRow style={{ height: 49 * emptyRows }}>
+					{!data.length && (
+						<Table className={classes.table} aria-labelledby="tableTitle">
+							<TableBody>
+								<TableRow style={{ height: '150px' }}>
 									<TableCell colSpan={columns.length + 1} > {emptyComponent}</TableCell>
 								</TableRow>
-							)}
-						</TableBody>
-					</Table>
+							</TableBody>
+						</Table>
+					)}
+
+					{!!data.length && (
+						<React.Fragment>
+							{!!showFilterComponent && <EnhancedTableFilter onFilter={onFilter} options={columnNames} />}
+							<EnhancedTableToolbar
+								numSelected={selected.length}
+								title={title}
+								onDeletePressed={() => onRemoveItems(selected)}
+								onFilterPressed={toggleFilter}
+							/>
+							<Table className={classes.table} aria-labelledby="tableTitle">
+								{!!data.length && <EnhancedTableHead
+									numSelected={selected.length}
+									order={order}
+									orderBy={orderBy}
+									onSelectAllClick={handleSelectAllClick}
+									onRequestSort={handleRequestSort}
+									rowCount={data.length}
+									columns={columns}
+								/>}
+
+								<TableBody>{rows}</TableBody>
+							</Table>
+							<TablePagination
+								rowsPerPageOptions={[5, 10, 25]}
+								component="div"
+								count={total}
+								rowsPerPage={limit}
+								page={page-1}
+								backIconButtonProps={{
+									'aria-label': 'Previous Page',
+								}}
+								nextIconButtonProps={{
+									'aria-label': 'Next Page',
+								}}
+								onChangePage={onChangePage}
+								onChangeRowsPerPage={handleChangeRowsPerPage}
+							/>
+						</React.Fragment>
+					)}
 				</div>
-				{emptyRows === 0 && <TablePagination
-					rowsPerPageOptions={[5, 10, 25]}
-					component="div"
-					count={data.length}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': 'Previous Page',
-					}}
-					nextIconButtonProps={{
-						'aria-label': 'Next Page',
-					}}
-					onChangePage={handleChangePage}
-					onChangeRowsPerPage={handleChangeRowsPerPage}
-				/>}
 			</Paper>
 		);
 	}
-}
-
-function desc(a, b, orderBy) {
-	if (b[orderBy] < a[orderBy]) {
-		return -1;
-	}
-	if (b[orderBy] > a[orderBy]) {
-		return 1;
-	}
-	return 0;
-}
-
-function stableSort(array, cmp) {
-	const stabilizedThis = array.map((el, index) => [el, index]);
-	stabilizedThis.sort((a, b) => {
-		const order = cmp(a[0], b[0]);
-		if (order !== 0) return order;
-		return a[1] - b[1];
-	});
-	return stabilizedThis.map(el => el[0]);
-}
-
-function getSorting(order, orderBy) {
-	return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
 }
 
 const styles = theme => ({
@@ -300,7 +202,7 @@ const styles = theme => ({
 
 EnhancedTable.propTypes = {
 	classes: PropTypes.object.isRequired,
-	data: PropTypes.array.isRequired,
+	pagination: PropTypes.object.isRequired,
 	columns: PropTypes.array.isRequired,
 	title: PropTypes.string,
 };

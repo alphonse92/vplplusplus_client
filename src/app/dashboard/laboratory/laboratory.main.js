@@ -5,7 +5,8 @@ import { ProjectTable } from './project/tables/project.table';
 export const Main = (props) => {
 	
 	const onCreateNewProject = () => {
-		props.history.push('project/create')
+		console.log('redirecting',props)
+		props.history.push('laboratory/project/create')
 	}
 
 	return (

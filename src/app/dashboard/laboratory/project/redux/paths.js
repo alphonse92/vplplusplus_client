@@ -1,18 +1,21 @@
 import { set } from 'lodash'
-import { STATE_DEFAULT } from "./reducer";
 
-const PATHS = [
-	'dialogs.create.show',
-	'dialogs.create.data',
-]
-const PROJECT = { root: 'projects' }
-
-for (let idx in PATHS) {
-	let path = PATHS[idx]
-	set(PROJECT, path, path)
+const PATHS = {
+	'create.show': false,
+	'list.pagination.docs': [],
+	'list.pagination.page': 1,
+	'list.pagination.limit': 25,
+	'list.pagination.total': 0,
 }
 
+const PROJECT = { root: 'projects' }
+const DEFAULTS = {}
+for (let path in PATHS) {
+	set(PROJECT, path, path)
+	set(DEFAULTS, path, PATHS[path])
+}
 
 export {
-	PROJECT
+	PROJECT,
+	DEFAULTS
 }
