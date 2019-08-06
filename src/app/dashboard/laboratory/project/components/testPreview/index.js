@@ -196,14 +196,14 @@ const PreviewContent = props => (
 
 const PreviewButtons = ({ onCreateProject }) => (
 	<Flex horizontal reverse width='100%' >
-		<IconButton onClick={onCreateProject} aria-label="Create Project">
-			<CreateNewFolderIcon />
+		<IconButton onClick={onCreateProject} >
+			<CreateNewFolderIcon aria-label="Create Project" />
 		</IconButton>
 	</Flex>
 )
 
 
-/* <PreviewButtons onCreateProject={onCreateProject} /> */
+
 export const ProjectPreview = ({
 
 	projects,
@@ -271,10 +271,10 @@ export const TestCasePreview = ({
 
 						<TableRow>
 							<TableCell>
-								<a href={test.successMessageLink} target='_blank'>{test.successMessageLink}</a>
+								<a href={test.successMessageLink} rel="noopener noreferrer" target='_blank'>{test.successMessageLink}</a>
 							</TableCell>
 							<TableCell>
-								<a href={test.failureMessageLink} target='_blank'>{test.failureMessageLink}</a>
+								<a href={test.failureMessageLink} rel="noopener noreferrer" target='_blank'>{test.failureMessageLink}</a>
 							</TableCell>
 						</TableRow>
 					</TableBody>

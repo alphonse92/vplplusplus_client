@@ -31,9 +31,6 @@ Actions[LOAD_PROJECTS_NAME] = {
 	}),
 }
 
-
-
-
 const DELETE_PROJECT_NAME = 'DELETE_PROJECT'
 Actions[DELETE_PROJECT_NAME] = {
 	DISPATCHER: (id) => (dispatcher, getStore) => {

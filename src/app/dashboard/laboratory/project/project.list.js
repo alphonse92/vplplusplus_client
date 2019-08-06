@@ -7,7 +7,7 @@ import { get, pick } from 'lodash'
 
 
 import { Flex, Item } from '../../../../lib/components/flex'
-import { ProjectPreview, TestCasePreview } from './components/projectPreview';
+import { ProjectPreview, TestCasePreview } from './components/testPreview';
 import { ProjectFormDialog } from './dialogs/project.create.dialog';
 
 import { ActionCreators } from './redux/actions';

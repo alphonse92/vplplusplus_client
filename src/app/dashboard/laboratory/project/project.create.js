@@ -1,13 +1,29 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles';
-import { Flex } from '../../../..//lib/components/flex'
-import { ProjectPreview } from './components/projectPreview';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Toolbar } from '@material-ui/core';
+import { Flex } from '../../../../lib/components/flex'
+import { ProjectPreview } from './components/testPreview';
+import { ActionCreators } from './redux/actions';
 
 class ProjectCreateComponent extends React.Component {
-	defaultProject = [
+
+	static mapStateToProps = (state) => {
+		const { projects } = state
+		const { create } = projects
+		const { project, tests } = create
+		return { ...project, tests }
+	}
+
+	static mapDispatchToProps = (dispatch) => {
+		const DISPATCHERS = bindActionCreators({ ...ActionCreators }, dispatch)
+		return { DISPATCHERS }
+	}
+
+	defaultTests = [
 		{
 			id: Math.random(),
-			name: 'My first project',
+			name: 'My first Test',
 			tags: ['java', 'types'],
 			description: 'Description of my first project',
 			objective: 'Objective of my first project',
@@ -24,9 +40,9 @@ class ProjectCreateComponent extends React.Component {
 				}
 			]
 		},
-			{
+		{
 			id: Math.random(),
-			name: 'My first project',
+			name: 'My first Test',
 			tags: ['java', 'types'],
 			description: 'Description of my first project',
 			objective: 'Objective of my first project',
@@ -58,7 +74,7 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	saveAllProject = (project) => {
-		this.props.saveProject(project)
+
 	}
 
 	onFinish = () => {
@@ -67,10 +83,11 @@ class ProjectCreateComponent extends React.Component {
 
 	render() {
 		const { props } = this
-		const { classes, projects = this.defaultProject } = props
+		const { projects = this.defaultTests } = props
 
 		return (
 			<React.Fragment>
+				<Toolbar disableGutters><h1>Create new Project</h1></Toolbar>
 				<Flex horizontal width='50%'>
 					<ProjectPreview
 						projects={projects}
@@ -87,17 +104,12 @@ class ProjectCreateComponent extends React.Component {
 	}
 }
 
-const styles = theme => {
-	return ({
-		root: {
-			// width: '100%',
-			// marginTop: theme.spacing.unit * 3,
-		}
-	});
-}
+const ConnectedComponent = connect(
+	ProjectCreateComponent.mapStateToProps,
+	ProjectCreateComponent.mapDispatchToProps
+)(ProjectCreateComponent)
 
-const StyledProjectCreateComponent = withStyles(styles)(ProjectCreateComponent)
-export const ProjectCreate = props => <StyledProjectCreateComponent {...props} />
+export const ProjectCreate = props => <ConnectedComponent {...props} />
 
 
 

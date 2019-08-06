@@ -34,7 +34,7 @@ class ProjectTable extends React.Component {
 	static mapStateToProps = (state) => {
 		const { projects } = state
 		const { list } = projects
-		return list
+		return {...list}
 	}
 
 	static mapDispatchToProps = (dispatch) => {
@@ -68,7 +68,6 @@ class ProjectTable extends React.Component {
 
 	handleChangeFilter = (valueToFind, attributes) => {
 		console.log('setting filter')
-		// this.props.DISPATCHERS.SET_FILTER(valueToFind, attributes)
 	}
 
 	handleSelectItem = async (isSelected, project) => {
@@ -160,7 +159,7 @@ const ConnectedProjectTable = connect(
 	ProjectTable.mapStateToProps,
 	ProjectTable.mapDispatchToProps,
 )(ProjectTable)
-const EnhancedProjectTable = ConnectedProjectTable;
+
 export {
-	EnhancedProjectTable as ProjectTable
+	ConnectedProjectTable as ProjectTable
 }
