@@ -2,6 +2,9 @@ import { set } from 'lodash'
 
 const PATHS = {
 	'create.show': false,
+	'create.project': {},
+	'create.tests': [],
+	'get.project': false,
 	'list.pagination.docs': [],
 	'list.pagination.page': 1,
 	'list.pagination.limit': 25,
