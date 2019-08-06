@@ -123,7 +123,7 @@ class ProjectListComponent extends React.Component {
 		console.log(test)
 		let currentTestCase = this.state.currentTestCase
 		if (!currentTestCase) return this.setState({ currentTestCase: test })
-		if (currentTestCase && currentTestCase.id == test.id) return this.onCloseTestCase()
+		if (currentTestCase && currentTestCase.id === test.id) return this.onCloseTestCase()
 		return this.setState({ currentTestCase: test })
 	}
 

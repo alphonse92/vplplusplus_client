@@ -1,13 +1,4 @@
-import {
-	get
-	, set
-	, isUndefined
-} from 'lodash'
 import { extractActionCreators, requestDispatcher, createRequestActions } from '../../../../../lib'
-
-import {
-	PROJECT as PROJECT_PATHS
-} from './paths';
 import { ProjectService } from '../../../../../services/project';
 
 const Service = new ProjectService()
@@ -21,8 +12,10 @@ Actions[LOAD_PROJECTS_NAME] = {
 		const { projects } = store
 		const { list } = projects
 		const { pagination } = list
-		const { page, limit, sort } = pagination
+		const { page, limit, sort: _sort = '' } = pagination
+		const sort = !_sort.length ? 'createdAt' : _sort
 		const actions = Actions[LOAD_PROJECTS_NAME].ACTIONS
+		console.log('getting projects')
 		const getRequest = () => Service.getProjects(page, limit, sort)
 		requestDispatcher(dispatcher, actions, getRequest)
 	},
@@ -39,7 +32,23 @@ Actions[LOAD_PROJECTS_NAME] = {
 	}),
 
 }
+const SET_ORDER_NAME = 'SET_ORDER'
+Actions[SET_ORDER_NAME] = {
+	DISPATCHER: (sort) => (dispatcher, getStore) => {
+		dispatcher({ type: Actions[SET_ORDER_NAME].ACTIONS.default.name, payload: sort })
+	},
+	ACTIONS: {
+		default: {
+			name: SET_ORDER_NAME,
+			reducer: (state, action) => {
+				const newState = { ...state }
+				newState.list.pagination.sort = action.payload
+				return newState
+			}
+		}
+	},
 
+}
 const SET_LIMIT_NAME = 'SET_LIMIT'
 Actions[SET_LIMIT_NAME] = {
 	DISPATCHER: (limit) => (dispatcher, getStore) => {

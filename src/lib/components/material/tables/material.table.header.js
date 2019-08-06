@@ -20,11 +20,11 @@ export class EnhancedTableHead extends React.Component {
 			<TableHead>
 				<TableRow>
 					<TableCell padding="checkbox">
-						<Checkbox
+						{typeof numSelected === "number" && <Checkbox
 							indeterminate={numSelected > 0 && numSelected < rowCount}
 							checked={numSelected === rowCount}
 							onChange={onSelectAllClick}
-						/>
+						/>}
 					</TableCell>
 					{this.props.columns.map(
 						row => (
