@@ -19,19 +19,18 @@ const styles = theme => ({
 	},
 })
 
-const columns = [
-	{ attribute: '_id', key: '_id', numeric: false, disablePadding: false, label: 'Id' },
-	{ attribute: 'name', key: 'name', numeric: false, disablePadding: true, label: 'Name' },
-	{ attribute: 'description', key: 'description', numeric: false, disablePadding: false, label: 'Description' },
-	{ attribute: 'is_public', key: 'is_public', numeric: false, disablePadding: false, label: 'Public' },
-	{ attribute: 'activity', key: 'activity', numeric: true, disablePadding: false, label: 'Activity' },
-	{ attribute: 'createdAt', key: 'createdAt', numeric: false, disablePadding: false, label: 'Created at' },
-]
-
-
-
 class ProjectTable extends React.Component {
+	static columns = [
 
+		{ attribute: 'name', key: 'name', numeric: false, disablePadding: true, label: 'Name' },
+		{ attribute: 'description', key: 'description', numeric: false, disablePadding: false, label: 'Description' },
+		{ attribute: 'is_public', key: 'is_public', numeric: false, disablePadding: false, label: 'Public' },
+		{ attribute: 'activity', key: 'activity', numeric: true, disablePadding: false, label: 'Activity' },
+		{ attribute: 'metadata.tests', key: 'tests', numeric: true, disablePadding: false, label: 'Tests' },
+		{ attribute: 'metadata.cases', key: 'cases', numeric: true, disablePadding: false, label: 'Cases' },
+		{ attribute: 'metadata.submissions', key: 'submissions', numeric: true, disablePadding: false, label: 'Submisions' },
+
+	]
 	static mapStateToProps = (state) => {
 		const { projects } = state
 		const { list } = projects
@@ -47,16 +46,9 @@ class ProjectTable extends React.Component {
 		this.props.DISPATCHERS.LOAD_PROJECTS()
 	}
 
-	onDelete = (idsToDelete) => {
-		return console.log(idsToDelete)
-	}
-
-	onSelectItem = (item) => {
-		console.log(item)
-	}
-
-	onRemoveItems = (item) => {
-		console.log(item)
+	onDelete = () => {
+		const { _id } = this.selected_project
+		this.props.DISPATCHERS.DELETE_PROJECT(_id)
 	}
 
 	handleRequestSort = (data, value) => {
@@ -65,13 +57,11 @@ class ProjectTable extends React.Component {
 	}
 
 	handleChangePage = (data, value) => {
-		console.log('changing page')
 		this.props.DISPATCHERS.SET_PAGE(value + 1)
 		this.props.DISPATCHERS.LOAD_PROJECTS()
 	}
 
 	handleChangeRowsPerPage = (data, value) => {
-		console.log('handle change limit')
 		this.props.DISPATCHERS.SET_LIMIT(+value.key)
 		this.handleChangePage(data, 0)
 	}
@@ -82,7 +72,11 @@ class ProjectTable extends React.Component {
 	}
 
 	handleSelectItem = async (isSelected, project) => {
-		if (isSelected) return []
+		if (isSelected) {
+			delete this.selected_project
+			return []
+		}
+		this.selected_project = project
 		return [project._id]
 	}
 	handleSelectAllItems = async (selectedItems, projects) => {
@@ -93,10 +87,9 @@ class ProjectTable extends React.Component {
 	render() {
 
 		const showFilterComponent = false
-
+		const { columns } = ProjectTable
 		const {
 			onSelectItem,
-			onRemoveItems,
 			props,
 			handleRequestSort,
 			handleChangePage,
@@ -118,6 +111,22 @@ class ProjectTable extends React.Component {
 			{ key: 0, label: 'Filter Data', icon: <FilterListIcon />, onClick: this.handleChangeFilter },
 			{ key: 1, label: 'Create new Project', icon: <AddIcon />, onClick: onCreateNewProject },
 		]
+
+		pagination.docs = pagination.docs.reduce((array, doc) => {
+			const { tests } = doc
+			const metadata = { tests: 0, cases: 0, submissions: 0 }
+			const description = doc.description.substring(0, 45) + '...'
+			tests.forEach(test => {
+				metadata.tests++
+				test.test_cases.forEach(test_case => {
+					metadata.cases++
+					test_case.summaries.forEach(summary => metadata.submissions++)
+				})
+			})
+			array.push({ ...doc, description, metadata })
+			return array
+		}, [])
+
 		const emptyComponent = (
 			<div style={{ textAlign: 'center', width: '100%' }}>
 				<p>No projects to shown.</p>
@@ -138,12 +147,12 @@ class ProjectTable extends React.Component {
 			handleChangePage,
 			handleChangeRowsPerPage,
 			handleChangeFilter,
-			onRemoveItems,
 			buttonsWhenNotSelected,
 			buttonsWhenSelected
 		}
 
 		return <MaterialTable {...propsTable} title="Projects" />
+		
 	}
 }
 

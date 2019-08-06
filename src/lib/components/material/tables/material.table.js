@@ -11,7 +11,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { EnhancedTableToolbar } from './material.toolbar'
 import { EnhancedTableHead } from './material.table.header'
 import { EnhancedTableFilter } from './material.table.dataFilter'
-
+import { get } from 'lodash'
 class EnhancedTable extends React.PureComponent {
 
 	state = {
@@ -40,7 +40,7 @@ class EnhancedTable extends React.PureComponent {
 					const colDef = columns[colName]
 					const { attribute, numeric } = colDef
 					const align = numeric ? "right" : 'left'
-					const rowValue = row[attribute]
+					const rowValue = get(row, attribute)
 					const key = `${colDef.attribute}-${index}`
 					const props = { align, key }
 					const value = typeof rowValue !== undefined
@@ -72,21 +72,26 @@ class EnhancedTable extends React.PureComponent {
 
 	onChangePage = (data, value) => {
 		const { handleChangePage, pagination } = this.props
-		const { page: statePage, limit: stateLimit, } = this.state
+		const { page: statePage, limit: stateLimit, selected } = this.state
 		const { page: propsPage, limit: propsLimit, } = pagination
-		console.log({ statePage, propsPage, stateLimit, propsLimit })
-		if (statePage !== propsPage || stateLimit !== propsLimit) {
+		if (!selected.length && (statePage !== propsPage || stateLimit !== propsLimit)) {
 			handleChangePage(data, value)
 			this.setState({ page: propsPage, limit: propsLimit })
 		}
 	}
 
+	handleChangeRowsPerPage = (data, value) => {
+		const { selected } = this.state
+		console.log(selected)
+		if (!selected.length) this.props.handleChangeRowsPerPage(data, value)
+	}
 	render() {
 
 		const {
 			state,
 			props,
 			handleSelectAllItems,
+			handleChangeRowsPerPage,
 			onChangePage
 		} = this
 
@@ -97,7 +102,7 @@ class EnhancedTable extends React.PureComponent {
 			classes,
 			columns,
 			handleRequestSort,
-			handleChangeRowsPerPage,
+
 			handleChangeFilter: onFilter = this.onFilter,
 			buttonsWhenSelected,
 			buttonsWhenNotSelected,
@@ -154,9 +159,11 @@ class EnhancedTable extends React.PureComponent {
 									rowsPerPage={limit}
 									page={page - 1}
 									backIconButtonProps={{
+										disabled: this.state.selected.length,
 										'aria-label': 'Previous Page',
 									}}
 									nextIconButtonProps={{
+										disabled: this.state.selected.length,
 										'aria-label': 'Next Page',
 									}}
 									onChangePage={onChangePage}

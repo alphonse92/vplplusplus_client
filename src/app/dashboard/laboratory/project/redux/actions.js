@@ -15,7 +15,6 @@ Actions[LOAD_PROJECTS_NAME] = {
 		const { page, limit, sort: _sort = '' } = pagination
 		const sort = !_sort.length ? 'createdAt' : _sort
 		const actions = Actions[LOAD_PROJECTS_NAME].ACTIONS
-		console.log('getting projects')
 		const getRequest = () => Service.getProjects(page, limit, sort)
 		requestDispatcher(dispatcher, actions, getRequest)
 	},
@@ -32,6 +31,29 @@ Actions[LOAD_PROJECTS_NAME] = {
 	}),
 
 }
+
+const DELETE_PROJECT_NAME = 'DELETE_PROJECT'
+Actions[DELETE_PROJECT_NAME] = {
+	DISPATCHER: (id) => (dispatcher, getStore) => {
+		const actions = Actions[DELETE_PROJECT_NAME].ACTIONS
+		const getRequest = () => Service.deleteProject(id)
+		requestDispatcher(dispatcher, actions, getRequest)
+	},
+	ACTIONS: createRequestActions(DELETE_PROJECT_NAME, {
+		// SET_USER_LOGGED will handle the state.user data
+		fullfilled: (state, action) => {
+			const newState = { ...state }
+			newState.list.pagination = action.payload
+			return newState
+		},
+		rejected: (state, action) => {
+			return state
+		}
+	}),
+
+}
+
+
 const SET_ORDER_NAME = 'SET_ORDER'
 Actions[SET_ORDER_NAME] = {
 	DISPATCHER: (sort) => (dispatcher, getStore) => {
