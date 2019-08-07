@@ -29,6 +29,4 @@ export class ProjectService extends WebService {
     }
     return super.request(options, `/${id}/`)
   }
-
-
 }

@@ -1,7 +1,11 @@
 import { extractActionCreators, requestDispatcher, createRequestActions } from '../../../../../lib'
-import { ProjectService } from '../../../../../services/project';
+import { ProjectService as ProjectServiceClass } from '../../../../../services/project';
+import { CourseService as CourseServiceClass } from '../../../../../services/course';
+import { TopicService as TopicServiceClass } from '../../../../../services/topic';
 
-const Service = new ProjectService()
+const ProjectService = new ProjectServiceClass()
+const CourseService = new CourseServiceClass()
+const TopicService = new TopicServiceClass()
 
 const Actions = {}
 
@@ -15,7 +19,7 @@ Actions[LOAD_PROJECTS_NAME] = {
 		const { page, limit, sort: _sort = '' } = pagination
 		const sort = !_sort.length ? 'createdAt' : _sort
 		const actions = Actions[LOAD_PROJECTS_NAME].ACTIONS
-		const getRequest = () => Service.getProjects(page, limit, sort)
+		const getRequest = () => ProjectService.getProjects(page, limit, sort)
 		requestDispatcher(dispatcher, actions, getRequest)
 	},
 	ACTIONS: createRequestActions(LOAD_PROJECTS_NAME, {
@@ -31,11 +35,51 @@ Actions[LOAD_PROJECTS_NAME] = {
 	}),
 }
 
+const GET_MOODLE_ACTIVITIES_NAME = 'GET_MOODLE_ACTIVITIES'
+Actions[GET_MOODLE_ACTIVITIES_NAME] = {
+	DISPATCHER: () => (dispatcher, getStore) => {
+		const actions = Actions[GET_MOODLE_ACTIVITIES_NAME].ACTIONS
+		const getRequest = () => CourseService.getMoodleActivities()
+		requestDispatcher(dispatcher, actions, getRequest)
+	},
+	ACTIONS: createRequestActions(GET_MOODLE_ACTIVITIES_NAME, {
+		// SET_USER_LOGGED will handle the state.user data
+		fullfilled: (state, action) => {
+			const newState = { ...state }
+			newState.course.activities = action.payload
+			return newState
+		},
+		rejected: (state, action) => {
+			return { ...state }
+		}
+	}),
+}
+
+const GET_TOPICS_NAME = 'GET_TOPICS'
+Actions[GET_TOPICS_NAME] = {
+	DISPATCHER: (description) => (dispatcher, getStore) => {
+		const actions = Actions[GET_TOPICS_NAME].ACTIONS
+		const getRequest = () => TopicService.find(description)
+		requestDispatcher(dispatcher, actions, getRequest)
+	},
+	ACTIONS: createRequestActions(GET_TOPICS_NAME, {
+		// SET_USER_LOGGED will handle the state.user data
+		fullfilled: (state, action) => {
+			const newState = { ...state }
+			newState.topics.list.pagination = action.payload
+			return newState
+		},
+		rejected: (state, action) => {
+			return { ...state }
+		}
+	}),
+}
+
 const DELETE_PROJECT_NAME = 'DELETE_PROJECT'
 Actions[DELETE_PROJECT_NAME] = {
 	DISPATCHER: (id) => (dispatcher, getStore) => {
 		const actions = Actions[DELETE_PROJECT_NAME].ACTIONS
-		const getRequest = () => Service.deleteProject(id)
+		const getRequest = () => ProjectService.deleteProject(id)
 		requestDispatcher(dispatcher, actions, getRequest)
 	},
 	ACTIONS: createRequestActions(DELETE_PROJECT_NAME, {

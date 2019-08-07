@@ -62,7 +62,8 @@ class ProjectCreateComponent extends React.Component {
 	]
 
 	componentDidMount() {
-
+		this.props.DISPATCHERS.GET_MOODLE_ACTIVITIES()
+		this.props.DISPATCHERS.GET_TOPICS()
 	}
 
 	createProject = () => {
@@ -87,17 +88,19 @@ class ProjectCreateComponent extends React.Component {
 
 		return (
 			<React.Fragment>
-				<Toolbar disableGutters><h1>Create new Project</h1></Toolbar>
+				<Toolbar disableGutters><h1>New Project</h1></Toolbar>
 				<Flex horizontal width='50%'>
 					<ProjectPreview
 						projects={projects}
 						onSelectProject={this.onSelectProject}
 						onCreateProject={this.onCreateProject}
-
 						onCreateTest={this.onCreateTest}
 						onSelectTest={this.onSelectTest}
 						onFinish={this.onFinish}
 					/>
+				</Flex>
+				<Flex horizontal width='50%'>
+
 				</Flex>
 			</React.Fragment>
 		)
