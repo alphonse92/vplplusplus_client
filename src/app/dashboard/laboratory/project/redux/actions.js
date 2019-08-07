@@ -45,7 +45,7 @@ Actions[GET_MOODLE_ACTIVITIES_NAME] = {
 	ACTIONS: createRequestActions(GET_MOODLE_ACTIVITIES_NAME, {
 		// SET_USER_LOGGED will handle the state.user data
 		fullfilled: (state, action) => {
-			console.log('action',action)
+			console.log('action', action)
 			const newState = { ...state }
 			newState.course.activities = action.payload
 			return newState
@@ -163,7 +163,7 @@ Actions[CREATE_MODIFY_CURRENT_PROJECT_NAME] = {
 			name: CREATE_MODIFY_CURRENT_PROJECT_NAME,
 			reducer: (state, action) => {
 				const newState = { ...state }
-				newState.create.project = {...action.payload}
+				newState.create.project = { ...action.payload }
 				return newState
 			}
 		}
@@ -199,7 +199,7 @@ Actions[DELETE_TEST_FROM_CURRENT_PROJECT_NAME] = {
 				const { index, test } = action.payload
 				const newState = { ...state }
 				const { create } = newState
-				create.tests = create.tests.filter((test, idx) => idx !== index)
+				create.tests = create.tests.filter(({ idx }) => idx !== index)
 				return { ...newState, create }
 			}
 		}

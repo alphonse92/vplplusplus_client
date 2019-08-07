@@ -19,9 +19,7 @@ export class CodeEditor extends React.Component {
 	state = {
 		code: CODE_DEFAULT
 	}
-	constructor(props) {
-		super(props);
-	}
+	
 	componentDidMount() {
 		if (this.state.code !== this.props.code)
 			return this.setState({ code: this.props.code })

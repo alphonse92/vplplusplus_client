@@ -18,13 +18,10 @@ import {
 	, TableBody
 	, TableRow
 	, TableCell
-	, Button
-
 } from '@material-ui/core';
 
 import {
 	Edit as EditIcon,
-	Save as SaveIcon,
 	Delete as DeleteIcon,
 
 	Close as CloseIcon,

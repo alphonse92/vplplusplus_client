@@ -10,15 +10,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-const styles = theme => ({
-	button: {
-		margin: theme.spacing.unit,
-	},
-	input: {
-		display: 'none',
-	},
-})
-
 class ProjectTable extends React.Component {
 	static columns = [
 

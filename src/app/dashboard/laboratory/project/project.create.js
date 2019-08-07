@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Toolbar } from '@material-ui/core';
 import { Flex } from '../../../../lib/components/flex'
-import { ProjectPreview, PreviewButtons } from './components/testPreview';
+import { ProjectPreview } from './components/testPreview';
 import { ActionCreators } from './redux/actions';
 import { InputDialog } from '../../../../lib/components/material/modals/input/';
 import { get } from 'lodash'

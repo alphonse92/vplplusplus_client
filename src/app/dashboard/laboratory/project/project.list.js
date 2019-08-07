@@ -2,10 +2,6 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { get, pick } from 'lodash'
-
-
-
-
 import { Flex, Item } from '../../../../lib/components/flex'
 import { ProjectPreview, TestCasePreview } from './components/testPreview';
 import { ProjectFormDialog } from './dialogs/project.create.dialog';
@@ -142,10 +138,9 @@ class ProjectListComponent extends React.Component {
 	render() {
 		const {
 			props,
-			state,
+
 			// project actions
 			showProjectModal,
-			onCreateProject,
 			onDeleteProject,
 			onEditProject,
 			// test cases action 
@@ -190,13 +185,6 @@ class ProjectListComponent extends React.Component {
 		)
 	}
 }
-
-const styles = theme => {
-	return ({
-		root: {}
-	});
-}
-
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
 	pick(
