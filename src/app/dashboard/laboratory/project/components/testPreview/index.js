@@ -103,10 +103,10 @@ const ProjectDescriptionCard =
 					</Collapse>
 				</CardContent>
 				<CardActions>
-					<IconButton onClick={onEditProject} aria-label="Edit Project">
+					<IconButton onClick={onDeleteProject} aria-label="Edit Project">
 						<DeleteIcon />
 					</IconButton>
-					<IconButton onClick={onDeleteProject} aria-label="Delete Project">
+					<IconButton onClick={onEditProject} aria-label="Delete Project">
 						<EditIcon />
 					</IconButton>
 					<IconButton onClick={onCreateTestCase}>
@@ -166,35 +166,42 @@ class Project extends React.Component {
 const extractTestComponents =
 	onSelectTestCase =>
 		onDeleteTestCase =>
-			test => <ProjectPreviewTestItem key={test.id} onSelectTestCase={onSelectTestCase} onDeleteTestCase={onDeleteTestCase} test={test} />
+			(test, index) => <ProjectPreviewTestItem key={index} onSelectTestCase={onSelectTestCase} onDeleteTestCase={onDeleteTestCase} test={test} />
 
 const ProjectPreviewTests = ({ project, onSelectTestCase, onDeleteTestCase }) => (
 	<TestsWrapper>
-		{project.tests.map(extractTestComponents(onSelectTestCase)(onDeleteTestCase))}
+
+		{project.test_cases.map(extractTestComponents(onSelectTestCase)(onDeleteTestCase))}
 	</TestsWrapper>
 )
 
 
 const extractProjectComponent =
 	actions =>
-		project =>
+		(project, index) =>
 			(
-				<Paper>
+				<Paper key={index}>
 					<Project
-						key={project.id}
 						project={project}
 						{...actions}
+						onDeleteProject={() => {
+							actions.onDeleteProject(index, project)
+						}}
 					/>
 				</Paper>
 			)
 
-const PreviewContent = props => (
-	<ProjectsWrapper>
-		{props.projects.map(extractProjectComponent(props))}
-	</ProjectsWrapper>
-)
+const PreviewContent = props => {
+	const { onCreateProject, ...rest } = props
+	return (
+		<ProjectsWrapper>
+			{props.projects.map(extractProjectComponent(rest))}
+			<div onClick={onCreateProject} className="shadowBtn"><i className="fa fa-plus " />Create Test </div>
+		</ProjectsWrapper>
+	)
+}
 
-const PreviewButtons = ({ onCreateProject }) => (
+export const PreviewButtons = ({ onCreateProject }) => (
 	<Flex horizontal reverse width='100%' >
 		<IconButton onClick={onCreateProject} >
 			<CreateNewFolderIcon aria-label="Create Project" />
@@ -206,9 +213,11 @@ const PreviewButtons = ({ onCreateProject }) => (
 
 export const ProjectPreview = ({
 
-	projects,
+	tests,
+	onDeleteTest,
+	onCreateTest,
+	onEditTest,
 
-	onCreateProject,
 	onEditProject,
 	onDeleteProject,
 
@@ -218,18 +227,18 @@ export const ProjectPreview = ({
 
 }) => (
 		<PreviewWrapper>
-			<PreviewButtons onCreateProject={onCreateProject} />
-			<PreviewContent
 
-				onCreateProject={onCreateProject}
-				onDeleteProject={onDeleteProject}
-				onEditProject={onEditProject}
+			<PreviewContent
+				projects={tests}
+				onCreateProject={onCreateTest}
+				onDeleteProject={onDeleteTest}
+				onEditProject={onEditTest}
 
 				onSelectTestCase={onSelectTestCase}
 				onCreateTestCase={onCreateTestCase}
 				onDeleteTestCase={onDeleteTestCase}
 
-				projects={projects} />
+			/>
 		</PreviewWrapper>
 	)
 

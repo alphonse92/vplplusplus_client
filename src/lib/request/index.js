@@ -23,8 +23,7 @@ function dispatchInitActions(dispatch, action) {
 function dispatchRequesSuccess(dispatch, { data }, action, opts = {}) {
 	const { fullfilled } = action
 	const formattedData = opts.format ? opts.format(data) : data
-	const payload = { ...formattedData, ...opts }
-	dispatch({ type: fullfilled.name, payload, })
+	dispatch({ type: fullfilled.name, payload: formattedData, })
 }
 
 function dispatchErrors(dispatch, error, action) {

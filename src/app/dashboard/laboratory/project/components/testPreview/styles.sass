@@ -1,17 +1,35 @@
 @import '../../../../../theme.sass'
 $MarginUnit: 11px
+
+.edit-icon-inline
+	color: #b9b9b9 !important
+	cursor: pointer !important
+	font-size: 13px !important
+	margin-left: 15px
+	i 
+		font-size: 13px !important
+	&:hover
+		color: #737373 !important
+
+
 .previewProjects
+	width: 100%
 	.projects
-
-		// .description,.objective
-		// 	font-style: italic
-
-		// .name
-		// 		font-family: 'Raleway', sans-serif
-		// 		font-weight: bold
-		// 		text-transform: uppercase
-
+		width: 100%
+		.shadowBtn
+			text-align: center
+			border: 3px dashed
+			padding: 15px
+			border-color: #b9b9b9
+			cursor: pointer
+			color: #b9b9b9
+			&:hover
+				-webkit-transition: 0.3s
+				transition: 0.3s
+				border-color: #737373
+				color: #737373
 		.project
+			width: 100%
 			margin-bottom: $MarginUnit
 			// .name 
 			// 	font-size: 17px
