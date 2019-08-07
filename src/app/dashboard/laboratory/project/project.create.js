@@ -16,7 +16,7 @@ class ProjectCreateComponent extends React.Component {
 		project: {
 			name: "New Project",
 			description: "Description of the new project",
-			activity: 'No activity selected'
+			activity: 'No Vpl activity selected'
 		},
 		modals: {
 			projectName: 'projectName',
