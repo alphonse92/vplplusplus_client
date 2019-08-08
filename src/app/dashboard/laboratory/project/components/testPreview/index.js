@@ -70,7 +70,7 @@ const ProjectPreviewTestItem = ({ onSelectTestCase, onDeleteTestCase, test }) =>
 const ProjectDescriptionCard =
 	({
 		onToggle,
-		isOpen = false,
+		isOpen = true,
 		onEditProject,
 		onCreateTestCase,
 		onDeleteProject,
@@ -116,8 +116,8 @@ const ProjectDescriptionCard =
 class Project extends React.Component {
 	state = {
 		open: {
-			project: false,
-			description: false
+			project: true,
+			description: true
 		}
 	}
 	handleClose = window => () => this.setState({ open: Object.assign(this.state.open, { [window]: !this.state.open[window] }) })
