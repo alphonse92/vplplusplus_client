@@ -1,3 +1,4 @@
+import { get, set } from 'lodash'
 import { extractActionCreators, requestDispatcher, createRequestActions } from '../../../../../lib'
 import { ProjectService as ProjectServiceClass } from '../../../../../services/project';
 import { CourseService as CourseServiceClass } from '../../../../../services/course';
@@ -152,6 +153,24 @@ Actions[SET_PAGE_NAME] = {
 
 // actions to handle the project editor state
 
+const EDIT_PROJECT_DATA_NAME = 'EDIT_PROJECT_DATA'
+Actions[EDIT_PROJECT_DATA_NAME] = {
+	DISPATCHER: (payload) => (dispatcher, getStore) => {
+		dispatcher({ type: Actions[EDIT_PROJECT_DATA_NAME].ACTIONS.default.name, payload })
+	},
+	ACTIONS: {
+		default: {
+			name: EDIT_PROJECT_DATA_NAME,
+			reducer: (state, action) => {
+				const newState = { ...state }
+				newState.create = { ...action.payload }
+				return newState
+			}
+		}
+	},
+}
+
+
 const CREATE_MODIFY_CURRENT_PROJECT_NAME = 'CREATE_MODIFY_CURRENT_PROJECT'
 Actions[CREATE_MODIFY_CURRENT_PROJECT_NAME] = {
 	DISPATCHER: (payload) => (dispatcher, getStore) => {
@@ -200,9 +219,9 @@ Actions[DELETE_TEST_FROM_CURRENT_PROJECT_NAME] = {
 				const { create } = newState
 				// eslint-disable no-unused-vars 
 				create.tests = create.tests.filter((test, idx) => idx !== index)
-		return { ...newState, create }
-	}
-}
+				return { ...newState, create }
+			}
+		}
 	},
 }
 

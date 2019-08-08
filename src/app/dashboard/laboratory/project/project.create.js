@@ -6,7 +6,7 @@ import { Flex } from '../../../../lib/components/flex'
 import { ProjectPreview } from './components/testPreview';
 import { ActionCreators } from './redux/actions';
 import { InputDialog } from '../../../../lib/components/material/modals/input/';
-import { get } from 'lodash'
+import { get, set } from 'lodash'
 import { SelectDialog } from '../../../../lib/components/material/modals/select';
 import { EditIcon } from '../../../../lib/components/material/EditIcon';
 class ProjectCreateComponent extends React.Component {
@@ -20,9 +20,20 @@ class ProjectCreateComponent extends React.Component {
 			activity: 'No Vpl activity selected'
 		},
 		modals: {
-			projectName: 'projectName',
-			projectDescription: 'projectDescription',
-			projectActivity: 'projectActivity'
+			project: {
+				name: {
+					title: "Project Title",
+					text: "Please set the project title. A project contains a set of tests to be executed",
+				},
+				description: {
+					title: "Project Description",
+					text: "The project description define the goal of this set of Tests.",
+				},
+				activity: {
+					title: "Select Vpl Activity",
+					description: "Select Vpl Activity"
+				}
+			}
 		}
 	}
 	static mapStateToProps = (state) => {
@@ -84,16 +95,26 @@ class ProjectCreateComponent extends React.Component {
 		this.props.DISPATCHERS.DELETE_TEST_FROM_CURRENT_PROJECT(index, test)
 	}
 
-	setModalOpen = (currentModal) => {
-		this.setState({ currentModal })
-	}
-	closeModal = () => {
-		this.setState({ currentModal: 'ANY' })
+	setModalOpen = (pathToObjectInProps) => {
+		this.setState({
+			modal: {
+				path: pathToObjectInProps,
+				...get(ProjectCreateComponent.DEFAULTS.modals, pathToObjectInProps),
+			}
+		})
 	}
 
-	setProjectAttribute = (attribute, value) => {
-		const project = { ...this.props.project, [attribute]: value }
-		this.props.DISPATCHERS.CREATE_MODIFY_CURRENT_PROJECT(project)
+	closeModal = () => {
+		this.setState({ modal: null })
+	}
+
+	setValue = (value) => {
+		const { path } = this.state.modal
+		const { project, tests } = this.props
+		const data = { project, tests }
+
+		set(data, path, value)
+		this.props.DISPATCHERS.EDIT_PROJECT_DATA(data)
 		this.closeModal()
 	}
 
@@ -102,68 +123,71 @@ class ProjectCreateComponent extends React.Component {
 		else this.closeModal()
 	}
 
-	openEditTestModal = (attributeName) => {
-
-	}
-
 	render() {
-		const { props } = this
+		const { props, state } = this
+		const { modal } = state
 		const { tests = [], project } = props
 
-		const Title = () => (
-			<Toolbar disableGutters>
-				<h1>
-					{
-						get(project, 'name', ProjectCreateComponent.DEFAULTS.project.name)
-					}
-					<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.projectName)} />
-				</h1>
-			</Toolbar>
-		)
-		const Description = () => (
-			<p className="description">
-				{get(project, 'description', ProjectCreateComponent.DEFAULTS.project.description)}
-				<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.projectDescription)} />
-			</p>
-		)
+		const showModal = !!modal
+
+
+		const Title = () => {
+			const path = 'project.name'
+			return (
+				<Toolbar disableGutters>
+					<h1>
+						{get(this.props, path, ProjectCreateComponent.DEFAULTS.project.name)}
+						<EditIcon onClick={() => this.setModalOpen(path)} />
+					</h1>
+				</Toolbar>
+			)
+		}
+		const Description = () => {
+			const path = 'project.description'
+			return (
+				<p className="description">
+					{get(this.props, path, ProjectCreateComponent.DEFAULTS.project.description)}
+					<EditIcon onClick={() => this.setModalOpen(path)} />
+				</p>
+
+			)
+		}
 		const Activity = () => {
+			const path = 'project.activity'
 			const { activity: activity_id } = project
 			const isActivitySelecteed = !!activity_id
 			const label = isActivitySelecteed
 				? this.props.activities.find(({ course_module_id }) => course_module_id === activity_id).name
 				: ProjectCreateComponent.DEFAULTS.project.activity
 			return (
-				<p className="description">
+				<p className="activity">
 					{label}
-					<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.projectActivity)} />
+					<EditIcon onClick={() => this.setModalOpen(path)} />
 				</p>
 			)
 		}
 
+
+
+
 		return (
 			<React.Fragment>
-				<InputDialog
-					handleClose={({ ok, value }) => ok ? this.setProjectAttribute('name', value) : this.closeModal()}
-					open={this.state.currentModal === ProjectCreateComponent.DEFAULTS.modals.projectName}
-					title="Project Title" text="Please set the project title. A project contains a set of tests to be executed" />
-				<InputDialog
-					handleClose={({ ok, value }) => ok ? this.setProjectAttribute('description', value) : this.closeModal()}
-					open={this.state.currentModal === ProjectCreateComponent.DEFAULTS.modals.projectDescription}
-					title="Project descripton" text="The project description is" />
-				
-				<InputDialog
-					handleClose={({ ok, value }) => ok ? this.setTestAttribute('description', value) : this.closeModal()}
-					open={this.state.currentModal === ProjectCreateComponent.DEFAULTS.modals.projectDescription}
-					title="Project descripton" text="The project description is" />
 
-				<SelectDialog
-					open={this.state.currentModal === ProjectCreateComponent.DEFAULTS.modals.projectActivity}
-					title="Select Vpl Activity"
+				{showModal && <InputDialog
+					handleClose={({ ok, value }) => ok ? this.setValue(value) : this.closeModal()}
+					open={showModal}
+					title={modal.title}
+					text={modal.text} />}
+
+				{showModal && <SelectDialog
+					open={modal.path === 'project.activity'}
+					title={modal.title}
+					text={modal.text}
 					optionsKey="course_module_id"
-					onClose={this.setMoodleActivity}
+					onClose={({ ok, value }) => ok ? this.setValue(Number(value)) : this.closeModal()}
 					getLabel={option => option.name}
 					getValue={option => option.course_module_id}
-					options={this.props.activities} />
+					options={this.props.activities} />}
 				<Title />
 				<Description />
 				<Activity />
