@@ -108,7 +108,7 @@ class ProjectCreateComponent extends React.Component {
 		this.setState({ modal: null })
 	}
 
-	setValue = (value) => {
+	setValueFromModal = (value) => {
 		const { path } = this.state.modal
 		const { project, tests } = this.props
 		const data = { project, tests }
@@ -174,7 +174,7 @@ class ProjectCreateComponent extends React.Component {
 			<React.Fragment>
 
 				{showModal && <InputDialog
-					handleClose={({ ok, value }) => ok ? this.setValue(value) : this.closeModal()}
+					handleClose={({ ok, value }) => ok ? this.setValueFromModal(value) : this.closeModal()}
 					open={showModal}
 					title={modal.title}
 					text={modal.text} />}
@@ -184,7 +184,7 @@ class ProjectCreateComponent extends React.Component {
 					title={modal.title}
 					text={modal.text}
 					optionsKey="course_module_id"
-					onClose={({ ok, value }) => ok ? this.setValue(Number(value)) : this.closeModal()}
+					onClose={({ ok, value }) => ok ? this.setValueFromModal(Number(value)) : this.closeModal()}
 					getLabel={option => option.name}
 					getValue={option => option.course_module_id}
 					options={this.props.activities} />}
