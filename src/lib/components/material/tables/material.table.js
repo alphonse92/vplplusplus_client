@@ -82,7 +82,6 @@ class EnhancedTable extends React.PureComponent {
 
 	handleChangeRowsPerPage = (data, value) => {
 		const { selected } = this.state
-		console.log(selected)
 		if (!selected.length) this.props.handleChangeRowsPerPage(data, value)
 	}
 	render() {

@@ -95,7 +95,6 @@ class ProjectListComponent extends React.Component {
 
 	// Project events
 	onCreateProject = (project) => {
-		console.log("on Project create", project)
 		this.toggleDialog('project', false)
 	}
 
@@ -116,7 +115,6 @@ class ProjectListComponent extends React.Component {
 
 	onCloseTestCase = () => this.setState({ currentTestCase: undefined })
 	onSelectTestCase = (test) => {
-		console.log(test)
 		let currentTestCase = this.state.currentTestCase
 		if (!currentTestCase) return this.setState({ currentTestCase: test })
 		if (currentTestCase && currentTestCase.id === test.id) return this.onCloseTestCase()
