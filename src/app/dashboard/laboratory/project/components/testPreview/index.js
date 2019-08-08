@@ -23,9 +23,7 @@ import {
 import {
 	Edit as EditIcon,
 	Delete as DeleteIcon,
-
 	Close as CloseIcon,
-
 	CreateNewFolder as CreateNewFolderIcon,
 	FormatListNumbered as FormatListNumberedIcon,
 	ExpandLess as ExpandLessIcon,
@@ -33,18 +31,13 @@ import {
 } from '@material-ui/icons';
 
 import Typography from '@material-ui/core/Typography';
-
-
-
-
-import './styles.sass'
 import { Flex } from '../../../../../../lib/components/flex';
 import { CodeEditor } from '../../../../../../lib/components/code';
+import { EditIcon as EditIconMaterial } from '../../../../../../lib/components/material/EditIcon';
+
+import './styles.sass'
 
 const SubHeader = ({ text }) => <ListSubheader component="div">{text}</ListSubheader>
-
-
-
 const PreviewWrapper = props => <div className="previewProjects">{props.children}</div>
 const ProjectsWrapper = props => <div className="projects">{props.children}</div>
 const TestsWrapper = props => <List component="nav" className="tests" subheader={<SubHeader text="Test cases" />}>{props.children}</List>
@@ -86,8 +79,8 @@ const ProjectDescriptionCard =
 					</Typography>
 
 					<Collapse in={isOpen} timeout="auto" unmountOnExit>
-						<Typography color="textSecondary" gutterBottom>Description</Typography>
-						<Typography component="p" gutterBottom>{project.description}</Typography>
+						<Typography color="textSecondary" gutterBottom>Description </Typography>
+						<Typography component="p" gutterBottom>{project.description} <EditIconMaterial onClick={onEditProject} /></Typography>
 
 						<Typography color="textSecondary" gutterBottom>Objective</Typography>
 						<Typography component="p" gutterBottom>{project.objective}</Typography>
@@ -125,12 +118,14 @@ class Project extends React.Component {
 		const { state, props, handleClose } = this
 		const {
 			project,
-			onEditProject,
+			index,
+			onEditProject: editProjectBase,
 			onDeleteProject,
 			onSelectTestCase,
 			onCreateTestCase,
 			onDeleteTestCase,
 		} = props
+		const onEditProject = console.log
 		const { open } = state
 		return (
 			<div className="project">
@@ -151,6 +146,7 @@ class Project extends React.Component {
 						project={project} />
 					<ProjectPreviewTests
 						project={project}
+						projectIndex={index}
 						onSelectTestCase={onSelectTestCase}
 						onDeleteTestCase={onDeleteTestCase} />
 				</Collapse>
@@ -161,14 +157,18 @@ class Project extends React.Component {
 
 
 const extractTestComponents =
-	onSelectTestCase =>
-		onDeleteTestCase =>
-			(test, index) => <ProjectPreviewTestItem key={index} onSelectTestCase={onSelectTestCase} onDeleteTestCase={onDeleteTestCase} test={test} />
+	project =>
+		onSelectTestCase =>
+			onDeleteTestCase =>
+				(test, index) => {
+					return (
+						<ProjectPreviewTestItem key={index} onSelectTestCase={onSelectTestCase} onDeleteTestCase={onDeleteTestCase} project={project} test={test} />
+					)
+				}
 
 const ProjectPreviewTests = ({ project, onSelectTestCase, onDeleteTestCase }) => (
 	<TestsWrapper>
-
-		{project.test_cases.map(extractTestComponents(onSelectTestCase)(onDeleteTestCase))}
+		{project.test_cases.map(extractTestComponents(project)(onSelectTestCase)(onDeleteTestCase))}
 	</TestsWrapper>
 )
 
@@ -180,7 +180,11 @@ const extractProjectComponent =
 				<Paper key={index}>
 					<Project
 						project={project}
+						index={index}
 						{...actions}
+						onEditProject={projectSection =>
+							actions.onEditTest(index, projectSection)
+						}
 						onDeleteProject={() => {
 							actions.onDeleteProject(index, project)
 						}}

@@ -8,6 +8,7 @@ import { ActionCreators } from './redux/actions';
 import { InputDialog } from '../../../../lib/components/material/modals/input/';
 import { get } from 'lodash'
 import { SelectDialog } from '../../../../lib/components/material/modals/select';
+import { EditIcon } from '../../../../lib/components/material/EditIcon';
 class ProjectCreateComponent extends React.Component {
 
 	state = {}
@@ -101,11 +102,14 @@ class ProjectCreateComponent extends React.Component {
 		else this.closeModal()
 	}
 
+	openEditTestModal = (attributeName) => {
+
+	}
 
 	render() {
 		const { props } = this
 		const { tests = [], project } = props
-		const EditIcon = props => <span className="edit-icon-inline" onClick={props.onClick}><i className="fas fa-pencil-alt"></i></span>
+
 		const Title = () => (
 			<Toolbar disableGutters>
 				<h1>
@@ -146,6 +150,11 @@ class ProjectCreateComponent extends React.Component {
 					handleClose={({ ok, value }) => ok ? this.setProjectAttribute('description', value) : this.closeModal()}
 					open={this.state.currentModal === ProjectCreateComponent.DEFAULTS.modals.projectDescription}
 					title="Project descripton" text="The project description is" />
+				
+				<InputDialog
+					handleClose={({ ok, value }) => ok ? this.setTestAttribute('description', value) : this.closeModal()}
+					open={this.state.currentModal === ProjectCreateComponent.DEFAULTS.modals.projectDescription}
+					title="Project descripton" text="The project description is" />
 
 				<SelectDialog
 					open={this.state.currentModal === ProjectCreateComponent.DEFAULTS.modals.projectActivity}
@@ -164,7 +173,7 @@ class ProjectCreateComponent extends React.Component {
 							tests={tests}
 							onCreateTest={this.createNewTestcase}
 							onDeleteTest={this.deleteTest}
-
+							onEditTest={this.editTest}
 
 							onSelectProject={this.onSelectProject}
 							onSelectTest={this.onSelectTest}
