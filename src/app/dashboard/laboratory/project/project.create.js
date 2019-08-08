@@ -80,6 +80,7 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	deleteTest = (index, test) => {
+		console.log({index,test})
 		this.props.DISPATCHERS.DELETE_TEST_FROM_CURRENT_PROJECT(index, test)
 	}
 

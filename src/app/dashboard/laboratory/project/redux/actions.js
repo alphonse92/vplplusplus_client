@@ -189,7 +189,7 @@ Actions[ADD_TEST_TO_CURRENT_PROJECT_NAME] = {
 const DELETE_TEST_FROM_CURRENT_PROJECT_NAME = 'DELETE_TEST_FROM_CURRENT_PROJECT'
 Actions[DELETE_TEST_FROM_CURRENT_PROJECT_NAME] = {
 	DISPATCHER: (index, test) => (dispatcher, getStore) => {
-		dispatcher({ type: Actions[DELETE_TEST_FROM_CURRENT_PROJECT_NAME].ACTIONS.default.name, payload: { index: index, test } })
+		dispatcher({ type: Actions[DELETE_TEST_FROM_CURRENT_PROJECT_NAME].ACTIONS.default.name, payload: { index, test } })
 	},
 	ACTIONS: {
 		default: {
@@ -198,10 +198,11 @@ Actions[DELETE_TEST_FROM_CURRENT_PROJECT_NAME] = {
 				const { index } = action.payload
 				const newState = { ...state }
 				const { create } = newState
-				create.tests = create.tests.filter(({ idx }) => idx !== index)
-				return { ...newState, create }
-			}
-		}
+				// eslint-disable no-unused-vars 
+				create.tests = create.tests.filter((test, idx) => idx !== index)
+		return { ...newState, create }
+	}
+}
 	},
 }
 
