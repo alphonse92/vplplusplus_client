@@ -249,7 +249,7 @@ class ProjectCreateComponent extends React.Component {
 					<Flex horizontal width="75%" margin="7px" >
 						{window && window.name === "code" && (
 
-							<CodeEditor monacoProperties={{ heigth: '600px' }} />
+							<CodeEditor monacoProperties={{ height: '600px' }} />
 						)}
 					</Flex>
 				</Flex>
