@@ -50,6 +50,7 @@ class ProjectCreateComponent extends React.Component {
 			}
 		}
 	}
+
 	static mapStateToProps = (state) => {
 		const { projects } = state
 		const { create, course, topics } = projects
@@ -218,12 +219,17 @@ class ProjectCreateComponent extends React.Component {
 					getValue={option => option.course_module_id}
 					options={this.props.activities} />}
 
-				<Title />
-				<Description />
-				<Activity />
-				<Flex horizontal width="25%">
-					<Flex vertical width="100%">
+				<Flex vertical width="100%" margin="7px">
+					<Title />
+					<Description />
+					<Activity />
+				</Flex>
+
+
+				<Flex horizontal width="100%">
+					<Flex vertical width="25%" margin="7px" >
 						<ProjectPreview
+							editable={!project.summaries || project.summaries.length === 0}
 							tests={tests}
 							onCreateTest={this.createNewTestcase}
 							onDeleteTest={this.deleteTest}
@@ -234,11 +240,28 @@ class ProjectCreateComponent extends React.Component {
 							onFinish={this.onFinish}
 						/>
 					</Flex>
-
+					<Flex horizontal width="75%" margin="7px" >
+						<p>
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
+	</p>
+					</Flex>
 				</Flex>
-				<Flex horizontal width='50%'>
 
-				</Flex>
 			</React.Fragment>
 		)
 	}

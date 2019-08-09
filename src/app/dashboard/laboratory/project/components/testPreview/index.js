@@ -28,6 +28,7 @@ import {
 	FormatListNumbered as FormatListNumberedIcon,
 	ExpandLess as ExpandLessIcon,
 	ExpandMore as ExpandMoreIcon,
+	Code as CodeIcon,
 } from '@material-ui/icons';
 
 import Typography from '@material-ui/core/Typography';
@@ -101,6 +102,9 @@ const ProjectDescriptionCard =
 							</IconButton>
 						</React.Fragment>
 					)}
+					<IconButton onClick={onCreateTestCase}>
+						<CodeIcon />
+					</IconButton>
 				</CardActions>
 			</Card>
 		)
