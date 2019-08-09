@@ -81,7 +81,7 @@ const ProjectDescriptionCard =
 					</Typography>
 
 					<Collapse in={isOpen} timeout="auto" unmountOnExit>
-						
+
 						<Typography color="textSecondary" gutterBottom>Description </Typography>
 						<Typography component="p" gutterBottom>{project.description} {editable && <EditIconMaterial onClick={onEditProject('description')} />}</Typography>
 
@@ -199,7 +199,7 @@ const PreviewContent = props => {
 	return (
 		<ProjectsWrapper>
 			{props.projects.map(extractProjectComponent(rest))}
-			<div onClick={onCreateProject} className="shadowBtn"><i className="fa fa-plus " />Create Test </div>
+			{props.editable && <div onClick={onCreateProject} className="shadowBtn"><i className="fa fa-plus " />Create Test </div>}
 		</ProjectsWrapper>
 	)
 }

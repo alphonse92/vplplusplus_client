@@ -130,7 +130,6 @@ class ProjectCreateComponent extends React.Component {
 	editTest = (index, attribute) => {
 		const fullpath = `tests[${index}].${attribute}`
 		const modalSchema = { ...get(ProjectCreateComponent.DEFAULTS.modals.test, attribute) }
-		console.log({ index, attribute, fullpath, modalSchema })
 		this.setModalOpen(fullpath, modalSchema.title, modalSchema.text)
 	}
 

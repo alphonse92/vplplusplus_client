@@ -15,7 +15,7 @@ export class ProjectService extends WebService {
   }
 
   getProjects(page, limit, sort) {
-    const query = { page, limit, sort, populate: ['tests.test_cases.summaries'] }
+    const query = { page, limit, sort, populate: ['tests.test_cases.summaries', 'summaries'] }
     const options = {
       method: 'GET',
       qs: query
