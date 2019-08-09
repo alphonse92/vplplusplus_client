@@ -67,37 +67,40 @@ const ProjectDescriptionCard =
 		onEditProject,
 		onCreateTestCase,
 		onDeleteProject,
+		editable = true,
 		project }) => (
 			<Card elevation={0}>
 				<CardContent>
 					<Typography color="textSecondary" gutterBottom>Project Name</Typography>
 					<Typography variant="h5" component="h2" gutterBottom onClick={onToggle}>
 						{project.name}
-						<EditIconMaterial onClick={onEditProject('name')} />
+						{editable && <EditIconMaterial onClick={onEditProject('name')} />}
 						<IconButton>
 							{isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
 						</IconButton>
 					</Typography>
 
 					<Collapse in={isOpen} timeout="auto" unmountOnExit>
+						
 						<Typography color="textSecondary" gutterBottom>Description </Typography>
-						<Typography component="p" gutterBottom>{project.description} <EditIconMaterial onClick={onEditProject('description')} /></Typography>
+						<Typography component="p" gutterBottom>{project.description} {editable && <EditIconMaterial onClick={onEditProject('description')} />}</Typography>
 
 						<Typography color="textSecondary" gutterBottom>Objective</Typography>
-						<Typography component="p" gutterBottom>{project.objective}<EditIconMaterial onClick={onEditProject('objective')} /></Typography>
+						<Typography component="p" gutterBottom>{project.objective}{editable && <EditIconMaterial onClick={onEditProject('objective')} />}</Typography>
 
 					</Collapse>
 				</CardContent>
 				<CardActions>
-					<IconButton onClick={onDeleteProject} aria-label="Edit Project">
-						<DeleteIcon />
-					</IconButton>
-					<IconButton onClick={onEditProject} aria-label="Delete Project">
-						<EditIcon />
-					</IconButton>
-					<IconButton onClick={onCreateTestCase}>
-						<i className="fas fa-plus " />
-					</IconButton>
+					{editable && (
+						<React.Fragment>
+							<IconButton onClick={onDeleteProject} aria-label="Edit Project">
+								<DeleteIcon />
+							</IconButton>
+							<IconButton onClick={onCreateTestCase}>
+								<i className="fas fa-plus " />
+							</IconButton>
+						</React.Fragment>
+					)}
 				</CardActions>
 			</Card>
 		)
@@ -113,6 +116,7 @@ class Project extends React.Component {
 	render() {
 		const { state, props, handleClose } = this
 		const {
+			editable = true,
 			project,
 			index,
 			onEditProject,
@@ -133,6 +137,7 @@ class Project extends React.Component {
 				</ListItem>
 				<Collapse in={open.project} timeout="auto" unmountOnExit>
 					<ProjectDescriptionCard
+						editable={editable}
 						onCreateTestCase={onCreateTestCase}
 						onEditProject={onEditProject}
 						onDeleteProject={onDeleteProject}
@@ -140,6 +145,7 @@ class Project extends React.Component {
 						isOpen={open.description}
 						project={project} />
 					<ProjectPreviewTests
+						editable={editable}
 						project={project}
 						projectIndex={index}
 						onSelectTestCase={onSelectTestCase}
@@ -214,7 +220,7 @@ export const ProjectPreview = ({
 	onDeleteTest,
 	onCreateTest,
 	onEditTest,
-
+	editable = true,
 	onEditProject,
 	onDeleteProject,
 
@@ -226,6 +232,7 @@ export const ProjectPreview = ({
 		<PreviewWrapper>
 
 			<PreviewContent
+				editable={editable}
 				projects={tests}
 				onCreateProject={onCreateTest}
 				onDeleteProject={onDeleteTest}
