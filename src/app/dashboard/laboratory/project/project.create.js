@@ -49,6 +49,11 @@ class ProjectCreateComponent extends React.Component {
 					text: 'The test objective define the general goal of a set of test cases.',
 				},
 			}
+		},
+		windows: {
+			editTestCode: {
+				name: 'test-code'
+			}
 		}
 	}
 
@@ -240,14 +245,15 @@ class ProjectCreateComponent extends React.Component {
 							onCreateTest={this.createNewTestcase}
 							onDeleteTest={this.deleteTest}
 							onEditTest={this.editTest}
+							onEditTestCode={(test) => this.showWindow(ProjectCreateComponent.DEFAULTS.windows.editTestCode, test)}
 
-							onSelectProject={this.onSelectProject}
-							onSelectTest={this.onSelectTest}
-							onFinish={this.onFinish}
+						// onSelectProject={this.onSelectProject}
+						// onSelectTest={this.onSelectTest}
+						// onFinish={this.onFinish}
 						/>
 					</Flex>
 					<Flex horizontal width="75%" margin="7px" >
-						{window && window.name === "code" && (
+						{window && window.name === ProjectCreateComponent.DEFAULTS.windows.editTestCode.name && (
 							<CodeEditor
 								monacoProperties={{ height: '375px' }}
 							/>

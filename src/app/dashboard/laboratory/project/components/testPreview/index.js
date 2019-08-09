@@ -66,8 +66,9 @@ const ProjectDescriptionCard =
 		onToggle,
 		isOpen = true,
 		onEditProject,
-		onCreateTestCase,
 		onDeleteProject,
+		onEditProjectCode,
+		onCreateTestCase,
 		editable = true,
 		project }) => (
 			<Card elevation={0}>
@@ -102,7 +103,7 @@ const ProjectDescriptionCard =
 							</IconButton>
 						</React.Fragment>
 					)}
-					<IconButton onClick={onCreateTestCase}>
+					<IconButton onClick={() => onEditProjectCode(project)}>
 						<CodeIcon />
 					</IconButton>
 				</CardActions>
@@ -124,6 +125,7 @@ class Project extends React.Component {
 			project,
 			index,
 			onEditProject,
+			onEditProjectCode,
 			onDeleteProject,
 			onSelectTestCase,
 			onCreateTestCase,
@@ -144,6 +146,7 @@ class Project extends React.Component {
 						editable={editable}
 						onCreateTestCase={onCreateTestCase}
 						onEditProject={onEditProject}
+						onEditProjectCode={onEditProjectCode}
 						onDeleteProject={onDeleteProject}
 						onToggle={handleClose('description')}
 						isOpen={open.description}
@@ -188,7 +191,6 @@ const extractProjectComponent =
 						index={index}
 						{...actions}
 						onEditProject={attribute => () => {
-							console.log('editing project', { index, attribute })
 							actions.onEditProject(index, attribute)
 						}}
 						onDeleteProject={() => {
@@ -225,8 +227,7 @@ export const ProjectPreview = ({
 	onCreateTest,
 	onEditTest,
 	editable = true,
-	onEditProject,
-	onDeleteProject,
+	onEditTestCode,
 
 	onSelectTestCase,
 	onCreateTestCase,
@@ -241,6 +242,7 @@ export const ProjectPreview = ({
 				onCreateProject={onCreateTest}
 				onDeleteProject={onDeleteTest}
 				onEditProject={onEditTest}
+				onEditProjectCode={onEditTestCode}
 
 				onSelectTestCase={onSelectTestCase}
 				onCreateTestCase={onCreateTestCase}
