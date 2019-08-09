@@ -186,25 +186,23 @@ public void setUp(){
 		this.monaco = monaco
 	}
 
-	setCodePreview = ({ test, test_case }) => {
-		if (test_case) return this.setState({ codePreview: this.getCodePreviewForTest(test) })
-		if (test) return this.setState({ codePreview: this.getCodePreviewForTest(test) })
+	setCodePreview = (codePreview) => {
+		this.setState({ codePreview })
 	}
 
-	getCodePreviewForTest = (test) => {
+	setTestCodePreview = (test) => {
 		const codeEditor = this.editor.getValue()
-
 		const code = `
 public class ${capitalize(camelCase(test.name))} {
  ${codeEditor}
  // your unit test methods will be placed below
 }
 `
-		return code
+		return this.setCodePreview(code)
 	}
 
-	showEditorPreview = (codePreview) => {
-		this.setState({ codePreview })
+	closePreviewWindow = (codePreview) => {
+		this.setState({ codePreview: undefined })
 	}
 
 	render() {
@@ -261,33 +259,58 @@ public class ${capitalize(camelCase(test.name))} {
 			const isTest = !!window.data.test
 			const isTestCase = !!window.data.test_case
 			if (isTestCase) return <React.Fragment />
-			else if (isTest) return <TestWindow data={window.data} />
+			else if (isTest) return (
+				<TestWindow
+					editor={this.editor}
+					setEditor={this.setEditor}
+					getValue={() => window.data.test.code || window.data.code}
+					onShowPreview={() => this.setTestCodePreview(window.data.test)}
+					onClosePreview={this.closePreviewWindow}
+				/>
+			)
 			return <React.Fragment />
 		}
 
 		const CodePreview = (props) => {
 			return (
 				<React.Fragment>
-					<h3>Code Preview</h3>
+					<h3>Code Preview </h3>
 					<p>You JUnit class will looks like </p>
 					<CodeEditor
 						code={stateCodePreview}
-						monacoProperties={{ height: '250px', readOnly: true }} />
+						options={{ readOnly: true }}
+						monacoProperties={{ height: '250px' }} />
 				</React.Fragment>
 			)
 		}
 
-		const TestWindow = ({ data }) => {
+		const TestWindow = ({ editor, getValue, setEditor, onShowPreview, onClosePreview }) => {
+
+			const initialValue = getValue()
+
+			const code = editor
+				? editor.getValue()
+				: initialValue
+
+			const ButtonHandlePreviewVisibility = ({ open, onShow, onClose }) => !open
+				? <button onClick={onShow}>Show preview</button>
+				: <button onClick={onClose}>Close</button>
+
 			return (
 				<React.Fragment>
-					<h3>Test Code</h3>
+					<h3>Test Code </h3>
 					<p>
 						Please configure your test code. This code will be placed before all of tests cases of JUnit Class. So, you can writte the @before, @beforeAll, @after and @afterAll methods of JUnit Life Cycle.
-						Also, you can set the test class variables and use it into a test case. <button onClick={() => this.setCodePreview({ test: data.test })}>Show preview</button>
+						Also, you can set the test class variables and use it into a test case
+						<ButtonHandlePreviewVisibility
+							open={!!stateCodePreview}
+							onShow={onShowPreview}
+							onClose={onClosePreview} />
 					</p>
 					<CodeEditor
-						code={data.test.code || data.code}
-						editorDidMount={this.setEditor}
+						code={code}
+						options={{ readOnly: !!stateCodePreview }}
+						editorDidMount={setEditor}
 						monacoProperties={{ height: '250px' }} />
 
 					{stateCodePreview && <CodePreview />}
@@ -304,15 +327,17 @@ public class ${capitalize(camelCase(test.name))} {
 					title={modal.title}
 					text={modal.text} />}
 
-				{showModal && <SelectDialog
-					open={modal.path === 'project.activity'}
-					title={modal.title}
-					text={modal.text}
-					optionsKey="course_module_id"
-					onClose={({ ok, value }) => ok ? this.setValueFromModal(Number(value)) : this.closeModal()}
-					getLabel={option => option.name}
-					getValue={option => option.course_module_id}
-					options={this.props.activities} />}
+				{
+					showModal && <SelectDialog
+						open={modal.path === 'project.activity'}
+						title={modal.title}
+						text={modal.text}
+						optionsKey="course_module_id"
+						onClose={({ ok, value }) => ok ? this.setValueFromModal(Number(value)) : this.closeModal()}
+						getLabel={option => option.name}
+						getValue={option => option.course_module_id}
+						options={this.props.activities} />
+				}
 
 				<Flex vertical width="100%" margin="7px">
 					<Title />
@@ -341,7 +366,7 @@ public class ${capitalize(camelCase(test.name))} {
 					</Flex>
 				</Flex>
 
-			</React.Fragment>
+			</React.Fragment >
 		)
 	}
 }
