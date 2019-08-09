@@ -114,8 +114,15 @@ class ProjectCreateComponent extends React.Component {
 		const data = { project, tests }
 
 		set(data, path, value)
+
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA(data)
 		this.closeModal()
+	}
+
+	editTest = (index, attribute) => {
+		const fullpath = `tests[${index}].${attribute}`
+		console.log({ index, attribute, fullpath })
+		this.setModalOpen(fullpath)
 	}
 
 	setMoodleActivity = ({ ok, value }) => {
@@ -167,9 +174,6 @@ class ProjectCreateComponent extends React.Component {
 			)
 		}
 
-
-
-
 		return (
 			<React.Fragment>
 
@@ -188,6 +192,7 @@ class ProjectCreateComponent extends React.Component {
 					getLabel={option => option.name}
 					getValue={option => option.course_module_id}
 					options={this.props.activities} />}
+
 				<Title />
 				<Description />
 				<Activity />

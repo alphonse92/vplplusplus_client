@@ -80,7 +80,7 @@ const ProjectDescriptionCard =
 
 					<Collapse in={isOpen} timeout="auto" unmountOnExit>
 						<Typography color="textSecondary" gutterBottom>Description </Typography>
-						<Typography component="p" gutterBottom>{project.description} <EditIconMaterial onClick={onEditProject} /></Typography>
+						<Typography component="p" gutterBottom>{project.description} <EditIconMaterial onClick={onEditProject('description')} /></Typography>
 
 						<Typography color="textSecondary" gutterBottom>Objective</Typography>
 						<Typography component="p" gutterBottom>{project.objective}</Typography>
@@ -119,13 +119,12 @@ class Project extends React.Component {
 		const {
 			project,
 			index,
-			onEditProject: editProjectBase,
+			onEditProject,
 			onDeleteProject,
 			onSelectTestCase,
 			onCreateTestCase,
 			onDeleteTestCase,
 		} = props
-		const onEditProject = console.log
 		const { open } = state
 		return (
 			<div className="project">
@@ -182,9 +181,10 @@ const extractProjectComponent =
 						project={project}
 						index={index}
 						{...actions}
-						onEditProject={projectSection =>
-							actions.onEditTest(index, projectSection)
-						}
+						onEditProject={attribute => () => {
+							console.log('editing project', { index, attribute })
+							actions.onEditProject(index, attribute)
+						}}
 						onDeleteProject={() => {
 							actions.onDeleteProject(index, project)
 						}}
