@@ -1,7 +1,7 @@
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
-const THEME_DEFAULT = "vs"
+const THEME_DEFAULT = "vs-dark"
 const LANG_DEFAULT = 'java'
 const OPTIONS_DEFAULT = {
 	selectOnLineNumbers: true,
@@ -19,7 +19,7 @@ export class CodeEditor extends React.Component {
 	state = {
 		code: CODE_DEFAULT
 	}
-	
+
 	componentDidMount() {
 		if (this.state.code !== this.props.code)
 			return this.setState({ code: this.props.code })
@@ -48,7 +48,8 @@ export class CodeEditor extends React.Component {
 
 		const { code } = state;
 		const options = { OPTIONS_DEFAULT, ...optionsFromProps }
-
+		const height = { height }
+		const width = { width }
 		return (
 			<MonacoEditor
 				language={language}
@@ -57,6 +58,7 @@ export class CodeEditor extends React.Component {
 				options={options}
 				onChange={onChange}
 				editorDidMount={editorDidMount}
+				{...this.props.monacoProperties}
 			/>
 		);
 	}

@@ -9,6 +9,7 @@ import { InputDialog } from '../../../../lib/components/material/modals/input/';
 import { get, set } from 'lodash'
 import { SelectDialog } from '../../../../lib/components/material/modals/select';
 import { EditIcon } from '../../../../lib/components/material/EditIcon';
+import { CodeEditor } from '../../../../lib/components/code';
 class ProjectCreateComponent extends React.Component {
 
 	state = {}
@@ -156,9 +157,13 @@ class ProjectCreateComponent extends React.Component {
 		else this.closeModal()
 	}
 
+	showWindow = window => {
+		this.setState({ window })
+	}
+
 	render() {
 		const { props, state } = this
-		const { modal } = state
+		const { modal, window = { name: 'code' } } = state
 		const { tests = [], project } = props
 
 		const showModal = !!modal
@@ -200,6 +205,8 @@ class ProjectCreateComponent extends React.Component {
 			)
 		}
 
+
+
 		return (
 			<React.Fragment>
 
@@ -225,7 +232,6 @@ class ProjectCreateComponent extends React.Component {
 					<Activity />
 				</Flex>
 
-
 				<Flex horizontal width="100%">
 					<Flex vertical width="25%" margin="7px" >
 						<ProjectPreview
@@ -241,24 +247,10 @@ class ProjectCreateComponent extends React.Component {
 						/>
 					</Flex>
 					<Flex horizontal width="75%" margin="7px" >
-						<p>
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-							asdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd saasdasd sa
-	</p>
+						{window && window.name === "code" && (
+
+							<CodeEditor monacoProperties={{ heigth: '600px' }} />
+						)}
 					</Flex>
 				</Flex>
 
