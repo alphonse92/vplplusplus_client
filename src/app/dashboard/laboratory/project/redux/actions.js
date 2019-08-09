@@ -1,4 +1,3 @@
-import { get, set } from 'lodash'
 import { extractActionCreators, requestDispatcher, createRequestActions } from '../../../../../lib'
 import { ProjectService as ProjectServiceClass } from '../../../../../services/project';
 import { CourseService as CourseServiceClass } from '../../../../../services/course';
@@ -170,102 +169,6 @@ Actions[EDIT_PROJECT_DATA_NAME] = {
 	},
 }
 
-
-const CREATE_MODIFY_CURRENT_PROJECT_NAME = 'CREATE_MODIFY_CURRENT_PROJECT'
-Actions[CREATE_MODIFY_CURRENT_PROJECT_NAME] = {
-	DISPATCHER: (payload) => (dispatcher, getStore) => {
-		dispatcher({ type: Actions[CREATE_MODIFY_CURRENT_PROJECT_NAME].ACTIONS.default.name, payload })
-	},
-	ACTIONS: {
-		default: {
-			name: CREATE_MODIFY_CURRENT_PROJECT_NAME,
-			reducer: (state, action) => {
-				const newState = { ...state }
-				newState.create.project = { ...action.payload }
-				return newState
-			}
-		}
-	},
-}
-
-const ADD_TEST_TO_CURRENT_PROJECT_NAME = 'ADD_TEST_TO_CURRENT_PROJECT'
-Actions[ADD_TEST_TO_CURRENT_PROJECT_NAME] = {
-	DISPATCHER: (newTest) => (dispatcher, getStore) => {
-		dispatcher({ type: Actions[ADD_TEST_TO_CURRENT_PROJECT_NAME].ACTIONS.default.name, payload: newTest })
-	},
-	ACTIONS: {
-		default: {
-			name: ADD_TEST_TO_CURRENT_PROJECT_NAME,
-			reducer: (state, action) => {
-				const newState = { ...state }
-				newState.create.tests = state.create.tests.concat(action.payload)
-				return newState
-			}
-		}
-	},
-}
-
-const DELETE_TEST_FROM_CURRENT_PROJECT_NAME = 'DELETE_TEST_FROM_CURRENT_PROJECT'
-Actions[DELETE_TEST_FROM_CURRENT_PROJECT_NAME] = {
-	DISPATCHER: (index, test) => (dispatcher, getStore) => {
-		dispatcher({ type: Actions[DELETE_TEST_FROM_CURRENT_PROJECT_NAME].ACTIONS.default.name, payload: { index, test } })
-	},
-	ACTIONS: {
-		default: {
-			name: DELETE_TEST_FROM_CURRENT_PROJECT_NAME,
-			reducer: (state, action) => {
-				const { index } = action.payload
-				const newState = { ...state }
-				const { create } = newState
-				// eslint-disable no-unused-vars 
-				create.tests = create.tests.filter((test, idx) => idx !== index)
-				return { ...newState, create }
-			}
-		}
-	},
-}
-
-const ADD_TEST_CASE_TO_TEST_NAME = 'ADD_TEST_CASE_TO_TEST'
-Actions[ADD_TEST_CASE_TO_TEST_NAME] = {
-	DISPATCHER: (indexTest, testCase) => (dispatcher, getStore) => {
-		dispatcher({ type: Actions[ADD_TEST_CASE_TO_TEST_NAME].ACTIONS.default.name, payload: { indexTest, testCase } })
-	},
-	ACTIONS: {
-		default: {
-			name: ADD_TEST_CASE_TO_TEST_NAME,
-			reducer: (state, action) => {
-				const { payload } = action
-				const { indexTest, testCase } = payload
-				const newState = { ...state }
-				const tests = newState.create.tests.concat([])
-				tests[indexTest].test_cases.push(testCase)
-				newState.create = { ...newState.create, tests }
-				return newState
-			}
-		}
-	},
-}
-
-const DELETE_TEST_CASE_FROM_TEST_NAME = 'DELETE_TEST_CASE_FROM_TEST'
-Actions[DELETE_TEST_CASE_FROM_TEST_NAME] = {
-	DISPATCHER: (indexTest, indexTestCase) => (dispatcher, getStore) => {
-		dispatcher({ type: Actions[DELETE_TEST_CASE_FROM_TEST_NAME].ACTIONS.default.name, payload: { indexTest, indexTestCase } })
-	},
-	ACTIONS: {
-		default: {
-			name: DELETE_TEST_CASE_FROM_TEST_NAME,
-			reducer: (state, action) => {
-				const { payload } = action
-				const { indexTest, indexTestCase } = payload
-				const newState = { ...state }
-				const { create } = newState
-				const testCases = create.tests[indexTest].test_cases.filter((testCase, index) => index !== indexTestCase)
-				create.tests[indexTest].test_cases = testCases
-				return { ...newState, create }
-			}
-		}
-	},
-}
 
 const ActionCreators = extractActionCreators(Actions)
 export { Actions, ActionCreators }

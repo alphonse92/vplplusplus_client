@@ -31,8 +31,22 @@ class ProjectCreateComponent extends React.Component {
 				},
 				activity: {
 					title: "Select Vpl Activity",
-					description: "Select Vpl Activity"
+					text: "Select Vpl Activity"
 				}
+			},
+			test: {
+				name: {
+					title: 'Set the Test Name',
+					text: 'Please set the test name. A test will be converted to a JUnit Vpl ++ Class that will be executed be JUnit Runner VPL ++',
+				},
+				description: {
+					title: 'Set the Test Description',
+					text: 'The test description describe a general goal of a set of test cases.',
+				},
+				objective: {
+					title: 'Set the Test Description',
+					text: 'The test objective define the general goal of a set of test cases.',
+				},
 			}
 		}
 	}
@@ -88,20 +102,36 @@ class ProjectCreateComponent extends React.Component {
 				// }
 			]
 		}
-		this.props.DISPATCHERS.ADD_TEST_TO_CURRENT_PROJECT(mock)
+		const { project, tests } = this.props
+		tests.push(mock)
+		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+
 	}
 
 	deleteTest = (index, test) => {
-		this.props.DISPATCHERS.DELETE_TEST_FROM_CURRENT_PROJECT(index, test)
+		const { project, tests: allTests } = this.props
+		// eslint-disable no-unused-vars 
+		const tests = allTests.filter((test, indexArray) => index !== indexArray)
+		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+
 	}
 
-	setModalOpen = (pathToObjectInProps) => {
+	setModalOpen = (pathToObjectInProps, customTitle, customText) => {
+
+		const schemaDefault = { ...get(ProjectCreateComponent.DEFAULTS.modals, pathToObjectInProps), ...{ title: customTitle, text: customText } }
 		this.setState({
 			modal: {
 				path: pathToObjectInProps,
-				...get(ProjectCreateComponent.DEFAULTS.modals, pathToObjectInProps),
+				...schemaDefault
 			}
 		})
+	}
+
+	editTest = (index, attribute) => {
+		const fullpath = `tests[${index}].${attribute}`
+		const modalSchema = { ...get(ProjectCreateComponent.DEFAULTS.modals.test, attribute) }
+		console.log({ index, attribute, fullpath, modalSchema })
+		this.setModalOpen(fullpath, modalSchema.title, modalSchema.text)
 	}
 
 	closeModal = () => {
@@ -119,11 +149,7 @@ class ProjectCreateComponent extends React.Component {
 		this.closeModal()
 	}
 
-	editTest = (index, attribute) => {
-		const fullpath = `tests[${index}].${attribute}`
-		console.log({ index, attribute, fullpath })
-		this.setModalOpen(fullpath)
-	}
+
 
 	setMoodleActivity = ({ ok, value }) => {
 		if (ok) this.setProjectAttribute('activity', Number(value))

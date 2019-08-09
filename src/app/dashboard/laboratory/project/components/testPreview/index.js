@@ -73,6 +73,7 @@ const ProjectDescriptionCard =
 					<Typography color="textSecondary" gutterBottom>Project Name</Typography>
 					<Typography variant="h5" component="h2" gutterBottom onClick={onToggle}>
 						{project.name}
+						<EditIconMaterial onClick={onEditProject('name')} />
 						<IconButton>
 							{isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
 						</IconButton>
@@ -83,13 +84,8 @@ const ProjectDescriptionCard =
 						<Typography component="p" gutterBottom>{project.description} <EditIconMaterial onClick={onEditProject('description')} /></Typography>
 
 						<Typography color="textSecondary" gutterBottom>Objective</Typography>
-						<Typography component="p" gutterBottom>{project.objective}</Typography>
+						<Typography component="p" gutterBottom>{project.objective}<EditIconMaterial onClick={onEditProject('objective')} /></Typography>
 
-						<Typography color="textSecondary" gutterBottom>Max Grade</Typography>
-						<Typography component="p" gutterBottom>{project.maxGrade}</Typography>
-
-						<Typography color="textSecondary" gutterBottom>Tags</Typography>
-						<Typography component="p" gutterBottom>{project.tags && project.tags.join(', ')}</Typography>
 					</Collapse>
 				</CardContent>
 				<CardActions>
