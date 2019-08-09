@@ -24,8 +24,11 @@ export class CodeEditor extends React.Component {
 		if (this.state.code !== this.props.code)
 			return this.setState({ code: this.props.code })
 	}
+
 	editorDidMount = (editor, monaco) => {
-		editor.focus();
+		this.editor = editor
+		this.editor.focus();
+		if (this.props.editorDidMount) this.props.editorDidMount(editor, monaco)
 	}
 
 	onChange = (newValue, e) => {
@@ -48,8 +51,6 @@ export class CodeEditor extends React.Component {
 
 		const { code } = state;
 		const options = { OPTIONS_DEFAULT, ...optionsFromProps }
-		const height = { height }
-		const width = { width }
 		return (
 			<MonacoEditor
 				language={language}

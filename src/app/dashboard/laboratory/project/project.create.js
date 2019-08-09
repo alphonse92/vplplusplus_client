@@ -6,7 +6,7 @@ import { Flex } from '../../../../lib/components/flex'
 import { ProjectPreview } from './components/testPreview';
 import { ActionCreators } from './redux/actions';
 import { InputDialog } from '../../../../lib/components/material/modals/input/';
-import { get, set } from 'lodash'
+import { get, set, capitalize, camelCase } from 'lodash'
 import { SelectDialog } from '../../../../lib/components/material/modals/select';
 import { EditIcon } from '../../../../lib/components/material/EditIcon';
 import { CodeEditor } from '../../../../lib/components/code';
@@ -52,7 +52,17 @@ class ProjectCreateComponent extends React.Component {
 		},
 		windows: {
 			editTestCode: {
-				name: 'test-code'
+				name: 'test-code',
+				data: {
+					code: `
+private StudentClass test;
+
+@Before
+public void setUp(){
+	test = new StudentClass();
+}`
+
+				}
 			}
 		}
 	}
@@ -162,13 +172,44 @@ class ProjectCreateComponent extends React.Component {
 		else this.closeModal()
 	}
 
-	showWindow = window => {
-		this.setState({ window })
+	showWindow = (window, windowData) => {
+		const data = { ...window.data, ...windowData }
+		const windowState = { ...window, data }
+		this.setState({ window: windowState })
+	}
+	/**
+	 * This methid will be passed to the editor did mount,
+	 * to get the references to the monaco and editor objects
+	 */
+	setEditor = (editor, monaco) => {
+		this.editor = editor
+		this.monaco = monaco
+	}
+
+	setCodePreview = ({ test, test_case }) => {
+		if (test_case) return this.setState({ codePreview: this.getCodePreviewForTest(test) })
+		if (test) return this.setState({ codePreview: this.getCodePreviewForTest(test) })
+	}
+
+	getCodePreviewForTest = (test) => {
+		const codeEditor = this.editor.getValue()
+
+		const code = `
+public class ${capitalize(camelCase(test.name))} {
+ ${codeEditor}
+ // your unit test methods will be placed below
+}
+`
+		return code
+	}
+
+	showEditorPreview = (codePreview) => {
+		this.setState({ codePreview })
 	}
 
 	render() {
 		const { props, state } = this
-		const { modal, window = { name: 'code' } } = state
+		const { modal, window = { name: 'code' }, codePreview: stateCodePreview } = state
 		const { tests = [], project } = props
 
 		const showModal = !!modal
@@ -210,7 +251,49 @@ class ProjectCreateComponent extends React.Component {
 			)
 		}
 
+		const ProjectWindow = (props) => {
+			const Component = props.component
+			if (props.currentWindow.name === props.name) return <Component window={window} />
+			return <React.Fragment />
+		}
 
+		const EditTestOrTestCaseWindow = ({ window }) => {
+			const isTest = !!window.data.test
+			const isTestCase = !!window.data.test_case
+			if (isTestCase) return <React.Fragment />
+			else if (isTest) return <TestWindow data={window.data} />
+			return <React.Fragment />
+		}
+
+		const CodePreview = (props) => {
+			return (
+				<React.Fragment>
+					<h3>Code Preview</h3>
+					<p>You JUnit class will looks like </p>
+					<CodeEditor
+						code={stateCodePreview}
+						monacoProperties={{ height: '250px', readOnly: true }} />
+				</React.Fragment>
+			)
+		}
+
+		const TestWindow = ({ data }) => {
+			return (
+				<React.Fragment>
+					<h3>Test Code</h3>
+					<p>
+						Please configure your test code. This code will be placed before all of tests cases of JUnit Class. So, you can writte the @before, @beforeAll, @after and @afterAll methods of JUnit Life Cycle.
+						Also, you can set the test class variables and use it into a test case. <button onClick={() => this.setCodePreview({ test: data.test })}>Show preview</button>
+					</p>
+					<CodeEditor
+						code={data.test.code || data.code}
+						editorDidMount={this.setEditor}
+						monacoProperties={{ height: '250px' }} />
+
+					{stateCodePreview && <CodePreview />}
+				</React.Fragment>
+			)
+		}
 
 		return (
 			<React.Fragment>
@@ -245,19 +328,16 @@ class ProjectCreateComponent extends React.Component {
 							onCreateTest={this.createNewTestcase}
 							onDeleteTest={this.deleteTest}
 							onEditTest={this.editTest}
-							onEditTestCode={(test) => this.showWindow(ProjectCreateComponent.DEFAULTS.windows.editTestCode, test)}
-
-						// onSelectProject={this.onSelectProject}
-						// onSelectTest={this.onSelectTest}
-						// onFinish={this.onFinish}
+							onEditTestCode={(test) => this.showWindow(ProjectCreateComponent.DEFAULTS.windows.editTestCode, { test })}
 						/>
 					</Flex>
 					<Flex horizontal width="75%" margin="7px" >
-						{window && window.name === ProjectCreateComponent.DEFAULTS.windows.editTestCode.name && (
-							<CodeEditor
-								monacoProperties={{ height: '375px' }}
-							/>
-						)}
+						<Flex vertical width="100%" >
+							{window && <ProjectWindow
+								currentWindow={window}
+								name={ProjectCreateComponent.DEFAULTS.windows.editTestCode.name}
+								component={EditTestOrTestCaseWindow} />}
+						</Flex>
 					</Flex>
 				</Flex>
 

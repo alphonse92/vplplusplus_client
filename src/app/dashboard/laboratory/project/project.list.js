@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { get, pick } from 'lodash'
 import { Flex, Item } from '../../../../lib/components/flex'
 import { ProjectPreview, TestCasePreview } from './components/testPreview';
-import { ProjectFormDialog } from './dialogs/project.create.dialog';
+
 
 import { ActionCreators } from './redux/actions';
 import { PROJECT } from './redux/paths';
@@ -154,7 +154,7 @@ class ProjectListComponent extends React.Component {
 		console.log(this.props)
 		return (
 			<React.Fragment>
-				<ProjectFormDialog />
+
 				<Flex horizontal>
 					<ProjectPreview
 						projects={projects}
