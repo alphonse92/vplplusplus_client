@@ -9,7 +9,7 @@ import { InputDialog } from '../../../../lib/components/material/modals/input/';
 import { get, set, capitalize, camelCase } from 'lodash'
 import { SelectDialog } from '../../../../lib/components/material/modals/select';
 import { EditIcon } from '../../../../lib/components/material/EditIcon';
-import { CodeEditor } from '../../../../lib/components/code';
+import { TestWindowEditor } from './components';
 class ProjectCreateComponent extends React.Component {
 
 	state = {}
@@ -174,7 +174,9 @@ public void setUp(){
 
 	showWindow = (window, windowData) => {
 		const data = { ...window.data, ...windowData }
-		const windowState = { ...window, data }
+		const id = data.id || Date.now()
+		const windowState = { ...window, data, id }
+		this.editor = undefined
 		this.setState({ window: windowState })
 	}
 	/**
@@ -190,18 +192,26 @@ public void setUp(){
 		this.setState({ codePreview })
 	}
 
-	getOnShowPreviewForProperty = (property, window) => {
+	/**
+	 * Get callback for on click method.
+	 * Returns a code that wrap the base code according 
+	 * the property passed (test ort test_case)
+	 * 	 *
+	 */
+	getOnShowPreviewForProperty = (property, baseCode = "", window) => {
 		const transformCodeByPropertyMap = {
 			test: this.setTestCodePreview,
 			test_case: this.setTestCodePreview
 		}
-		const fnDef = data => this.editor.getValue()
+		const fnDef = data => baseCode
 		const fn = transformCodeByPropertyMap[property] || fnDef
 		return () => fn(window.data[property])
 	}
 
-
-	setTestCodePreview = (test) => {
+	/**
+	 * get the code from test
+	 */
+	setTestCodePreview = (test, ) => {
 		const codeEditor = this.editor.getValue()
 		const code = `
 public class ${capitalize(camelCase(test.name))} {
@@ -212,7 +222,7 @@ public class ${capitalize(camelCase(test.name))} {
 		return this.setCodePreview(code)
 	}
 
-	closePreviewWindow = (codePreview) => {
+	closePreviewWindow = () => {
 		this.setState({ codePreview: undefined })
 	}
 
@@ -266,63 +276,21 @@ public class ${capitalize(camelCase(test.name))} {
 		}
 
 		const EditTestOrTestCaseWindow = ({ property, window }) => {
-			return (<TestWindow
+			const baseCode = this.editor ? this.editor.getValue() : undefined
+			return (<TestWindowEditor
+				title="Test Code"
+				description="Please configure your test code. This code will be placed before all of tests cases of JUnit Class. So, you can writte the @before, @beforeAll, @after and @afterAll methods of JUnit Life Cycle.
+			Also, you can set the test class variables and use it into a test case"
+				currentCode={stateCodePreview}
 				editor={this.editor}
 				setEditor={this.setEditor}
 				getValue={() => window.data[property].code || window.data.code}
-				onShowPreview={this.getOnShowPreviewForProperty(property, window)}
+				onShowPreview={this.getOnShowPreviewForProperty(property, baseCode, window)}
 				onClosePreview={this.closePreviewWindow}
 			/>)
 
 		}
-
-		const CodePreview = (props) => {
-			return (
-				<React.Fragment>
-					<h3>Code Preview </h3>
-					<p>You JUnit class will looks like </p>
-					<CodeEditor
-						code={stateCodePreview}
-						options={{ readOnly: true }}
-						monacoProperties={{ height: '250px' }} />
-				</React.Fragment>
-			)
-		}
-
-		const TestWindow = ({ editor, getValue, setEditor, onShowPreview, onClosePreview }) => {
-
-			const initialValue = getValue()
-
-			const code = editor
-				? editor.getValue()
-				: initialValue
-
-			const ButtonHandlePreviewVisibility = ({ open, onShow, onClose }) => !open
-				? <button onClick={onShow}>Show preview</button>
-				: <button onClick={onClose}>Close</button>
-
-			return (
-				<React.Fragment>
-					<h3>Test Code </h3>
-					<p>
-						Please configure your test code. This code will be placed before all of tests cases of JUnit Class. So, you can writte the @before, @beforeAll, @after and @afterAll methods of JUnit Life Cycle.
-						Also, you can set the test class variables and use it into a test case
-						<ButtonHandlePreviewVisibility
-							open={!!stateCodePreview}
-							onShow={onShowPreview}
-							onClose={onClosePreview} />
-					</p>
-					<CodeEditor
-						code={code}
-						options={{ readOnly: !!stateCodePreview }}
-						editorDidMount={setEditor}
-						monacoProperties={{ height: '250px' }} />
-
-					{stateCodePreview && <CodePreview />}
-				</React.Fragment>
-			)
-		}
-
+		
 		return (
 			<React.Fragment>
 
