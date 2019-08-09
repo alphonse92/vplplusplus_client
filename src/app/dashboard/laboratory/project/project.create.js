@@ -190,6 +190,17 @@ public void setUp(){
 		this.setState({ codePreview })
 	}
 
+	getOnShowPreviewForProperty = (property, window) => {
+		const transformCodeByPropertyMap = {
+			test: this.setTestCodePreview,
+			test_case: this.setTestCodePreview
+		}
+		const fnDef = data => this.editor.getValue()
+		const fn = transformCodeByPropertyMap[property] || fnDef
+		return () => fn(window.data[property])
+	}
+
+
 	setTestCodePreview = (test) => {
 		const codeEditor = this.editor.getValue()
 		const code = `
@@ -249,26 +260,20 @@ public class ${capitalize(camelCase(test.name))} {
 			)
 		}
 
-		const ProjectWindow = (props) => {
-			const Component = props.component
-			if (props.currentWindow.name === props.name) return <Component window={window} />
+		const ProjectWindow = ({ currentWindow, name, component: Component, componentProps }) => {
+			if (currentWindow.name === name) return <Component window={window} {...componentProps} />
 			return <React.Fragment />
 		}
 
-		const EditTestOrTestCaseWindow = ({ window }) => {
-			const isTest = !!window.data.test
-			const isTestCase = !!window.data.test_case
-			if (isTestCase) return <React.Fragment />
-			else if (isTest) return (
-				<TestWindow
-					editor={this.editor}
-					setEditor={this.setEditor}
-					getValue={() => window.data.test.code || window.data.code}
-					onShowPreview={() => this.setTestCodePreview(window.data.test)}
-					onClosePreview={this.closePreviewWindow}
-				/>
-			)
-			return <React.Fragment />
+		const EditTestOrTestCaseWindow = ({ property, window }) => {
+			return (<TestWindow
+				editor={this.editor}
+				setEditor={this.setEditor}
+				getValue={() => window.data[property].code || window.data.code}
+				onShowPreview={this.getOnShowPreviewForProperty(property, window)}
+				onClosePreview={this.closePreviewWindow}
+			/>)
+
 		}
 
 		const CodePreview = (props) => {
@@ -361,7 +366,8 @@ public class ${capitalize(camelCase(test.name))} {
 							{window && <ProjectWindow
 								currentWindow={window}
 								name={ProjectCreateComponent.DEFAULTS.windows.editTestCode.name}
-								component={EditTestOrTestCaseWindow} />}
+								component={EditTestOrTestCaseWindow}
+								componentProps={{ property: 'test' }} />}
 						</Flex>
 					</Flex>
 				</Flex>
