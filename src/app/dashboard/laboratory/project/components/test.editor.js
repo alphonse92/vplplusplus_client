@@ -13,7 +13,7 @@ export class EditTestWindow extends React.Component {
   getTestPayload = ok => {
     const { props } = this
     const { window } = props
-    const data = { code: this.editor.getValue() }
+    const data = { ...window.data.test, code: this.editor.getValue() }
     return { ok, window, data }
   }
 
@@ -29,9 +29,8 @@ export class EditTestWindow extends React.Component {
     this.monaco = monaco
   }
 
-  
 
-  deleteCodeFromState = () => this.setState({ ...this.state, code: undefined })
+  deleteCodeFromState = () => this.setState({ ...this.state, previewCode: undefined })
 
   onSave = () => this.props.onClose(this.getTestPayload(true))
 

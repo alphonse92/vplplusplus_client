@@ -28,16 +28,19 @@ class ProjectCreateComponent extends React.Component {
 			},
 			project: {
 				name: {
+					path: 'project.name',
 					title: "Project Title",
 					text: "Please set the project title. A project contains a set of tests to be executed",
 					component: InputDialog
 				},
 				description: {
+					path: 'project.description',
 					title: "Project Description",
 					text: "The project description define the goal of this set of Tests.",
 					component: InputDialog
 				},
 				activity: {
+					path: 'project.activity',
 					title: "Select Vpl Activity",
 					text: "Select Vpl Activity",
 					component: InputDialog
@@ -131,15 +134,8 @@ public void setUp(){
 
 	}
 
-	setModalOpen = (pathToObjectInProps, customTitle, customText) => {
-
-		const schemaDefault = { ...get(ProjectCreateComponent.DEFAULTS.modals, pathToObjectInProps), ...{ title: customTitle, text: customText } }
-		this.setState({
-			modal: {
-				path: pathToObjectInProps,
-				...schemaDefault
-			}
-		})
+	setModalOpen = (modal) => {
+		this.setState({ modal })
 	}
 
 	editTest = (index, attribute) => {
@@ -149,7 +145,7 @@ public void setUp(){
 	}
 
 	closeModal = () => {
-		this.setState({ modal: null })
+		this.setState({ modal: undefined })
 	}
 
 	setValueFromModal = (value) => {
@@ -173,17 +169,34 @@ public void setUp(){
 	}
 
 
-	preventUnsavedWindowChange = data => {
+	preventUnsavedWindowChange = (window, data, nextWindow) => {
+		console.log('prevent un saved changes', { window, data, nextWindow })
+
+		const onSave = () => {
+			this.setState({ window: nextWindow })
+		}
+
+		const onCancel = () => {
+			const returnWindow = { ...window, data }
+			this.setState({ window: returnWindow })
+		}
+
+		const path = `test[${window.data.index}]`
+		const modal = ProjectCreateComponent.DEFAULTS.modals.unsavedChanges
+		const { title, text } = modal
+
+		this.setModalOpen(path, title, text)
 
 	}
 
-	closeWindow = (data) => {
-		console.log(data)
-		// if (!ok) return this.preventUnsavedWindowChange(this.state.window)
-
+	closeWindow = (payload) => {
+		const { ok, window, data } = payload
+		const { window: nextWindow } = this.state
+		if (!ok) return this.preventUnsavedWindowChange(window, data, nextWindow)
 	}
 
 	showWindow = (window, windowData) => {
+
 		const data = { ...window.data, ...windowData }
 		const id = data.id || Date.now()
 		const windowState = { ...window, data, id }
@@ -204,28 +217,25 @@ public void setUp(){
 
 
 		const Title = () => {
-			const path = 'project.name'
 			return (
 				<Toolbar disableGutters>
 					<h1>
-						{get(this.props, path, ProjectCreateComponent.DEFAULTS.project.name)}
-						<EditIcon onClick={() => this.setModalOpen(path)} />
+						{get(this.props, 'project.name', ProjectCreateComponent.DEFAULTS.project.name)}
+						<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.name)} />
 					</h1>
 				</Toolbar>
 			)
 		}
 		const Description = () => {
-			const path = 'project.description'
 			return (
 				<p className="description">
-					{get(this.props, path, ProjectCreateComponent.DEFAULTS.project.description)}
-					<EditIcon onClick={() => this.setModalOpen(path)} />
+					{get(this.props, 'project.description', ProjectCreateComponent.DEFAULTS.project.description)}
+					<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.description)} />
 				</p>
 
 			)
 		}
 		const Activity = () => {
-			const path = 'project.activity'
 			const { activity: activity_id } = project
 			const isActivitySelecteed = !!activity_id
 			const label = isActivitySelecteed
@@ -234,7 +244,7 @@ public void setUp(){
 			return (
 				<p className="activity">
 					{label}
-					<EditIcon onClick={() => this.setModalOpen(path)} />
+					<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.activity)} />
 				</p>
 			)
 		}
@@ -243,20 +253,22 @@ public void setUp(){
 			const Component = window.component
 			return <Component window={window} onClose={onClose} />
 		}
+		const onCloseModalDef = ({ ok, value }) => ok ? this.setValueFromModal(value) : this.closeModal()
+		const onCloseModal = get(modal, 'onClose', onCloseModalDef)
 
 		return (
 			<React.Fragment>
 				{
-					showModal && <Dialog
-						handleClose={modal.onClose(({ ok, value }) => ok ? this.setValueFromModal(value) : this.closeModal())}
+					showModal && modal.component && <Dialog
+						handleClose={onCloseModal}
 						open={showModal}
 						component={modal.component}
 						title={modal.title}
 						text={modal.text} />
 				}
 				{
-					showModal && <SelectDialog
-						open={modal.path === 'project.activity'}
+					(showModal && modal.path === 'project.activity') && <SelectDialog
+						open={true}
 						title={modal.title}
 						text={modal.text}
 						optionsKey="course_module_id"
