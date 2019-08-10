@@ -7,18 +7,26 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle'
 
-export const Dialog = props => {
-  const {
-    open,
-    component: Component,
-    ...modal
-  } = props
+export class Dialog extends React.Component {
 
-  return (
-    <MaterialDialog size="md" fullWidth open={open}>
-      <Component {...modal} />
-    </MaterialDialog>
-  )
+  componentDidUpdate() {
+    this.props.onRender()
+  }
+
+  render() {
+    const {
+      open,
+      component: Component,
+      ...modal
+    } = this.props
+
+    return (
+      <MaterialDialog size="md" fullWidth open={open}>
+        <Component {...modal} />
+      </MaterialDialog>
+    )
+  }
+
 
 }
 

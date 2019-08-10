@@ -22,24 +22,28 @@ class ProjectCreateComponent extends React.Component {
 		},
 		modals: {
 			unsavedChanges: {
+				name: "modal-unsave-change",
 				title: "Unsaved changes detected",
 				text: "You are closing the edition panel without save changes. Are you sure to continue ?.",
 				component: ConfirmationDialog
 			},
 			project: {
 				name: {
+					name: "project.name",
 					path: 'project.name',
 					title: "Project Title",
 					text: "Please set the project title. A project contains a set of tests to be executed",
 					component: InputDialog
 				},
 				description: {
+					name: "project.description",
 					path: 'project.description',
 					title: "Project Description",
 					text: "The project description define the goal of this set of Tests.",
 					component: InputDialog
 				},
 				activity: {
+					name: "project.activity",
 					path: 'project.activity',
 					title: "Select Vpl Activity",
 					text: "Select Vpl Activity",
@@ -48,16 +52,19 @@ class ProjectCreateComponent extends React.Component {
 			},
 			test: {
 				name: {
+					name: "test.name",
 					title: 'Set the Test Name',
 					text: 'Please set the test name. A test will be converted to a JUnit Vpl ++ Class that will be executed be JUnit Runner VPL ++',
 					component: InputDialog
 				},
 				description: {
+					name: "test.description",
 					title: 'Set the Test Description',
 					text: 'The test description describe a general goal of a set of test cases.',
 					component: InputDialog
 				},
 				objective: {
+					name: "test.objective",
 					title: 'Set the Test Description',
 					text: 'The test objective define the general goal of a set of test cases.',
 					component: InputDialog
@@ -139,9 +146,9 @@ public void setUp(){
 	}
 
 	editTest = (index, attribute) => {
-		const fullpath = `tests[${index}].${attribute}`
-		const modalSchema = { ...get(ProjectCreateComponent.DEFAULTS.modals.test, attribute) }
-		this.setModalOpen(fullpath, modalSchema.title, modalSchema.text)
+		const path = `tests[${index}].${attribute}`
+		const modalSchema = { ...get(ProjectCreateComponent.DEFAULTS.modals.test, attribute), path }
+		this.setModalOpen(modalSchema)
 	}
 
 	closeModal = () => {
@@ -172,20 +179,24 @@ public void setUp(){
 	preventUnsavedWindowChange = (window, data, nextWindow) => {
 		console.log('prevent un saved changes', { window, data, nextWindow })
 
-		const onSave = () => {
-			this.setState({ window: nextWindow })
-		}
-
 		const onCancel = () => {
+			console.log('skiping changes')
 			const returnWindow = { ...window, data }
 			this.setState({ window: returnWindow })
 		}
+
+		const onSave = () => {
+			console.log('saving changes')
+			this.setState({ window: nextWindow })
+		}
+
+		const onClose = ({ ok }) => ok ? onSave() : onCancel()
 
 		const path = `test[${window.data.index}]`
 		const modal = ProjectCreateComponent.DEFAULTS.modals.unsavedChanges
 		const { title, text } = modal
 
-		this.setModalOpen(path, title, text)
+		this.setModalOpen({ title, text, path, onClose })
 
 	}
 
@@ -206,6 +217,11 @@ public void setUp(){
 
 	closePreviewWindow = () => {
 		this.setState({ codePreview: undefined })
+	}
+
+	shouldComponentUpdate() {
+		return !this.state.stopRendering
+			|| this.state.modal.name !== ProjectCreateComponent.DEFAULTS.modals.unsavedChanges
 	}
 
 	render() {
@@ -259,9 +275,10 @@ public void setUp(){
 		return (
 			<React.Fragment>
 				{
-					showModal && modal.component && <Dialog
+					(showModal && modal.component) && <Dialog
 						handleClose={onCloseModal}
 						open={showModal}
+						onRender={() => this.setState({ stopRendering: true })}
 						component={modal.component}
 						title={modal.title}
 						text={modal.text} />
