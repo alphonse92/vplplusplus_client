@@ -221,7 +221,7 @@ public void setUp(){
 
 	shouldComponentUpdate() {
 		return !this.state.stopRendering
-			|| this.state.modal.name !== ProjectCreateComponent.DEFAULTS.modals.unsavedChanges
+			|| this.state.modal.name !== ProjectCreateComponent.DEFAULTS.modals.unsavedChanges.name
 	}
 
 	render() {
