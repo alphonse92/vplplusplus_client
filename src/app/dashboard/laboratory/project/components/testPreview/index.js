@@ -50,11 +50,9 @@ const ProjectPreviewTestItem = ({ onSelectTestCase, onDeleteTestCase, test }) =>
 		<ListItemIcon>
 			<i className="fas fa-flask"></i>
 		</ListItemIcon>
-		<ListItemText inset primary={test.name} secondary={test.objective} />
+		<ListItemText inset primary={test.name.substring(0, 25)} secondary={test.objective.substring(0, 25) + '...'} />
 		<ListItemSecondaryAction onClick={() => onDeleteTestCase(test)}>
-			<IconButton aria-label="Remove">
-				<DeleteIcon />
-			</IconButton>
+			<IconButton aria-label="Remove Case"> <DeleteIcon /> </IconButton>
 		</ListItemSecondaryAction>
 	</ListItem>
 )
@@ -70,6 +68,7 @@ const ProjectDescriptionCard =
 		onEditProjectCode,
 		onCreateTestCase,
 		editable = true,
+		index,
 		project }) => (
 			<Card elevation={0}>
 				<CardContent>
@@ -103,7 +102,7 @@ const ProjectDescriptionCard =
 							</IconButton>
 						</React.Fragment>
 					)}
-					<IconButton onClick={() => onEditProjectCode(project)}>
+					<IconButton onClick={() => onEditProjectCode(project, index)}>
 						<CodeIcon />
 					</IconButton>
 				</CardActions>
@@ -150,6 +149,7 @@ class Project extends React.Component {
 						onDeleteProject={onDeleteProject}
 						onToggle={handleClose('description')}
 						isOpen={open.description}
+						index={index}
 						project={project} />
 					<ProjectPreviewTests
 						editable={editable}

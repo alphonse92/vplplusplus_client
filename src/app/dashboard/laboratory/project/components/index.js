@@ -14,20 +14,20 @@ export const NewProjectToolbarComponent = ({ goTo }) => (
 	</Toolbar>
 )
 
-export const CodePreview = ({ currentCode }) => {
+export const CodePreview = ({ code }) => {
 	return (
 		<React.Fragment>
 			<h3>Code Preview </h3>
 			<p>You JUnit class will looks like </p>
 			<CodeEditor
-				code={currentCode}
+				code={code}
 				options={{ readOnly: true }}
 				monacoProperties={{ height: '250px' }} />
 		</React.Fragment>
 	)
 }
 
-export const TestWindowEditor = ({ title, currentCode, description, editor, getValue, setEditor, onShowPreview, onClosePreview }) => {
+export const CodeEditorWithPreview = ({ title, previewCode, description, editor, getValue, setEditor, onShowPreview, onClosePreview }) => {
 
 	const initialValue = getValue()
 
@@ -44,17 +44,17 @@ export const TestWindowEditor = ({ title, currentCode, description, editor, getV
 			<h3>{title}</h3>
 			<p>{description}
 				<ButtonHandlePreviewVisibility
-					open={!!currentCode}
+					open={!!previewCode}
 					onShow={onShowPreview}
 					onClose={onClosePreview} />
 			</p>
 			<CodeEditor
 				code={code}
-				options={{ readOnly: !!currentCode }}
+				options={{ readOnly: !!previewCode }}
 				editorDidMount={setEditor}
 				monacoProperties={{ height: '250px' }} />
 
-			{currentCode && <CodePreview currentCode={currentCode} />}
+			{previewCode && <CodePreview code={previewCode} />}
 		</React.Fragment>
 	)
 }

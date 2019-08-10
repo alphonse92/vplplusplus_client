@@ -1,16 +1,51 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
+import MaterialDialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle'
 
+export const Dialog = props => {
+  const {
+    open,
+    component: Component,
+    ...modal
+  } = props
+
+  return (
+    <MaterialDialog size="md" fullWidth open={open}>
+      <Component {...modal} />
+    </MaterialDialog>
+  )
+
+}
+
+export const ConfirmationDialog = (props) => {
+  const { handleClose, title = "Please add the value", text = "" } = props
+  const closeDialog = ok => () => { handleClose({ ok }) }
+  return (
+    <React.Fragment>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>{text}</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeDialog(false)} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={closeDialog(true)} color="primary">
+          Ok
+        </Button>
+      </DialogActions>
+    </React.Fragment>
+  )
+}
+
 export const InputDialog = (props) => {
   const id = Date.now().toString()
   const {
-    open,
     handleClose,
     title = "Please add the value",
     text = "",
@@ -25,12 +60,7 @@ export const InputDialog = (props) => {
   }
 
   return (
-    <Dialog
-      size="md"
-      fullWidth
-      open={open}
-      onClose={closeDialog}
-      aria-labelledby={label}>
+    <React.Fragment>
       <DialogTitle id="form-dialog-title">{title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{text}</DialogContentText>
@@ -50,7 +80,7 @@ export const InputDialog = (props) => {
           Ok
         </Button>
       </DialogActions>
-    </Dialog>
+    </React.Fragment>
   )
 }
 

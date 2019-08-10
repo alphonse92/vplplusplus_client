@@ -5,11 +5,11 @@ import { Toolbar } from '@material-ui/core';
 import { Flex } from '../../../../lib/components/flex'
 import { ProjectPreview } from './components/testPreview';
 import { ActionCreators } from './redux/actions';
-import { InputDialog } from '../../../../lib/components/material/modals/input/';
-import { get, set, capitalize, camelCase } from 'lodash'
+import { InputDialog, ConfirmationDialog, Dialog } from '../../../../lib/components/material/modals/input/';
+import { get, set } from 'lodash'
 import { SelectDialog } from '../../../../lib/components/material/modals/select';
 import { EditIcon } from '../../../../lib/components/material/EditIcon';
-import { TestWindowEditor } from './components';
+import { EditTestWindow } from './components/test.editor';
 class ProjectCreateComponent extends React.Component {
 
 	state = {}
@@ -21,38 +21,50 @@ class ProjectCreateComponent extends React.Component {
 			activity: 'No Vpl activity selected'
 		},
 		modals: {
+			unsavedChanges: {
+				title: "Unsaved changes detected",
+				text: "You are closing the edition panel without save changes. Are you sure to continue ?.",
+				component: ConfirmationDialog
+			},
 			project: {
 				name: {
 					title: "Project Title",
 					text: "Please set the project title. A project contains a set of tests to be executed",
+					component: InputDialog
 				},
 				description: {
 					title: "Project Description",
 					text: "The project description define the goal of this set of Tests.",
+					component: InputDialog
 				},
 				activity: {
 					title: "Select Vpl Activity",
-					text: "Select Vpl Activity"
+					text: "Select Vpl Activity",
+					component: InputDialog
 				}
 			},
 			test: {
 				name: {
 					title: 'Set the Test Name',
 					text: 'Please set the test name. A test will be converted to a JUnit Vpl ++ Class that will be executed be JUnit Runner VPL ++',
+					component: InputDialog
 				},
 				description: {
 					title: 'Set the Test Description',
 					text: 'The test description describe a general goal of a set of test cases.',
+					component: InputDialog
 				},
 				objective: {
 					title: 'Set the Test Description',
 					text: 'The test objective define the general goal of a set of test cases.',
+					component: InputDialog
 				},
 			}
 		},
 		windows: {
-			editTestCode: {
-				name: 'test-code',
+			test: {
+				name: 'test',
+				component: EditTestWindow,
 				data: {
 					code: `
 private StudentClass test;
@@ -85,21 +97,7 @@ public void setUp(){
 		this.props.DISPATCHERS.GET_TOPICS()
 	}
 
-	createProject = () => {
 
-	}
-
-	onCreateTest = () => {
-
-	}
-
-	saveAllProject = (project) => {
-
-	}
-
-	onFinish = () => {
-
-	}
 
 	createNewTestcase = () => {
 		const mock = {
@@ -109,14 +107,14 @@ public void setUp(){
 			objective: 'Set the Objective of this test',
 			maxGrade: 5,
 			test_cases: [
-				// {
-				// 	name: 'My first Test case',
-				// 	objective: 'Objective of my first test case',
-				// 	grade: 5,
-				// 	successMessage: 'successMessage',
-				// 	successMessageLink: 'successMessageLink',
-				// 	failureMessage: 'failureReferenceLink',
-				// }
+				{
+					name: 'My first Test case',
+					objective: 'Objective of my first test case',
+					grade: 5,
+					successMessage: 'successMessage',
+					successMessageLink: 'successMessageLink',
+					failureMessage: 'failureReferenceLink',
+				}
 			]
 		}
 		const { project, tests } = this.props
@@ -165,61 +163,32 @@ public void setUp(){
 		this.closeModal()
 	}
 
-
-
 	setMoodleActivity = ({ ok, value }) => {
 		if (ok) this.setProjectAttribute('activity', Number(value))
 		else this.closeModal()
+	}
+
+	saveTest = (index, test) => {
+
+	}
+
+
+	preventUnsavedWindowChange = data => {
+
+	}
+
+	closeWindow = (data) => {
+		console.log(data)
+		// if (!ok) return this.preventUnsavedWindowChange(this.state.window)
+
 	}
 
 	showWindow = (window, windowData) => {
 		const data = { ...window.data, ...windowData }
 		const id = data.id || Date.now()
 		const windowState = { ...window, data, id }
-		this.editor = undefined
 		this.setState({ window: windowState })
-	}
-	/**
-	 * This methid will be passed to the editor did mount,
-	 * to get the references to the monaco and editor objects
-	 */
-	setEditor = (editor, monaco) => {
-		this.editor = editor
-		this.monaco = monaco
-	}
 
-	setCodePreview = (codePreview) => {
-		this.setState({ codePreview })
-	}
-
-	/**
-	 * Get callback for on click method.
-	 * Returns a code that wrap the base code according 
-	 * the property passed (test ort test_case)
-	 * 	 *
-	 */
-	getOnShowPreviewForProperty = (property, baseCode = "", window) => {
-		const transformCodeByPropertyMap = {
-			test: this.setTestCodePreview,
-			test_case: this.setTestCodePreview
-		}
-		const fnDef = data => baseCode
-		const fn = transformCodeByPropertyMap[property] || fnDef
-		return () => fn(window.data[property])
-	}
-
-	/**
-	 * get the code from test
-	 */
-	setTestCodePreview = (test, ) => {
-		const codeEditor = this.editor.getValue()
-		const code = `
-public class ${capitalize(camelCase(test.name))} {
- ${codeEditor}
- // your unit test methods will be placed below
-}
-`
-		return this.setCodePreview(code)
 	}
 
 	closePreviewWindow = () => {
@@ -228,7 +197,7 @@ public class ${capitalize(camelCase(test.name))} {
 
 	render() {
 		const { props, state } = this
-		const { modal, window = { name: 'code' }, codePreview: stateCodePreview } = state
+		const { modal, window } = state
 		const { tests = [], project } = props
 
 		const showModal = !!modal
@@ -270,36 +239,21 @@ public class ${capitalize(camelCase(test.name))} {
 			)
 		}
 
-		const ProjectWindow = ({ currentWindow, name, component: Component, componentProps }) => {
-			if (currentWindow.name === name) return <Component window={window} {...componentProps} />
-			return <React.Fragment />
+		const WindowComponent = ({ window, onClose, component }) => {
+			const Component = window.component
+			return <Component window={window} onClose={onClose} />
 		}
 
-		const EditTestOrTestCaseWindow = ({ property, window }) => {
-			const baseCode = this.editor ? this.editor.getValue() : undefined
-			return (<TestWindowEditor
-				title="Test Code"
-				description="Please configure your test code. This code will be placed before all of tests cases of JUnit Class. So, you can writte the @before, @beforeAll, @after and @afterAll methods of JUnit Life Cycle.
-			Also, you can set the test class variables and use it into a test case"
-				currentCode={stateCodePreview}
-				editor={this.editor}
-				setEditor={this.setEditor}
-				getValue={() => window.data[property].code || window.data.code}
-				onShowPreview={this.getOnShowPreviewForProperty(property, baseCode, window)}
-				onClosePreview={this.closePreviewWindow}
-			/>)
-
-		}
-		
 		return (
 			<React.Fragment>
-
-				{showModal && <InputDialog
-					handleClose={({ ok, value }) => ok ? this.setValueFromModal(value) : this.closeModal()}
-					open={showModal}
-					title={modal.title}
-					text={modal.text} />}
-
+				{
+					showModal && <Dialog
+						handleClose={modal.onClose(({ ok, value }) => ok ? this.setValueFromModal(value) : this.closeModal())}
+						open={showModal}
+						component={modal.component}
+						title={modal.title}
+						text={modal.text} />
+				}
 				{
 					showModal && <SelectDialog
 						open={modal.path === 'project.activity'}
@@ -326,16 +280,12 @@ public class ${capitalize(camelCase(test.name))} {
 							onCreateTest={this.createNewTestcase}
 							onDeleteTest={this.deleteTest}
 							onEditTest={this.editTest}
-							onEditTestCode={(test) => this.showWindow(ProjectCreateComponent.DEFAULTS.windows.editTestCode, { test })}
+							onEditTestCode={(test, index) => this.showWindow(ProjectCreateComponent.DEFAULTS.windows.test, { index, test })}
 						/>
 					</Flex>
 					<Flex horizontal width="75%" margin="7px" >
 						<Flex vertical width="100%" >
-							{window && <ProjectWindow
-								currentWindow={window}
-								name={ProjectCreateComponent.DEFAULTS.windows.editTestCode.name}
-								component={EditTestOrTestCaseWindow}
-								componentProps={{ property: 'test' }} />}
+							{window && <WindowComponent window={window} onClose={this.closeWindow} />}
 						</Flex>
 					</Flex>
 				</Flex>
