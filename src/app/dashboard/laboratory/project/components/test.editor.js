@@ -47,7 +47,7 @@ export class EditTestWindow extends React.Component {
   onSave = () => {
     console.log('saving')
     this.saved = true
-    this.props.onEmit('save-test-code', { code: this.state.code })
+    this.props.onEmit('save-test-code', this.getTestPayload(true))
   }
 
 
@@ -70,7 +70,8 @@ public class ${capitalize(camelCase(test.name))} {
 `}
 
   shouldComponentUpdate(prevProps, prevState) {
-    return this.state.code !== prevProps.window.data.test.code
+    return (this.state.code !== prevProps.window.data.test.code)
+      || (this.saved && this.state.code !== prevProps.window.data.test.code)
   }
 
   handleEditorChange = (newValue, e) => {
@@ -90,7 +91,7 @@ public class ${capitalize(camelCase(test.name))} {
           description={description}
           editor={this.editor}
           editorDidMount={this.getEditor}
-          getCode={() => this.state.code}
+          getCode={() => this.saved ? this.props.window.data.test.code : this.state.code}
           previewCode={previewCode}
           onShowPreview={this.showPreviewCode}
           onClosePreview={this.deleteCodeFromState}

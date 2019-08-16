@@ -168,9 +168,6 @@ class ProjectCreateComponent extends React.Component {
 		else this.closeModal()
 	}
 
-
-
-
 	preventUnsavedWindowChange = (prevWindow) => {
 
 		const { nextWindow } = this.state
@@ -193,14 +190,6 @@ class ProjectCreateComponent extends React.Component {
 
 	}
 
-	saveTest = (indexes, test) => {
-		const { test: test_index } = indexes
-		const { project, tests } = this.props
-		tests[test_index] = test
-		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
-
-	}
-
 	saveTestCase = (indexes, test_case) => {
 		const { test: test_index, test_case: test_case_index } = indexes
 		const { project, tests } = this.props
@@ -208,18 +197,27 @@ class ProjectCreateComponent extends React.Component {
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
 
-	saveTestCode = (indexes, data) => {
-		const { test: test_index } = indexes
-		const test = { ...this.props.tests[test_index], code: data.code }
-		this.saveTest(indexes, test)
+	saveTest = (index, test) => {
+		const { project, tests } = this.props
+		tests[index] = test
+		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 
 	}
 
-	onWindowEmit = (windowEvent, data) => {
-		console.log('windowemiter', { windowEvent, data })
+	saveTestCode = ({ window: payload}) => {
+		const { index: test_index, test: testPayload } = payload.data
+		const { code } = testPayload
+		const test = { ...this.props.tests[test_index], code }
+
+		this.saveTest(test_index, test)
+
+	}
+
+	onWindowEmit = (windowEvent, payload) => {
+		console.log('windowemiter', { windowEvent, payload })
 		if (windowEvent === 'close') return this.closeWindow()
-		if (windowEvent === 'save-test-code') return this.saveTestCode(data.index, data)
-		if (windowEvent === 'save-test-case') return this.saveTestCase(data.index, data)
+		if (windowEvent === 'save-test-code') return this.saveTestCode(payload)
+		if (windowEvent === 'save-test-case') return this.saveTestCase(payload)
 	}
 
 	/**
