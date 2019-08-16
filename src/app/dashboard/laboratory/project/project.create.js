@@ -113,15 +113,15 @@ class ProjectCreateComponent extends React.Component {
 			maxGrade: 5,
 			code: "test code example " + Date.now(),
 			test_cases: [
-				{
-					name: 'My first Test case',
-					objective: 'Objective of my first test case',
-					grade: 5,
-					code: ' test case code example ' + Date.now(),
-					successMessage: 'successMessage',
-					successMessageLink: 'successMessageLink',
-					failureMessage: 'failureReferenceLink',
-				}
+				// {
+				// 	name: 'My first Test case',
+				// 	objective: 'Objective of my first test case',
+				// 	grade: 5,
+				// 	code: ' test case code example ' + Date.now(),
+				// 	successMessage: 'successMessage',
+				// 	successMessageLink: 'successMessageLink',
+				// 	failureMessage: 'failureReferenceLink',
+				// }
 			]
 		})
 		const { project, tests } = this.props
@@ -168,9 +168,7 @@ class ProjectCreateComponent extends React.Component {
 		else this.closeModal()
 	}
 
-	saveTest = (index, test) => {
 
-	}
 
 
 	preventUnsavedWindowChange = (prevWindow) => {
@@ -193,6 +191,29 @@ class ProjectCreateComponent extends React.Component {
 		const { title, text, component } = modal
 		this.setModalOpen({ title, text, path, onClose, component }, { waitingForConfirmation: true })
 
+	}
+
+	saveTest = (indexes, test) => {
+		const { test: test_index } = indexes
+		const { project, tests } = this.props
+		tests[test_index] = test
+		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+
+	}
+
+	saveTestCase = (indexes, test_case) => {
+		const { test: test_index, test_case: test_case_index } = indexes
+		const { project, tests } = this.props
+		tests[test_index].test_cases[test_case_index] = test_case
+		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+
+	}
+
+	onWindowEmit = (windowEvent, data) => {
+		console.log('windowemiter', { windowEvent, data })
+		if (windowEvent === 'close') return this.closeWindow()
+		if (windowEvent === 'save-test') return this.saveTest(data.index, data)
+		if (windowEvent === 'save-test-case') return this.saveTestCase(data.index, data)
 	}
 
 	/**
@@ -304,7 +325,7 @@ class ProjectCreateComponent extends React.Component {
 					</Flex>
 					<Flex horizontal width="75%" margin="7px" >
 						<Flex vertical width="100%" >
-							<WindowComponent window={window} onClose={this.closeWindow} />
+							<WindowComponent window={window} onClose={this.closeWindow} onEmit={this.onWindowEmit} />
 						</Flex>
 					</Flex>
 				</Flex>
