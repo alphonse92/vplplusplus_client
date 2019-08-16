@@ -10,7 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 export class Dialog extends React.Component {
 
   componentDidUpdate() {
-    this.props.onRender()
+    this.props.onRender && this.props.onRender()
   }
 
   render() {

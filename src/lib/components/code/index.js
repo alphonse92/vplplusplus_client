@@ -6,24 +6,24 @@ const LANG_DEFAULT = 'java'
 const OPTIONS_DEFAULT = {
 	selectOnLineNumbers: true,
 	automaticLayout: true
-};
-const CODE_DEFAULT = `
-// Type source code in your Java here...
-public class HelloWorld {
-   public static void main(String[] args) {
-      System.out.println("Hello, World");
-   }
 }
-`
 export class CodeEditor extends React.Component {
-	state = {
-		code: CODE_DEFAULT
+	state = {}
+
+	componentDidMount(prevProps, prevState) {
+		const { state: currentState, props: currentProps } = this
+		const newCodeInjectedByProps = currentState.code !== currentProps.code
+		if (newCodeInjectedByProps) return this.setState({ code: this.props.code })
 	}
 
-	componentDidMount() {
-		if (this.state.code !== this.props.code)
-			return this.setState({ code: this.props.code })
-	}
+
+
+	// shouldComponentUpdate(){
+	// 	const { state: currentState, props: currentProps } = this
+	// 	const newCodeInjectedByProps = currentState.code !== currentProps.code
+	// 	console.log(currentState, currentProps)
+	// 	if (newCodeInjectedByProps) return this.setState({ code: this.props.code })
+	// }
 
 	editorDidMount = (editor, monaco) => {
 		this.editor = editor
@@ -32,6 +32,7 @@ export class CodeEditor extends React.Component {
 	}
 
 	onChange = (newValue, e) => {
+		this.props.onChange(newValue, e)
 	}
 
 	render() {

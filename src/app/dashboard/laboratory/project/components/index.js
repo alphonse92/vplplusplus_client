@@ -27,18 +27,13 @@ export const CodePreview = ({ code }) => {
 	)
 }
 
-export const CodeEditorWithPreview = ({ title, previewCode, description, editor, getValue, setEditor, onShowPreview, onClosePreview }) => {
+export const CodeEditorWithPreview = ({ title, previewCode, description, editor, getCode, editorDidMount, onShowPreview, onClosePreview, onChange = () => true }) => {
 
-	const initialValue = getValue()
-
-	const code = editor
-		? editor.getValue()
-		: initialValue
 
 	const ButtonHandlePreviewVisibility = ({ open, onShow, onClose }) => !open
 		? <button onClick={onShow}>Show preview</button>
 		: <button onClick={onClose}>Continue editing</button>
-
+	const code = getCode()
 	return (
 		<React.Fragment>
 			<h3>{title}</h3>
@@ -49,9 +44,11 @@ export const CodeEditorWithPreview = ({ title, previewCode, description, editor,
 					onClose={onClosePreview} />
 			</p>
 			<CodeEditor
+				key={Date.now().toString()}
+				onChange={onChange}
 				code={code}
 				options={{ readOnly: !!previewCode }}
-				editorDidMount={setEditor}
+				editorDidMount={editorDidMount}
 				monacoProperties={{ height: '250px' }} />
 
 			{previewCode && <CodePreview code={previewCode} />}

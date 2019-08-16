@@ -1,3 +1,8 @@
+/**
+ * TODO:
+ * improve the should component update method to detect if a confirmation modal is opened and not re render
+ */
+
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -10,6 +15,8 @@ import { get, set } from 'lodash'
 import { SelectDialog } from '../../../../lib/components/material/modals/select';
 import { EditIcon } from '../../../../lib/components/material/EditIcon';
 import { EditTestWindow } from './components/test.editor';
+import { WindowComponent } from '../../../../lib/components/window-manager';
+
 class ProjectCreateComponent extends React.Component {
 
 	state = {}
@@ -75,16 +82,6 @@ class ProjectCreateComponent extends React.Component {
 			test: {
 				name: 'test',
 				component: EditTestWindow,
-				data: {
-					code: `
-private StudentClass test;
-
-@Before
-public void setUp(){
-	test = new StudentClass();
-}`
-
-				}
 			}
 		}
 	}
@@ -107,28 +104,28 @@ public void setUp(){
 		this.props.DISPATCHERS.GET_TOPICS()
 	}
 
-
-
 	createNewTestcase = () => {
-		const mock = {
+		const mock = () => ({
 			name: 'My test',
 			tags: ['java', 'types'],
 			description: 'Describe your test',
 			objective: 'Set the Objective of this test',
 			maxGrade: 5,
+			code: "test code example " + Date.now(),
 			test_cases: [
 				{
 					name: 'My first Test case',
 					objective: 'Objective of my first test case',
 					grade: 5,
+					code: ' test case code example ' + Date.now(),
 					successMessage: 'successMessage',
 					successMessageLink: 'successMessageLink',
 					failureMessage: 'failureReferenceLink',
 				}
 			]
-		}
+		})
 		const { project, tests } = this.props
-		tests.push(mock)
+		tests.push(mock())
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 
 	}
@@ -141,8 +138,8 @@ public void setUp(){
 
 	}
 
-	setModalOpen = (modal) => {
-		this.setState({ modal })
+	setModalOpen = (modal, extraState = {}) => {
+		this.setState({ modal, ...extraState })
 	}
 
 	editTest = (index, attribute) => {
@@ -151,8 +148,8 @@ public void setUp(){
 		this.setModalOpen(modalSchema)
 	}
 
-	closeModal = () => {
-		this.setState({ modal: undefined })
+	closeModal = (extra = {}) => {
+		this.setState({ modal: undefined, ...extra })
 	}
 
 	setValueFromModal = (value) => {
@@ -176,61 +173,53 @@ public void setUp(){
 	}
 
 
-	preventUnsavedWindowChange = (window, data, nextWindow) => {
-		console.log('prevent un saved changes', { window, data, nextWindow })
+	preventUnsavedWindowChange = (prevWindow) => {
+
+		const { nextWindow } = this.state
 
 		const onCancel = () => {
-			console.log('skiping changes')
-			const returnWindow = { ...window, data }
-			this.setState({ window: returnWindow })
+			console.log(prevWindow)
+			this.closeModal({ window: { ...prevWindow, setAsSaved: false }, nextWindow: undefined, waitingForConfirmation: false })
 		}
 
-		const onSave = () => {
-			console.log('saving changes')
-			this.setState({ window: nextWindow })
+		const onNext = () => {
+			this.closeModal({ window: nextWindow, nextWindow: undefined, waitingForConfirmation: false })
 		}
 
-		const onClose = ({ ok }) => ok ? onSave() : onCancel()
+		const onClose = ({ ok }) => ok ? onNext() : onCancel()
 
-		const path = `test[${window.data.index}]`
+		const path = `test[${prevWindow.data.index}]`
 		const modal = ProjectCreateComponent.DEFAULTS.modals.unsavedChanges
-		const { title, text } = modal
-
-		this.setModalOpen({ title, text, path, onClose })
+		const { title, text, component } = modal
+		this.setModalOpen({ title, text, path, onClose, component }, { waitingForConfirmation: true })
 
 	}
 
+	/**
+	 * This method will be executed by an unmounting window.
+	 */
 	closeWindow = (payload) => {
-		const { ok, window, data } = payload
-		const { window: nextWindow } = this.state
-		if (!ok) return this.preventUnsavedWindowChange(window, data, nextWindow)
+		const { ok, window } = payload
+		console.log('closing windiow', this.state)
+		if (this.state.waitingForConfirmation) return
+		if (!ok) return this.preventUnsavedWindowChange(window)
 	}
 
-	showWindow = (window, windowData) => {
+	showWindow = (window, data) => {
 
-		const data = { ...window.data, ...windowData }
-		const id = data.id || Date.now()
-		const windowState = { ...window, data, id }
-		this.setState({ window: windowState })
+		const id = data.id
+		const nextWindow = { ...window, data, id }
+		if (!this.state.window) return this.setState({ window: nextWindow })
+		if (this.state.window.id === nextWindow.id) return
+		this.setState({ window: nextWindow, nextWindow })
 
-	}
-
-	closePreviewWindow = () => {
-		this.setState({ codePreview: undefined })
-	}
-
-	shouldComponentUpdate() {
-		return !this.state.stopRendering
-			|| this.state.modal.name !== ProjectCreateComponent.DEFAULTS.modals.unsavedChanges.name
 	}
 
 	render() {
 		const { props, state } = this
 		const { modal, window } = state
 		const { tests = [], project } = props
-
 		const showModal = !!modal
-
 
 		const Title = () => {
 			return (
@@ -265,10 +254,9 @@ public void setUp(){
 			)
 		}
 
-		const WindowComponent = ({ window, onClose, component }) => {
-			const Component = window.component
-			return <Component window={window} onClose={onClose} />
-		}
+
+
+
 		const onCloseModalDef = ({ ok, value }) => ok ? this.setValueFromModal(value) : this.closeModal()
 		const onCloseModal = get(modal, 'onClose', onCloseModalDef)
 
@@ -278,7 +266,6 @@ public void setUp(){
 					(showModal && modal.component) && <Dialog
 						handleClose={onCloseModal}
 						open={showModal}
-						onRender={() => this.setState({ stopRendering: true })}
 						component={modal.component}
 						title={modal.title}
 						text={modal.text} />
@@ -295,12 +282,12 @@ public void setUp(){
 						options={this.props.activities} />
 				}
 
+
 				<Flex vertical width="100%" margin="7px">
 					<Title />
 					<Description />
 					<Activity />
 				</Flex>
-
 				<Flex horizontal width="100%">
 					<Flex vertical width="25%" margin="7px" >
 						<ProjectPreview
@@ -309,16 +296,18 @@ public void setUp(){
 							onCreateTest={this.createNewTestcase}
 							onDeleteTest={this.deleteTest}
 							onEditTest={this.editTest}
-							onEditTestCode={(test, index) => this.showWindow(ProjectCreateComponent.DEFAULTS.windows.test, { index, test })}
+							onEditTestCode={(test, index) => {
+								console.log('on edit test code,', { test, index })
+								this.showWindow(ProjectCreateComponent.DEFAULTS.windows.test, { id: index.toString(), index, test })
+							}}
 						/>
 					</Flex>
 					<Flex horizontal width="75%" margin="7px" >
 						<Flex vertical width="100%" >
-							{window && <WindowComponent window={window} onClose={this.closeWindow} />}
+							<WindowComponent window={window} onClose={this.closeWindow} />
 						</Flex>
 					</Flex>
 				</Flex>
-
 			</React.Fragment >
 		)
 	}

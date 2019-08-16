@@ -1,30 +1,42 @@
 import React from 'react'
 import { CodeEditorWithPreview } from './';
-import { capitalize, camelCase } from 'lodash'
+import { capitalize, camelCase, debounce } from 'lodash'
 
 export class EditTestWindow extends React.Component {
 
   constructor(props) {
     super(props)
-    const { code } = props
+    const { window } = props
+    const { setAsSaved = true } = window
+    const code = window.data.test.code
     this.state = { code }
+    this.saved = setAsSaved
+    console.log('constructor')
   }
 
   getTestPayload = ok => {
     const { props } = this
     const { window } = props
-    const data = { ...window.data.test, code: this.editor.getValue() }
-    return { ok, window, data }
+    const code = this.editor.getValue()
+    const windowData = { ...window }
+    windowData.data.test.code = code
+    return { ok, window: windowData }
+  }
+
+
+  componentDidMount() {
+    console.log('component is mounting', this.props.window.data.test.code)
+
   }
 
   componentWillUnmount() {
-    const payload = this.getTestPayload(false)
+    const isSaved = !!this.saved
+    const payload = this.getTestPayload(!!this.saved)
+    console.log('is saved?', isSaved, 'unmounting', payload.window.data.test.code)
     this.props.onClose(payload)
-    this.editor = undefined
-    this.monaco = undefined
   }
 
-  setEditor = (editor, monaco) => {
+  getEditor = (editor, monaco) => {
     this.editor = editor
     this.monaco = monaco
   }
@@ -32,16 +44,19 @@ export class EditTestWindow extends React.Component {
 
   deleteCodeFromState = () => this.setState({ ...this.state, previewCode: undefined })
 
-  onSave = () => this.props.onClose(this.getTestPayload(true))
+  onSave = () => {
+    console.log('saving')
+    this.saved = true
+  }
 
 
-  addCodePreviewToState = () => {
-
+  showPreviewCode = () => {
+    const code = this.editor.getValue()
     const newState = {
       ...this.state,
-      previewCode: this.getPreviewCode(this.editor.getValue(), this.props.window.data.test)
+      previewCode: this.getPreviewCode(code, this.props.window.data.test),
+      code
     }
-
     this.setState(newState)
   }
 
@@ -53,9 +68,17 @@ public class ${capitalize(camelCase(test.name))} {
 }
 `}
 
+  shouldComponentUpdate(prevProps, prevState) {
+    return this.state.code !== prevProps.window.data.test.code
+  }
+
+  handleEditorChange = (newValue, e) => {
+    const fn = debounce(() => { this.saved = false }, 100)
+    fn()
+  }
 
   render() {
-    const { window } = this.props
+    console.log('rendering test window', this.props.window)
     const { previewCode } = this.state
     const description = "Please configure your test code. This code will be placed before all of tests cases of JUnit Class. "
       + "So, you can writte the @before, @beforeAll, @after and @afterAll methods of JUnit Life Cycle.Also, you can set the test class variables and use it into a test case "
@@ -65,13 +88,12 @@ public class ${capitalize(camelCase(test.name))} {
           title="Code Editor"
           description={description}
           editor={this.editor}
-          setEditor={this.setEditor}
-
-          getValue={() => window.data.test.code || window.data.code}
-
+          editorDidMount={this.getEditor}
+          getCode={() => this.state.code}
           previewCode={previewCode}
-          onShowPreview={this.addCodePreviewToState}
+          onShowPreview={this.showPreviewCode}
           onClosePreview={this.deleteCodeFromState}
+          onChange={this.handleEditorChange}
         />
         <button onClick={this.onSave}>Save</button>
       </React.Fragment>
