@@ -206,13 +206,19 @@ class ProjectCreateComponent extends React.Component {
 		const { project, tests } = this.props
 		tests[test_index].test_cases[test_case_index] = test_case
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+	}
+
+	saveTestCode = (indexes, data) => {
+		const { test: test_index } = indexes
+		const test = { ...this.props.tests[test_index], code: data.code }
+		this.saveTest(indexes, test)
 
 	}
 
 	onWindowEmit = (windowEvent, data) => {
 		console.log('windowemiter', { windowEvent, data })
 		if (windowEvent === 'close') return this.closeWindow()
-		if (windowEvent === 'save-test') return this.saveTest(data.index, data)
+		if (windowEvent === 'save-test-code') return this.saveTestCode(data.index, data)
 		if (windowEvent === 'save-test-case') return this.saveTestCase(data.index, data)
 	}
 

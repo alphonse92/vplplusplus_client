@@ -47,6 +47,7 @@ export class EditTestWindow extends React.Component {
   onSave = () => {
     console.log('saving')
     this.saved = true
+    this.props.onEmit('save-test-code', { code: this.state.code })
   }
 
 
