@@ -106,7 +106,7 @@ class ProjectCreateComponent extends React.Component {
 
 	createNewTestcase = () => {
 		const mock = () => ({
-			name: 'My test',
+			name: 'My test ' + (this.props.tests.length + 1),
 			tags: ['java', 'types'],
 			description: 'Describe your test',
 			objective: 'Set the Objective of this test',
