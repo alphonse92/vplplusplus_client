@@ -15,6 +15,7 @@ import { get, set } from 'lodash'
 import { SelectDialog } from '../../../../lib/components/material/modals/select';
 import { EditIcon } from '../../../../lib/components/material/EditIcon';
 import { EditTestWindow } from './components/test.editor.window';
+import { EditTestCaseWindow } from './components/test.case.editor.window';
 import { WindowComponent } from '../../../../lib/components/window-manager';
 
 class ProjectCreateComponent extends React.Component {
@@ -82,6 +83,10 @@ class ProjectCreateComponent extends React.Component {
 			test: {
 				name: 'test',
 				component: EditTestWindow,
+			},
+			testCase: {
+				name: 'test-case',
+				component: EditTestCaseWindow,
 			}
 		}
 	}
@@ -230,7 +235,11 @@ class ProjectCreateComponent extends React.Component {
 
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
-	onSelectTestCase = () => { }
+
+	onSelectTestCase = (indexTest, indexTestCase, testCase) => {
+		const id = `${indexTest}-${indexTestCase}`
+		this.showWindow(ProjectCreateComponent.DEFAULTS.windows.testCase, { id, indexTest, indexTestCase, test: testCase })
+	}
 
 
 	onWindowEmit = (windowEvent, payload) => {
@@ -341,7 +350,9 @@ class ProjectCreateComponent extends React.Component {
 								console.log('on edit test code,', { test, index })
 								this.showWindow(ProjectCreateComponent.DEFAULTS.windows.test, { id: index.toString(), index, test })
 							}}
-							onSelectTestCase={this.onSelectTestCase}
+							onSelectTestCase={(indexTest, indexTestCase, testCase) => {
+								this.onSelectTestCase(indexTest, indexTestCase, testCase)
+							}}
 							onCreateTestCase={this.onCreateTestCase}
 							onDeleteTestCase={this.onDeleteTestCase}
 						/>

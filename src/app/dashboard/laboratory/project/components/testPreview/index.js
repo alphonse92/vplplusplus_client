@@ -46,7 +46,7 @@ const TestsWrapper = props => <List component="nav" className="tests" subheader=
 
 
 const ProjectPreviewTestItem = ({ onSelectTestCase, onDeleteTestCase, test, project_index, index }) => (
-	<ListItem button onClick={() => onSelectTestCase(test)}>
+	<ListItem button onClick={() => onSelectTestCase(project_index, index, test)}>
 		<ListItemIcon>
 			<i className="fas fa-flask"></i>
 		</ListItemIcon>
@@ -166,7 +166,7 @@ class Project extends React.Component {
 
 
 
-const ProjectPreviewTests = ({  project_index, project, onSelectTestCase, onDeleteTestCase }) => (
+const ProjectPreviewTests = ({ project_index, project, onSelectTestCase, onDeleteTestCase }) => (
 	<TestsWrapper>
 		{project.test_cases.map((test, index) => {
 			return (

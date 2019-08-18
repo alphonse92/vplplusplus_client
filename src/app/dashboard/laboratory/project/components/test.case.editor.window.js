@@ -63,9 +63,11 @@ export class EditTestCaseWindow extends React.Component {
 
   getPreviewCode = (codeBase, test) => {
     return `
-public class ${capitalize(camelCase(test.name))} {
- ${codeBase}
- // your unit test methods will be placed below
+@Test()
+public void ${capitalize(camelCase(test.name))}() {
+  // Begin of your Code section
+  ${codeBase}
+  // End of your  code section
 }
 `}
 
@@ -83,10 +85,12 @@ public class ${capitalize(camelCase(test.name))} {
   render() {
     console.log('rendering test window', this.props.window)
     const { previewCode } = this.state
-    const description = "Please configure your test code. This code will be placed before all of tests cases of JUnit Class. "
-      + "So, you can writte the @before, @beforeAll, @after and @afterAll methods of JUnit Life Cycle.Also, you can set the test class variables and use it into a test case "
+    const description = "Please set the Junit test method body "
+      + "That code will be wraped into the JUnit test method."
     return (
       <React.Fragment>
+        <h3>Test case editor</h3>
+        <p>Set up your test case information. It will be used to track and analize the students submissions.</p>
         <CodeEditorWithPreview
           title="Code Editor"
           description={description}
