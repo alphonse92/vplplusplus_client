@@ -14,7 +14,7 @@ import { InputDialog, ConfirmationDialog, Dialog } from '../../../../lib/compone
 import { get, set } from 'lodash'
 import { SelectDialog } from '../../../../lib/components/material/modals/select';
 import { EditIcon } from '../../../../lib/components/material/EditIcon';
-import { EditTestWindow } from './components/test.editor';
+import { EditTestWindow } from './components/test.editor.window';
 import { WindowComponent } from '../../../../lib/components/window-manager';
 
 class ProjectCreateComponent extends React.Component {
@@ -112,17 +112,7 @@ class ProjectCreateComponent extends React.Component {
 			objective: 'Set the Objective of this test',
 			maxGrade: 5,
 			code: "test code example " + Date.now(),
-			test_cases: [
-				// {
-				// 	name: 'My first Test case',
-				// 	objective: 'Objective of my first test case',
-				// 	grade: 5,
-				// 	code: ' test case code example ' + Date.now(),
-				// 	successMessage: 'successMessage',
-				// 	successMessageLink: 'successMessageLink',
-				// 	failureMessage: 'failureReferenceLink',
-				// }
-			]
+			test_cases: []
 		})
 		const { project, tests } = this.props
 		tests.push(mock())
@@ -204,7 +194,7 @@ class ProjectCreateComponent extends React.Component {
 
 	}
 
-	saveTestCode = ({ window: payload}) => {
+	saveTestCode = ({ window: payload }) => {
 		const { index: test_index, test: testPayload } = payload.data
 		const { code } = testPayload
 		const test = { ...this.props.tests[test_index], code }
@@ -212,6 +202,36 @@ class ProjectCreateComponent extends React.Component {
 		this.saveTest(test_index, test)
 
 	}
+
+	onCreateTestCase = (index, test) => {
+		const mock = () => ({
+			name: 'New Test Case',
+			objective: 'Objective of my first test case',
+			grade: 5,
+			code: ' test case code example ' + Date.now(),
+			successMessage: 'successMessage',
+			successMessageLink: 'successMessageLink',
+			failureMessage: 'failureReferenceLink',
+		})
+		const { project, tests } = this.props
+		tests[index].test_cases.push(mock())
+		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+	}
+	onDeleteTestCase = (test_index, test_case_index, current_test) => {
+		console.log({ test_index, test_case_index, current_test })
+		const { project, tests } = this.props
+		const test = tests[test_index]
+		const allTestCases = test.test_cases
+		// eslint-disable no-unused-vars 
+		const test_cases = allTestCases.filter((test_case, indexArray) => test_case_index !== indexArray)
+
+		test.test_cases = test_cases
+		tests[test_case_index] = test
+
+		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+	}
+	onSelectTestCase = () => { }
+
 
 	onWindowEmit = (windowEvent, payload) => {
 		console.log('windowemiter', { windowEvent, payload })
@@ -245,7 +265,6 @@ class ProjectCreateComponent extends React.Component {
 		const { modal, window } = state
 		const { tests = [], project } = props
 		const showModal = !!modal
-
 		const Title = () => {
 			return (
 				<Toolbar disableGutters>
@@ -278,9 +297,6 @@ class ProjectCreateComponent extends React.Component {
 				</p>
 			)
 		}
-
-
-
 
 		const onCloseModalDef = ({ ok, value }) => ok ? this.setValueFromModal(value) : this.closeModal()
 		const onCloseModal = get(modal, 'onClose', onCloseModalDef)
@@ -321,10 +337,13 @@ class ProjectCreateComponent extends React.Component {
 							onCreateTest={this.createNewTestcase}
 							onDeleteTest={this.deleteTest}
 							onEditTest={this.editTest}
-							onEditTestCode={(test, index) => {
+							onEditTestCode={(index, test) => {
 								console.log('on edit test code,', { test, index })
 								this.showWindow(ProjectCreateComponent.DEFAULTS.windows.test, { id: index.toString(), index, test })
 							}}
+							onSelectTestCase={this.onSelectTestCase}
+							onCreateTestCase={this.onCreateTestCase}
+							onDeleteTestCase={this.onDeleteTestCase}
 						/>
 					</Flex>
 					<Flex horizontal width="75%" margin="7px" >

@@ -45,16 +45,16 @@ const TestsWrapper = props => <List component="nav" className="tests" subheader=
 
 
 
-const ProjectPreviewTestItem = ({ onSelectTestCase, onDeleteTestCase, test }) => (
+const ProjectPreviewTestItem = ({ onSelectTestCase, onDeleteTestCase, test, project_index, index }) => (
 	<ListItem button onClick={() => onSelectTestCase(test)}>
 		<ListItemIcon>
 			<i className="fas fa-flask"></i>
 		</ListItemIcon>
 		<ListItemText inset primary={test.name.substring(0, 25)} secondary={test.objective.substring(0, 25) + '...'} />
-		<ListItemSecondaryAction onClick={() => onDeleteTestCase(test)}>
+		<ListItemSecondaryAction onClick={() => onDeleteTestCase(project_index, index, test)}>
 			<IconButton aria-label="Remove Case"> <DeleteIcon /> </IconButton>
 		</ListItemSecondaryAction>
-	</ListItem>
+	</ListItem >
 )
 
 
@@ -94,15 +94,15 @@ const ProjectDescriptionCard =
 				<CardActions>
 					{editable && (
 						<React.Fragment>
-							<IconButton onClick={onDeleteProject} aria-label="Edit Project">
+							<IconButton onClick={() => onDeleteProject(index, project)} aria-label="Edit Project">
 								<DeleteIcon />
 							</IconButton>
-							<IconButton onClick={onCreateTestCase}>
+							<IconButton onClick={() => onCreateTestCase(index, project)}>
 								<i className="fas fa-plus " />
 							</IconButton>
 						</React.Fragment>
 					)}
-					<IconButton onClick={() => onEditProjectCode(project, index)}>
+					<IconButton onClick={() => onEditProjectCode(index, project)}>
 						<CodeIcon />
 					</IconButton>
 				</CardActions>
@@ -154,7 +154,7 @@ class Project extends React.Component {
 					<ProjectPreviewTests
 						editable={editable}
 						project={project}
-						projectIndex={index}
+						project_index={index}
 						onSelectTestCase={onSelectTestCase}
 						onDeleteTestCase={onDeleteTestCase} />
 				</Collapse>
@@ -164,19 +164,22 @@ class Project extends React.Component {
 }
 
 
-const extractTestComponents =
-	project =>
-		onSelectTestCase =>
-			onDeleteTestCase =>
-				(test, index) => {
-					return (
-						<ProjectPreviewTestItem key={index} onSelectTestCase={onSelectTestCase} onDeleteTestCase={onDeleteTestCase} project={project} test={test} />
-					)
-				}
 
-const ProjectPreviewTests = ({ project, onSelectTestCase, onDeleteTestCase }) => (
+
+const ProjectPreviewTests = ({  project_index, project, onSelectTestCase, onDeleteTestCase }) => (
 	<TestsWrapper>
-		{project.test_cases.map(extractTestComponents(project)(onSelectTestCase)(onDeleteTestCase))}
+		{project.test_cases.map((test, index) => {
+			return (
+				<ProjectPreviewTestItem
+					key={index}
+					index={index}
+					project={project}
+					project_index={project_index}
+					onSelectTestCase={onSelectTestCase}
+					onDeleteTestCase={onDeleteTestCase}
+					test={test} />
+			)
+		})}
 	</TestsWrapper>
 )
 
