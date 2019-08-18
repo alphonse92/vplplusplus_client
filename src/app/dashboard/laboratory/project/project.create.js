@@ -175,10 +175,8 @@ class ProjectCreateComponent extends React.Component {
 		const onNext = () => {
 			this.closeModal({ window: nextWindow, nextWindow: undefined, waitingForConfirmation: false })
 		}
-
 		const onClose = ({ ok }) => ok ? onNext() : onCancel()
-
-		const path = `test[${prevWindow.data.index}]`
+		const { path } = prevWindow
 		const modal = ProjectCreateComponent.DEFAULTS.modals.unsavedChanges
 		const { title, text, component } = modal
 		this.setModalOpen({ title, text, path, onClose, component }, { waitingForConfirmation: true })
@@ -187,10 +185,10 @@ class ProjectCreateComponent extends React.Component {
 
 	saveTestCase = ({ window: payload }) => {
 		const { project, tests } = this.props
-		const { indexTest, indexTestCase, data } = payload
-		const { test: testCaseData } = data
+		const { data } = payload
+		const { indexTest, indexTestCase, test: test_case } = data
 
-		tests[indexTest].test_cases[indexTestCase] = testCaseData
+		tests[indexTest].test_cases[indexTestCase] = test_case
 
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
@@ -241,7 +239,8 @@ class ProjectCreateComponent extends React.Component {
 
 	onSelectTestCase = (indexTest, indexTestCase, testCase) => {
 		const id = `${indexTest}-${indexTestCase}`
-		this.showWindow(ProjectCreateComponent.DEFAULTS.windows.testCase, { id, indexTest, indexTestCase, test: testCase })
+		this.showWindow(ProjectCreateComponent.DEFAULTS.windows.testCase,
+			{ id, indexTest, indexTestCase, test: testCase, path: `test[${indexTest}].test_cases[${indexTestCase}]` })
 	}
 
 
@@ -351,7 +350,8 @@ class ProjectCreateComponent extends React.Component {
 							onEditTest={this.editTest}
 							onEditTestCode={(index, test) => {
 								console.log('on edit test code,', { test, index })
-								this.showWindow(ProjectCreateComponent.DEFAULTS.windows.test, { id: index.toString(), index, test })
+								this.showWindow(ProjectCreateComponent.DEFAULTS.windows.test,
+									{ id: index.toString(), index, test, path: `test[${index}]` })
 							}}
 							onSelectTestCase={(indexTest, indexTestCase, testCase) => {
 								this.onSelectTestCase(indexTest, indexTestCase, testCase)

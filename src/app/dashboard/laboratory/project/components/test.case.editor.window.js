@@ -8,8 +8,7 @@ export class EditTestCaseWindow extends React.Component {
     super(props)
     const { window } = props
     const { setAsSaved = true } = window
-    const code = window.data.test.code
-    this.state = { code }
+    this.state = { ...window.data.test }
     this.saved = setAsSaved
     console.log('constructor')
   }
@@ -21,7 +20,7 @@ export class EditTestCaseWindow extends React.Component {
     const windowData = { ...window }
     windowData.data.test = { ...this.state }
     windowData.data.test.code = code
-    return { ok, window: windowData }
+    return { ok, window: windowData,  }
   }
 
 
@@ -84,7 +83,7 @@ public void ${capitalize(camelCase(test.name))}() {
   }
 
   render() {
-    console.log('rendering test window', this.props.window)
+    console.log('rendering test case  window', this.props.window)
     const { previewCode } = this.state
     const description = "Please set the Junit test method body. That code will be wraped into the JUnit test method."
     return (

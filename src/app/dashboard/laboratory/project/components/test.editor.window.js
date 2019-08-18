@@ -20,7 +20,7 @@ export class EditTestWindow extends React.Component {
     const code = this.editor.getValue()
     const windowData = { ...window }
     windowData.data.test.code = code
-    return { ok, window: windowData }
+    return { ok, window: windowData, path: `test[${window.data.index}]` }
   }
 
 
