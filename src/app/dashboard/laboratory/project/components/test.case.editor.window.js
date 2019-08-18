@@ -19,6 +19,7 @@ export class EditTestCaseWindow extends React.Component {
     const { window } = props
     const code = this.editor.getValue()
     const windowData = { ...window }
+    windowData.data.test = { ...this.state }
     windowData.data.test.code = code
     return { ok, window: windowData }
   }
@@ -47,7 +48,7 @@ export class EditTestCaseWindow extends React.Component {
   onSave = () => {
     console.log('saving')
     this.saved = true
-    this.props.onEmit('save-test-code', this.getTestPayload(true))
+    this.props.onEmit('save-test-case', this.getTestPayload(true))
   }
 
 
@@ -85,8 +86,7 @@ public void ${capitalize(camelCase(test.name))}() {
   render() {
     console.log('rendering test window', this.props.window)
     const { previewCode } = this.state
-    const description = "Please set the Junit test method body "
-      + "That code will be wraped into the JUnit test method."
+    const description = "Please set the Junit test method body. That code will be wraped into the JUnit test method."
     return (
       <React.Fragment>
         <h3>Test case editor</h3>

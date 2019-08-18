@@ -185,10 +185,13 @@ class ProjectCreateComponent extends React.Component {
 
 	}
 
-	saveTestCase = (indexes, test_case) => {
-		const { test: test_index, test_case: test_case_index } = indexes
+	saveTestCase = ({ window: payload }) => {
 		const { project, tests } = this.props
-		tests[test_index].test_cases[test_case_index] = test_case
+		const { indexTest, indexTestCase, data } = payload
+		const { test: testCaseData } = data
+
+		tests[indexTest].test_cases[indexTestCase] = testCaseData
+
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
 
