@@ -129,6 +129,10 @@ class ProjectCreateComponent extends React.Component {
 		const { project, tests: allTests } = this.props
 		// eslint-disable no-unused-vars 
 		const tests = allTests.filter((test, indexArray) => index !== indexArray)
+		const windowId = index.toString()
+
+		if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
+		
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 
 	}
@@ -246,14 +250,19 @@ class ProjectCreateComponent extends React.Component {
 
 		test.test_cases = test_cases
 		tests[test_case_index] = test
+		const windowId = this.getTestCaseId(test_index, test_case_index)
 
+		if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
+		
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
 
-	onSelectTestCase = (indexTest, indexTestCase, testCase) => {
-		const id = `${indexTest}-${indexTestCase}`
+	getTestCaseId = (test_index, test_case_index) => `${test_index}-${test_case_index}`
+
+	onSelectTestCase = (test_index, test_case_index, testCase) => {
+		const id = this.getTestCaseId(test_index, test_case_index)
 		this.showWindow(ProjectCreateComponent.DEFAULTS.windows.testCase,
-			{ id, indexTest, indexTestCase, test: testCase, path: `test[${indexTest}].test_cases[${indexTestCase}]` })
+			{ id, indexTest: test_index, indexTestCase: test_case_index, test: testCase, path: `test[${test_index}].test_cases[${test_case_index}]` })
 	}
 
 
@@ -264,23 +273,21 @@ class ProjectCreateComponent extends React.Component {
 		if (windowEvent === EditTestCaseWindow.Events.save) return this.saveTestCase(payload)
 	}
 
-	/**
-	 * This method will be executed by an unmounting window.
-	 */
+	forceCloseWindow = extraState => this.setState({ window: undefined, forceCloseWindow: true, ...extraState })
+
 	closeWindow = (payload) => {
 		const { ok } = payload
 		if (this.state.waitingForConfirmation) return
-		if (!ok) return this.preventUnsavedWindowChange(payload)
+		if (!ok && !this.state.forceCloseWindow) return this.preventUnsavedWindowChange(payload)
+		this.setState({ window: undefined, forceCloseWindow: false })
 	}
 
 	showWindow = (window, data) => {
-
 		const id = data.id
 		const nextWindow = { ...window, data, id }
 		if (!this.state.window) return this.setState({ window: nextWindow })
 		if (this.state.window.id === nextWindow.id) return
 		this.setState({ window: nextWindow, nextWindow })
-
 	}
 
 	render() {
