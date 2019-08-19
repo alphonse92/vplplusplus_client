@@ -163,7 +163,6 @@ Actions[EDIT_PROJECT_DATA_NAME] = {
 			reducer: (state, action) => {
 				const newState = { ...state }
 				newState.create = { ...action.payload }
-				console.error(action.payload)
 				return newState
 			}
 		}

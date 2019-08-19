@@ -181,6 +181,7 @@ class ProjectCreateComponent extends React.Component {
 			// if the closed window was the test case window, then trigger the save test case event
 			else if (prevWindow.name === ProjectCreateComponent.DEFAULTS.windows.testCase.name)
 				this.onWindowEmit(ProjectCreateComponent.DEFAULTS.windows.testCase.component.Events.save, payload)
+
 			// close the modal
 			this.closeModal({ window: nextWindow, nextWindow: undefined, waitingForConfirmation: false })
 		}
@@ -201,6 +202,7 @@ class ProjectCreateComponent extends React.Component {
 		const { indexTest, indexTestCase, test: test_case } = data
 
 		tests[indexTest].test_cases[indexTestCase] = test_case
+		console.log('saving test case', project, tests)
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
 
@@ -256,6 +258,7 @@ class ProjectCreateComponent extends React.Component {
 
 
 	onWindowEmit = (windowEvent, payload) => {
+		console.log({ windowEvent, payload })
 		if (windowEvent === 'close') return this.closeWindow()
 		if (windowEvent === EditTestWindow.Events.save) return this.saveTestCode(payload)
 		if (windowEvent === EditTestCaseWindow.Events.save) return this.saveTestCase(payload)

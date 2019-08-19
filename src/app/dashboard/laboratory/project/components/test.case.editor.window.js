@@ -5,8 +5,8 @@ import { capitalize, camelCase, debounce } from 'lodash'
 export class EditTestCaseWindow extends React.Component {
 
   static Events = {
-    default: 'save-test-code',
-    save: 'save-test-code',
+    default: 'save-test-case',
+    save: 'save-test-case',
   }
 
   constructor(props) {
@@ -24,12 +24,11 @@ export class EditTestCaseWindow extends React.Component {
     const windowData = { ...window }
     windowData.data.test = { ...this.state }
     windowData.data.test.code = code
-    return { ok, window: windowData,  }
+    return { ok, window: windowData  }
   }
 
   componentWillUnmount() {
     const payload = this.getTestPayload(!!this.saved)
-    console.log('unmounting test case window', payload)
     this.props.onClose(payload)
   }
 
