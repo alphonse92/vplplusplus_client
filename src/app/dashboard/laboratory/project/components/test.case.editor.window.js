@@ -4,13 +4,17 @@ import { capitalize, camelCase, debounce } from 'lodash'
 
 export class EditTestCaseWindow extends React.Component {
 
+  static Events = {
+    default: 'save-test-code',
+    save: 'save-test-code',
+  }
+
   constructor(props) {
     super(props)
     const { window } = props
     const { setAsSaved = true } = window
     this.state = { ...window.data.test }
     this.saved = setAsSaved
-    console.log('constructor')
   }
 
   getTestPayload = ok => {
@@ -23,16 +27,10 @@ export class EditTestCaseWindow extends React.Component {
     return { ok, window: windowData,  }
   }
 
-
-  componentDidMount() {
-    console.log('component is mounting', this.props.window.data.test.code)
-
-  }
-
   componentWillUnmount() {
     const isSaved = !!this.saved
     const payload = this.getTestPayload(!!this.saved)
-    console.log('is saved?', isSaved, 'unmounting', payload.window.data.test.code)
+    console.log('unmounting test case window', payload)
     this.props.onClose(payload)
   }
 
@@ -45,9 +43,8 @@ export class EditTestCaseWindow extends React.Component {
   deleteCodeFromState = () => this.setState({ ...this.state, previewCode: undefined })
 
   onSave = () => {
-    console.log('saving')
     this.saved = true
-    this.props.onEmit('save-test-case', this.getTestPayload(true))
+    this.props.onEmit(EditTestCaseWindow.Events.save, this.getTestPayload(true))
   }
 
 
@@ -83,7 +80,6 @@ public void ${capitalize(camelCase(test.name))}() {
   }
 
   render() {
-    console.log('rendering test case  window', this.props.window)
     const { previewCode } = this.state
     const description = "Please set the Junit test method body. That code will be wraped into the JUnit test method."
     return (

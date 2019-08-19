@@ -4,6 +4,11 @@ import { capitalize, camelCase, debounce } from 'lodash'
 
 export class EditTestWindow extends React.Component {
 
+  static Events = {
+    default: 'save-test-code',
+    save: 'save-test-code',
+  }
+
   constructor(props) {
     super(props)
     const { window } = props
@@ -11,7 +16,6 @@ export class EditTestWindow extends React.Component {
     const code = window.data.test.code
     this.state = { code }
     this.saved = setAsSaved
-    console.log('constructor')
   }
 
   getTestPayload = ok => {
@@ -23,16 +27,8 @@ export class EditTestWindow extends React.Component {
     return { ok, window: windowData, path: `test[${window.data.index}]` }
   }
 
-
-  componentDidMount() {
-    console.log('component is mounting', this.props.window.data.test.code)
-
-  }
-
   componentWillUnmount() {
-    const isSaved = !!this.saved
     const payload = this.getTestPayload(!!this.saved)
-    console.log('is saved?', isSaved, 'unmounting', payload.window.data.test.code)
     this.props.onClose(payload)
   }
 
@@ -45,9 +41,8 @@ export class EditTestWindow extends React.Component {
   deleteCodeFromState = () => this.setState({ ...this.state, previewCode: undefined })
 
   onSave = () => {
-    console.log('saving')
     this.saved = true
-    this.props.onEmit('save-test-code', this.getTestPayload(true))
+    this.props.onEmit(EditTestWindow.Events.save, this.getTestPayload(true))
   }
 
 
@@ -81,7 +76,6 @@ public class ${capitalize(camelCase(test.name))} {
   }
 
   render() {
-    console.log('rendering test window', this.props.window)
     const { previewCode } = this.state
     const description = "Please configure your test code. This code will be placed before all of tests cases of JUnit Class. "
       + "So, you can writte the @before, @beforeAll, @after and @afterAll methods of JUnit Life Cycle.Also, you can set the test class variables and use it into a test case "

@@ -32,7 +32,7 @@ class ProjectCreateComponent extends React.Component {
 			unsavedChanges: {
 				name: "modal-unsave-change",
 				title: "Unsaved changes detected",
-				text: "You are closing the edition panel without save changes. Are you sure to continue ?.",
+				text: "You are closing the edition panel without save changes. Do you wanna save the changes before?",
 				component: ConfirmationDialog
 			},
 			project: {
@@ -163,18 +163,21 @@ class ProjectCreateComponent extends React.Component {
 		else this.closeModal()
 	}
 
-	preventUnsavedWindowChange = (prevWindow) => {
+	preventUnsavedWindowChange = (payload) => {
 
+		const { window: prevWindow } = payload
 		const { nextWindow } = this.state
 
 		const onCancel = () => {
-			console.log(prevWindow)
 			this.closeModal({ window: { ...prevWindow, setAsSaved: false }, nextWindow: undefined, waitingForConfirmation: false })
 		}
 
 		const onNext = () => {
+			if (prevWindow.name === ProjectCreateComponent.DEFAULTS.windows.test.name)
+				this.onWindowEmit(ProjectCreateComponent.DEFAULTS.windows.test.component.Events.save, payload)
 			this.closeModal({ window: nextWindow, nextWindow: undefined, waitingForConfirmation: false })
 		}
+
 		const onClose = ({ ok }) => ok ? onNext() : onCancel()
 		const { path } = prevWindow
 		const modal = ProjectCreateComponent.DEFAULTS.modals.unsavedChanges
@@ -189,7 +192,6 @@ class ProjectCreateComponent extends React.Component {
 		const { indexTest, indexTestCase, test: test_case } = data
 
 		tests[indexTest].test_cases[indexTestCase] = test_case
-
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
 
@@ -223,8 +225,8 @@ class ProjectCreateComponent extends React.Component {
 		tests[index].test_cases.push(mock())
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
+
 	onDeleteTestCase = (test_index, test_case_index, current_test) => {
-		console.log({ test_index, test_case_index, current_test })
 		const { project, tests } = this.props
 		const test = tests[test_index]
 		const allTestCases = test.test_cases
@@ -245,20 +247,18 @@ class ProjectCreateComponent extends React.Component {
 
 
 	onWindowEmit = (windowEvent, payload) => {
-		console.log('windowemiter', { windowEvent, payload })
 		if (windowEvent === 'close') return this.closeWindow()
-		if (windowEvent === 'save-test-code') return this.saveTestCode(payload)
-		if (windowEvent === 'save-test-case') return this.saveTestCase(payload)
+		if (windowEvent === EditTestWindow.Events.save) return this.saveTestCode(payload)
+		if (windowEvent === EditTestCaseWindow.Events.save) return this.saveTestCase(payload)
 	}
 
 	/**
 	 * This method will be executed by an unmounting window.
 	 */
 	closeWindow = (payload) => {
-		const { ok, window } = payload
-		console.log('closing windiow', this.state)
+		const { ok } = payload
 		if (this.state.waitingForConfirmation) return
-		if (!ok) return this.preventUnsavedWindowChange(window)
+		if (!ok) return this.preventUnsavedWindowChange(payload)
 	}
 
 	showWindow = (window, data) => {
@@ -309,9 +309,8 @@ class ProjectCreateComponent extends React.Component {
 			)
 		}
 
-		const onCloseModalDef = ({ ok, value }) => ok ? this.setValueFromModal(value) : this.closeModal()
+		const onCloseModalDef = ({ ok, value }) => { ok ? this.setValueFromModal(value) : this.closeModal() }
 		const onCloseModal = get(modal, 'onClose', onCloseModalDef)
-
 		return (
 			<React.Fragment>
 				{
@@ -349,7 +348,6 @@ class ProjectCreateComponent extends React.Component {
 							onDeleteTest={this.deleteTest}
 							onEditTest={this.editTest}
 							onEditTestCode={(index, test) => {
-								console.log('on edit test code,', { test, index })
 								this.showWindow(ProjectCreateComponent.DEFAULTS.windows.test,
 									{ id: index.toString(), index, test, path: `test[${index}]` })
 							}}
