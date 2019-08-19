@@ -169,19 +169,28 @@ class ProjectCreateComponent extends React.Component {
 		const { nextWindow } = this.state
 
 		const onCancel = () => {
+			// just close the modal and return the window to the previous state
 			this.closeModal({ window: { ...prevWindow, setAsSaved: false }, nextWindow: undefined, waitingForConfirmation: false })
 		}
 
+		// handle the data without window intervention 
 		const onNext = () => {
+			// if the closed window was the test window, then trigger the save test event
 			if (prevWindow.name === ProjectCreateComponent.DEFAULTS.windows.test.name)
 				this.onWindowEmit(ProjectCreateComponent.DEFAULTS.windows.test.component.Events.save, payload)
+			// if the closed window was the test case window, then trigger the save test case event
+			else if (prevWindow.name === ProjectCreateComponent.DEFAULTS.windows.testCase.name)
+				this.onWindowEmit(ProjectCreateComponent.DEFAULTS.windows.testCase.component.Events.save, payload)
+			// close the modal
 			this.closeModal({ window: nextWindow, nextWindow: undefined, waitingForConfirmation: false })
 		}
 
+		// if user confirm, then next, else just cancel
 		const onClose = ({ ok }) => ok ? onNext() : onCancel()
 		const { path } = prevWindow
 		const modal = ProjectCreateComponent.DEFAULTS.modals.unsavedChanges
 		const { title, text, component } = modal
+		// set the onClose modal event to handle the confirmation response from the modal.
 		this.setModalOpen({ title, text, path, onClose, component }, { waitingForConfirmation: true })
 
 	}
