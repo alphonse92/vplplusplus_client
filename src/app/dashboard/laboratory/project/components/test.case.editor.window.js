@@ -28,7 +28,6 @@ export class EditTestCaseWindow extends React.Component {
   }
 
   componentWillUnmount() {
-    const isSaved = !!this.saved
     const payload = this.getTestPayload(!!this.saved)
     console.log('unmounting test case window', payload)
     this.props.onClose(payload)
