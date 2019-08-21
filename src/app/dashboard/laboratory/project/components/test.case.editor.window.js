@@ -18,8 +18,8 @@ import {
   ExpandMore as ExpandMoreIcon,
   Code as CodeIcon,
   Edit as EditIcon,
-  SentimentVerySatisfiedIcon as PositiveIcon,
-  SentimentVeryDissatisfiedIcon as NegativeIcon
+  Add as PositiveIcon,
+  Remove as NegativeIcon
 } from '@material-ui/icons';
 
 export class EditTestCaseWindow extends React.Component {
