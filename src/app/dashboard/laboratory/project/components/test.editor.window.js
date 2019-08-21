@@ -64,11 +64,6 @@ public class ${capitalize(camelCase(test.name))} {
 }
 `}
 
-  shouldComponentUpdate(prevProps, prevState) {
-    return (this.state.code !== prevProps.window.data.test.code)
-      || (this.saved && this.state.code !== prevProps.window.data.test.code)
-      || (this.state.previewCode !== prevState.previewCode)
-  }
 
   handleEditorChange = (newValue, e) => {
     const fn = debounce(() => { this.saved = false }, 100)

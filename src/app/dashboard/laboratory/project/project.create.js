@@ -232,9 +232,10 @@ class ProjectCreateComponent extends React.Component {
 			objective: 'Objective of my first test case',
 			grade: 5,
 			code: ' test case code example ' + Date.now(),
-			successMessage: 'successMessage',
-			successMessageLink: 'successMessageLink',
-			failureMessage: 'failureReferenceLink',
+			successMessage: 'No successfull message provided',
+			successMessageLink: 'No successfull link message provided',
+			failureMessage: 'No failure message provided',
+			failureMessageLink: 'No failure link message provided',
 		})
 		const { project, tests } = this.props
 		tests[index].test_cases.push(mock())

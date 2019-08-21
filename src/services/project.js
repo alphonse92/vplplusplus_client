@@ -6,7 +6,8 @@ export class ProjectService extends WebService {
   static localStorageUserKey = "User:data"
 
   constructor() {
-    super('project', UserService.getUserLogged().token)
+    const user = UserService.getUserLogged()
+    super('project', user ? user.token : undefined)
   }
 
   deleteProject(id) {

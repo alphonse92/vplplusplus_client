@@ -36,13 +36,12 @@ export const CodeEditorWithPreview = ({ title, previewCode, description, editor,
 	const code = getCode()
 	return (
 		<React.Fragment>
-			<h3>{title}</h3>
-			<p>{description}
-				<ButtonHandlePreviewVisibility
-					open={!!previewCode}
-					onShow={onShowPreview}
-					onClose={onClosePreview} />
-			</p>
+			{!!title && <h3>{title}</h3>}
+			{!!description && <p>description</p>}
+			<ButtonHandlePreviewVisibility
+				open={!!previewCode}
+				onShow={onShowPreview}
+				onClose={onClosePreview} />
 			<CodeEditor
 				key={Date.now().toString()}
 				onChange={onChange}
