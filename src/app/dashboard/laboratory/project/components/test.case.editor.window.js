@@ -40,9 +40,24 @@ export class EditTestCaseWindow extends React.Component {
   getTestPayload = ok => {
     const { props } = this
     const { window } = props
+    const {
+      name,
+      objective,
+      failureMessage,
+      failureMessageLink,
+      successMessage,
+      successMessageLink
+    } = this.state
     const code = this.editor.getValue()
     const windowData = { ...window }
-    windowData.data.test = { ...this.state }
+    windowData.data.test = {
+      name,
+      objective,
+      failureMessage,
+      failureMessageLink,
+      successMessage,
+      successMessageLink
+    }
     windowData.data.test.code = code
     return { ok, window: windowData }
   }
@@ -67,7 +82,7 @@ export class EditTestCaseWindow extends React.Component {
 
 
   showPreviewCode = () => {
-    const code = this.editor.getValue()
+    const code = this.editor ? this.editor.getValue() : this.state.code
     const newState = {
       ...this.state,
       previewCode: this.getPreviewCode(code, this.props.window.data.test),
@@ -93,8 +108,14 @@ public void ${capitalize(camelCase(test.name))}() {
 
   open = tab => () => {
     const currentValue = !!this.state[tab]
-    const newState = { [tab]: !currentValue }
+    const newState = { ...this.state, [tab]: !currentValue }
     this.setState(newState)
+  }
+
+  handleChange = attribute => (event) => {
+    const { state } = this
+    const newState = { [attribute]: event.target.value }
+    this.setState({ ...state, ...newState })
   }
 
   render() {
@@ -126,7 +147,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   style={{ width: '100%' }}
                   label="Name"
                   value={this.state.name}
-                  // onChange={this.handleChange('name')}
+                  onChange={this.handleChange('name')}
                   margin="normal"
                 />
                 <TextField
@@ -134,7 +155,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   label="Objective"
                   style={{ width: '100%' }}
                   value={this.state.objective}
-                  // onChange={this.handleChange('name')}
+                  onChange={this.handleChange('objective')}
                   margin="normal"
                 />
               </CardContent>
@@ -186,7 +207,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   style={{ width: '100%' }}
                   label="Name"
                   value={this.state.successMessage}
-                  // onChange={this.handleChange('name')}
+                  onChange={this.handleChange('successMessage')}
                   margin="normal"
                 />
                 <TextField
@@ -194,7 +215,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   label="Objective"
                   style={{ width: '100%' }}
                   value={this.state.successMessageLink}
-                  // onChange={this.handleChange('name')}
+                  onChange={this.handleChange('successMessageLink')}
                   margin="normal"
                 />
               </CardContent>
@@ -221,7 +242,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   style={{ width: '100%' }}
                   label="Name"
                   value={this.state.failureMessage}
-                  // onChange={this.handleChange('name')}
+                  onChange={this.handleChange('failureMessage')}
                   margin="normal"
                 />
                 <TextField
@@ -229,7 +250,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   label="Objective"
                   style={{ width: '100%' }}
                   value={this.state.failureMessageLink}
-                  // onChange={this.handleChange('name')}
+                  onChange={this.handleChange('failureMessageLink')}
                   margin="normal"
                 />
               </CardContent>

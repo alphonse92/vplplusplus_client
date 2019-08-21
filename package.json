@@ -28,6 +28,7 @@
 	},
 	"dependencies": {
 		"@material-ui/core": "^3.9.3",
+		"@material-ui/icons": "^4.2.1",
 		"@trendmicro/react-sidenav": "^0.4.5",
 		"connected-react-router": "^6.4.0",
 		"final-form": "^4.12.0",
