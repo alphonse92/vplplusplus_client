@@ -35,6 +35,7 @@ export class EditTestCaseWindow extends React.Component {
     const { window } = props
     const { setAsSaved = true } = window
     this.state = { test: { ...window.data.test } }
+    this.lastCode = this.state.test.code
     this.saved = setAsSaved
   }
 
@@ -69,7 +70,7 @@ export class EditTestCaseWindow extends React.Component {
     this.props.onEmit(EditTestCaseWindow.Events.save, this.getTestPayload(true))
   }
 
-  getEditorCode = () => this.editor ? this.editor.getValue() : this.state.code
+  getEditorCode = () => this.editor ? this.editor.getValue() : this.lastCode
 
   showPreviewCode = () => {
     const code = this.getEditorCode()
@@ -92,7 +93,10 @@ public void ${capitalize(camelCase(test.name))}() {
 `}
 
   handleEditorChange = (newValue, e) => {
-    const fn = debounce(() => { this.saved = false }, 100)
+    const fn = debounce(() => {
+      this.saved = false
+      this.lastCode = newValue
+    }, 100)
     fn()
   }
 
@@ -106,19 +110,6 @@ public void ${capitalize(camelCase(test.name))}() {
     const { state } = this
     const newState = { test: { ...this.state.test, [attribute]: event.target.value } }
     this.setState({ ...state, ...newState })
-  }
-
-  shouldComponentUpdate(prevProps, prevState) {
-    return (this.state.code !== prevProps.window.data.test.code)
-      || (this.saved && this.state.code !== prevProps.window.data.test.code)
-      || (this.state.previewCode !== prevState.previewCode)
-
-      || this.state.windowOpen !== prevState.windowOpen
-
-      || isEqual(this.state.test, prevState.test)
-
-
-
   }
 
   render() {
@@ -185,7 +176,7 @@ public void ${capitalize(camelCase(test.name))}() {
             <CodeEditorWithPreview
               editor={this.editor}
               editorDidMount={this.getEditor}
-              getCode={() => this.saved ? this.props.window.data.test.code : this.state.code}
+              getCode={() => this.lastCode}
               previewCode={previewCode}
               onShowPreview={this.showPreviewCode}
               onClosePreview={this.deleteCodeFromState}
