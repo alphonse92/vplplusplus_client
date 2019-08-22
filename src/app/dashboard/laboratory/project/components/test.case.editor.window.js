@@ -108,18 +108,18 @@ public void ${capitalize(camelCase(test.name))}() {
     this.setState({ ...state, ...newState })
   }
 
-  // shouldComponentUpdate(prevProps, prevState) {
-  //   return (this.state.code !== prevProps.window.data.test.code)
-  //     || (this.saved && this.state.code !== prevProps.window.data.test.code)
-  //     || (this.state.previewCode !== prevState.previewCode)
+  shouldComponentUpdate(prevProps, prevState) {
+    return (this.state.code !== prevProps.window.data.test.code)
+      || (this.saved && this.state.code !== prevProps.window.data.test.code)
+      || (this.state.previewCode !== prevState.previewCode)
 
-  //     || this.state.windowOpen !== prevState.windowOpen
+      || this.state.windowOpen !== prevState.windowOpen
 
-  //     || isEqual(this.state.test, prevState.test)
+      || isEqual(this.state.test, prevState.test)
 
 
 
-  // }
+  }
 
   render() {
     const { previewCode, windowOpen } = this.state
@@ -181,7 +181,7 @@ public void ${capitalize(camelCase(test.name))}() {
             <ListItemText inset primary='Code Editor' secondary="Please set the Junit test method body. That code will be wraped into the JUnit test method." />
             {windowOpen === 'codeIsOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
-          <Collapse style={{ root: { padding: '0px' } }} in={windowOpen === 'codeIsOpen'} timeout="auto">
+          <Collapse style={{ root: { padding: '0px' } }} in={windowOpen === 'codeIsOpen'} timeout="auto" unmountOnExit>
             <CodeEditorWithPreview
               editor={this.editor}
               editorDidMount={this.getEditor}
