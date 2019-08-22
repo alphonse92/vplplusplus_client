@@ -26,7 +26,9 @@ export class EditTestWindow extends React.Component {
     const { window } = props
     const { setAsSaved = true } = window
     const code = window.data.test.code
-    this.state = { code }
+
+    this.state = {}
+    this.lastCode = code
     this.saved = setAsSaved
   }
 
@@ -59,7 +61,7 @@ export class EditTestWindow extends React.Component {
 
 
   showPreviewCode = () => {
-    const code = this.editor.getValue()
+    const code = this.lastCode
     const newState = {
       ...this.state,
       previewCode: this.getPreviewCode(code, this.props.window.data.test),
@@ -78,7 +80,10 @@ public class ${capitalize(camelCase(test.name))} {
 
 
   handleEditorChange = (newValue, e) => {
-    const fn = debounce(() => { this.saved = false }, 100)
+    const fn = debounce(() => {
+      this.saved = false
+      this.lastCode = newValue
+    }, 100)
     fn()
   }
 
@@ -106,7 +111,7 @@ public class ${capitalize(camelCase(test.name))} {
             <CodeEditorWithPreview
               editor={this.editor}
               editorDidMount={this.getEditor}
-              getCode={() => this.saved ? this.props.window.data.test.code : this.state.code}
+              getCode={() => this.lastCode}
               previewCode={previewCode}
               onShowPreview={this.showPreviewCode}
               onClosePreview={this.deleteCodeFromState}

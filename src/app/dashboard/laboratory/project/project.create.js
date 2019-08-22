@@ -1,8 +1,3 @@
-/**
- * TODO:
- * improve the should component update method to detect if a confirmation modal is opened and not re render
- */
-
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
