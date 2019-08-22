@@ -1,6 +1,18 @@
 import React from 'react'
 import { CodeEditorWithPreview } from '.';
 import { capitalize, camelCase, debounce } from 'lodash'
+import {
+  Paper
+  , Button
+  , ListItem
+  , ListItemIcon
+  , ListItemText
+  , Collapse
+} from '@material-ui/core';
+import {
+  Code as CodeIcon
+} from '@material-ui/icons';
+
 
 export class EditTestWindow extends React.Component {
 
@@ -70,25 +82,42 @@ public class ${capitalize(camelCase(test.name))} {
     fn()
   }
 
+  shouldComponentUpdate(prevProps, prevState) {
+    return (this.state.code !== prevProps.window.data.test.code)
+      || (this.saved && this.state.code !== prevProps.window.data.test.code)
+      || (this.state.previewCode !== prevState.previewCode)
+  }
+
   render() {
-    const { previewCode } = this.state
+    const { previewCode, codeIsOpen = true } = this.state
+
     const description = "Please configure your test code. This code will be placed before all of tests cases of JUnit Class. "
       + "So, you can writte the @before, @beforeAll, @after and @afterAll methods of JUnit Life Cycle.Also, you can set the test class variables and use it into a test case "
     return (
       <React.Fragment>
-        <CodeEditorWithPreview
-          title="Code Editor"
-          description={description}
-          editor={this.editor}
-          editorDidMount={this.getEditor}
-          getCode={() => this.saved ? this.props.window.data.test.code : this.state.code}
-          previewCode={previewCode}
-          onShowPreview={this.showPreviewCode}
-          onClosePreview={this.deleteCodeFromState}
-          onChange={this.handleEditorChange}
-        />
-        <button onClick={this.onSave}>Save</button>
+        <Paper style={{ marginBottom: '13px' }}>
+          <ListItem button>
+            <ListItemIcon>
+              <CodeIcon />
+            </ListItemIcon>
+            <ListItemText inset primary='Code Editor' secondary={description} />
+          </ListItem>
+          <Collapse style={{ root: { padding: '0px' } }} in={codeIsOpen} timeout="auto">
+            <CodeEditorWithPreview
+              editor={this.editor}
+              editorDidMount={this.getEditor}
+              getCode={() => this.saved ? this.props.window.data.test.code : this.state.code}
+              previewCode={previewCode}
+              onShowPreview={this.showPreviewCode}
+              onClosePreview={this.deleteCodeFromState}
+              onChange={this.handleEditorChange}
+            />
+          </Collapse>
+        </Paper>
+        <Button onClick={this.onSave} aria-label="Save">Save</Button>
       </React.Fragment>
+
+
     )
   }
 

@@ -1,5 +1,12 @@
 import React from 'react';
-import { Toolbar, Button, } from '@material-ui/core'
+import {
+	Toolbar,
+	Button,
+	IconButton,
+} from '@material-ui/core'
+
+import ToggleOffIcon from '@material-ui/icons/ToggleOff';
+import ToggleOnIcon from '@material-ui/icons/ToggleOn';
 import AddIcon from '@material-ui/icons/Add';
 import { Flex, Item } from '../../../../../lib/components/flex'
 import { CodeEditor } from '../../../../../lib/components/code';
@@ -14,30 +21,29 @@ export const NewProjectToolbarComponent = ({ goTo }) => (
 	</Toolbar>
 )
 
-export const CodePreview = ({ code }) => {
-	return (
-		<React.Fragment>
-			<h3>Code Preview </h3>
-			<p>You JUnit class will looks like </p>
-			<CodeEditor
-				code={code}
-				options={{ readOnly: true }}
-				monacoProperties={{ height: '250px' }} />
-		</React.Fragment>
-	)
-}
-
 export const CodeEditorWithPreview = ({ title, previewCode, description, editor, getCode, editorDidMount, onShowPreview, onClosePreview, onChange = () => true }) => {
 
+	const toggleStyle = {
+		root: {
+			'&:hover': {
+				background: 'transparent !important',
+			}
+		},
+	}
 
-	const ButtonHandlePreviewVisibility = ({ open, onShow, onClose }) => !open
-		? <button onClick={onShow}>Show preview</button>
-		: <button onClick={onClose}>Continue editing</button>
+	const ButtonHandlePreviewVisibility = ({ open, onShow, onClose }) => {
+		const label = !open ? "Show preview" : "Continue editing"
+		const onClick = !open ? onShow : onClose
+		const button = !open
+			? (<IconButton aria-label="Show preview" style={toggleStyle}> <ToggleOnIcon /> </IconButton>)
+			: (<IconButton aria-label="Close previe" style={toggleStyle}> <ToggleOffIcon /></IconButton>)
+		return (
+			<div onClick={onClick}>{button}<span>{label}</span></div>
+		)
+	}
 	const code = getCode()
 	return (
 		<React.Fragment>
-			{!!title && <h3>{title}</h3>}
-			{!!description && <p>description</p>}
 			<ButtonHandlePreviewVisibility
 				open={!!previewCode}
 				onShow={onShowPreview}
@@ -50,7 +56,7 @@ export const CodeEditorWithPreview = ({ title, previewCode, description, editor,
 				editorDidMount={editorDidMount}
 				monacoProperties={{ height: '250px' }} />
 
-			{previewCode && <CodePreview code={previewCode} />}
+			{previewCode && <CodeEditor code={code} options={{ readOnly: true }} monacoProperties={{ height: '250px' }} />}
 		</React.Fragment>
 	)
 }

@@ -34,7 +34,7 @@ export class EditTestCaseWindow extends React.Component {
     super(props)
     const { window } = props
     const { setAsSaved = true } = window
-    this.state = { test: { ...window.data.test} }
+    this.state = { test: { ...window.data.test } }
     this.saved = setAsSaved
   }
 
@@ -175,21 +175,17 @@ public void ${capitalize(camelCase(test.name))}() {
             <ListItemText inset primary='Code Editor' secondary="Please set the Junit test method body. That code will be wraped into the JUnit test method." />
             {codeIsOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
-          <Collapse in={codeIsOpen} timeout="auto" unmountOnExit>
-            <Card elevation={0}>
-              <CardContent>
+          <Collapse style={{ root: { padding: '0px' } }} in={codeIsOpen} timeout="auto">
+            <CodeEditorWithPreview
+              editor={this.editor}
+              editorDidMount={this.getEditor}
+              getCode={() => this.saved ? this.props.window.data.test.code : this.state.code}
+              previewCode={previewCode}
+              onShowPreview={this.showPreviewCode}
+              onClosePreview={this.deleteCodeFromState}
+              onChange={this.handleEditorChange}
+            />
 
-                <CodeEditorWithPreview
-                  editor={this.editor}
-                  editorDidMount={this.getEditor}
-                  getCode={() => this.saved ? this.props.window.data.test.code : this.state.code}
-                  previewCode={previewCode}
-                  onShowPreview={this.showPreviewCode}
-                  onClosePreview={this.deleteCodeFromState}
-                  onChange={this.handleEditorChange}
-                />
-              </CardContent>
-            </Card>
           </Collapse>
         </Paper>
 

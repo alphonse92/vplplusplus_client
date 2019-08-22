@@ -82,11 +82,11 @@ class ProjectCreateComponent extends React.Component {
 		},
 		windows: {
 			test: {
-				name: 'test',
+				name: 'Test Window',
 				component: EditTestWindow,
 			},
 			testCase: {
-				name: 'test-case',
+				name: 'Test Case Window',
 				component: EditTestCaseWindow,
 			}
 		}
@@ -175,7 +175,7 @@ class ProjectCreateComponent extends React.Component {
 
 		const onCancel = () => {
 			// just close the modal and return the window to the previous state
-			this.closeModal({ window: { ...prevWindow, setAsSaved: false }, nextWindow: undefined, waitingForConfirmation: false })
+			this.closeModal({ window: { ...prevWindow, setAsSaved: false }, nextWindow: nextWindow, waitingForConfirmation: false })
 		}
 
 		// handle the data without window intervention 
@@ -201,13 +201,36 @@ class ProjectCreateComponent extends React.Component {
 
 	}
 
+	closeWindow = (payload) => {
+		const { ok } = payload
+		if (this.state.waitingForConfirmation) return
+		if (!ok && !this.state.forceCloseWindow) return this.preventUnsavedWindowChange(payload)
+		this.setState({ window: this.state.nextWindow, forceCloseWindow: false })
+	}
+
+
+	showWindow = (window, data) => {
+		const id = data.id
+		const nextWindow = { ...window, data, id }
+		
+		if (!this.state.window) {
+			return this.setState({ window: nextWindow })
+		}
+		
+		if (this.state.window.id === nextWindow.id) {
+			return
+		}
+
+		this.setState({ window: undefined, nextWindow })
+	}
+
+
 	saveTestCase = ({ window: payload }) => {
 		const { project, tests } = this.props
 		const { data } = payload
 		const { indexTest, indexTestCase, test: test_case } = data
 
 		tests[indexTest].test_cases[indexTestCase] = test_case
-		console.log('saving test case', project, tests)
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
 
@@ -259,7 +282,6 @@ class ProjectCreateComponent extends React.Component {
 
 
 	onWindowEmit = (windowEvent, payload) => {
-		console.log({ windowEvent, payload })
 		if (windowEvent === 'close') return this.closeWindow()
 		if (windowEvent === EditTestWindow.Events.save) return this.saveTestCode(payload)
 		if (windowEvent === EditTestCaseWindow.Events.save) return this.saveTestCase(payload)
@@ -267,24 +289,10 @@ class ProjectCreateComponent extends React.Component {
 
 	forceCloseWindow = extraState => this.setState({ window: undefined, forceCloseWindow: true, ...extraState })
 
-	closeWindow = (payload) => {
-		const { ok } = payload
-		if (this.state.waitingForConfirmation) return
-		if (!ok && !this.state.forceCloseWindow) return this.preventUnsavedWindowChange(payload)
-		this.setState({ window: undefined, forceCloseWindow: false })
-	}
-
-	showWindow = (window, data) => {
-		const id = data.id
-		const nextWindow = { ...window, data, id }
-		if (!this.state.window) return this.setState({ window: nextWindow })
-		if (this.state.window.id === nextWindow.id) return
-		this.setState({ window: nextWindow, nextWindow })
-	}
 
 	render() {
 		const { props, state } = this
-		const { modal, window } = state
+		let { modal, window } = state
 		const { tests = [], project } = props
 		const showModal = !!modal
 		const Title = () => {
@@ -318,6 +326,10 @@ class ProjectCreateComponent extends React.Component {
 					<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.activity)} />
 				</p>
 			)
+		}
+
+		if (this.state.waitingForConfirmation) {
+			console.log(this.state.window, this.state.nextWindow)
 		}
 
 		const onCloseModalDef = ({ ok, value }) => { ok ? this.setValueFromModal(value) : this.closeModal() }
