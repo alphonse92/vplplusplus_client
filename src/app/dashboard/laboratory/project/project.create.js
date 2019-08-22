@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Toolbar } from '@material-ui/core';
+import { Toolbar, CardContent, Card } from '@material-ui/core';
 import { Flex } from '../../../../lib/components/flex'
 import { ProjectPreview } from './components/testPreview';
 import { ActionCreators } from './redux/actions';
@@ -207,11 +207,11 @@ class ProjectCreateComponent extends React.Component {
 	showWindow = (window, data) => {
 		const id = data.id
 		const nextWindow = { ...window, data, id }
-		
+
 		if (!this.state.window) {
 			return this.setState({ window: nextWindow })
 		}
-		
+
 		if (this.state.window.id === nextWindow.id) {
 			return
 		}
@@ -353,9 +353,13 @@ class ProjectCreateComponent extends React.Component {
 
 
 				<Flex vertical width="100%" margin="7px">
-					<Title />
-					<Description />
-					<Activity />
+					<Card>
+						<CardContent>
+							<Title />
+							<Description />
+							<Activity />
+						</CardContent>
+					</Card>
 				</Flex>
 				<Flex horizontal width="100%">
 					<Flex vertical width="25%" margin="7px" >

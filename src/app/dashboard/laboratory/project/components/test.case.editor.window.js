@@ -152,7 +152,7 @@ public void ${capitalize(camelCase(test.name))}() {
                 />
                 <TextField
                   id="standard-name"
-                  label="Objective"
+                  label="Grade"
                   style={{ width: '100%' }}
                   value={TestData.grade}
                   onChange={this.handleChange('grade')}
