@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Toolbar, CardContent, Card } from '@material-ui/core';
+import { Toolbar, CardContent, Card, CardActions, Button, IconButton, CardHeader } from '@material-ui/core';
 import { Flex } from '../../../../lib/components/flex'
 import { ProjectPreview } from './components/testPreview';
 import { ActionCreators } from './redux/actions';
@@ -13,6 +13,7 @@ import { EditTestWindow } from './components/test.editor.window';
 import { EditTestCaseWindow } from './components/test.case.editor.window';
 import { WindowComponent } from '../../../../lib/components/window-manager';
 import { TEST_CASE } from '../../../../constants';
+import { Save } from '@material-ui/icons';
 
 class ProjectCreateComponent extends React.Component {
 
@@ -290,25 +291,7 @@ class ProjectCreateComponent extends React.Component {
 		let { modal, window } = state
 		const { tests = [], project } = props
 		const showModal = !!modal
-		const Title = () => {
-			return (
-				<Toolbar disableGutters>
-					<h1>
-						{get(this.props, 'project.name', ProjectCreateComponent.DEFAULTS.project.name)}
-						<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.name)} />
-					</h1>
-				</Toolbar>
-			)
-		}
-		const Description = () => {
-			return (
-				<p className="description">
-					{get(this.props, 'project.description', ProjectCreateComponent.DEFAULTS.project.description)}
-					<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.description)} />
-				</p>
 
-			)
-		}
 		const Activity = () => {
 			const { activity: activity_id } = project
 			const isActivitySelecteed = !!activity_id
@@ -354,9 +337,30 @@ class ProjectCreateComponent extends React.Component {
 
 				<Flex vertical width="100%" margin="7px">
 					<Card>
+
+						<CardHeader
+							action={
+								<React.Fragment>
+									<div>
+										<IconButton><Save /></IconButton>
+										Save Project
+								</div>
+								</React.Fragment>
+							}
+							title={
+								<React.Fragment>
+									{get(this.props, 'project.name', ProjectCreateComponent.DEFAULTS.project.name)}
+									<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.name)} />
+								</React.Fragment>
+							}
+							subheader={
+								<React.Fragment>
+									{get(this.props, 'project.description', ProjectCreateComponent.DEFAULTS.project.description)}
+									<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.description)} />
+								</React.Fragment>
+							}
+						/>
 						<CardContent>
-							<Title />
-							<Description />
 							<Activity />
 						</CardContent>
 					</Card>
