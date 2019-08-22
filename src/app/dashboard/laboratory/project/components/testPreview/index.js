@@ -45,17 +45,23 @@ const TestsWrapper = props => <List component="nav" className="tests" subheader=
 
 
 
-const ProjectPreviewTestItem = ({ onSelectTestCase, onDeleteTestCase, test, project_index, index }) => (
-	<ListItem button onClick={() => onSelectTestCase(project_index, index, test)}>
-		<ListItemIcon>
-			<i className="fas fa-flask"></i>
-		</ListItemIcon>
-		<ListItemText inset primary={test.name.substring(0, 25)} secondary={test.objective.substring(0, 25) + '...'} />
-		<ListItemSecondaryAction onClick={() => onDeleteTestCase(project_index, index, test)}>
-			<IconButton aria-label="Remove Case"> <DeleteIcon /> </IconButton>
-		</ListItemSecondaryAction>
-	</ListItem >
-)
+const ProjectPreviewTestItem = ({ onSelectTestCase, onDeleteTestCase, test, project_index, index }) => {
+	const name = test.name || ''
+	const objective = test.objective || ''
+	const finalName = name.length > 25 ? `${name.substring(0, 25)}...` : name
+	const finalObjective = objective.length > 25 ? `${objective.substring(0, 25)}...` : objective
+	return (
+		<ListItem button onClick={() => onSelectTestCase(project_index, index, test)}>
+			<ListItemIcon>
+				<i className="fas fa-flask"></i>
+			</ListItemIcon>
+			<ListItemText inset primary={finalName} secondary={finalObjective} />
+			<ListItemSecondaryAction onClick={() => onDeleteTestCase(project_index, index, test)}>
+				<IconButton aria-label="Remove Case"> <DeleteIcon /> </IconButton>
+			</ListItemSecondaryAction>
+		</ListItem >
+	)
+}
 
 
 

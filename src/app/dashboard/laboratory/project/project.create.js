@@ -17,6 +17,7 @@ import { EditIcon } from '../../../../lib/components/material/EditIcon';
 import { EditTestWindow } from './components/test.editor.window';
 import { EditTestCaseWindow } from './components/test.case.editor.window';
 import { WindowComponent } from '../../../../lib/components/window-manager';
+import { TEST_CASE } from '../../../../constants';
 
 class ProjectCreateComponent extends React.Component {
 
@@ -132,7 +133,7 @@ class ProjectCreateComponent extends React.Component {
 		const windowId = index.toString()
 
 		if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
-		
+
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 
 	}
@@ -227,18 +228,8 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	onCreateTestCase = (index, test) => {
-		const mock = () => ({
-			name: 'New Test Case',
-			objective: 'Objective of my first test case',
-			grade: 5,
-			code: ' test case code example ' + Date.now(),
-			successMessage: 'No successfull message provided',
-			successMessageLink: 'No successfull link message provided',
-			failureMessage: 'No failure message provided',
-			failureMessageLink: 'No failure link message provided',
-		})
 		const { project, tests } = this.props
-		tests[index].test_cases.push(mock())
+		tests[index].test_cases.push({ ...TEST_CASE })
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
 
@@ -254,7 +245,7 @@ class ProjectCreateComponent extends React.Component {
 		const windowId = this.getTestCaseId(test_index, test_case_index)
 
 		if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
-		
+
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
 

@@ -21,6 +21,7 @@ import {
   Add as PositiveIcon,
   Remove as NegativeIcon
 } from '@material-ui/icons';
+import { TEST_CASE as TEST_CASE_DEFAULT_VALUES } from '../../../../../constants';
 
 export class EditTestCaseWindow extends React.Component {
 
@@ -33,30 +34,18 @@ export class EditTestCaseWindow extends React.Component {
     super(props)
     const { window } = props
     const { setAsSaved = true } = window
-    this.state = { ...window.data.test }
+    this.state = { test: { ...window.data.test} }
     this.saved = setAsSaved
   }
 
   getTestPayload = ok => {
     const { props } = this
     const { window } = props
-    const {
-      name,
-      objective,
-      failureMessage,
-      failureMessageLink,
-      successMessage,
-      successMessageLink
-    } = this.state
-    const code = this.editor.getValue()
+    const code = this.getEditorCode()
     const windowData = { ...window }
     windowData.data.test = {
-      name,
-      objective,
-      failureMessage,
-      failureMessageLink,
-      successMessage,
-      successMessageLink
+      ...TEST_CASE_DEFAULT_VALUES,
+      ...this.state.test
     }
     windowData.data.test.code = code
     return { ok, window: windowData }
@@ -80,9 +69,10 @@ export class EditTestCaseWindow extends React.Component {
     this.props.onEmit(EditTestCaseWindow.Events.save, this.getTestPayload(true))
   }
 
+  getEditorCode = () => this.editor ? this.editor.getValue() : this.state.code
 
   showPreviewCode = () => {
-    const code = this.editor ? this.editor.getValue() : this.state.code
+    const code = this.getEditorCode()
     const newState = {
       ...this.state,
       previewCode: this.getPreviewCode(code, this.props.window.data.test),
@@ -114,7 +104,7 @@ public void ${capitalize(camelCase(test.name))}() {
 
   handleChange = attribute => (event) => {
     const { state } = this
-    const newState = { [attribute]: event.target.value }
+    const newState = { test: { ...this.state.test, [attribute]: event.target.value } }
     this.setState({ ...state, ...newState })
   }
 
@@ -126,6 +116,11 @@ public void ${capitalize(camelCase(test.name))}() {
       negativeTabIsOpen,
       codeIsOpen
     } = this.state
+
+    const TestData = {
+      ...TEST_CASE_DEFAULT_VALUES,
+      ...this.state.test
+    }
 
     return (
       <React.Fragment>
@@ -146,7 +141,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   id="standard-name"
                   style={{ width: '100%' }}
                   label="Name"
-                  value={this.state.name}
+                  value={TestData.name}
                   onChange={this.handleChange('name')}
                   margin="normal"
                 />
@@ -154,8 +149,16 @@ public void ${capitalize(camelCase(test.name))}() {
                   id="standard-name"
                   label="Objective"
                   style={{ width: '100%' }}
-                  value={this.state.objective}
+                  value={TestData.objective}
                   onChange={this.handleChange('objective')}
+                  margin="normal"
+                />
+                <TextField
+                  id="standard-name"
+                  label="Objective"
+                  style={{ width: '100%' }}
+                  value={TestData.grade}
+                  onChange={this.handleChange('grade')}
                   margin="normal"
                 />
               </CardContent>
@@ -206,7 +209,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   id="standard-name"
                   style={{ width: '100%' }}
                   label="Name"
-                  value={this.state.successMessage}
+                  value={TestData.successMessage}
                   onChange={this.handleChange('successMessage')}
                   margin="normal"
                 />
@@ -214,7 +217,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   id="standard-name"
                   label="Objective"
                   style={{ width: '100%' }}
-                  value={this.state.successMessageLink}
+                  value={TestData.successMessageLink}
                   onChange={this.handleChange('successMessageLink')}
                   margin="normal"
                 />
@@ -241,7 +244,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   id="standard-name"
                   style={{ width: '100%' }}
                   label="Name"
-                  value={this.state.failureMessage}
+                  value={TestData.failureMessage}
                   onChange={this.handleChange('failureMessage')}
                   margin="normal"
                 />
@@ -249,7 +252,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   id="standard-name"
                   label="Objective"
                   style={{ width: '100%' }}
-                  value={this.state.failureMessageLink}
+                  value={TestData.failureMessageLink}
                   onChange={this.handleChange('failureMessageLink')}
                   margin="normal"
                 />
