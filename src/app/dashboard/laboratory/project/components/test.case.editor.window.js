@@ -1,6 +1,6 @@
 import React from 'react'
 import { CodeEditorWithPreview } from '.';
-import { capitalize, camelCase, debounce } from 'lodash'
+import { capitalize, camelCase, debounce, isEqual } from 'lodash'
 import TextField from '@material-ui/core/TextField';
 
 import {
@@ -97,8 +97,8 @@ public void ${capitalize(camelCase(test.name))}() {
   }
 
   open = tab => () => {
-    const currentValue = !!this.state[tab]
-    const newState = { ...this.state, [tab]: !currentValue }
+
+    const newState = { ...this.state, windowOpen: this.state.windowOpen === tab ? undefined : tab }
     this.setState(newState)
   }
 
@@ -108,15 +108,21 @@ public void ${capitalize(camelCase(test.name))}() {
     this.setState({ ...state, ...newState })
   }
 
-  render() {
-    const { previewCode } = this.state
-    const {
-      editorIsOpen,
-      positiveTabIsOpen,
-      negativeTabIsOpen,
-      codeIsOpen
-    } = this.state
+  // shouldComponentUpdate(prevProps, prevState) {
+  //   return (this.state.code !== prevProps.window.data.test.code)
+  //     || (this.saved && this.state.code !== prevProps.window.data.test.code)
+  //     || (this.state.previewCode !== prevState.previewCode)
 
+  //     || this.state.windowOpen !== prevState.windowOpen
+
+  //     || isEqual(this.state.test, prevState.test)
+
+
+
+  // }
+
+  render() {
+    const { previewCode, windowOpen } = this.state
     const TestData = {
       ...TEST_CASE_DEFAULT_VALUES,
       ...this.state.test
@@ -131,9 +137,9 @@ public void ${capitalize(camelCase(test.name))}() {
               <EditIcon />
             </ListItemIcon>
             <ListItemText inset primary='Test Case Editor' secondary="Set up your test case information. It will be used to track and analize the students submissions." />
-            {editorIsOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            {windowOpen === 'editorIsOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
-          <Collapse in={editorIsOpen} timeout="auto" unmountOnExit>
+          <Collapse in={windowOpen === 'editorIsOpen'} timeout="auto" unmountOnExit>
             <Card elevation={0}>
               <CardContent>
 
@@ -173,9 +179,9 @@ public void ${capitalize(camelCase(test.name))}() {
               <CodeIcon />
             </ListItemIcon>
             <ListItemText inset primary='Code Editor' secondary="Please set the Junit test method body. That code will be wraped into the JUnit test method." />
-            {codeIsOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            {windowOpen === 'codeIsOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
-          <Collapse style={{ root: { padding: '0px' } }} in={codeIsOpen} timeout="auto">
+          <Collapse style={{ root: { padding: '0px' } }} in={windowOpen === 'codeIsOpen'} timeout="auto">
             <CodeEditorWithPreview
               editor={this.editor}
               editorDidMount={this.getEditor}
@@ -196,9 +202,9 @@ public void ${capitalize(camelCase(test.name))}() {
               <PositiveIcon />
             </ListItemIcon>
             <ListItemText inset primary="Positive retrospective" secondary="Setup the dialogs when a student resolve the test." />
-            {positiveTabIsOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            {windowOpen === 'positiveTabIsOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
-          <Collapse in={positiveTabIsOpen} timeout="auto" unmountOnExit>
+          <Collapse in={windowOpen === 'positiveTabIsOpen'} timeout="auto" unmountOnExit>
             <Card elevation={0}>
               <CardContent>
                 <TextField
@@ -231,9 +237,9 @@ public void ${capitalize(camelCase(test.name))}() {
               <NegativeIcon />
             </ListItemIcon>
             <ListItemText inset primary="Positive retrospective" secondary="Setup the dialogs when a student fail the test." />
-            {negativeTabIsOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            {windowOpen === 'negativeTabIsOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
-          <Collapse in={negativeTabIsOpen} timeout="auto" unmountOnExit>
+          <Collapse in={windowOpen === 'negativeTabIsOpen'} timeout="auto" unmountOnExit>
             <Card elevation={0}>
               <CardContent>
                 <TextField
