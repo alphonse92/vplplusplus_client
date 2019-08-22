@@ -234,7 +234,7 @@ public void ${capitalize(camelCase(test.name))}() {
             <ListItemIcon>
               <NegativeIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Positive retrospective" secondary="Setup the dialogs when a student resolve the test." />
+            <ListItemText inset primary="Positive retrospective" secondary="Setup the dialogs when a student fail the test." />
             {negativeTabIsOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
           <Collapse in={negativeTabIsOpen} timeout="auto" unmountOnExit>
