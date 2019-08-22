@@ -1,6 +1,6 @@
 import React from 'react'
 import { CodeEditorWithPreview } from '.';
-import { capitalize, camelCase, debounce, isEqual } from 'lodash'
+import { capitalize, camelCase, debounce } from 'lodash'
 import TextField from '@material-ui/core/TextField';
 
 import {
