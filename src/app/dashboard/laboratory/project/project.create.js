@@ -93,7 +93,7 @@ class ProjectCreateComponent extends React.Component {
 		const { create, course, topics } = projects
 		const { project, tests } = create
 		const { activities = [] } = course
-		return { project, tests, activities, topics }
+		return { project, tests, activities, topics: topics.list.pagination }
 	}
 
 	static mapDispatchToProps = (dispatch) => {
@@ -296,10 +296,11 @@ class ProjectCreateComponent extends React.Component {
 
 	getTestCaseId = (test_index, test_case_index) => `${test_index}-${test_case_index}`
 
-	onSelectTestCase = (test_index, test_case_index, testCase) => {
+	onSelectTestCase = (test_index, test_case_index, testCase, topics) => {
 		const id = this.getTestCaseId(test_index, test_case_index)
+
 		this.showWindow(ProjectCreateComponent.DEFAULTS.windows.testCase,
-			{ id, indexTest: test_index, indexTestCase: test_case_index, test: testCase, path: `test[${test_index}].test_cases[${test_case_index}]` })
+			{ id, topics, indexTest: test_index, indexTestCase: test_case_index, test: testCase, path: `test[${test_index}].test_cases[${test_case_index}]` })
 	}
 
 
@@ -315,7 +316,7 @@ class ProjectCreateComponent extends React.Component {
 	render() {
 		const { props, state } = this
 		let { modal, window } = state
-		const { tests = [], project } = props
+		const { tests = [], project, topics } = props
 		const showModal = !!modal
 
 		const { activity: activity_id } = project
@@ -323,10 +324,6 @@ class ProjectCreateComponent extends React.Component {
 		const moodle_activity_label = isActivitySelecteed
 			? this.props.activities.find(({ course_module_id }) => course_module_id === activity_id).name
 			: ProjectCreateComponent.DEFAULTS.project.activity
-
-		if (this.state.waitingForConfirmation) {
-			console.log(this.state.window, this.state.nextWindow)
-		}
 
 		const onCloseModalDef = ({ ok, value }) => { ok ? this.setValueFromModal(value) : this.closeModal() }
 		const onCloseModal = get(modal, 'onClose', onCloseModalDef)
@@ -371,7 +368,7 @@ class ProjectCreateComponent extends React.Component {
 							}
 						/>
 						<CardActions>
-							<Button  color="primary">Save Project <Save /></Button>
+							<Button color="primary">Save Project <Save /></Button>
 						</CardActions>
 					</Card>
 				</Flex>
@@ -401,7 +398,7 @@ class ProjectCreateComponent extends React.Component {
 									{ id: index.toString(), index, test, path: `test[${index}]` })
 							}}
 							onSelectTestCase={(indexTest, indexTestCase, testCase) => {
-								this.onSelectTestCase(indexTest, indexTestCase, testCase)
+								this.onSelectTestCase(indexTest, indexTestCase, testCase, this.props.topics)
 							}}
 							onCreateTestCase={this.onCreateTestCase}
 							onDeleteTestCase={this.onDeleteTestCase}

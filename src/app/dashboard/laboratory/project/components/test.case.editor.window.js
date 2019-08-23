@@ -23,6 +23,7 @@ import {
   Grade as GradeIcon
 } from '@material-ui/icons';
 import { TEST_CASE as TEST_CASE_DEFAULT_VALUES } from '../../../../../constants';
+import { Typeahead } from '../../../../../lib/components/material/form/typeahead';
 
 export class EditTestCaseWindow extends React.Component {
 
@@ -38,6 +39,7 @@ export class EditTestCaseWindow extends React.Component {
     this.state = { test: { ...window.data.test } }
     this.lastCode = this.state.test.code
     this.saved = setAsSaved
+    console.log(props)
   }
 
   getTestPayload = ok => {
@@ -190,6 +192,11 @@ public void ${capitalize(camelCase(test.name))}() {
           </ListItem>
           <Collapse in={windowOpen === 'topicTabOpen'} timeout="auto" unmountOnExit>
             <Card elevation={0}>
+              <Typeahead
+                onChange={console.log}
+                onSelect={console.log}
+                options={this.props.window.data.topics}
+              />
               <CardContent>
                 <TextField
                   id="standard-name"
