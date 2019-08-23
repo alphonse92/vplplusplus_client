@@ -23,6 +23,7 @@ export const TEST_CASE = {
     */ 
 `,
   grade: 0,
+  topic:[],
   objective: 'Description not provided',
   successMessage: 'Successfull message not provided',
   successMessageLink: 'Successfull link not provided',
