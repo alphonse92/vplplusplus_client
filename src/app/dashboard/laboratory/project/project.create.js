@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Toolbar, CardContent, Card, CardActions, Button, IconButton, CardHeader } from '@material-ui/core';
+import { Card, Button, CardHeader } from '@material-ui/core';
 import { Flex } from '../../../../lib/components/flex'
 import { ProjectPreview } from './components/testPreview';
 import { ActionCreators } from './redux/actions';
@@ -113,7 +113,16 @@ class ProjectCreateComponent extends React.Component {
 			description: 'Describe your test',
 			objective: 'Set the Objective of this test',
 			maxGrade: 5,
-			code: "test code example " + Date.now(),
+			code: `
+	private StudentClass studentClassToBeTested;
+	// you can declare multiple variables to be used in this tests
+	@Before
+	public void doSomeTestOnAMethod() {
+	  // Your test goes here.
+	  studentClassToBeTested = new StudentClass() 
+	  // more code...
+	}
+	`,
 			test_cases: []
 		})
 		const { project, tests } = this.props
@@ -292,19 +301,11 @@ class ProjectCreateComponent extends React.Component {
 		const { tests = [], project } = props
 		const showModal = !!modal
 
-		const Activity = () => {
-			const { activity: activity_id } = project
-			const isActivitySelecteed = !!activity_id
-			const label = isActivitySelecteed
-				? this.props.activities.find(({ course_module_id }) => course_module_id === activity_id).name
-				: ProjectCreateComponent.DEFAULTS.project.activity
-			return (
-				<p className="activity">
-					{label}
-					<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.activity)} />
-				</p>
-			)
-		}
+		const { activity: activity_id } = project
+		const isActivitySelecteed = !!activity_id
+		const moodle_activity_label = isActivitySelecteed
+			? this.props.activities.find(({ course_module_id }) => course_module_id === activity_id).name
+			: ProjectCreateComponent.DEFAULTS.project.activity
 
 		if (this.state.waitingForConfirmation) {
 			console.log(this.state.window, this.state.nextWindow)
@@ -312,6 +313,7 @@ class ProjectCreateComponent extends React.Component {
 
 		const onCloseModalDef = ({ ok, value }) => { ok ? this.setValueFromModal(value) : this.closeModal() }
 		const onCloseModal = get(modal, 'onClose', onCloseModalDef)
+
 		return (
 			<React.Fragment>
 				{
@@ -337,14 +339,10 @@ class ProjectCreateComponent extends React.Component {
 
 				<Flex vertical width="100%" margin="7px">
 					<Card>
-
 						<CardHeader
 							action={
 								<React.Fragment>
-									<div>
-										<IconButton><Save /></IconButton>
-										Save Project
-								</div>
+									<Button variant="contained" color="primary">Save Project <Save /></Button>
 								</React.Fragment>
 							}
 							title={
@@ -360,9 +358,19 @@ class ProjectCreateComponent extends React.Component {
 								</React.Fragment>
 							}
 						/>
-						<CardContent>
-							<Activity />
-						</CardContent>
+					</Card>
+				</Flex>
+				<Flex vertical width="100%" margin="7px">
+					<Card>
+						<CardHeader
+							title="Moodle Activity"
+							subheader={
+								<React.Fragment>
+									{moodle_activity_label}
+									<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.activity)} />
+								</React.Fragment>
+							}
+						/>
 					</Card>
 				</Flex>
 				<Flex horizontal width="100%">

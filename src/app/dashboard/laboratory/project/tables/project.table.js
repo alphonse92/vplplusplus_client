@@ -120,7 +120,7 @@ class ProjectTable extends React.Component {
 		const emptyComponent = (
 			<div style={{ textAlign: 'center', width: '100%' }}>
 				<p>No projects to shown.</p>
-				<Button onClick={onCreateNewProject}><AddIcon /> Start a New Project</Button>
+				<Button variant="contained" color="primary" onClick={onCreateNewProject}><AddIcon /> Start a New Project</Button>
 			</div>
 		)
 

@@ -15,7 +15,7 @@ export const NewProjectToolbarComponent = ({ goTo }) => (
 	<Toolbar disableGutters>
 		<Flex horizontal reverse width='100%' height='100%' >
 			<Item>
-				<Button onClick={goTo}><AddIcon /> Start a New Project</Button>
+				<Button variant="contained" color="primary" onClick={goTo}><AddIcon /> Start a New Project</Button>
 			</Item>
 		</Flex>
 	</Toolbar>
@@ -54,9 +54,11 @@ export const CodeEditorWithPreview = ({ title, previewCode, description, editor,
 				code={code}
 				options={{ readOnly: !!previewCode }}
 				editorDidMount={editorDidMount}
-				monacoProperties={{ height: '250px' }} />
+				monacoProperties={{ height: '250px' }}
+				language="java"
+			/>
 
-			{previewCode && <CodeEditor code={code} options={{ readOnly: true }} monacoProperties={{ height: '250px' }} />}
+			{previewCode && <CodeEditor code={previewCode} options={{ readOnly: true }} language="java" monacoProperties={{ height: '250px' }} />}
 		</React.Fragment>
 	)
 }

@@ -65,16 +65,21 @@ export class EditTestWindow extends React.Component {
     const newState = {
       ...this.state,
       previewCode: this.getPreviewCode(code, this.props.window.data.test),
-      code
     }
     this.setState(newState)
   }
 
   getPreviewCode = (codeBase, test) => {
     return `
+/*
+*
+* This is a common JUnit Test Class. 
+* Setup as you need
+*
+*/
 public class ${capitalize(camelCase(test.name))} {
- ${codeBase}
- // your unit test methods will be placed below
+  ${codeBase}
+  // your unit test goes below.
 }
 `}
 
@@ -87,15 +92,8 @@ public class ${capitalize(camelCase(test.name))} {
     fn()
   }
 
-  shouldComponentUpdate(prevProps, prevState) {
-    return (this.state.code !== prevProps.window.data.test.code)
-      || (this.saved && this.state.code !== prevProps.window.data.test.code)
-      || (this.state.previewCode !== prevState.previewCode)
-  }
-
   render() {
     const { previewCode, codeIsOpen = true } = this.state
-
     const description = "Please configure your test code. This code will be placed before all of tests cases of JUnit Class. "
       + "So, you can writte the @before, @beforeAll, @after and @afterAll methods of JUnit Life Cycle.Also, you can set the test class variables and use it into a test case "
     return (
@@ -119,7 +117,7 @@ public class ${capitalize(camelCase(test.name))} {
             />
           </Collapse>
         </Paper>
-        <Button onClick={this.onSave} aria-label="Save">Save</Button>
+        <Button onClick={this.onSave} aria-label="Save" variant="contained" color="primary">Save</Button>
       </React.Fragment>
 
 

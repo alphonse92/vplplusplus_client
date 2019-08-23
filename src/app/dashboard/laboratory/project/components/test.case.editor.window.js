@@ -76,7 +76,7 @@ export class EditTestCaseWindow extends React.Component {
     const code = this.getEditorCode()
     const newState = {
       ...this.state,
-      previewCode: this.getPreviewCode(code, this.props.window.data.test),
+      previewCode: this.getPreviewCode(code, this.state.test),
       code
     }
     this.setState(newState)
@@ -255,7 +255,7 @@ public void ${capitalize(camelCase(test.name))}() {
         </Paper>
 
 
-        <Button onClick={this.onSave} aria-label="Save">Save</Button>
+        <Button onClick={this.onSave} aria-label="Save" variant="contained" color="primary">Save</Button>
       </React.Fragment >
     )
   }
