@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Card, Button, CardHeader } from '@material-ui/core';
+import { Card, Button, CardHeader, CardActions } from '@material-ui/core';
 import { Flex } from '../../../../lib/components/flex'
 import { ProjectPreview } from './components/testPreview';
 import { ActionCreators } from './redux/actions';
@@ -356,11 +356,6 @@ class ProjectCreateComponent extends React.Component {
 				<Flex vertical width="100%" margin="7px">
 					<Card>
 						<CardHeader
-							action={
-								<React.Fragment>
-									<Button variant="contained" color="primary">Save Project <Save /></Button>
-								</React.Fragment>
-							}
 							title={
 								<React.Fragment>
 									{get(this.props, 'project.name', ProjectCreateComponent.DEFAULTS.project.name)}
@@ -374,6 +369,9 @@ class ProjectCreateComponent extends React.Component {
 								</React.Fragment>
 							}
 						/>
+						<CardActions>
+							<Button  color="primary">Save Project <Save /></Button>
+						</CardActions>
 					</Card>
 				</Flex>
 				<Flex vertical width="100%" margin="7px">
