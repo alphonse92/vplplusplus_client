@@ -11,7 +11,7 @@ export const TEST_CASE = {
    * the student class returns the expected value.
    */
 
-   assertEquals(3,studentClassToBeTested.returnThree());
+   // assertEquals(3,studentClassToBeTested.returnThree());
 
    /**
     * 

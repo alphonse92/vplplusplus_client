@@ -19,7 +19,8 @@ import {
   Code as CodeIcon,
   Edit as EditIcon,
   Add as PositiveIcon,
-  Remove as NegativeIcon
+  Remove as NegativeIcon,
+  Grade as GradeIcon
 } from '@material-ui/icons';
 import { TEST_CASE as TEST_CASE_DEFAULT_VALUES } from '../../../../../constants';
 
@@ -183,6 +184,23 @@ public void ${capitalize(camelCase(test.name))}() {
               onChange={this.handleEditorChange}
             />
 
+          </Collapse>
+        </Paper>
+
+        <Paper style={{ marginBottom: '13px' }}>
+          <ListItem button onClick={this.open('topicTabOpen')}>
+            <ListItemIcon>
+              <GradeIcon />
+            </ListItemIcon>
+            <ListItemText inset primary="Topics" secondary="The topics represent a student knowledge. Are usefull to quantify the student skill." />
+            {windowOpen === 'topicTabOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          </ListItem>
+          <Collapse in={windowOpen === 'topicTabOpen'} timeout="auto" unmountOnExit>
+            <Card elevation={0}>
+              <CardContent>
+                skill
+              </CardContent>
+            </Card>
           </Collapse>
         </Paper>
 

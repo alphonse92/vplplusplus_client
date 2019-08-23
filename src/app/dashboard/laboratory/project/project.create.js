@@ -128,16 +128,17 @@ class ProjectCreateComponent extends React.Component {
 	 * After, im instantiate the studentClassToBeTested with the StudentClass constructor.
 	 * 
 	 * Please go to the FAQ section to know how improve your VPL++ Tests!
+	 * 
+	 *
+	 * private StudentClass studentClassToBeTested;
+   * @Before
+	 * public void doSomeTestOnAMethod() {
+	 *	 studentClassToBeTested = new StudentClass();
+	 * } 
+	 *
 	 */
 
-	private StudentClass studentClassToBeTested;
-
-	@Before
-	public void doSomeTestOnAMethod() {
-	  // Your test goes here.
-	  studentClassToBeTested = new StudentClass() 
-	  // more code...
-	}
+	
 	`,
 			test_cases: []
 		})
