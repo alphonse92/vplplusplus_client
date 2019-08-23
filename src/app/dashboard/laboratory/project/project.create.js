@@ -114,8 +114,23 @@ class ProjectCreateComponent extends React.Component {
 			objective: 'Set the Objective of this test',
 			maxGrade: 5,
 			code: `
+	/**
+	 * 
+	 * This is the body of a JUnit test class.
+	 * You can do:
+	 * 
+	 *  1. Declare variables
+	 *  2. Set the Before, BeforeAll, After and after all methods
+	 *  3. Set custom methods to be used in @Test methods
+	 *  4. Create custom instances
+	 * 
+	 * For example, below im declaring a variable of StudentClass type.
+	 * After, im instantiate the studentClassToBeTested with the StudentClass constructor
+	 * 
+	 */
+
 	private StudentClass studentClassToBeTested;
-	// you can declare multiple variables to be used in this tests
+
 	@Before
 	public void doSomeTestOnAMethod() {
 	  // Your test goes here.
