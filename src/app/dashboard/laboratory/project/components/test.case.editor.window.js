@@ -151,14 +151,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   onChange={this.handleChange('objective')}
                   margin="normal"
                 />
-                <TextField
-                  id="standard-name"
-                  label="Grade"
-                  style={{ width: '100%' }}
-                  value={TestData.grade}
-                  onChange={this.handleChange('grade')}
-                  margin="normal"
-                />
+
               </CardContent>
             </Card>
           </Collapse>
@@ -192,13 +185,20 @@ public void ${capitalize(camelCase(test.name))}() {
             <ListItemIcon>
               <GradeIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Topics" secondary="The topics represent a student knowledge. Are usefull to quantify the student skill." />
+            <ListItemText inset primary="Grades And Topics" secondary="The topics represent a student knowledge. Are usefull to quantify the student skill." />
             {windowOpen === 'topicTabOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
           <Collapse in={windowOpen === 'topicTabOpen'} timeout="auto" unmountOnExit>
             <Card elevation={0}>
               <CardContent>
-                skill
+                <TextField
+                  id="standard-name"
+                  label="Grade"
+                  style={{ width: '100%' }}
+                  value={TestData.grade}
+                  onChange={this.handleChange('grade')}
+                  margin="normal"
+                />
               </CardContent>
             </Card>
           </Collapse>
