@@ -125,8 +125,9 @@ class ProjectCreateComponent extends React.Component {
 	 *  4. Create custom instances
 	 * 
 	 * For example, below im declaring a variable of StudentClass type.
-	 * After, im instantiate the studentClassToBeTested with the StudentClass constructor
+	 * After, im instantiate the studentClassToBeTested with the StudentClass constructor.
 	 * 
+	 * Please go to the FAQ section to know how improve your VPL++ Tests!
 	 */
 
 	private StudentClass studentClassToBeTested;

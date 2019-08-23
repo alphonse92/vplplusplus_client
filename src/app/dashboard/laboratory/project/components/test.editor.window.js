@@ -79,7 +79,7 @@ export class EditTestWindow extends React.Component {
 */
 public class ${capitalize(camelCase(test.name))} {
   ${codeBase}
-  // your unit test goes below.
+  // your unit test goes belowasda.
 }
 `}
 
