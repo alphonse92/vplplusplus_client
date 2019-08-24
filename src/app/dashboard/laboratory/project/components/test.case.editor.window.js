@@ -39,6 +39,12 @@ export class EditTestCaseWindow extends React.Component {
     this.state = { test: { ...window.data.test } }
     this.lastCode = this.state.test.code
     this.saved = setAsSaved
+    this.selectedTopics = this.state.test.topic
+      ? this.props.window.data.topics
+        .filter(({ _id }) => this.state.test.topic.includes(_id))
+        .map(this.extractOptionsFromTopics)
+      : []
+
     console.log(props)
   }
 
@@ -52,6 +58,7 @@ export class EditTestCaseWindow extends React.Component {
       ...this.state.test
     }
     windowData.data.test.code = code
+    windowData.data.test.topic = this.selectedTopics.map(({ value }) => value)
     return { ok, window: windowData }
   }
 
@@ -112,20 +119,31 @@ public void ${capitalize(camelCase(test.name))}() {
   handleChange = attribute => (event) => {
     const { state } = this
     const newState = { test: { ...this.state.test, [attribute]: event.target.value } }
+    this.saved = false
     this.setState({ ...state, ...newState })
+  }
+
+  onChangeTopic = selectedTopics => {
+    this.saved = false
+    this.selectedTopics = selectedTopics
+  }
+
+  extractOptionsFromTopics = ({ _id: value, name, description: label }) => {
+    return { value, label }
   }
 
   render() {
 
-    const { previewCode, windowOpen } = this.state
+    const { previewCode, windowOpen = [] } = this.state
     const TestData = {
       ...TEST_CASE_DEFAULT_VALUES,
       ...this.state.test
     }
     const TopicList = this.props.window.data.topics || []
-    const topicOptions = TopicList.map(({ _id: value, name, description: label }) => {
-      return {value, label}
-    })
+    const topicOptions = TopicList.map(this.extractOptionsFromTopics)
+
+
+
 
 
     return (
@@ -199,9 +217,9 @@ public void ${capitalize(camelCase(test.name))}() {
           <Collapse in={windowOpen === 'topicTabOpen'} timeout="auto" unmountOnExit>
             <Card elevation={0}>
               <Typeahead
-                onChange={console.log}
-                onSelect={console.log}
+                onChange={this.onChangeTopic}
                 options={topicOptions}
+                defaultValue={this.selectedTopics}
                 name='topics'
               />
               <CardContent>
