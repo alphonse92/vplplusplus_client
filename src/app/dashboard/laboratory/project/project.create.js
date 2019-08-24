@@ -246,6 +246,9 @@ class ProjectCreateComponent extends React.Component {
 		this.setState({ window: undefined, nextWindow })
 	}
 
+	createProject = () => {
+		this.props.DISPATCHERS.CREATE_PROJECT()
+	}
 
 	saveTestCase = ({ window: payload }) => {
 		const { project, tests } = this.props
@@ -347,7 +350,7 @@ class ProjectCreateComponent extends React.Component {
 							}
 						/>
 						<CardActions>
-							<Button color="primary">Create Project <Save /></Button>
+							<Button onClick={this.createProject} color="primary">Create Project <Save /></Button>
 						</CardActions>
 					</Card>
 				</Flex>

@@ -1,4 +1,3 @@
-import { printErrorByEnv } from './../common'
 import { LOADING_ACTION_NAME } from '../redux/actions';
 
 async function getJSONorTextFromRequest(response) {
@@ -27,13 +26,10 @@ function dispatchRequesSuccess(dispatch, { data }, action, opts = {}) {
 }
 
 function dispatchErrors(dispatch, error, action) {
-	const { stack } = error
-	const dispatchData = {
+	dispatch({
 		type: action.rejected.name,
 		payload: error
-	}
-	printErrorByEnv(stack)
-	dispatch(dispatchData)
+	})
 }
 
 function throwErrorAtRequestError(responseParsed) {

@@ -23,7 +23,6 @@ Actions[LOAD_PROJECTS_NAME] = {
 		requestDispatcher(dispatcher, actions, getRequest)
 	},
 	ACTIONS: createRequestActions(LOAD_PROJECTS_NAME, {
-		// SET_USER_LOGGED will handle the state.user data
 		fullfilled: (state, action) => {
 			const newState = { ...state }
 			newState.list.pagination = action.payload
@@ -43,7 +42,6 @@ Actions[GET_MOODLE_ACTIVITIES_NAME] = {
 		requestDispatcher(dispatcher, actions, getRequest)
 	},
 	ACTIONS: createRequestActions(GET_MOODLE_ACTIVITIES_NAME, {
-		// SET_USER_LOGGED will handle the state.user data
 		fullfilled: (state, action) => {
 			const newState = { ...state }
 			newState.course.activities = action.payload
@@ -63,7 +61,6 @@ Actions[GET_TOPICS_NAME] = {
 		requestDispatcher(dispatcher, actions, getRequest)
 	},
 	ACTIONS: createRequestActions(GET_TOPICS_NAME, {
-		// SET_USER_LOGGED will handle the state.user data
 		fullfilled: (state, action) => {
 			const newState = { ...state }
 			newState.topics.list.pagination = action.payload
@@ -75,6 +72,34 @@ Actions[GET_TOPICS_NAME] = {
 	}),
 }
 
+const CREATE_PROJECT_NAME = 'CREATE_PROJECT'
+Actions[CREATE_PROJECT_NAME] = {
+	DISPATCHER: () => (dispatcher, getStore) => {
+		const store = getStore()
+		const ProjectStore = store.projects.create.project
+		const tests = store.projects.create.tests
+		const project = { ...ProjectStore, tests }
+		const getRequest = () => ProjectService.createProject(project)
+		const actions = Actions[CREATE_PROJECT_NAME].ACTIONS
+		requestDispatcher(dispatcher, actions, getRequest)
+	},
+	ACTIONS: createRequestActions(CREATE_PROJECT_NAME, {
+		fullfilled: (state, action) => {
+			const newState = { ...state }
+			newState.list.pagination = action.payload
+			return newState
+		},
+		rejected: (state, action) => {
+			const { payload } = action
+			const { data: error } = payload
+			const newState = { ...state, error }
+			console.log({ newState })
+			return newState
+		}
+	}),
+
+}
+
 const DELETE_PROJECT_NAME = 'DELETE_PROJECT'
 Actions[DELETE_PROJECT_NAME] = {
 	DISPATCHER: (id) => (dispatcher, getStore) => {
@@ -83,7 +108,6 @@ Actions[DELETE_PROJECT_NAME] = {
 		requestDispatcher(dispatcher, actions, getRequest)
 	},
 	ACTIONS: createRequestActions(DELETE_PROJECT_NAME, {
-		// SET_USER_LOGGED will handle the state.user data
 		fullfilled: (state, action) => {
 			const newState = { ...state }
 			newState.list.pagination = action.payload
@@ -168,6 +192,7 @@ Actions[EDIT_PROJECT_DATA_NAME] = {
 		}
 	},
 }
+
 
 
 const ActionCreators = extractActionCreators(Actions)

@@ -10,6 +10,14 @@ export class ProjectService extends WebService {
     super('project', user ? user.token : undefined)
   }
 
+  createProject(project) {
+    const options = {
+      method: 'POST',
+      body: project
+    }
+    return super.request(options)
+  }
+
   deleteProject(id) {
     const options = { method: 'DELETE' }
     return super.request(options, `/${id}/`)

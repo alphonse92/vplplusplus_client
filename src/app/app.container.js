@@ -7,7 +7,7 @@ import getRoutes from './routes'
 
 class AppContainer extends Component {
 	static mapStateToProps = (state) => {
-		const newprops = { lib: { ...state.lib } }
+		const newprops = { error: state.error, lib: { ...state.lib } }
 		return newprops
 	}
 
