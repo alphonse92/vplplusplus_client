@@ -116,11 +116,17 @@ public void ${capitalize(camelCase(test.name))}() {
   }
 
   render() {
+
     const { previewCode, windowOpen } = this.state
     const TestData = {
       ...TEST_CASE_DEFAULT_VALUES,
       ...this.state.test
     }
+    const TopicList = this.props.window.data.topics || []
+    const topicOptions = TopicList.map(({ _id: value, name, description: label }) => {
+      return {value, label}
+    })
+
 
     return (
       <React.Fragment>
@@ -195,7 +201,8 @@ public void ${capitalize(camelCase(test.name))}() {
               <Typeahead
                 onChange={console.log}
                 onSelect={console.log}
-                options={this.props.window.data.topics}
+                options={topicOptions}
+                name='topics'
               />
               <CardContent>
                 <TextField

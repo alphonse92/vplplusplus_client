@@ -269,10 +269,22 @@ export class IntegrationReactSelect extends React.Component {
 }
 
 export const Typeahead = (props) => {
-  const { options = [] } = props
+  const { options = [], name } = props
+
   return (
-    <p>
-      {options.map(({ name }) => name).join(', ')}
-    </p>
+    <React.Fragment>
+      <Select
+        isMulti
+        isSearchable
+        isClearable
+        name={name}
+        options={options}
+        menuPortalTarget={document.getElementById('select-portal')}
+        menuPosition='absolute'
+        menuPlacement='bottom'
+      />
+      <div id='select-portal' />
+    </React.Fragment>
+
   )
 }

@@ -316,7 +316,7 @@ class ProjectCreateComponent extends React.Component {
 	render() {
 		const { props, state } = this
 		let { modal, window } = state
-		const { tests = [], project, topics } = props
+		const { tests = [], project } = props
 		const showModal = !!modal
 
 		const { activity: activity_id } = project
