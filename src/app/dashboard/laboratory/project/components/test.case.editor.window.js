@@ -11,7 +11,10 @@ import {
   , ListItemText
   , Card
   , CardContent
-  , Collapse
+  , Collapse,
+  FormControl,
+  InputLabel,
+  Typography
 } from '@material-ui/core';
 import {
   ExpandLess as ExpandLessIcon,
@@ -211,18 +214,29 @@ public void ${capitalize(camelCase(test.name))}() {
             <ListItemIcon>
               <GradeIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Grades And Topics" secondary="The topics represent a student knowledge. Are usefull to quantify the student skill." />
+            <ListItemText inset primary="Grades And Topics" secondary="Topics allow to track the student progress along the time. The grade allow to quantify the final test result value" />
             {windowOpen === 'topicTabOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
           <Collapse in={windowOpen === 'topicTabOpen'} timeout="auto" unmountOnExit>
             <Card elevation={0}>
-              <Typeahead
-                onChange={this.onChangeTopic}
-                options={topicOptions}
-                defaultValue={this.selectedTopics}
-                name='topics'
-              />
+
               <CardContent>
+                <Typography variant="body2" gutterBottom>
+                  Topics are the most important field in the test case. Those are granular, especific and a mandatory.
+                  That represents a student knowledge. Are usefull to quantify the student skill.
+                  You need to add at least 1. If you need to add more than 3 topics, then consider to create another test case.
+                </Typography>
+
+
+                <Typeahead
+                  id='topics'
+                  onChange={this.onChangeTopic}
+                  options={topicOptions}
+                  defaultValue={this.selectedTopics}
+                  name='topics'
+                  placeholder="Select topic"
+                />
+
                 <TextField
                   id="standard-name"
                   label="Grade"
@@ -251,14 +265,14 @@ public void ${capitalize(camelCase(test.name))}() {
                 <TextField
                   id="standard-name"
                   style={{ width: '100%' }}
-                  label="Name"
+                  label="Success Message"
                   value={TestData.successMessage}
                   onChange={this.handleChange('successMessage')}
                   margin="normal"
                 />
                 <TextField
                   id="standard-name"
-                  label="Objective"
+                  label="Success reference link"
                   style={{ width: '100%' }}
                   value={TestData.successMessageLink}
                   onChange={this.handleChange('successMessageLink')}
@@ -277,7 +291,7 @@ public void ${capitalize(camelCase(test.name))}() {
             <ListItemIcon>
               <NegativeIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Positive retrospective" secondary="Setup the dialogs when a student fail the test." />
+            <ListItemText inset primary="Negative retrospective" secondary="Setup the dialogs when a student fail the test." />
             {windowOpen === 'negativeTabIsOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
           <Collapse in={windowOpen === 'negativeTabIsOpen'} timeout="auto" unmountOnExit>
@@ -286,14 +300,14 @@ public void ${capitalize(camelCase(test.name))}() {
                 <TextField
                   id="standard-name"
                   style={{ width: '100%' }}
-                  label="Name"
+                  label="Failure message"
                   value={TestData.failureMessage}
                   onChange={this.handleChange('failureMessage')}
                   margin="normal"
                 />
                 <TextField
                   id="standard-name"
-                  label="Objective"
+                  label="Failure reference link"
                   style={{ width: '100%' }}
                   value={TestData.failureMessageLink}
                   onChange={this.handleChange('failureMessageLink')}

@@ -7,7 +7,8 @@ export const Typeahead = (props) => {
     onSelect,
     onRemove,
     defaultValue=[],
-    onClear
+    onClear,
+    placeholder
   } = props
 
   const _onChange = (currentSelected = [], data) => {
@@ -31,6 +32,7 @@ export const Typeahead = (props) => {
         menuPortalTarget={document.getElementById(divId)}
         menuPosition='absolute'
         menuPlacement='bottom'
+        placeholder={placeholder}
         onChange={_onChange}
       />
       <div id={divId} />

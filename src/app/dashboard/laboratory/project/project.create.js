@@ -328,6 +328,45 @@ class ProjectCreateComponent extends React.Component {
 		const onCloseModalDef = ({ ok, value }) => { ok ? this.setValueFromModal(value) : this.closeModal() }
 		const onCloseModal = get(modal, 'onClose', onCloseModalDef)
 
+		const ProjectInfoHeader = () => (
+			<Flex vertical width="100%">
+				<Flex vertical width="100%" margin="7px">
+					<Card>
+						<CardHeader
+							title={
+								<React.Fragment>
+									{get(this.props, 'project.name', ProjectCreateComponent.DEFAULTS.project.name)}
+									<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.name)} />
+								</React.Fragment>
+							}
+							subheader={
+								<React.Fragment>
+									{get(this.props, 'project.description', ProjectCreateComponent.DEFAULTS.project.description)}
+									<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.description)} />
+								</React.Fragment>
+							}
+						/>
+						<CardActions>
+							<Button color="primary">Create Project <Save /></Button>
+						</CardActions>
+					</Card>
+				</Flex>
+				<Flex vertical width="100%" margin="7px">
+					<Card>
+						<CardHeader
+							title="Moodle Activity"
+							subheader={
+								<React.Fragment>
+									{moodle_activity_label}
+									<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.activity)} />
+								</React.Fragment>
+							}
+						/>
+					</Card>
+				</Flex>
+			</Flex>
+		)
+
 		return (
 			<React.Fragment>
 				{
@@ -350,41 +389,8 @@ class ProjectCreateComponent extends React.Component {
 						options={this.props.activities} />
 				}
 
+				<ProjectInfoHeader />
 
-				<Flex vertical width="100%" margin="7px">
-					<Card>
-						<CardHeader
-							title={
-								<React.Fragment>
-									{get(this.props, 'project.name', ProjectCreateComponent.DEFAULTS.project.name)}
-									<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.name)} />
-								</React.Fragment>
-							}
-							subheader={
-								<React.Fragment>
-									{get(this.props, 'project.description', ProjectCreateComponent.DEFAULTS.project.description)}
-									<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.description)} />
-								</React.Fragment>
-							}
-						/>
-						<CardActions>
-							<Button color="primary">Save Project <Save /></Button>
-						</CardActions>
-					</Card>
-				</Flex>
-				<Flex vertical width="100%" margin="7px">
-					<Card>
-						<CardHeader
-							title="Moodle Activity"
-							subheader={
-								<React.Fragment>
-									{moodle_activity_label}
-									<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.activity)} />
-								</React.Fragment>
-							}
-						/>
-					</Card>
-				</Flex>
 				<Flex horizontal width="100%">
 					<Flex vertical width="25%" margin="7px" >
 						<ProjectPreview
@@ -404,7 +410,8 @@ class ProjectCreateComponent extends React.Component {
 							onDeleteTestCase={this.onDeleteTestCase}
 						/>
 					</Flex>
-					<Flex horizontal width="75%" margin="7px" >
+					<Flex vertical width="75%" margin="7px" >
+
 						<Flex vertical width="100%" >
 							<WindowComponent window={window} onClose={this.closeWindow} onEmit={this.onWindowEmit} />
 						</Flex>
