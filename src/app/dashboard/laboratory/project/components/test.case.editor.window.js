@@ -11,10 +11,8 @@ import {
   , ListItemText
   , Card
   , CardContent
-  , Collapse,
-  FormControl,
-  InputLabel,
-  Typography
+  , Collapse
+  , Typography
 } from '@material-ui/core';
 import {
   ExpandLess as ExpandLessIcon,
