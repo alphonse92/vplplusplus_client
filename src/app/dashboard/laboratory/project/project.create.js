@@ -5,6 +5,7 @@ import { Card, Button, CardHeader, CardActions } from '@material-ui/core';
 import { Flex } from '../../../../lib/components/flex'
 import { ProjectPreview } from './components/testPreview';
 import { ActionCreators } from './redux/actions';
+import { ActionCreators as ActionCreatorsForErrors } from './../../../../redux/modals/actions';
 import { InputDialog, ConfirmationDialog, Dialog } from '../../../../lib/components/material/modals/input/';
 import { get, set } from 'lodash'
 import { SelectDialog } from '../../../../lib/components/material/modals/select';
@@ -90,20 +91,24 @@ class ProjectCreateComponent extends React.Component {
 
 	static mapStateToProps = (state) => {
 		const { projects } = state
-		const { create, course, topics } = projects
+		const { create, course, topics, error } = projects
 		const { project, tests } = create
 		const { activities = [] } = course
-		return { project, tests, activities, topics: topics.list.pagination }
+		return { error, project, tests, activities, topics: topics.list.pagination }
 	}
 
 	static mapDispatchToProps = (dispatch) => {
-		const DISPATCHERS = bindActionCreators({ ...ActionCreators }, dispatch)
+		const DISPATCHERS = {
+			...bindActionCreators({ ...ActionCreators }, dispatch),
+			...bindActionCreators({ ...ActionCreatorsForErrors }, dispatch)
+		}
 		return { DISPATCHERS }
 	}
 
 	componentDidMount() {
 		this.props.DISPATCHERS.GET_MOODLE_ACTIVITIES()
 		this.props.DISPATCHERS.GET_TOPICS()
+		if (this.props.error) this.props.DISPATCHERS.SET_ERROR(this.props.error)
 	}
 
 	createNewTestcase = () => {

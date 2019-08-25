@@ -2,6 +2,7 @@ import { extractActionCreators, requestDispatcher, createRequestActions } from '
 import { ProjectService as ProjectServiceClass } from '../../../../../services/project';
 import { CourseService as CourseServiceClass } from '../../../../../services/course';
 import { TopicService as TopicServiceClass } from '../../../../../services/topic';
+import { Actions as ModalActions } from '../../../../../redux/modals/actions'
 
 const ProjectService = new ProjectServiceClass()
 const CourseService = new CourseServiceClass()
@@ -85,9 +86,7 @@ Actions[CREATE_PROJECT_NAME] = {
 	},
 	ACTIONS: createRequestActions(CREATE_PROJECT_NAME, {
 		fullfilled: (state, action) => {
-			const newState = { ...state }
-			newState.list.pagination = action.payload
-			return newState
+			return { ...state }
 		},
 		rejected: (state, action) => {
 			const { payload } = action
