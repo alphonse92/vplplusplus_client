@@ -151,7 +151,6 @@ class ProjectListComponent extends React.Component {
 
 		const { projects = this.defaultProject } = props
 		const { currentTestCase } = this.state
-		console.log(this.props)
 		return (
 			<React.Fragment>
 

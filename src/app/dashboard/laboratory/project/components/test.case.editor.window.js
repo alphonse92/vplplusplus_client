@@ -45,8 +45,6 @@ export class EditTestCaseWindow extends React.Component {
         .filter(({ _id }) => this.state.test.topic.includes(_id))
         .map(this.extractOptionsFromTopics)
       : []
-
-    console.log(props)
   }
 
   getTestPayload = ok => {

@@ -93,7 +93,6 @@ Actions[CREATE_PROJECT_NAME] = {
 			const { payload } = action
 			const { data: error } = payload
 			const newState = { ...state, error }
-			console.log({ newState })
 			return newState
 		}
 	}),

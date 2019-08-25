@@ -30,6 +30,22 @@ export class Dialog extends React.Component {
 
 }
 
+export const Ok = (props) => {
+  const { handleClose, title = "Please add the value", text = "" } = props
+  const closeDialog = ok => () => { handleClose({ ok }) }
+  return (
+    <React.Fragment>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>{text}</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeDialog(true)} color="primary">Ok</Button>
+      </DialogActions>
+    </React.Fragment>
+  )
+}
+
 export const ConfirmationDialog = (props) => {
   const { handleClose, title = "Please add the value", text = "" } = props
   const closeDialog = ok => () => { handleClose({ ok }) }
