@@ -31,13 +31,17 @@ export class Dialog extends React.Component {
 }
 
 export const Ok = (props) => {
-  const { handleClose, title = "Please add the value", text = "" } = props
+  const { handleClose, title = "Please add the value", text: textOrComponent = "" } = props
   const closeDialog = ok => () => { handleClose({ ok }) }
   return (
     <React.Fragment>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText>{text}</DialogContentText>
+        {
+          typeof textOrComponent === 'string'
+            ? <DialogContentText>{textOrComponent}</DialogContentText>
+            : textOrComponent 
+        }
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog(true)} color="primary">Ok</Button>

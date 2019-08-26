@@ -75,23 +75,20 @@ Actions[GET_TOPICS_NAME] = {
 
 const CREATE_PROJECT_NAME = 'CREATE_PROJECT'
 Actions[CREATE_PROJECT_NAME] = {
-	DISPATCHER: () => (dispatcher, getStore) => {
+	DISPATCHER: (opts) => (dispatcher, getStore) => {
 		const store = getStore()
 		const ProjectStore = store.projects.create.project
 		const tests = store.projects.create.tests
 		const project = { ...ProjectStore, tests }
 		const getRequest = () => ProjectService.createProject(project)
 		const actions = Actions[CREATE_PROJECT_NAME].ACTIONS
-		requestDispatcher(dispatcher, actions, getRequest)
+		requestDispatcher(dispatcher, actions, getRequest, opts)
 	},
 	ACTIONS: createRequestActions(CREATE_PROJECT_NAME, {
 		fullfilled: (state, action) => {
-			return { ...state }
-		},
-		rejected: (state, action) => {
-			const { payload } = action
-			const { data: error } = payload
-			const newState = { ...state, error }
+			const newState = { ...state }
+			newState.create.project = action.payload
+			console.log(newState)
 			return newState
 		}
 	}),
@@ -100,20 +97,14 @@ Actions[CREATE_PROJECT_NAME] = {
 
 const DELETE_PROJECT_NAME = 'DELETE_PROJECT'
 Actions[DELETE_PROJECT_NAME] = {
-	DISPATCHER: (id) => (dispatcher, getStore) => {
+	DISPATCHER: (id, opts) => (dispatcher, getStore) => {
 		const actions = Actions[DELETE_PROJECT_NAME].ACTIONS
 		const getRequest = () => ProjectService.deleteProject(id)
-		requestDispatcher(dispatcher, actions, getRequest)
+		requestDispatcher(dispatcher, actions, getRequest, opts)
 	},
 	ACTIONS: createRequestActions(DELETE_PROJECT_NAME, {
-		fullfilled: (state, action) => {
-			const newState = { ...state }
-			newState.list.pagination = action.payload
-			return newState
-		},
-		rejected: (state, action) => {
-			return state
-		}
+		fullfilled: (state, action) => ({ ...state }),
+		rejected: (state, action) => ({ ...state })
 	}),
 
 }

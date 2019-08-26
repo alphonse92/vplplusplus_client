@@ -22,7 +22,9 @@ function dispatchInitActions(dispatch, action) {
 function dispatchRequesSuccess(dispatch, { data }, action, opts = {}) {
 	const { fullfilled } = action
 	const formattedData = opts.format ? opts.format(data) : data
-	dispatch({ type: fullfilled.name, payload: formattedData, })
+	opts.after
+		? opts.after(formattedData)
+		: dispatch({ type: fullfilled.name, payload: formattedData, })
 }
 
 function dispatchErrors(dispatch, error, action) {
@@ -61,11 +63,12 @@ export async function requestDispatcher(dispatch, action, getRequest, opts = {})
 		dispatchInitActions(dispatch, action)
 		const response = await request
 		const responseParsed = await getJSONorTextFromRequest(response.clone())
-		await after(dispatch, opts.after, responseParsed)
 		throwErrorAtRequestError(responseParsed)
 		dispatchRequesSuccess(dispatch, responseParsed, action, opts)
 	} catch (error) {
-		dispatchErrors(dispatch, error, action)
+		opts.onError
+			? opts.onError(error.data)
+			: dispatchErrors(dispatch, error, action)
 	}
 
 }

@@ -108,8 +108,11 @@ class ProjectCreateComponent extends React.Component {
 	componentDidMount() {
 		this.props.DISPATCHERS.GET_MOODLE_ACTIVITIES()
 		this.props.DISPATCHERS.GET_TOPICS()
-		if (this.props.error) this.props.DISPATCHERS.SET_ERROR(this.props.error)
 	}
+
+	// componentDidUpdate() {
+	// 	if (this.props.error) this.props.DISPATCHERS.SET_ERROR(this.props.error)
+	// }
 
 	createNewTestcase = () => {
 		const mock = () => ({
@@ -252,7 +255,9 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	createProject = () => {
-		this.props.DISPATCHERS.CREATE_PROJECT()
+		this.props.DISPATCHERS.CREATE_PROJECT({
+			onError: this.props.DISPATCHERS.SET_ERROR
+		})
 	}
 
 	saveTestCase = ({ window: payload }) => {
@@ -341,6 +346,9 @@ class ProjectCreateComponent extends React.Component {
 				<Flex vertical width="100%" margin="7px">
 					<Card>
 						<CardHeader
+							action={
+								<small>Editing On: {this.props.project._id || "new project"} </small>
+							}
 							title={
 								<React.Fragment>
 									{get(this.props, 'project.name', ProjectCreateComponent.DEFAULTS.project.name)}
