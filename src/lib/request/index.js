@@ -1,4 +1,4 @@
-import { LOADING_ACTION_NAME } from '../redux/actions';
+// import { LOADING_ACTION_NAME } from '../redux/actions';
 
 async function getJSONorTextFromRequest(response) {
 	const { ok, status, statusText } = response

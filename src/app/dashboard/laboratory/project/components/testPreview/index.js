@@ -43,22 +43,17 @@ const PreviewWrapper = props => <div className="previewProjects">{props.children
 const ProjectsWrapper = props => <div className="projects">{props.children}</div>
 const TestsWrapper = props => <List component="nav" className="tests" subheader={<SubHeader text="Test cases" />}>{props.children}</List>
 
-const cutStringAndAddDots = (str, max = 25) => {
-	return str.length > max ? `${str.substring(0, max)}...` : str
-}
+const cutStringAndAddDots = (str, max = 25) => str.length > max ? `${str.substring(0, max)}...` : str
+const wrapInItalic = (shouldWrap, txt) => !!shouldWrap ? <i>{txt}</i> : <>{txt}</>
 
 
 const ProjectPreviewTestItem = ({ onSelectTestCase, onDeleteTestCase, test, project_index, index }) => {
-	const name = test.name || ''
-	const finalName = name.length > 25 ? `${name.substring(0, 25)}...` : name
-	const objective = test.objective || ''
-	const finalObjective = objective.length > 25 ? `${objective.substring(0, 25)}...` : objective
 	return (
 		<ListItem button onClick={() => onSelectTestCase(project_index, index, test)}>
 			<ListItemIcon>
 				<i className="fas fa-flask"></i>
 			</ListItemIcon>
-			<ListItemText inset primary={finalName} secondary={finalObjective} />
+			<ListItemText inset primary={cutStringAndAddDots(test.name)} secondary={cutStringAndAddDots(test.objective)} />
 			<ListItemSecondaryAction onClick={() => onDeleteTestCase(project_index, index, test)}>
 				<IconButton aria-label="Remove Case"> <DeleteIcon /> </IconButton>
 			</ListItemSecondaryAction>
@@ -145,7 +140,7 @@ class Project extends React.Component {
 					<ListItemIcon>
 						<FormatListNumberedIcon />
 					</ListItemIcon>
-					<ListItemText inset primary={cutStringAndAddDots(project.name, 10)} secondary={cutStringAndAddDots(project.description)} />
+					<ListItemText inset primary={wrapInItalic(project._id, cutStringAndAddDots(project.name, 10))} secondary={cutStringAndAddDots(project.description)} />
 					{open.project ? <ExpandLessIcon /> : <ExpandMoreIcon />}
 				</ListItem>
 				<Collapse in={open.project} timeout="auto" unmountOnExit>
