@@ -81,7 +81,8 @@ const ProjectDescriptionCard =
 		project }) => (
 			<Card elevation={0}>
 				<CardContent>
-					<Typography color="textSecondary" gutterBottom>Project Name</Typography>
+					<Typography color="textSecondary" gutterBottom>Project Name </Typography>
+					{project._id && <Typography color="textSecondary" gutterBottom><small>{project._id}</small></Typography>}
 					<Typography variant="h6" component="h6" gutterBottom onClick={onToggle}>
 						{project.name}
 						{editable && <EditIconMaterial onClick={onEditProject('name')} />}
