@@ -43,6 +43,9 @@ function throwErrorAtRequestError(responseParsed) {
 }
 
 function setLoading(dispatcher, isLoading, callback) {
+	// we need other approach, dispatch this action is causing a inconsistent state of the store
+	// maybe, we need to connect this class to redux store, or each component should manage the loading bar.
+	// just thinking
 	// console.log(dispatcher({ type: LOADING_ACTION_NAME, payload: isLoading }))
 	callback && callback()
 }
