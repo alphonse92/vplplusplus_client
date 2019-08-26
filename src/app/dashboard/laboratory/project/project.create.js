@@ -325,7 +325,7 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	forceCloseWindow = extraState => this.setState({ window: undefined, forceCloseWindow: true, ...extraState })
-
+	projectHasSummmaries = () => !!this.props.project.summaries
 	render() {
 		const { props, state } = this
 		let { modal, window } = state
@@ -349,7 +349,7 @@ class ProjectCreateComponent extends React.Component {
 					<Card>
 						<CardHeader
 							action={
-								<small>Editing On: {this.props.project._id || "new project"} </small>
+								<small>{this.projectHasSummmaries() ? "No editable project" : "Editing On"}: {this.props.project._id || "new project"} </small>
 							}
 							title={
 								<React.Fragment>
@@ -366,8 +366,7 @@ class ProjectCreateComponent extends React.Component {
 						/>
 						<CardActions>
 							{
-								(!this.project.summaries || this.project.summaries.length)
-								&& <Button onClick={this.createProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
+								this.projectHasSummmaries() && <Button onClick={this.createProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
 							}
 						</CardActions>
 					</Card>
