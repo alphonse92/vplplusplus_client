@@ -9,6 +9,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 class ProjectTable extends React.Component {
@@ -40,6 +41,10 @@ class ProjectTable extends React.Component {
 
 	componentDidMount() {
 		this.props.DISPATCHERS.LOAD_PROJECTS()
+	}
+
+	onEdit = () => {
+		const { _id } = this.selected_project
 	}
 
 	onDelete = () => {
@@ -100,9 +105,10 @@ class ProjectTable extends React.Component {
 		const { pagination, onCreateNewProject } = props
 
 		const buttonsWhenSelected = [
-			{ key: 0, label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
-			{ key: 1, label: 'Make public', icon: <VisibilityIcon />, onClick: this.onSetVisible },
-			{ key: 2, label: 'Make private', icon: <VisibilityOffIcon />, onClick: this.onSetPrivate },
+			{ key: 0, label: 'Delete', icon: <EditIcon />, onClick: this.onEdit },
+			{ key: 1, label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
+			{ key: 2, label: 'Make public', icon: <VisibilityIcon />, onClick: this.onSetVisible },
+			{ key: 3, label: 'Make private', icon: <VisibilityOffIcon />, onClick: this.onSetPrivate },
 		]
 
 		const buttonsWhenNotSelected = [
