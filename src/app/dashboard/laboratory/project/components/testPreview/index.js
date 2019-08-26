@@ -140,7 +140,7 @@ class Project extends React.Component {
 					<ListItemIcon>
 						<FormatListNumberedIcon />
 					</ListItemIcon>
-					<ListItemText inset primary={wrapInItalic(project._id, cutStringAndAddDots(project.name, 10))} secondary={cutStringAndAddDots(project.description)} />
+					<ListItemText inset primary={wrapInItalic(project ? project._id : "", cutStringAndAddDots(project.name, 10))} secondary={cutStringAndAddDots(project.description)} />
 					{open.project ? <ExpandLessIcon /> : <ExpandMoreIcon />}
 				</ListItem>
 				<Collapse in={open.project} timeout="auto" unmountOnExit>

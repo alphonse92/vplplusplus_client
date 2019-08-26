@@ -365,7 +365,10 @@ class ProjectCreateComponent extends React.Component {
 							}
 						/>
 						<CardActions>
-							<Button onClick={this.createProject} color="primary">Create Project <Save /></Button>
+							{
+								(!this.project.summaries || this.project.summaries.length)
+								&& <Button onClick={this.createProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
+							}
 						</CardActions>
 					</Card>
 				</Flex>
