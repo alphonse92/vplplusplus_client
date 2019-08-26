@@ -37,7 +37,12 @@ export class EditTestCaseWindow extends React.Component {
     super(props)
     const { window } = props
     const { setAsSaved = true } = window
-    this.state = { test: { ...window.data.test } }
+    const test = window.data.test
+    if (test.topic) test.topic = test.topic.map((topic) => {
+      const _id = topic._id || topic
+      return _id
+    })
+    this.state = { test }
     this.lastCode = this.state.test.code
     this.saved = setAsSaved
     this.selectedTopics = this.state.test.topic
@@ -45,6 +50,7 @@ export class EditTestCaseWindow extends React.Component {
         .filter(({ _id }) => this.state.test.topic.includes(_id))
         .map(this.extractOptionsFromTopics)
       : []
+    console.log(this.selectedTopics)
   }
 
   getTestPayload = ok => {
@@ -133,6 +139,8 @@ public void ${capitalize(camelCase(test.name))}() {
 
   render() {
 
+    
+
     const { previewCode, windowOpen = [] } = this.state
     const TestData = {
       ...TEST_CASE_DEFAULT_VALUES,
@@ -140,10 +148,6 @@ public void ${capitalize(camelCase(test.name))}() {
     }
     const TopicList = this.props.window.data.topics || []
     const topicOptions = TopicList.map(this.extractOptionsFromTopics)
-
-
-
-
 
     return (
       <React.Fragment>

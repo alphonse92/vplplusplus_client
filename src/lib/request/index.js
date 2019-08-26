@@ -43,13 +43,12 @@ function throwErrorAtRequestError(responseParsed) {
 }
 
 function setLoading(dispatcher, isLoading, callback) {
-	dispatcher({ type: LOADING_ACTION_NAME, payload: isLoading })
+	// console.log(dispatcher({ type: LOADING_ACTION_NAME, payload: isLoading }))
 	callback && callback()
 }
 
 function before(dispatcher, callback) {
-	setLoading(dispatcher, true)
-	if (callback) return callback()
+	setLoading(dispatcher, true,callback)
 }
 
 export async function requestDispatcher(dispatch, action, getRequest, opts = {}) {

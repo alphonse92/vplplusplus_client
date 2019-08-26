@@ -107,7 +107,9 @@ class ProjectCreateComponent extends React.Component {
 
 	componentDidMount() {
 		const { id } = this.props.match.params
-		id && this.props.DISPATCHERS.LOAD_PROJECT(id)
+		id
+			? this.props.DISPATCHERS.LOAD_PROJECT(id)
+			: this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project: {}, tests: [] })
 		this.props.DISPATCHERS.GET_MOODLE_ACTIVITIES()
 		this.props.DISPATCHERS.GET_TOPICS()
 	}
@@ -324,11 +326,11 @@ class ProjectCreateComponent extends React.Component {
 
 	forceCloseWindow = extraState => this.setState({ window: undefined, forceCloseWindow: true, ...extraState })
 
-
 	render() {
 		const { props, state } = this
 		let { modal, window } = state
 		const { tests = [], project } = props
+		console.log(this.props)
 		const showModal = !!modal
 		const activities = this.props.activities || []
 		const { activity: activity_id } = project

@@ -29,7 +29,7 @@ Actions[LOAD_PROJECTS_NAME] = {
 			return newState
 		},
 		rejected: (state, action) => {
-			return state
+			return {...state}
 		}
 	}),
 }
@@ -50,7 +50,7 @@ Actions[LOAD_PROJECT_NAME] = {
 			return newState
 		},
 		rejected: (state, action) => {
-			return state
+			return {...state}
 		}
 	}),
 }
@@ -108,7 +108,6 @@ Actions[CREATE_PROJECT_NAME] = {
 		fullfilled: (state, action) => {
 			const newState = { ...state }
 			newState.create.project = action.payload
-			console.log(newState)
 			return newState
 		}
 	}),
@@ -187,15 +186,14 @@ Actions[SET_PAGE_NAME] = {
 
 const EDIT_PROJECT_DATA_NAME = 'EDIT_PROJECT_DATA'
 Actions[EDIT_PROJECT_DATA_NAME] = {
-	DISPATCHER: (payload) => (dispatcher, getStore) => {
-		dispatcher({ type: Actions[EDIT_PROJECT_DATA_NAME].ACTIONS.default.name, payload })
-	},
+	DISPATCHER: (payload) => (dispatcher, getStore) => dispatcher({ type: Actions[EDIT_PROJECT_DATA_NAME].ACTIONS.default.name, payload }),
 	ACTIONS: {
 		default: {
 			name: EDIT_PROJECT_DATA_NAME,
 			reducer: (state, action) => {
 				const newState = { ...state }
 				newState.create = { ...action.payload }
+
 				return newState
 			}
 		}

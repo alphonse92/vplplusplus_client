@@ -1,17 +1,21 @@
 import { extractActionCreators } from './'
 
-const _actions_ = {}
+const _Actions = {}
 
 export const LOADING_ACTION_NAME = '@mv/loading'
-_actions_[LOADING_ACTION_NAME] = {
-	DISPATCHER: () => true,
+_Actions[LOADING_ACTION_NAME] = {
+	DISPATCHER: (isLoading) => (dispatcher, getStore) => {
+		dispatcher({ type: _Actions[LOADING_ACTION_NAME].ACTIONS.default.name, payload: isLoading })
+	},
 	ACTIONS: {
 		default: {
 			name: LOADING_ACTION_NAME,
-			reducer: (state, action) => ({ ...state, loading: !!action.payload })
+			reducer: (state, action) => {
+				return { loading: !!action.payload }
+			}
 		}
 	},
 }
 
-export const ActionCreators = extractActionCreators(_actions_)
-export const Actions = _actions_
+export const ActionCreators = extractActionCreators(_Actions)
+export const Actions = _Actions
