@@ -4,6 +4,7 @@ import { Ok, Dialog } from "../material/modals/input";
 
 const getErrorTextByType = {
   'resource not found': ({ error }) => error.message,
+  'action-cant-perform': ({ error }) => error.message,
   'validation': ({ error }) => {
     return Object
       .keys(error)

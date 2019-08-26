@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Button, } from '@material-ui/core'
 import { MaterialTable } from '../../../../../lib/components/material/tables/material.table';
 import { ActionCreators } from './../redux/actions';
+import { ActionCreators as ActionCreatorsForErrors } from './../../../../../redux/modals/actions';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -25,11 +26,15 @@ class ProjectTable extends React.Component {
 	static mapStateToProps = (state) => {
 		const { projects } = state
 		const { list } = projects
-		return {...list}
+		return { ...list }
 	}
 
 	static mapDispatchToProps = (dispatch) => {
-		const DISPATCHERS = bindActionCreators({ ...ActionCreators }, dispatch)
+		const DISPATCHERS = {
+			...bindActionCreators({ ...ActionCreators }, dispatch),
+			...bindActionCreators({ ...ActionCreatorsForErrors }, dispatch)
+		}
+
 		return { DISPATCHERS }
 	}
 
@@ -39,7 +44,10 @@ class ProjectTable extends React.Component {
 
 	onDelete = () => {
 		const { _id } = this.selected_project
-		this.props.DISPATCHERS.DELETE_PROJECT(_id,{after:this.props.DISPATCHERS.LOAD_PROJECTS})
+		this.props.DISPATCHERS.DELETE_PROJECT(_id, {
+			after: this.props.DISPATCHERS.LOAD_PROJECTS,
+			onError: this.props.DISPATCHERS.SET_ERROR
+		})
 	}
 
 	handleRequestSort = (data, value) => {
@@ -142,7 +150,7 @@ class ProjectTable extends React.Component {
 		}
 
 		return <MaterialTable {...propsTable} title="Projects" />
-		
+
 	}
 }
 

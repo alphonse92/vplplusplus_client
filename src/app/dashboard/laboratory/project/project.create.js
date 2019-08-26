@@ -110,9 +110,6 @@ class ProjectCreateComponent extends React.Component {
 		this.props.DISPATCHERS.GET_TOPICS()
 	}
 
-	// componentDidUpdate() {
-	// 	if (this.props.error) this.props.DISPATCHERS.SET_ERROR(this.props.error)
-	// }
 
 	createNewTestcase = () => {
 		const mock = () => ({
