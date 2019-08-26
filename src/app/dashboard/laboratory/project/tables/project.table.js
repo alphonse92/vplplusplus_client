@@ -42,9 +42,12 @@ class ProjectTable extends React.Component {
 	componentDidMount() {
 		this.props.DISPATCHERS.LOAD_PROJECTS()
 	}
-
+	onCreateNewProject = () => {
+		this.props.onCreateNewProject()
+	}
 	onEdit = () => {
 		const { _id } = this.selected_project
+		this.props.onCreateNewProject(_id)
 	}
 
 	onDelete = () => {
@@ -105,7 +108,7 @@ class ProjectTable extends React.Component {
 		const { pagination, onCreateNewProject } = props
 
 		const buttonsWhenSelected = [
-			{ key: 0, label: 'Delete', icon: <EditIcon />, onClick: this.onEdit },
+			{ key: 0, label: 'Edit', icon: <EditIcon />, onClick: this.onEdit },
 			{ key: 1, label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
 			{ key: 2, label: 'Make public', icon: <VisibilityIcon />, onClick: this.onSetVisible },
 			{ key: 3, label: 'Make private', icon: <VisibilityOffIcon />, onClick: this.onSetPrivate },
@@ -113,7 +116,7 @@ class ProjectTable extends React.Component {
 
 		const buttonsWhenNotSelected = [
 			{ key: 0, label: 'Filter Data', icon: <FilterListIcon />, onClick: this.handleChangeFilter },
-			{ key: 1, label: 'Create new Project', icon: <AddIcon />, onClick: onCreateNewProject },
+			{ key: 1, label: 'Create new Project', icon: <AddIcon />, onClick: this.onCreateNewProject },
 		]
 
 		pagination.docs = pagination.docs.reduce((array, doc) => {

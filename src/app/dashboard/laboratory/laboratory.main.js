@@ -3,9 +3,10 @@ import { Toolbar } from '@material-ui/core';
 import { ProjectTable } from './project/tables/project.table';
 
 export const Main = (props) => {
-	
-	const onCreateNewProject = () => {
-		props.history.push('laboratory/project/create')
+
+	const onCreateNewProject = (id) => {
+		console.log(id)
+		props.history.push(`laboratory/project/create/${id ? id : ''}`)
 	}
 
 	return (

@@ -106,6 +106,8 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	componentDidMount() {
+		const { id } = this.props.match.params
+		id && this.props.DISPATCHERS.LOAD_PROJECT(id)
 		this.props.DISPATCHERS.GET_MOODLE_ACTIVITIES()
 		this.props.DISPATCHERS.GET_TOPICS()
 	}
@@ -328,12 +330,13 @@ class ProjectCreateComponent extends React.Component {
 		let { modal, window } = state
 		const { tests = [], project } = props
 		const showModal = !!modal
-
+		const activities = this.props.activities || []
 		const { activity: activity_id } = project
 		const isActivitySelecteed = !!activity_id
-		const moodle_activity_label = isActivitySelecteed
-			? this.props.activities.find(({ course_module_id }) => course_module_id === activity_id).name
+		const activity = isActivitySelecteed
+			? activities.find(({ course_module_id }) => course_module_id === activity_id)
 			: ProjectCreateComponent.DEFAULTS.project.activity
+		const moodle_activity_label = activity ? activity.name : ''
 
 		const onCloseModalDef = ({ ok, value }) => { ok ? this.setValueFromModal(value) : this.closeModal() }
 		const onCloseModal = get(modal, 'onClose', onCloseModalDef)

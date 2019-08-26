@@ -34,6 +34,27 @@ Actions[LOAD_PROJECTS_NAME] = {
 		}
 	}),
 }
+const LOAD_PROJECT_NAME = 'LOAD_PROJECT'
+Actions[LOAD_PROJECT_NAME] = {
+	DISPATCHER: (id) => (dispatcher, getStore) => {
+		const actions = Actions[LOAD_PROJECT_NAME].ACTIONS
+		const getRequest = () => ProjectService.getProject(id)
+		requestDispatcher(dispatcher, actions, getRequest)
+	},
+	ACTIONS: createRequestActions(LOAD_PROJECT_NAME, {
+		fullfilled: (state, action) => {
+			const newState = { ...state }
+			const { payload: projectFromAPI } = action
+			const { tests, ...project } = projectFromAPI
+			newState.create.project = project
+			newState.create.tests = tests
+			return newState
+		},
+		rejected: (state, action) => {
+			return state
+		}
+	}),
+}
 
 const GET_MOODLE_ACTIVITIES_NAME = 'GET_MOODLE_ACTIVITIES'
 Actions[GET_MOODLE_ACTIVITIES_NAME] = {
