@@ -43,12 +43,15 @@ const PreviewWrapper = props => <div className="previewProjects">{props.children
 const ProjectsWrapper = props => <div className="projects">{props.children}</div>
 const TestsWrapper = props => <List component="nav" className="tests" subheader={<SubHeader text="Test cases" />}>{props.children}</List>
 
+const cutStringAndAddDots = (str, max = 25) => {
+	return str.length > max ? `${str.substring(0, max)}...` : str
+}
 
 
 const ProjectPreviewTestItem = ({ onSelectTestCase, onDeleteTestCase, test, project_index, index }) => {
 	const name = test.name || ''
-	const objective = test.objective || ''
 	const finalName = name.length > 25 ? `${name.substring(0, 25)}...` : name
+	const objective = test.objective || ''
 	const finalObjective = objective.length > 25 ? `${objective.substring(0, 25)}...` : objective
 	return (
 		<ListItem button onClick={() => onSelectTestCase(project_index, index, test)}>
@@ -79,12 +82,10 @@ const ProjectDescriptionCard =
 			<Card elevation={0}>
 				<CardContent>
 					<Typography color="textSecondary" gutterBottom>Project Name</Typography>
-					<Typography variant="h5" component="h2" gutterBottom onClick={onToggle}>
+					<Typography variant="h6" component="h6" gutterBottom onClick={onToggle}>
 						{project.name}
 						{editable && <EditIconMaterial onClick={onEditProject('name')} />}
-						<IconButton>
-							{isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-						</IconButton>
+						{isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
 					</Typography>
 
 					<Collapse in={isOpen} timeout="auto" unmountOnExit>
@@ -143,7 +144,7 @@ class Project extends React.Component {
 					<ListItemIcon>
 						<FormatListNumberedIcon />
 					</ListItemIcon>
-					<ListItemText inset primary={project.name} secondary={project.description} />
+					<ListItemText inset primary={cutStringAndAddDots(project.name, 10)} secondary={cutStringAndAddDots(project.description)} />
 					{open.project ? <ExpandLessIcon /> : <ExpandMoreIcon />}
 				</ListItem>
 				<Collapse in={open.project} timeout="auto" unmountOnExit>

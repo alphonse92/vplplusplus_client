@@ -2,7 +2,6 @@ import { extractActionCreators, requestDispatcher, createRequestActions } from '
 import { ProjectService as ProjectServiceClass } from '../../../../../services/project';
 import { CourseService as CourseServiceClass } from '../../../../../services/course';
 import { TopicService as TopicServiceClass } from '../../../../../services/topic';
-import { Actions as ModalActions } from '../../../../../redux/modals/actions'
 
 const ProjectService = new ProjectServiceClass()
 const CourseService = new CourseServiceClass()

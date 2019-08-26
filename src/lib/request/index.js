@@ -52,11 +52,6 @@ function before(dispatcher, callback) {
 	if (callback) return callback()
 }
 
-function after(dispatcher, callback, data) {
-	setLoading(dispatcher, false)
-	if (callback) return callback(data)
-}
-
 export async function requestDispatcher(dispatch, action, getRequest, opts = {}) {
 	try {
 		await before(dispatch, opts.before)
