@@ -23,7 +23,7 @@ function dispatchRequesSuccess(dispatch, { data }, action, opts = {}) {
 	const { fullfilled } = action
 	const formattedData = opts.format ? opts.format(data) : data
 	opts.after
-		? opts.after(formattedData)
+		? setLoading(dispatch, false, ()=>opts.after(formattedData))
 		: dispatch({ type: fullfilled.name, payload: formattedData, })
 }
 
@@ -42,8 +42,9 @@ function throwErrorAtRequestError(responseParsed) {
 	throw error
 }
 
-function setLoading(dispatcher, isLoading) {
+function setLoading(dispatcher, isLoading, callback) {
 	dispatcher({ type: LOADING_ACTION_NAME, payload: isLoading })
+	callback()
 }
 
 function before(dispatcher, callback) {
