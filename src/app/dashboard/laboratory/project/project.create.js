@@ -165,7 +165,7 @@ class ProjectCreateComponent extends React.Component {
 
 		if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
 
-		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+		if (!this.isEditing()) this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 
 	}
 
@@ -325,7 +325,8 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	forceCloseWindow = extraState => this.setState({ window: undefined, forceCloseWindow: true, ...extraState })
-	isProjectBlocked = () => !!this.props.project.summaries
+	isProjectBlocked = () => this.isEditing() && !!this.props.project.summaries && this.props.project.summaries.length > 0
+	isEditing = () => !!this.props.project._id
 	render() {
 		const { props, state } = this
 		let { modal, window } = state
