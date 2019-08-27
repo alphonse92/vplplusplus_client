@@ -32,6 +32,11 @@ export class EditTestWindow extends React.Component {
     this.saved = setAsSaved
   }
 
+  componentWillUnmount() {
+    const payload = this.getTestPayload(!!this.saved)
+    this.props.onClose(payload)
+  }
+
   getTestPayload = ok => {
     const { props } = this
     const { window } = props
@@ -41,10 +46,7 @@ export class EditTestWindow extends React.Component {
     return { ok, window: windowData, path: `test[${window.data.index}]` }
   }
 
-  componentWillUnmount() {
-    const payload = this.getTestPayload(!!this.saved)
-    this.props.onClose(payload)
-  }
+  
 
   getEditor = (editor, monaco) => {
     this.editor = editor

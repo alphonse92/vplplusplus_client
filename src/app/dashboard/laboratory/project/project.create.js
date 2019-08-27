@@ -240,10 +240,10 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 
-	showWindow = (window, data) => {
+	showWindow = (windowToBeOpen, data) => {
 		const id = data.id
-		const nextWindow = { ...window, data, id, readOnly: this.isProjectBlocked() }
-
+		const nextWindow = { ...windowToBeOpen, data, id, readOnly: this.isProjectBlocked() }
+		document.getElementById('VPL_APP_ROOT').scrollTo(0, 0)
 		if (!this.state.window) {
 			return this.setState({ window: nextWindow })
 		}
@@ -330,7 +330,6 @@ class ProjectCreateComponent extends React.Component {
 		const { props, state } = this
 		let { modal, window } = state
 		const { tests = [], project } = props
-		console.log(this.props)
 		const showModal = !!modal
 		const activities = this.props.activities || []
 		const { activity: activity_id } = project

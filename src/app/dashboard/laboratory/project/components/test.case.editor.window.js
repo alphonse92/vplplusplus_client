@@ -35,9 +35,9 @@ export class EditTestCaseWindow extends React.Component {
 
   constructor(props) {
     super(props)
-    const { window } = props
-    const { setAsSaved = true, readOnly } = window
-    const test = window.data.test
+    const { window: windowProp } = props
+    const { setAsSaved = true, readOnly } = windowProp
+    const test = windowProp.data.test
     if (test.topic) test.topic = test.topic.map((topic) => {
       const _id = topic._id || topic
       return _id
@@ -50,7 +50,6 @@ export class EditTestCaseWindow extends React.Component {
         .filter(({ _id }) => this.state.test.topic.includes(_id))
         .map(this.extractOptionsFromTopics)
       : []
-    console.log(this.selectedTopics)
   }
 
   getTestPayload = ok => {
