@@ -23,6 +23,16 @@ export class ProjectService extends WebService {
     return super.request(options, `/${id}/`)
   }
 
+  deleteTest(project_id, id) {
+    const options = { method: 'DELETE' }
+    return super.request(options, `/${project_id}/test/${id}`)
+  }
+
+  deleteTestCase(project_id, test_id, id) {
+    const options = { method: 'DELETE' }
+    return super.request(options, `/${project_id}/test/${test_id}/case/${id}`)
+  }
+
   getProjects(page, limit, sort) {
     const query = { page, limit, sort, populate: ['tests.test_cases.summaries', 'summaries'] }
     const options = {

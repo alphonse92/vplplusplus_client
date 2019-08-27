@@ -158,6 +158,9 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	deleteTest = (index, test) => {
+
+		console.log('remove test from db', { index, test })
+
 		const { project, tests: allTests } = this.props
 		// eslint-disable no-unused-vars 
 		const tests = allTests.filter((test, indexArray) => index !== indexArray)
@@ -165,7 +168,8 @@ class ProjectCreateComponent extends React.Component {
 
 		if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
 
-		if (!this.isEditing()) this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+
 
 	}
 
