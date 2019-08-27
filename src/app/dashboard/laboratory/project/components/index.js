@@ -21,7 +21,7 @@ export const NewProjectToolbarComponent = ({ goTo }) => (
 	</Toolbar>
 )
 
-export const CodeEditorWithPreview = ({ title, previewCode, description, editor, getCode, editorDidMount, onShowPreview, onClosePreview, onChange = () => true }) => {
+export const CodeEditorWithPreview = ({ title, previewCode, description, editor, getCode, editorDidMount, onShowPreview, onClosePreview, onChange = () => true, readOnly }) => {
 
 	const toggleStyle = {
 		root: {
@@ -44,21 +44,21 @@ export const CodeEditorWithPreview = ({ title, previewCode, description, editor,
 	const code = getCode()
 	return (
 		<React.Fragment>
-			<ButtonHandlePreviewVisibility
+			{!readOnly && (<ButtonHandlePreviewVisibility
 				open={!!previewCode}
 				onShow={onShowPreview}
-				onClose={onClosePreview} />
+				onClose={onClosePreview} />)}
 			<CodeEditor
 				key={Date.now().toString()}
 				onChange={onChange}
 				code={code}
-				options={{ readOnly: !!previewCode }}
+				options={{ readOnly: (!readOnly && !!previewCode) || readOnly }}
 				editorDidMount={editorDidMount}
 				monacoProperties={{ height: '250px' }}
 				language="java"
 			/>
 
-			{previewCode && <CodeEditor code={previewCode} options={{ readOnly: true }} language="java" monacoProperties={{ height: '250px' }} />}
+			{(!readOnly && previewCode) && <CodeEditor code={previewCode} options={{ readOnly: true }} language="java" monacoProperties={{ height: '250px' }} />}
 		</React.Fragment>
 	)
 }

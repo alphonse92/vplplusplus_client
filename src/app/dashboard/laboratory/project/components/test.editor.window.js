@@ -24,10 +24,10 @@ export class EditTestWindow extends React.Component {
   constructor(props) {
     super(props)
     const { window } = props
-    const { setAsSaved = true } = window
+    const { setAsSaved = true, readOnly  } = window
     const code = window.data.test.code
 
-    this.state = {}
+    this.state = { readOnly }
     this.lastCode = code
     this.saved = setAsSaved
   }
@@ -93,9 +93,11 @@ public class ${capitalize(camelCase(test.name))} {
   }
 
   render() {
-    const { previewCode, codeIsOpen = true } = this.state
+    const { previewCode, codeIsOpen = true, readOnly  } = this.state
     const description = "Please configure your test code. This code will be placed before all of tests cases of JUnit Class. "
       + "So, you can writte the @before, @beforeAll, @after and @afterAll methods of JUnit Life Cycle.Also, you can set the test class variables and use it into a test case "
+
+    console.log(this.props)
     return (
       <React.Fragment>
         <Paper style={{ marginBottom: '13px' }}>
@@ -114,10 +116,11 @@ public class ${capitalize(camelCase(test.name))} {
               onShowPreview={this.showPreviewCode}
               onClosePreview={this.deleteCodeFromState}
               onChange={this.handleEditorChange}
+              readOnly={ readOnly }
             />
           </Collapse>
         </Paper>
-        <Button onClick={this.onSave} aria-label="Save" variant="contained" color="primary">Save</Button>
+        {!readOnly && < Button onClick={this.onSave} aria-label="Save" variant="contained" color="primary">Save</Button>}
       </React.Fragment>
 
 

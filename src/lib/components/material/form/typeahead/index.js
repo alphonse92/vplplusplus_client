@@ -6,8 +6,9 @@ export const Typeahead = (props) => {
     onChange,
     onSelect,
     onRemove,
-    defaultValue=[],
+    defaultValue = [],
     onClear,
+    isDisabled,
     placeholder
   } = props
 
@@ -28,6 +29,7 @@ export const Typeahead = (props) => {
         isClearable
         name={name}
         options={options}
+        isDisabled={isDisabled}
         defaultValue={defaultValue}
         menuPortalTarget={document.getElementById(divId)}
         menuPosition='absolute'

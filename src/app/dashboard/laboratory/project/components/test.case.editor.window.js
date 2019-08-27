@@ -36,13 +36,13 @@ export class EditTestCaseWindow extends React.Component {
   constructor(props) {
     super(props)
     const { window } = props
-    const { setAsSaved = true } = window
+    const { setAsSaved = true, readOnly } = window
     const test = window.data.test
     if (test.topic) test.topic = test.topic.map((topic) => {
       const _id = topic._id || topic
       return _id
     })
-    this.state = { test }
+    this.state = { test, readOnly }
     this.lastCode = this.state.test.code
     this.saved = setAsSaved
     this.selectedTopics = this.state.test.topic
@@ -122,13 +122,18 @@ public void ${capitalize(camelCase(test.name))}() {
   }
 
   handleChange = attribute => (event) => {
+
     const { state } = this
+    const { readOnly } = state
+    if (readOnly) return
     const newState = { test: { ...this.state.test, [attribute]: event.target.value } }
     this.saved = false
     this.setState({ ...state, ...newState })
   }
 
   onChangeTopic = selectedTopics => {
+    const { readOnly } = this.state
+    if (readOnly) return
     this.saved = false
     this.selectedTopics = selectedTopics
   }
@@ -139,9 +144,7 @@ public void ${capitalize(camelCase(test.name))}() {
 
   render() {
 
-    
-
-    const { previewCode, windowOpen = [] } = this.state
+    const { previewCode, windowOpen = [], readOnly } = this.state
     const TestData = {
       ...TEST_CASE_DEFAULT_VALUES,
       ...this.state.test
@@ -204,6 +207,7 @@ public void ${capitalize(camelCase(test.name))}() {
               onShowPreview={this.showPreviewCode}
               onClosePreview={this.deleteCodeFromState}
               onChange={this.handleEditorChange}
+              readOnly={readOnly}
             />
 
           </Collapse>
@@ -234,6 +238,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   options={topicOptions}
                   defaultValue={this.selectedTopics}
                   name='topics'
+                  isDisabled={this.state.readOnly}
                   placeholder="Select topic"
                 />
 
@@ -319,7 +324,7 @@ public void ${capitalize(camelCase(test.name))}() {
         </Paper>
 
 
-        <Button onClick={this.onSave} aria-label="Save" variant="contained" color="primary">Save</Button>
+        {!readOnly && <Button onClick={this.onSave} aria-label="Save" variant="contained" color="primary">Save</Button>}
       </React.Fragment >
     )
   }

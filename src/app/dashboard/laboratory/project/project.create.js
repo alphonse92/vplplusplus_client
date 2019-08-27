@@ -242,7 +242,7 @@ class ProjectCreateComponent extends React.Component {
 
 	showWindow = (window, data) => {
 		const id = data.id
-		const nextWindow = { ...window, data, id }
+		const nextWindow = { ...window, data, id, readOnly: this.isProjectBlocked() }
 
 		if (!this.state.window) {
 			return this.setState({ window: nextWindow })
@@ -325,7 +325,7 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	forceCloseWindow = extraState => this.setState({ window: undefined, forceCloseWindow: true, ...extraState })
-	projectHasSummmaries = () => !!this.props.project.summaries
+	isProjectBlocked = () => !!this.props.project.summaries
 	render() {
 		const { props, state } = this
 		let { modal, window } = state
@@ -349,7 +349,7 @@ class ProjectCreateComponent extends React.Component {
 					<Card>
 						<CardHeader
 							action={
-								<small>{this.projectHasSummmaries() ? "No editable project" : "Editing On"}: {this.props.project._id || "new project"} </small>
+								<small>{this.isProjectBlocked() ? "No editable project" : "Editing On"}: {this.props.project._id || "new project"} </small>
 							}
 							title={
 								<React.Fragment>
@@ -366,7 +366,7 @@ class ProjectCreateComponent extends React.Component {
 						/>
 						<CardActions>
 							{
-								!this.projectHasSummmaries() && <Button onClick={this.createProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
+								!this.isProjectBlocked() && <Button onClick={this.createProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
 							}
 						</CardActions>
 					</Card>
@@ -387,7 +387,7 @@ class ProjectCreateComponent extends React.Component {
 			</Flex>
 		)
 
-		return (
+		const final_view = (
 			<React.Fragment>
 				{
 					(showModal && modal.component) && <Dialog
@@ -439,6 +439,10 @@ class ProjectCreateComponent extends React.Component {
 				</Flex>
 			</React.Fragment >
 		)
+
+		return this.props.match.params.id && !this.props.project._id
+			? <p>Loading</p>
+			: final_view
 	}
 }
 
