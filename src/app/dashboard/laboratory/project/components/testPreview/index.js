@@ -53,7 +53,16 @@ const ProjectPreviewTestItem = ({ onSelectTestCase, onDeleteTestCase, test, proj
 			<ListItemIcon>
 				<i className="fas fa-flask"></i>
 			</ListItemIcon>
-			<ListItemText inset primary={cutStringAndAddDots(test.name)} secondary={cutStringAndAddDots(test.objective)} />
+			<ListItemText
+				inset
+				primary={cutStringAndAddDots(test.name)}
+				secondary={
+					<React.Fragment>
+						<Typography component="small" color="textPrimary">{cutStringAndAddDots(test.objective)}</Typography>
+						<small>{test._id ? test._id : ''}</small>
+					</React.Fragment>
+				}
+			/>
 			<ListItemSecondaryAction onClick={() => onDeleteTestCase(project_index, index, test)}>
 				<IconButton aria-label="Remove Case"> <DeleteIcon /> </IconButton>
 			</ListItemSecondaryAction>

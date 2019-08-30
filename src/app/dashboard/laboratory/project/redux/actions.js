@@ -29,7 +29,7 @@ Actions[LOAD_PROJECTS_NAME] = {
 			return newState
 		},
 		rejected: (state, action) => {
-			return {...state}
+			return { ...state }
 		}
 	}),
 }
@@ -50,7 +50,7 @@ Actions[LOAD_PROJECT_NAME] = {
 			return newState
 		},
 		rejected: (state, action) => {
-			return {...state}
+			return { ...state }
 		}
 	}),
 }
@@ -119,6 +119,34 @@ Actions[DELETE_PROJECT_NAME] = {
 	DISPATCHER: (id, opts) => (dispatcher, getStore) => {
 		const actions = Actions[DELETE_PROJECT_NAME].ACTIONS
 		const getRequest = () => ProjectService.deleteProject(id)
+		requestDispatcher(dispatcher, actions, getRequest, opts)
+	},
+	ACTIONS: createRequestActions(DELETE_PROJECT_NAME, {
+		fullfilled: (state, action) => ({ ...state }),
+		rejected: (state, action) => ({ ...state })
+	}),
+
+}
+
+const DELETE_TEST_NAME = 'DELETE_TEST'
+Actions[DELETE_TEST_NAME] = {
+	DISPATCHER: (project_id, test_id, opts) => (dispatcher, getStore) => {
+		const actions = Actions[DELETE_TEST_NAME].ACTIONS
+		const getRequest = () => ProjectService.deleteTest(project_id, test_id)
+		requestDispatcher(dispatcher, actions, getRequest, opts)
+	},
+	ACTIONS: createRequestActions(DELETE_PROJECT_NAME, {
+		fullfilled: (state, action) => ({ ...state }),
+		rejected: (state, action) => ({ ...state })
+	}),
+
+}
+
+const DELETE_TEST_CASE_NAME = 'DELETE_TEST_CASE'
+Actions[DELETE_TEST_CASE_NAME] = {
+	DISPATCHER: (project_id, test_id, id, opts) => (dispatcher, getStore) => {
+		const actions = Actions[DELETE_TEST_CASE_NAME].ACTIONS
+		const getRequest = () => ProjectService.deleteTestCase(project_id, test_id, id)
 		requestDispatcher(dispatcher, actions, getRequest, opts)
 	},
 	ACTIONS: createRequestActions(DELETE_PROJECT_NAME, {

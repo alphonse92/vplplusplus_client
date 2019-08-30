@@ -159,18 +159,20 @@ class ProjectCreateComponent extends React.Component {
 
 	deleteTest = (index, test) => {
 
-		console.log('remove test from db', { index, test })
-
 		const { project, tests: allTests } = this.props
-		// eslint-disable no-unused-vars 
-		const tests = allTests.filter((test, indexArray) => index !== indexArray)
-		const windowId = index.toString()
 
-		if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
+		const updateState = () => {
+			// eslint-disable no-unused-vars 
+			const tests = allTests.filter((test, indexArray) => index !== indexArray)
+			const windowId = index.toString()
 
-		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+			if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
 
+			this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+		}
 
+		if (test._id) return this.props.DISPATCHERS.DELETE_TEST(project._id, test._id, { after: updateState })
+		updateState()
 	}
 
 	setModalOpen = (modal, extraState = {}) => {
@@ -260,8 +262,13 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	createProject = () => {
+		if (this.isProjectBlocked()) return
+		
+		const { id } = this.props.match.params
+
 		this.props.DISPATCHERS.CREATE_PROJECT({
-			onError: this.props.DISPATCHERS.SET_ERROR
+			onError: this.props.DISPATCHERS.SET_ERROR,
+			after: () => this.props.DISPATCHERS.LOAD_PROJECT(id)
 		})
 	}
 
@@ -296,20 +303,29 @@ class ProjectCreateComponent extends React.Component {
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
 
-	onDeleteTestCase = (test_index, test_case_index, current_test) => {
+	onDeleteTestCase = (test_index, test_case_index, test_case) => {
+
 		const { project, tests } = this.props
 		const test = tests[test_index]
-		const allTestCases = test.test_cases
-		// eslint-disable no-unused-vars 
-		const test_cases = allTestCases.filter((test_case, indexArray) => test_case_index !== indexArray)
 
-		test.test_cases = test_cases
-		tests[test_case_index] = test
-		const windowId = this.getTestCaseId(test_index, test_case_index)
+		const updateState = () => {
 
-		if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
+			const allTestCases = test.test_cases
+			// eslint-disable no-unused-vars 
+			const test_cases = allTestCases.filter((test_case, indexArray) => test_case_index !== indexArray)
 
-		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+			test.test_cases = test_cases
+			tests[test_case_index] = test
+			const windowId = this.getTestCaseId(test_index, test_case_index)
+
+			if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
+
+			this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+		}
+
+		if (test_case._id) this.props.DISPATCHERS.DELETE_TEST_CASE(this.props.project._id, test._id, test_case._id, { after: updateState })
+		updateState()
+
 	}
 
 	getTestCaseId = (test_index, test_case_index) => `${test_index}-${test_case_index}`
@@ -329,8 +345,8 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	forceCloseWindow = extraState => this.setState({ window: undefined, forceCloseWindow: true, ...extraState })
-	isProjectBlocked = () => this.isEditing() && !!this.props.project.summaries && this.props.project.summaries.length > 0
-	isEditing = () => !!this.props.project._id
+	isProjectBlocked = () => this.isSaved() && !!this.props.project.summaries && this.props.project.summaries.length > 0
+	isSaved = () => !!this.props.project._id
 	render() {
 		const { props, state } = this
 		let { modal, window } = state
