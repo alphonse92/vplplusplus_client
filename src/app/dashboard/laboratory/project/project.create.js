@@ -320,8 +320,8 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	handleCreateTestCase = (index, test) => {
-		if (!this.isProjectSavedAndIsBeingEdited()) return this.createTestCaseToTheStore()
-		return this.createOrSaveProject()
+		this.createTestCaseToTheStore()
+		if (this.isProjectSavedAndIsBeingEdited()) return this.createOrSaveProject()
 	}
 
 	deleteTestCaseFromStore = (project, test, test_index, test_case_index) => {
