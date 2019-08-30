@@ -4,10 +4,8 @@ import { ProjectTable } from './project/tables/project.table';
 
 export const Main = (props) => {
 
-	const onCreateNewProject = (id) => {
-		console.log(id)
-		props.history.push(`laboratory/project/create/${id ? id : ''}`)
-	}
+	const onCreateNewProject = (id) => props.history.push(`laboratory/project/create/${id ? id : ''}`)
+
 
 	return (
 		<React.Fragment>

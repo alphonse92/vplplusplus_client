@@ -1,4 +1,4 @@
-// import { LOADING_ACTION_NAME } from '../redux/actions';
+import { LOADING_ACTION_NAME } from '../redux/actions';
 
 async function getJSONorTextFromRequest(response) {
 	const { ok, status, statusText } = response
@@ -22,9 +22,9 @@ function dispatchInitActions(dispatch, action) {
 function dispatchRequesSuccess(dispatch, { data }, action, opts = {}) {
 	const { fullfilled } = action
 	const formattedData = opts.format ? opts.format(data) : data
-	opts.after
-		? setLoading(dispatch, false, () => opts.after(formattedData))
-		: setLoading(dispatch, false, () => dispatch({ type: fullfilled.name, payload: formattedData, }))
+	setLoading(dispatch,false)
+	dispatch({ type: fullfilled.name, payload: formattedData, })
+	opts.after && opts.after(formattedData)
 }
 
 function dispatchErrors(dispatch, error, action) {
@@ -43,15 +43,12 @@ function throwErrorAtRequestError(responseParsed) {
 }
 
 function setLoading(dispatcher, isLoading, callback) {
-	// we need other approach, dispatch this action is causing a inconsistent state of the store
-	// maybe, we need to connect this class to redux store, or each component should manage the loading bar.
-	// just thinking
-	// console.log(dispatcher({ type: LOADING_ACTION_NAME, payload: isLoading }))
+	dispatcher({ type: LOADING_ACTION_NAME, payload: isLoading })
 	callback && callback()
 }
 
 function before(dispatcher, callback) {
-	setLoading(dispatcher, true,callback)
+	setLoading(dispatcher, true, callback)
 }
 
 export async function requestDispatcher(dispatch, action, getRequest, opts = {}) {
@@ -64,10 +61,14 @@ export async function requestDispatcher(dispatch, action, getRequest, opts = {})
 		throwErrorAtRequestError(responseParsed)
 		dispatchRequesSuccess(dispatch, responseParsed, action, opts)
 	} catch (error) {
-		const fn = opts.onError
-			? () => opts.onError(error.data)
-			: () => dispatchErrors(dispatch, error, action)
-		setLoading(dispatch, false, fn)
+
+		dispatch({
+			type: action.rejected.name,
+			payload: error
+		})
+
+		opts.onError && opts.onError(error.data)
+		setLoading(dispatch, false)
 	}
 
 }

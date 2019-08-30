@@ -10,6 +10,6 @@ export const getReducer = history => combineReducers({
 	router: connectRouter(history),
 	lib: LibRedux.REDUCER,
 	user: UserRedux.REDUCER,
-	...ProjectRedux.REDUCER,
-	...ModalRedux.REDUCER,
+	projects: ProjectRedux.REDUCER.projects,
+	modals: ModalRedux.REDUCER.modals,
 })

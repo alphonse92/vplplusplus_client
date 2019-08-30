@@ -114,8 +114,33 @@ class ProjectCreateComponent extends React.Component {
 		this.props.DISPATCHERS.GET_TOPICS()
 	}
 
+	loadProjectData = () => {
+		const { id } = this.props.match.params
+		this.props.DISPATCHERS.LOAD_PROJECT(id)
+	}
 
-	createNewTestcase = () => {
+	createOrSaveProject = (data) => {
+
+		if (this.isProjectBlocked()) return
+
+		this.props.DISPATCHERS.CREATE_PROJECT(data, {
+			onError: this.props.DISPATCHERS.SET_ERROR,
+		})
+	}
+
+	updateProjectData = data => {
+
+		if (this.isProjectSavedAndIsBeingEdited()) return this.createOrSaveProject(data)
+		this.props.DISPATCHERS.EDIT_PROJECT_DATA(data)
+
+	}
+
+	handleCreateProject = () => {
+		const { project, tests } = this.props
+		this.createOrSaveProject({ project, tests })
+	}
+
+	handleCreateTest = () => {
 		const mock = () => ({
 			name: 'My test ' + (this.props.tests.length + 1),
 			tags: ['java', 'types'],
@@ -146,33 +171,33 @@ class ProjectCreateComponent extends React.Component {
 	 * } 
 	 *
 	 */
-
-	
 	`,
 			test_cases: []
 		})
 		const { project, tests } = this.props
 		tests.push(mock())
-		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
-
+		const data = { project, tests }
+		this.updateProjectData(data)
 	}
 
-	deleteTest = (index, test) => {
+	deleteTestFromStore = (project, index) => {
+		const { tests: allTests } = this.props
+		// eslint-disable no-unused-vars 
+		const tests = allTests.filter((test, indexArray) => index !== indexArray)
+		const windowId = index.toString()
+		if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
+		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+	}
 
-		const { project, tests: allTests } = this.props
+	deleteTestFromAPI = (project, test) => {
+		return this.props.DISPATCHERS.DELETE_TEST(project._id, test._id)
+	}
 
-		const updateState = () => {
-			// eslint-disable no-unused-vars 
-			const tests = allTests.filter((test, indexArray) => index !== indexArray)
-			const windowId = index.toString()
+	handleDeleteTest = (index, test) => {
+		const { project } = this.props
+		this.deleteTestFromStore(project, index)
+		if (test._id) return this.deleteTestFromAPI(project, test)
 
-			if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
-
-			this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
-		}
-
-		if (test._id) return this.props.DISPATCHERS.DELETE_TEST(project._id, test._id, { after: updateState })
-		updateState()
 	}
 
 	setModalOpen = (modal, extraState = {}) => {
@@ -261,16 +286,7 @@ class ProjectCreateComponent extends React.Component {
 		this.setState({ window: undefined, nextWindow })
 	}
 
-	createProject = () => {
-		if (this.isProjectBlocked()) return
-		
-		const { id } = this.props.match.params
 
-		this.props.DISPATCHERS.CREATE_PROJECT({
-			onError: this.props.DISPATCHERS.SET_ERROR,
-			after: () => this.props.DISPATCHERS.LOAD_PROJECT(id)
-		})
-	}
 
 	saveTestCase = ({ window: payload }) => {
 		const { project, tests } = this.props
@@ -297,35 +313,44 @@ class ProjectCreateComponent extends React.Component {
 
 	}
 
-	onCreateTestCase = (index, test) => {
+	createTestCaseToTheStore = (index, test) => {
 		const { project, tests } = this.props
 		tests[index].test_cases.push({ ...TEST_CASE })
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
 
-	onDeleteTestCase = (test_index, test_case_index, test_case) => {
+	handleCreateTestCase = (index, test) => {
+		if (!this.isProjectSavedAndIsBeingEdited()) return this.createTestCaseToTheStore()
+		return this.createOrSaveProject()
+	}
 
+	deleteTestCaseFromStore = (project, test, test_index, test_case_index) => {
+		const { tests } = this.props
+
+		const allTestCases = test.test_cases
+		// eslint-disable no-unused-vars 
+		const test_cases = allTestCases.filter((test_case, indexArray) => test_case_index !== indexArray)
+
+		test.test_cases = test_cases
+		tests[test_case_index] = test
+
+		const windowId = this.getTestCaseId(test_index, test_case_index)
+
+		if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
+
+		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
+
+	}
+
+	deleteTestCaseFromAPI = (project, test, test_case) => {
+		this.props.DISPATCHERS.DELETE_TEST_CASE(project.id, test._id, test_case._id, { after: this.loadProjectData })
+	}
+
+	handleTestCaseDelete = (test_index, test_case_index, test_case) => {
 		const { project, tests } = this.props
 		const test = tests[test_index]
-
-		const updateState = () => {
-
-			const allTestCases = test.test_cases
-			// eslint-disable no-unused-vars 
-			const test_cases = allTestCases.filter((test_case, indexArray) => test_case_index !== indexArray)
-
-			test.test_cases = test_cases
-			tests[test_case_index] = test
-			const windowId = this.getTestCaseId(test_index, test_case_index)
-
-			if (this.state.window && this.state.window.id === windowId) this.forceCloseWindow()
-
-			this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
-		}
-
-		if (test_case._id) this.props.DISPATCHERS.DELETE_TEST_CASE(this.props.project._id, test._id, test_case._id, { after: updateState })
-		updateState()
-
+		if (test_case._id) this.deleteTestCaseFromAPI(project, test, test_case)
+		else this.deleteTestCaseFromStore(project, test, test_index, test_case_index)
 	}
 
 	getTestCaseId = (test_index, test_case_index) => `${test_index}-${test_case_index}`
@@ -345,8 +370,8 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	forceCloseWindow = extraState => this.setState({ window: undefined, forceCloseWindow: true, ...extraState })
-	isProjectBlocked = () => this.isSaved() && !!this.props.project.summaries && this.props.project.summaries.length > 0
-	isSaved = () => !!this.props.project._id
+	isProjectBlocked = () => this.isProjectSavedAndIsBeingEdited() && !!this.props.project.summaries && this.props.project.summaries.length > 0
+	isProjectSavedAndIsBeingEdited = () => !!this.props.project._id
 	render() {
 		const { props, state } = this
 		let { modal, window } = state
@@ -386,7 +411,7 @@ class ProjectCreateComponent extends React.Component {
 						/>
 						<CardActions>
 							{
-								!this.isProjectBlocked() && <Button onClick={this.createProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
+								!this.isProjectBlocked() && <Button onClick={this.handleCreateProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
 							}
 						</CardActions>
 					</Card>
@@ -436,8 +461,8 @@ class ProjectCreateComponent extends React.Component {
 						<ProjectPreview
 							editable={!project.summaries || project.summaries.length === 0}
 							tests={tests}
-							onCreateTest={this.createNewTestcase}
-							onDeleteTest={this.deleteTest}
+							onCreateTest={this.handleCreateTest}
+							onDeleteTest={this.handleDeleteTest}
 							onEditTest={this.editTest}
 							onEditTestCode={(index, test) => {
 								this.showWindow(ProjectCreateComponent.DEFAULTS.windows.test,
@@ -446,8 +471,8 @@ class ProjectCreateComponent extends React.Component {
 							onSelectTestCase={(indexTest, indexTestCase, testCase) => {
 								this.onSelectTestCase(indexTest, indexTestCase, testCase, this.props.topics)
 							}}
-							onCreateTestCase={this.onCreateTestCase}
-							onDeleteTestCase={this.onDeleteTestCase}
+							onCreateTestCase={this.handleCreateTestCase}
+							onDeleteTestCase={this.handleTestCaseDelete}
 						/>
 					</Flex>
 					<Flex vertical width="75%" margin="7px" >

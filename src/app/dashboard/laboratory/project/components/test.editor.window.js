@@ -99,7 +99,6 @@ public class ${capitalize(camelCase(test.name))} {
     const description = "Please configure your test code. This code will be placed before all of tests cases of JUnit Class. "
       + "So, you can writte the @before, @beforeAll, @after and @afterAll methods of JUnit Life Cycle.Also, you can set the test class variables and use it into a test case "
 
-    console.log(this.props)
     return (
       <React.Fragment>
         <Paper style={{ marginBottom: '13px' }}>

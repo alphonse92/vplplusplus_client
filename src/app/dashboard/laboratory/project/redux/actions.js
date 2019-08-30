@@ -95,21 +95,22 @@ Actions[GET_TOPICS_NAME] = {
 
 const CREATE_PROJECT_NAME = 'CREATE_PROJECT'
 Actions[CREATE_PROJECT_NAME] = {
-	DISPATCHER: (opts) => (dispatcher, getStore) => {
+	DISPATCHER: (data, opts) => (dispatcher, getStore) => {
 		const store = getStore()
-		const ProjectStore = store.projects.create.project
-		const tests = store.projects.create.tests
-		const project = { ...ProjectStore, tests }
-		const getRequest = () => ProjectService.createProject(project)
+		const { project } = data
+		const { tests } = data
+		const getRequest = () => ProjectService.createProject({ ...project, tests })
 		const actions = Actions[CREATE_PROJECT_NAME].ACTIONS
 		requestDispatcher(dispatcher, actions, getRequest, opts)
 	},
 	ACTIONS: createRequestActions(CREATE_PROJECT_NAME, {
 		fullfilled: (state, action) => {
 			const newState = { ...state }
-			newState.create.project = action.payload
+			const { tests, ...project } = action.payload
+			newState.create.project = project
+			newState.create.tests = tests
 			return newState
-		}
+		},
 	}),
 
 }
