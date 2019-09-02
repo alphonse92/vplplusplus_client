@@ -53,9 +53,13 @@ class ProjectTable extends React.Component {
 	onDelete = () => {
 		const { _id } = this.selected_project
 		this.props.DISPATCHERS.DELETE_PROJECT(_id, {
-			after: this.props.DISPATCHERS.LOAD_PROJECTS,
+			after: () => {
+				this.selected_project = []
+				this.props.DISPATCHERS.LOAD_PROJECTS()
+			},
 			onError: this.props.DISPATCHERS.SET_ERROR
 		})
+
 	}
 
 	handleRequestSort = (data, value) => {
