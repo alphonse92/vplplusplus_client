@@ -228,7 +228,7 @@ class ProjectCreateComponent extends React.Component {
 
 		set(data, path, value)
 
-		this.props.DISPATCHERS.EDIT_PROJECT_DATA(data)
+		this.updateProjectData(data)
 		this.closeModal()
 	}
 
