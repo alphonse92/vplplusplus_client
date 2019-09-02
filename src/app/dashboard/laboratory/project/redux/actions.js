@@ -95,10 +95,11 @@ Actions[GET_TOPICS_NAME] = {
 
 const CREATE_PROJECT_NAME = 'CREATE_PROJECT'
 Actions[CREATE_PROJECT_NAME] = {
-	DISPATCHER: (data, opts) => (dispatcher, getStore) => {
+	DISPATCHER: (data = {}, opts) => (dispatcher, getStore) => {
 		const store = getStore()
-		const { project } = data
-		const { tests } = data
+		console.log(store)
+		const { project = store.projects.create.project } = data
+		const { tests = store.projects.create.tests } = data
 		const getRequest = () => ProjectService.createProject({ ...project, tests })
 		const actions = Actions[CREATE_PROJECT_NAME].ACTIONS
 		requestDispatcher(dispatcher, actions, getRequest, opts)

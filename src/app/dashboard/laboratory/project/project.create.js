@@ -129,10 +129,17 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	updateProjectData = data => {
-
 		if (this.isProjectSavedAndIsBeingEdited()) return this.createOrSaveProject(data)
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA(data)
+	}
 
+	saveTestCase = ({ window: payload }) => {
+		const { project, tests } = this.props
+		const { data } = payload
+		const { indexTest, indexTestCase, test: test_case } = data
+
+		tests[indexTest].test_cases[indexTestCase] = test_case
+		this.updateProjectData({ project, tests })
 	}
 
 	handleCreateProject = () => {
@@ -288,14 +295,7 @@ class ProjectCreateComponent extends React.Component {
 
 
 
-	saveTestCase = ({ window: payload }) => {
-		const { project, tests } = this.props
-		const { data } = payload
-		const { indexTest, indexTestCase, test: test_case } = data
 
-		tests[indexTest].test_cases[indexTestCase] = test_case
-		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
-	}
 
 	saveTest = (index, test) => {
 		const { project, tests } = this.props
@@ -320,7 +320,7 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	handleCreateTestCase = (index, test) => {
-		this.createTestCaseToTheStore()
+		this.createTestCaseToTheStore(index, test)
 		if (this.isProjectSavedAndIsBeingEdited()) return this.createOrSaveProject()
 	}
 
