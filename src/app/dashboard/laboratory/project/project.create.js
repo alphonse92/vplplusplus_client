@@ -416,7 +416,7 @@ class ProjectCreateComponent extends React.Component {
 						/>
 						<CardActions>
 							{
-								!isBlocked && <Button onClick={this.handleCreateProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
+								!this.props.project._id && <Button onClick={this.handleCreateProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
 							}
 						</CardActions>
 					</Card>

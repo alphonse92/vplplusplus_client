@@ -20,12 +20,18 @@ const getErrorTextByType = {
         )
         return acc.concat([component])
       }, [])
-  }
+  },
+  'default':()=>'Unknowed error. Please contact VPL plus plus support'
 }
 
 
 export const DialogBroker = ({ error, handleClose }) => {
-  if (error) return <Dialog component={Ok} open={!!error} handleClose={handleClose} title={'Something Happened'} text={getErrorTextByType[error.type](error)} />
+  if (error) return <Dialog
+    component={Ok}
+    open={!!error}
+    handleClose={handleClose}
+    title={'Something Happened'}
+    text={(getErrorTextByType[error.type] || getErrorTextByType.default)(error)} />
 
   return <></>
 }
