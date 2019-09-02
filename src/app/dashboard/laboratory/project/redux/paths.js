@@ -1,4 +1,4 @@
-import { set, cloneDeep } from 'lodash'
+import { set } from 'lodash'
 
 const PATHS = {
 	'create.show': false,

@@ -47,7 +47,7 @@ const cutStringAndAddDots = (str, max = 25) => str.length > max ? `${str.substri
 const wrapInItalic = (shouldWrap, txt) => !!shouldWrap ? <i>{txt}</i> : <>{txt}</>
 
 
-const ProjectPreviewTestItem = ({ onSelectTestCase, onDeleteTestCase, test, project_index, index }) => {
+const ProjectPreviewTestItem = ({ editable, onSelectTestCase, onDeleteTestCase, test, project_index, index }) => {
 	return (
 		<ListItem button onClick={() => onSelectTestCase(project_index, index, test)}>
 			<ListItemIcon>
@@ -64,7 +64,7 @@ const ProjectPreviewTestItem = ({ onSelectTestCase, onDeleteTestCase, test, proj
 				}
 			/>
 			<ListItemSecondaryAction onClick={() => onDeleteTestCase(project_index, index, test)}>
-				<IconButton aria-label="Remove Case"> <DeleteIcon /> </IconButton>
+				{editable && <IconButton aria-label="Remove Case"> <DeleteIcon /> </IconButton>}
 			</ListItemSecondaryAction>
 		</ListItem >
 	)
@@ -178,13 +178,14 @@ class Project extends React.Component {
 
 
 
-const ProjectPreviewTests = ({ project_index, project, onSelectTestCase, onDeleteTestCase }) => (
+const ProjectPreviewTests = ({ editable, project_index, project, onSelectTestCase, onDeleteTestCase }) => (
 	<TestsWrapper>
 		{project.test_cases.map((test, index) => {
 			return (
 				<ProjectPreviewTestItem
 					key={index}
 					index={index}
+					editable={editable}
 					project={project}
 					project_index={project_index}
 					onSelectTestCase={onSelectTestCase}

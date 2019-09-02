@@ -27,13 +27,6 @@ function dispatchRequesSuccess(dispatch, { data }, action, opts = {}) {
 	opts.after && opts.after(formattedData)
 }
 
-function dispatchErrors(dispatch, error, action) {
-	dispatch({
-		type: action.rejected.name,
-		payload: error
-	})
-}
-
 function throwErrorAtRequestError(responseParsed) {
 	const { statusText, ok } = responseParsed
 	if (ok) return responseParsed

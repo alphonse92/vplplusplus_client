@@ -384,6 +384,7 @@ class ProjectCreateComponent extends React.Component {
 			? activities.find(({ course_module_id }) => course_module_id === activity_id)
 			: ProjectCreateComponent.DEFAULTS.project.activity
 		const moodle_activity_label = activity ? activity.name : ''
+		const isBlocked = this.isProjectBlocked()
 
 		const onCloseModalDef = ({ ok, value }) => { ok ? this.setValueFromModal(value) : this.closeModal() }
 		const onCloseModal = get(modal, 'onClose', onCloseModalDef)
@@ -399,19 +400,19 @@ class ProjectCreateComponent extends React.Component {
 							title={
 								<React.Fragment>
 									{get(this.props, 'project.name', ProjectCreateComponent.DEFAULTS.project.name)}
-									<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.name)} />
+									{!isBlocked && <EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.name)} />}
 								</React.Fragment>
 							}
 							subheader={
 								<React.Fragment>
 									{get(this.props, 'project.description', ProjectCreateComponent.DEFAULTS.project.description)}
-									<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.description)} />
+									{!isBlocked && <EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.description)} />}
 								</React.Fragment>
 							}
 						/>
 						<CardActions>
 							{
-								!this.isProjectBlocked() && <Button onClick={this.handleCreateProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
+								!isBlocked && <Button onClick={this.handleCreateProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
 							}
 						</CardActions>
 					</Card>
@@ -423,7 +424,7 @@ class ProjectCreateComponent extends React.Component {
 							subheader={
 								<React.Fragment>
 									{moodle_activity_label}
-									<EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.activity)} />
+									{!isBlocked && <EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.activity)} />}
 								</React.Fragment>
 							}
 						/>
@@ -459,7 +460,7 @@ class ProjectCreateComponent extends React.Component {
 				<Flex horizontal width="100%">
 					<Flex vertical width="25%" margin="7px" >
 						<ProjectPreview
-							editable={!project.summaries || project.summaries.length === 0}
+							editable={!isBlocked}
 							tests={tests}
 							onCreateTest={this.handleCreateTest}
 							onDeleteTest={this.handleDeleteTest}
