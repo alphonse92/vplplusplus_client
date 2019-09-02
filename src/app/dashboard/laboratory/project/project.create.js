@@ -105,6 +105,10 @@ class ProjectCreateComponent extends React.Component {
 		return { DISPATCHERS }
 	}
 
+	componentWillUnmount() {
+		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project: {}, data: [] })
+	}
+
 	componentDidMount() {
 		const { id } = this.props.match.params
 		id
