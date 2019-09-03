@@ -6,6 +6,14 @@ export class WebService {
 		this.token = token
 	}
 
+	getToken() {
+		return this.token
+	}
+
+	getUrl() {
+		return this.url
+	}
+
 	createHeaders() {
 		const headers = new Headers()
 		const { token } = this
@@ -23,6 +31,11 @@ export class WebService {
 			customOpts.body = JSON.stringify(body)
 		const options = { headers, ...customOpts }
 		return fetch(url, options)
+	}
+
+	openWindow(path) {
+		const url = `${this.getUrl()}${path}`
+		window.open(url, "_blank")
 	}
 
 

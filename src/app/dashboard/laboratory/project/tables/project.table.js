@@ -11,6 +11,7 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import Icon from '@material-ui/core/Icon';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import { ProjectService } from '../../../../../services/project';
 
 class ProjectTable extends React.Component {
 	static columns = [
@@ -94,7 +95,13 @@ class ProjectTable extends React.Component {
 		return projects.map(p => p._id)
 	};
 
+	exportAsMoodle = () => {
+		const { _id } = this.selected_project
+		ProjectService.exportMoodleActivity(_id)
+	}
+
 	render() {
+
 
 		const showFilterComponent = false
 		const { columns } = ProjectTable
@@ -114,8 +121,8 @@ class ProjectTable extends React.Component {
 		const buttonsWhenSelected = [
 			{ key: 0, label: 'Edit', icon: <EditIcon />, onClick: this.onEdit },
 			{ key: 1, label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
-			{ key: 2, label: 'Download', icon: <DownloadIcon />, onClick: this.onDownload },
-			{ key: 3, label: 'Download', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.onExport },
+			{ key: 2, label: 'Export', icon: <DownloadIcon />, onClick: this.export },
+			{ key: 3, label: 'Download Moodle', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
 		]
 
 		const buttonsWhenNotSelected = [

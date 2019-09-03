@@ -1,9 +1,8 @@
 import { extractActionCreators, requestDispatcher, createRequestActions } from '../../../../../lib'
-import { ProjectService as ProjectServiceClass } from '../../../../../services/project';
+import { ProjectService } from '../../../../../services/project';
 import { CourseService as CourseServiceClass } from '../../../../../services/course';
 import { TopicService as TopicServiceClass } from '../../../../../services/topic';
 
-const ProjectService = new ProjectServiceClass()
 const CourseService = new CourseServiceClass()
 const TopicService = new TopicServiceClass()
 

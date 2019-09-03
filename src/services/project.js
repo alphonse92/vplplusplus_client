@@ -1,7 +1,7 @@
 import { WebService } from "./service";
 import { UserService } from './user'
 
-export class ProjectService extends WebService {
+class ProjectServiceClass extends WebService {
 
   static localStorageUserKey = "User:data"
 
@@ -48,4 +48,10 @@ export class ProjectService extends WebService {
     }
     return super.request(options, `/${id}/`)
   }
+
+  exportMoodleActivity(id) {
+    super.openWindow(`/${id}/export/moodle?token=${super.getToken()}`)
+  }
 }
+
+export const ProjectService = new ProjectServiceClass()
