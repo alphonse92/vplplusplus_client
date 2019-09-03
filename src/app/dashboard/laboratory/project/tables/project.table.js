@@ -23,8 +23,8 @@ class ProjectTable extends React.Component {
 		{ attribute: 'metadata.tests', key: 'tests', numeric: true, disablePadding: false, label: 'Tests' },
 		{ attribute: 'metadata.cases', key: 'cases', numeric: true, disablePadding: false, label: 'Cases' },
 		{ attribute: 'metadata.submissions', key: 'submissions', numeric: true, disablePadding: false, label: 'Submisions' },
-
 	]
+	static fileLoaderId = 'newProjectFileLoader' + Date.now()
 	static mapStateToProps = (state) => {
 		const { projects } = state
 		const { list } = projects
@@ -43,6 +43,33 @@ class ProjectTable extends React.Component {
 	componentDidMount() {
 		this.props.DISPATCHERS.LOAD_PROJECTS()
 	}
+
+	onProjectExportedFileSelected = (event) => {
+		const { target = {} } = event
+		const { files = [] } = target
+		const [file] = files
+
+		if (!file) return
+
+		const reader = new FileReader()
+		reader.onloadend = () => {
+			const { result: content } = reader
+			try {
+				const projectJson = JSON.parse(content)
+				this.props.onCreateNewProjectFromJson(projectJson)
+			} catch (e) {
+				this.props.DISPATCHERS.SET_ERROR({ type: 'web', error: { message: 'Just json files are allowed.' } })
+			}
+		}
+		reader.readAsText(file)
+	}
+
+	onCreateNewProjectFromFile = () => {
+		console.log('loading')
+
+		document.getElementById(ProjectTable.fileLoaderId).click()
+	}
+
 	onCreateNewProject = () => {
 		this.props.onCreateNewProject()
 	}
@@ -77,6 +104,7 @@ class ProjectTable extends React.Component {
 		this.props.DISPATCHERS.SET_LIMIT(+value.key)
 		this.handleChangePage(data, 0)
 	}
+
 
 	handleChangeFilter = (valueToFind, attributes) => {
 		console.log('setting filter')
@@ -133,7 +161,7 @@ class ProjectTable extends React.Component {
 		const buttonsWhenNotSelected = [
 			{ key: 0, label: 'Filter Data', icon: <FilterListIcon />, onClick: this.handleChangeFilter },
 			{ key: 1, label: 'Create new Project', icon: <AddIcon />, onClick: this.onCreateNewProject },
-
+			{ key: 2, label: 'Create from file', icon: <Icon className={'fas fa-file-upload'} />, onClick: this.onCreateNewProjectFromFile },
 		]
 
 		pagination.docs = pagination.docs.reduce((array, doc) => {
@@ -175,7 +203,17 @@ class ProjectTable extends React.Component {
 			buttonsWhenSelected
 		}
 
-		return <MaterialTable {...propsTable} title="Projects" />
+		return (
+			<React.Fragment>
+				<input
+					type='file'
+					id={ProjectTable.fileLoaderId}
+					style={{ display: 'none', width: '0px' }}
+					accept='.json'
+					onChange={this.onProjectExportedFileSelected} />
+				<MaterialTable {...propsTable} title="Projects" />
+			</React.Fragment>
+		)
 
 	}
 }
