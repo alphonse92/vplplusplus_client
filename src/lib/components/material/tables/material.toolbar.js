@@ -7,10 +7,18 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-
+import {
+	Close as CloseIcon
+} from '@material-ui/icons';
 const TableToolbar = (props) => {
 
-	const { numSelected, classes, buttonsWhenSelected = [], buttonsWhenNotSelected = [] } = props;
+	const {
+		numSelected,
+		classes,
+		buttonsWhenSelected = [],
+		buttonsWhenNotSelected = [],
+		onClose = () => true
+	} = props;
 	const ToolbarClassNames = classNames(classes.root, { [classes.highlight]: numSelected > 0 })
 
 	const TypoItemsSelected = <Typography color="inherit" variant="subtitle1">{numSelected} selected</Typography>
@@ -19,17 +27,18 @@ const TableToolbar = (props) => {
 	const showButtonSelected = numSelected > 0
 
 	const buttons = showButtonSelected
-		? buttonsWhenSelected
+		? buttonsWhenSelected.concat({ key: Date.now(), label: 'Close', icon: <CloseIcon />, onClick: onClose})
 		: buttonsWhenNotSelected
 
 	const buttonsComponent = buttons.map(btn => (
 		<div key={btn.key} className={classes.actions}>
-			<Tooltip title={btn.label}>
+			<Tooltip >
 				<IconButton aria-label={btn.label} onClick={btn.onClick ? btn.onClick : () => true}>
 					{btn.icon}
 				</IconButton>
 			</Tooltip>
-		</div >)
+		</div >
+	)
 	)
 
 	const TitleComponent = numSelected > 0
@@ -42,6 +51,7 @@ const TableToolbar = (props) => {
 				<div className={classes.title}>{TitleComponent}</div>
 				<div className={classes.spacer} />
 				{buttonsComponent}
+
 			</Toolbar>
 		</React.Fragment>
 	)

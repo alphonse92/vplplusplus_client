@@ -116,6 +116,7 @@ class ProjectTable extends React.Component {
 			{ key: 1, label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
 			{ key: 2, label: 'Make public', icon: <VisibilityIcon />, onClick: this.onSetVisible },
 			{ key: 3, label: 'Make private', icon: <VisibilityOffIcon />, onClick: this.onSetPrivate },
+		
 		]
 
 		const buttonsWhenNotSelected = [

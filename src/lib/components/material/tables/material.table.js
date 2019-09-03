@@ -19,6 +19,11 @@ class EnhancedTable extends React.PureComponent {
 	};
 	getDocs = () => this.props.pagination.docs || []
 
+	unSelectAllItems = () => {
+		console.log('unselecting')
+		this.setState({ selected: [] })
+	}
+
 	handleSelectAllItems = async () => {
 		const docs = this.getDocs()
 		const selected = await this.props.handleSelectAllItems(this.state.selected, docs)
@@ -91,7 +96,8 @@ class EnhancedTable extends React.PureComponent {
 			props,
 			handleSelectAllItems,
 			handleChangeRowsPerPage,
-			onChangePage
+			onChangePage,
+			unSelectAllItems
 		} = this
 
 		const {
@@ -105,6 +111,7 @@ class EnhancedTable extends React.PureComponent {
 			handleChangeFilter: onFilter = this.onFilter,
 			buttonsWhenSelected,
 			buttonsWhenNotSelected,
+			
 		} = props;
 		const { limit, page, total, sort, docs: data = [] } = pagination
 		const {
@@ -139,6 +146,7 @@ class EnhancedTable extends React.PureComponent {
 									title={title}
 									buttonsWhenSelected={buttonsWhenSelected}
 									buttonsWhenNotSelected={buttonsWhenNotSelected}
+									onClose={unSelectAllItems}
 								/>
 								<Table className={classes.table} aria-labelledby="tableTitle">
 									{!!data.length && <EnhancedTableHead
