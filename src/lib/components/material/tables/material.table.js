@@ -113,8 +113,6 @@ class EnhancedTable extends React.PureComponent {
 			showFilterComponent,
 		} = state;
 
-		console.log(page)
-
 		return (
 			<Paper className={classes.root}>
 				<div className={classes.tableWrapper}>
