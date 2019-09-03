@@ -71,7 +71,9 @@ export const createReducer =
 				const { type } = action
 				const reducerForAction = reducerMap[type]
 				const isValidReducer = reducerForAction && typeof reducerForAction === 'function'
-				return isValidReducer
-					? reducerForAction({ ...state }, action)
-					: state
+
+				if (isValidReducer) return reducerForAction({ ...state }, action)
+				else if (state) return state
+				else return defaultState
+
 			}

@@ -11,7 +11,7 @@ _Actions[LOADING_ACTION_NAME] = {
 		default: {
 			name: LOADING_ACTION_NAME,
 			reducer: (state, action) => {
-				return { loading: !!action.payload }
+				return { ...state, loading: !!action.payload }
 			}
 		}
 	},
