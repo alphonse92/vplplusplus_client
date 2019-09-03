@@ -53,7 +53,7 @@ export class EditTestCaseWindow extends React.Component {
   }
 
   getTestPayload = ok => {
-    const { props } = this
+    const { props, selectedTopics } = this
     const { window } = props
     const code = this.getEditorCode()
     const windowData = { ...window }
@@ -62,7 +62,7 @@ export class EditTestCaseWindow extends React.Component {
       ...this.state.test
     }
     windowData.data.test.code = code
-    windowData.data.test.topic = this.selectedTopics.map(({ value }) => value)
+    windowData.data.test.topic = !selectedTopics ? [] : selectedTopics.map(({ value }) => value)
     return { ok, window: windowData }
   }
 

@@ -18,7 +18,7 @@ class ProjectTable extends React.Component {
 		{ attribute: 'name', key: 'name', numeric: false, disablePadding: true, label: 'Name' },
 		{ attribute: 'description', key: 'description', numeric: false, disablePadding: false, label: 'Description' },
 		{ attribute: 'is_public', key: 'is_public', numeric: false, disablePadding: false, label: 'Public' },
-		{ attribute: 'activity', key: 'activity', numeric: true, disablePadding: false, label: 'Activity' },
+		{ attribute: 'activity', key: 'activity', numeric: true, disablePadding: false, label: 'Course Module Id' },
 		{ attribute: 'metadata.tests', key: 'tests', numeric: true, disablePadding: false, label: 'Tests' },
 		{ attribute: 'metadata.cases', key: 'cases', numeric: true, disablePadding: false, label: 'Cases' },
 		{ attribute: 'metadata.submissions', key: 'submissions', numeric: true, disablePadding: false, label: 'Submisions' },
@@ -115,8 +115,7 @@ class ProjectTable extends React.Component {
 			{ key: 0, label: 'Edit', icon: <EditIcon />, onClick: this.onEdit },
 			{ key: 1, label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
 			{ key: 2, label: 'Make public', icon: <VisibilityIcon />, onClick: this.onSetVisible },
-			{ key: 3, label: 'Make private', icon: <VisibilityOffIcon />, onClick: this.onSetPrivate },
-		
+			{ key: 3, label: 'Make private', icon: <VisibilityOffIcon />, onClick: this.onSetPrivate },	
 		]
 
 		const buttonsWhenNotSelected = [
