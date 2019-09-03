@@ -128,13 +128,17 @@ class ProjectCreateComponent extends React.Component {
 		if (this.isProjectBlocked()) return
 
 		this.props.DISPATCHERS.CREATE_PROJECT(data, {
-			onError: this.props.DISPATCHERS.SET_ERROR,
+			after: this.loadProjectData,
+			onError: (payload) => {
+				this.props.DISPATCHERS.SET_ERROR(payload)
+				this.loadProjectData()
+			},
 		})
 	}
 
 	updateProjectData = data => {
 		if (this.isProjectSavedAndIsBeingEdited()) return this.createOrSaveProject(data)
-		this.props.DISPATCHERS.EDIT_PROJECT_DATA(data)
+		else this.props.DISPATCHERS.EDIT_PROJECT_DATA(data)
 	}
 
 	saveTestCase = ({ window: payload }) => {
@@ -304,8 +308,7 @@ class ProjectCreateComponent extends React.Component {
 	saveTest = (index, test) => {
 		const { project, tests } = this.props
 		tests[index] = test
-		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
-
+		this.createOrSaveProject({ project, tests })
 	}
 
 	saveTestCode = ({ window: payload }) => {
