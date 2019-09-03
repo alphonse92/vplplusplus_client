@@ -113,6 +113,8 @@ class EnhancedTable extends React.PureComponent {
 			showFilterComponent,
 		} = state;
 
+		console.log(page)
+
 		return (
 			<Paper className={classes.root}>
 				<div className={classes.tableWrapper}>
@@ -158,11 +160,11 @@ class EnhancedTable extends React.PureComponent {
 									rowsPerPage={limit}
 									page={page - 1}
 									backIconButtonProps={{
-										disabled: this.state.selected.length,
+										disabled: this.state.selected.length || page === 1,
 										'aria-label': 'Previous Page',
 									}}
 									nextIconButtonProps={{
-										disabled: this.state.selected.length,
+										disabled: this.state.selected.length || (page * limit) >= total,
 										'aria-label': 'Next Page',
 									}}
 									onChangePage={onChangePage}
