@@ -111,7 +111,8 @@ class ProjectCreateComponent extends React.Component {
 
 	componentDidMount() {
 		const { id } = this.props.match.params
-		const { tests = [], ...project } = this.props.location.state
+		const { state: locationState={} } = this.props.location
+		const { tests = [], ...project } = locationState
 		id
 			? this.props.DISPATCHERS.LOAD_PROJECT(id)
 			: this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
