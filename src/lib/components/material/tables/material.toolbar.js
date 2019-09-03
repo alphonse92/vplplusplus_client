@@ -32,14 +32,13 @@ const TableToolbar = (props) => {
 
 	const buttonsComponent = buttons.map(btn => (
 		<div key={btn.key} className={classes.actions}>
-			<Tooltip >
+			<Tooltip title={btn.label}>
 				<IconButton aria-label={btn.label} onClick={btn.onClick ? btn.onClick : () => true}>
 					{btn.icon}
 				</IconButton>
 			</Tooltip>
 		</div >
-	)
-	)
+	))
 
 	const TitleComponent = numSelected > 0
 		? TypoItemsSelected
