@@ -100,6 +100,11 @@ class ProjectTable extends React.Component {
 		ProjectService.exportMoodleActivity(_id)
 	}
 
+	exportAsJson = () => {
+		const { _id } = this.selected_project
+		ProjectService.exportJson(_id)
+	}
+
 	render() {
 
 
@@ -121,7 +126,7 @@ class ProjectTable extends React.Component {
 		const buttonsWhenSelected = [
 			{ key: 0, label: 'Edit', icon: <EditIcon />, onClick: this.onEdit },
 			{ key: 1, label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
-			{ key: 2, label: 'Export', icon: <DownloadIcon />, onClick: this.export },
+			{ key: 2, label: 'Export', icon: <DownloadIcon />, onClick: this.exportAsJson },
 			{ key: 3, label: 'Download Moodle', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
 		]
 

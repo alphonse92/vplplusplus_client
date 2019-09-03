@@ -52,6 +52,10 @@ class ProjectServiceClass extends WebService {
   exportMoodleActivity(id) {
     super.openWindow(`/${id}/export/moodle?token=${super.getToken()}`)
   }
+
+  exportJson(id) {
+    super.openWindow(`/${id}/export/json?token=${super.getToken()}`)
+  }
 }
 
 export const ProjectService = new ProjectServiceClass()
