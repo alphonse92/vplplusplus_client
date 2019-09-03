@@ -52,9 +52,18 @@ const theme = createMuiTheme({
 				boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
 			},
 		},
+
+		MuiIcon: {
+			root: {
+				'&.fas': {
+					width: 'auto !important',
+					height: 'auto !important',
+				}
+			},
+		},
 	},
 });
-
+// style={{ width: 'auto', height: 'auto'}} 
 
 export const Root = () => (
 	<MuiThemeProvider theme={theme}>

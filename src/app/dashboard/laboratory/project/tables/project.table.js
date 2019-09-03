@@ -5,11 +5,11 @@ import { Button, } from '@material-ui/core'
 import { MaterialTable } from '../../../../../lib/components/material/tables/material.table';
 import { ActionCreators } from './../redux/actions';
 import { ActionCreators as ActionCreatorsForErrors } from './../../../../../redux/modals/actions';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import DownloadIcon from '@material-ui/icons/CloudDownloadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
+import Icon from '@material-ui/core/Icon';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 class ProjectTable extends React.Component {
@@ -114,13 +114,14 @@ class ProjectTable extends React.Component {
 		const buttonsWhenSelected = [
 			{ key: 0, label: 'Edit', icon: <EditIcon />, onClick: this.onEdit },
 			{ key: 1, label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
-			{ key: 2, label: 'Make public', icon: <VisibilityIcon />, onClick: this.onSetVisible },
-			{ key: 3, label: 'Make private', icon: <VisibilityOffIcon />, onClick: this.onSetPrivate },	
+			{ key: 2, label: 'Download', icon: <DownloadIcon />, onClick: this.onDownload },
+			{ key: 3, label: 'Download', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.onExport },
 		]
 
 		const buttonsWhenNotSelected = [
 			{ key: 0, label: 'Filter Data', icon: <FilterListIcon />, onClick: this.handleChangeFilter },
 			{ key: 1, label: 'Create new Project', icon: <AddIcon />, onClick: this.onCreateNewProject },
+
 		]
 
 		pagination.docs = pagination.docs.reduce((array, doc) => {
