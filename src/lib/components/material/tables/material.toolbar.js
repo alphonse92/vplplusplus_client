@@ -81,10 +81,10 @@ const toolbarStyles = theme => ({
 	},
 });
 
-TableToolbar.propTypes = {
-	classes: PropTypes.object.isRequired,
-	numSelected: PropTypes.number.isRequired,
-};
+// TableToolbar.propTypes = {
+// 	classes: PropTypes.object.isRequired,
+// 	numSelected: PropTypes.number.isRequired,
+// };
 
 const EnhancedTableToolbar = withStyles(toolbarStyles)(TableToolbar);
 
