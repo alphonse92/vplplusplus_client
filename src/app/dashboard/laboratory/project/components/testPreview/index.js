@@ -37,13 +37,14 @@ import { CodeEditor } from '../../../../../../lib/components/code';
 import { EditIcon as EditIconMaterial } from '../../../../../../lib/components/material/EditIcon';
 
 import './styles.sass'
+import { cutStringAndAddDots } from '../../../../../../lib';
 
 const SubHeader = ({ text }) => <ListSubheader component="div">{text}</ListSubheader>
 const PreviewWrapper = props => <div className="previewProjects">{props.children}</div>
 const ProjectsWrapper = props => <div className="projects">{props.children}</div>
 const TestsWrapper = props => <List component="nav" className="tests" subheader={<SubHeader text="Test cases" />}>{props.children}</List>
 
-const cutStringAndAddDots = (str, max = 25) => str.length > max ? `${str.substring(0, max)}...` : str
+
 const wrapInItalic = (shouldWrap, txt) => !!shouldWrap ? <i>{txt}</i> : <>{txt}</>
 
 

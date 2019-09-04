@@ -1,0 +1,1 @@
+export const cutStringAndAddDots = (str, max = 25) => str.length > max ? `${str.substring(0, max)}...` : str

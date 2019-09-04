@@ -14,13 +14,14 @@ import EyeIcon from '@material-ui/icons/RemoveRedEyeOutlined';
 import Icon from '@material-ui/core/Icon';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { ProjectService } from '../../../../../services/project';
+import { cutStringAndAddDots } from '../../../../../lib';
 
 class ProjectTable extends React.Component {
 	static columns = [
 
 		{ attribute: 'name', key: 'name', numeric: false, disablePadding: true, label: 'Name' },
 		{ attribute: 'description', key: 'description', numeric: false, disablePadding: false, label: 'Description' },
-		{ attribute: 'is_public', key: 'is_public', numeric: false, disablePadding: false, label: 'Public' },
+		{ attribute: 'is_modificable', key: 'is_modificable', numeric: false, disablePadding: false, label: 'Modificable' },
 		{ attribute: 'activity', key: 'activity', numeric: true, disablePadding: false, label: 'Course Module Id' },
 		{ attribute: 'metadata.tests', key: 'tests', numeric: true, disablePadding: false, label: 'Tests' },
 		{ attribute: 'metadata.cases', key: 'cases', numeric: true, disablePadding: false, label: 'Cases' },
@@ -155,16 +156,14 @@ class ProjectTable extends React.Component {
 
 		pagination.docs = pagination.docs.reduce((array, doc) => {
 			const { tests } = doc
-			const metadata = { tests: 0, cases: 0, submissions: 0 }
-			const description = doc.description.substring(0, 45) + '...'
+			const metadata = { tests: 0, cases: 0, submissions: doc.summaries.length }
+			const description = cutStringAndAddDots(doc.description,64)
+			const is_modificable = !ProjectService.isBlocked(doc)
 			tests.forEach(test => {
 				metadata.tests++
-				test.test_cases.forEach(test_case => {
-					metadata.cases++
-					test_case.summaries.forEach(summary => metadata.submissions++)
-				})
+				metadata.cases+=test.test_cases.length
 			})
-			array.push({ ...doc, description, metadata })
+			array.push({ ...doc, description, metadata, is_modificable })
 			return array
 		}, [])
 
@@ -187,7 +186,7 @@ class ProjectTable extends React.Component {
 			{ key: 'no-selected-project-import-from-json', label: 'Create from file', icon: <UploadIcon />, onClick: this.onCreateNewProjectFromFile },
 		]
 
-		const getButtons = (project_ids_selected=[]) => {
+		const getButtons = (project_ids_selected = []) => {
 			const [projectId] = project_ids_selected
 			const { docs: projects = [] } = pagination
 			const projectSelected = projects.find(({ _id }) => projectId === _id)
