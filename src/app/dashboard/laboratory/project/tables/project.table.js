@@ -10,6 +10,7 @@ import UploadIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
+import EyeIcon from '@material-ui/icons/RemoveRedEyeOutlined';
 import Icon from '@material-ui/core/Icon';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { ProjectService } from '../../../../../services/project';
@@ -152,19 +153,6 @@ class ProjectTable extends React.Component {
 
 		const { pagination } = props
 
-		const buttonsWhenSelected = [
-			{ key: 0, label: 'Edit', icon: <EditIcon />, onClick: this.onEdit },
-			{ key: 1, label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
-			{ key: 2, label: 'Export', icon: <DownloadIcon />, onClick: this.exportAsJson },
-			{ key: 3, label: 'Download Moodle', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
-		]
-
-		const buttonsWhenNotSelected = [
-			{ key: 0, label: 'Filter Data', icon: <FilterListIcon />, onClick: this.handleChangeFilter },
-			{ key: 1, label: 'Create new Project', icon: <AddIcon />, onClick: this.onCreateNewProject },
-			{ key: 2, label: 'Create from file', icon: <UploadIcon />, onClick: this.onCreateNewProjectFromFile },
-		]
-
 		pagination.docs = pagination.docs.reduce((array, doc) => {
 			const { tests } = doc
 			const metadata = { tests: 0, cases: 0, submissions: 0 }
@@ -179,6 +167,34 @@ class ProjectTable extends React.Component {
 			array.push({ ...doc, description, metadata })
 			return array
 		}, [])
+
+		const buttonsWhenSelectedAProjectBlocked = [
+			{ key: 'project-blocked-show', label: 'See', icon: <EyeIcon />, onClick: this.onEdit },
+			{ key: 'project-blocked-export', label: 'Export', icon: <DownloadIcon />, onClick: this.exportAsJson },
+			{ key: 'project-blocked-export-as-moodle', label: 'Download Moodle', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
+		]
+
+		const buttonsWhenSelectedAProjectIsNotBlocked = [
+			{ key: 'project-unblocked-edit', label: 'Edit', icon: <EditIcon />, onClick: this.onEdit },
+			{ key: 'project-unblocked-delete', label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
+			{ key: 'project-unblocked-export', label: 'Export', icon: <DownloadIcon />, onClick: this.exportAsJson },
+			{ key: 'project-unblocked-export-as-moodle', label: 'Download Moodle', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
+		]
+
+		const buttonsWhenNotSelected = [
+			{ key: 'no-selected-project-filter', label: 'Filter Data', icon: <FilterListIcon />, onClick: this.handleChangeFilter },
+			{ key: 'no-selected-project-new-project', label: 'Create new Project', icon: <AddIcon />, onClick: this.onCreateNewProject },
+			{ key: 'no-selected-project-import-from-json', label: 'Create from file', icon: <UploadIcon />, onClick: this.onCreateNewProjectFromFile },
+		]
+
+		const getButtons = (project_ids_selected=[]) => {
+			const [projectId] = project_ids_selected
+			const { docs: projects = [] } = pagination
+			const projectSelected = projects.find(({ _id }) => projectId === _id)
+			if (!projectSelected) return buttonsWhenNotSelected
+			if (!ProjectService.isBlocked(projectSelected)) return buttonsWhenSelectedAProjectIsNotBlocked
+			return buttonsWhenSelectedAProjectBlocked
+		}
 
 		const emptyComponent = (
 			<div style={{ textAlign: 'center', width: '100%' }}>
@@ -202,8 +218,7 @@ class ProjectTable extends React.Component {
 			handleChangePage,
 			handleChangeRowsPerPage,
 			handleChangeFilter,
-			buttonsWhenNotSelected,
-			buttonsWhenSelected
+			getButtons
 		}
 
 		return (

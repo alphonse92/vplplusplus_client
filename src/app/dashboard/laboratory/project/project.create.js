@@ -15,6 +15,7 @@ import { EditTestCaseWindow } from './components/test.case.editor.window';
 import { WindowComponent } from '../../../../lib/components/window-manager';
 import { TEST_CASE } from '../../../../constants';
 import { Save } from '@material-ui/icons';
+import { ProjectService } from '../../../../services/project';
 
 class ProjectCreateComponent extends React.Component {
 
@@ -376,7 +377,7 @@ class ProjectCreateComponent extends React.Component {
 	}
 
 	forceCloseWindow = extraState => this.setState({ window: undefined, forceCloseWindow: true, ...extraState })
-	isProjectBlocked = () => this.isProjectSavedAndIsBeingEdited() && !!this.props.project.summaries && this.props.project.summaries.length > 0
+	isProjectBlocked = () => ProjectService.isBlocked(this.props.project)
 	isProjectSavedAndIsBeingEdited = () => !!this.props.project._id
 	render() {
 		const { props, state } = this

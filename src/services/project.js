@@ -56,6 +56,12 @@ class ProjectServiceClass extends WebService {
   exportJson(id) {
     super.openWindow(`/${id}/export/json?token=${super.getToken()}`)
   }
+
+  isBlocked(project) {
+    const isblocked = project && !!project._id && !!project.summaries && project.summaries.length > 0
+    console.log(isblocked)
+    return isblocked
+  }
 }
 
 export const ProjectService = new ProjectServiceClass()

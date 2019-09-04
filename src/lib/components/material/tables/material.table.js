@@ -107,11 +107,8 @@ class EnhancedTable extends React.PureComponent {
 			classes,
 			columns,
 			handleRequestSort,
-
 			handleChangeFilter: onFilter = this.onFilter,
-			buttonsWhenSelected,
-			buttonsWhenNotSelected,
-			
+			getButtons,
 		} = props;
 		const { limit, page, total, sort, docs: data = [] } = pagination
 		const {
@@ -120,6 +117,8 @@ class EnhancedTable extends React.PureComponent {
 			showFilterComponent,
 		} = state;
 
+		const buttonsWhenSelected = getButtons(selected);
+		const buttonsWhenNotSelected = getButtons();
 		return (
 			<Paper className={classes.root}>
 				<div className={classes.tableWrapper}>
