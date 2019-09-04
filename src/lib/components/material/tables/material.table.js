@@ -164,11 +164,11 @@ class EnhancedTable extends React.PureComponent {
 									rowsPerPage={limit}
 									page={page - 1}
 									backIconButtonProps={{
-										disabled: this.state.selected.length || page === 1,
+										disabled: !!(this.state.selected.length || page === 1),
 										'aria-label': 'Previous Page',
 									}}
 									nextIconButtonProps={{
-										disabled: this.state.selected.length || (page * limit) >= total,
+										disabled: !!(this.state.selected.length || (page * limit) >= total),
 										'aria-label': 'Next Page',
 									}}
 									onChangePage={onChangePage}
