@@ -157,11 +157,11 @@ class ProjectTable extends React.Component {
 		pagination.docs = pagination.docs.reduce((array, doc) => {
 			const { tests } = doc
 			const metadata = { tests: 0, cases: 0, submissions: doc.summaries.length }
-			const description = cutStringAndAddDots(doc.description,64)
-			const is_modificable = !ProjectService.isBlocked(doc)
+			const description = cutStringAndAddDots(doc.description, 64)
+			const is_modificable = ProjectService.isBlocked(doc) ? "No" : "Yes"
 			tests.forEach(test => {
 				metadata.tests++
-				metadata.cases+=test.test_cases.length
+				metadata.cases += test.test_cases.length
 			})
 			array.push({ ...doc, description, metadata, is_modificable })
 			return array
