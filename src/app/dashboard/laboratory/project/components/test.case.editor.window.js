@@ -84,7 +84,7 @@ export class EditTestCaseWindow extends React.Component {
     this.props.onEmit(EditTestCaseWindow.Events.save, this.getTestPayload(true))
   }
 
-  getEditorCode = () => this.editor ? this.editor.getValue() : this.lastCode
+  getEditorCode = () => this.lastCode
 
   showPreviewCode = () => {
     const code = this.getEditorCode()
