@@ -1,20 +1,10 @@
 import React from 'react'
 import { Switch } from 'react-router'
-import { DashboardNavbar } from './dashboard.navbar';
+import { orderBy } from 'lodash'
+import DashboardNavbar from './dashboard.navbar';
 import getRoutes from './dashboard.routes'
+import { ITEM_MENU_BY_SCOPE, GROUP_ORDER } from './dashboard.navbar.schema'
 import './styles.sass'
-
-const DashboardWraper = props => (
-	<div className="dashboard">
-		{props.children}
-	</div>
-)
-
-const DashboardContent = props => (
-	<div className="content">
-		{props.children}
-	</div>
-)
 
 export const DashboardContainer = (props) => {
 	const { history, match, location, STORE, DISPATCHERS } = props
@@ -24,19 +14,41 @@ export const DashboardContainer = (props) => {
 		if (redirect) return history.push(redirect)
 		if (DISPATCHERS[action]) return DISPATCHERS[action]()
 	}
+	const getMenuByScopes = scopes => scopes
+		.reduce((groupedMenu, scope) => {
+			const menuItemScope = ITEM_MENU_BY_SCOPE[scope]
 
-	const routes = getRoutes(match, location).map((route, key) => ({ ...route, key }))
+			if (!menuItemScope) return groupedMenu
 
+			const groupName = menuItemScope.group.name
+			const groupOrder = menuItemScope.group.order
+
+			const _def_ = { name: groupName, order: groupOrder, items: [] }
+			const menu = groupedMenu[groupName] || _def_
+
+			menu.items.push(ITEM_MENU_BY_SCOPE[scope])
+
+			return { ...groupedMenu, [menu.name]: menu }
+
+		}, {})
+	const userMenuMap = getMenuByScopes(user.scopes)
+	const userMenu = orderBy(Object.values(userMenuMap), ['order'], ['asc'])
+		.map(menu => {
+			const { items = [] } = menu
+			menu.items = orderBy(items, ['order'], ['asc'])
+			return menu
+		})
+
+	console.log(userMenu)
 	return (
 		<React.Fragment>
-			<DashboardNavbar
-				scopes={user.scopes}
-				onSelect={onSelect} />
-			<DashboardWraper>
-				<DashboardContent>
-					<Switch> {routes} </Switch>
-				</DashboardContent>
-			</DashboardWraper>
+			<DashboardNavbar openAtStart menu={userMenu} onSelect={onSelect} >
+				<Switch>
+					{
+						getRoutes(match, location).map((route, key) => ({ ...route, key }))
+					} </Switch>
+			</DashboardNavbar>
+
 		</React.Fragment>
 	)
 }
