@@ -20,7 +20,7 @@ class EnhancedTable extends React.PureComponent {
 	getDocs = () => this.props.pagination.docs || []
 
 	unSelectAllItems = () => {
-		console.log('unselecting')
+
 		this.setState({ selected: [] })
 	}
 
@@ -149,10 +149,10 @@ class EnhancedTable extends React.PureComponent {
 								/>
 								<Table className={classes.table} aria-labelledby="tableTitle">
 									{!!data.length && <EnhancedTableHead
-										order={''}
-										orderBy={sort}
-										onSelectAllClick={handleSelectAllItems}
-										onRequestSort={handleRequestSort}
+										// order={!!this.state.order}
+										// orderBy={sort}
+										// onSelectAllClick={handleSelectAllItems}
+										// onRequestSort={handleRequestSort}
 										rowCount={data.length}
 										columns={columns}
 									/>}

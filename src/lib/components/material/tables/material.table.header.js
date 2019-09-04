@@ -15,7 +15,6 @@ export class EnhancedTableHead extends React.Component {
 
 	render() {
 		const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
-
 		return (
 			<TableHead>
 				<TableRow>
@@ -26,31 +25,15 @@ export class EnhancedTableHead extends React.Component {
 							onChange={onSelectAllClick}
 						/>}
 					</TableCell>
-					{this.props.columns.map(
-						row => (
-							<TableCell
-								key={row.key}
-								align={row.numeric ? 'right' : 'left'}
-								padding={row.disablePadding ? 'none' : 'default'}
-								sortDirection={orderBy === row.key ? order : false}
-							>
-								<Tooltip
-									title="Sort"
-									placement={row.numeric ? 'bottom-end' : 'bottom-start'}
-									enterDelay={300}
-								>
-									<TableSortLabel
-										active={orderBy === row.key}
-										direction={order}
-										onClick={this.createSortHandler(row.key)}
-									>
-										{row.label}
-									</TableSortLabel>
-								</Tooltip>
-							</TableCell>
-						),
-						this,
-					)}
+					{
+						this.props.columns.map(
+							row => (
+								<TableCell key={row.key} align="center" padding={row.disablePadding ? 'none' : 'default'} sortDirection={orderBy === row.key ? order : false}>
+									{row.label}
+								</TableCell>
+							)
+						)
+					}
 				</TableRow>
 			</TableHead>
 		);

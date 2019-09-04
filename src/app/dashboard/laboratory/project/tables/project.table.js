@@ -68,8 +68,6 @@ class ProjectTable extends React.Component {
 	}
 
 	onCreateNewProjectFromFile = () => {
-		console.log('loading')
-
 		document.getElementById(ProjectTable.fileLoaderId).click()
 	}
 
@@ -110,7 +108,7 @@ class ProjectTable extends React.Component {
 
 
 	handleChangeFilter = (valueToFind, attributes) => {
-		console.log('setting filter')
+		
 	}
 
 	handleSelectItem = async (isSelected, project) => {
