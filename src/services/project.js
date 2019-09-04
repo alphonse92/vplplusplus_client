@@ -59,7 +59,6 @@ class ProjectServiceClass extends WebService {
 
   isBlocked(project) {
     const isblocked = project && !!project._id && !!project.summaries && project.summaries.length > 0
-    console.log(isblocked)
     return isblocked
   }
 }

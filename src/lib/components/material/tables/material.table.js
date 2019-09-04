@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -69,7 +68,7 @@ class EnhancedTable extends React.PureComponent {
 				role="checkbox"
 				aria-checked={isSelected}
 				tabIndex={-1}
-				key={keyProp}
+				key={key}
 				selected={isSelected}
 			>{cells}</TableRow>
 		)
@@ -94,7 +93,7 @@ class EnhancedTable extends React.PureComponent {
 		const {
 			state,
 			props,
-			handleSelectAllItems,
+			// handleSelectAllItems,
 			handleChangeRowsPerPage,
 			onChangePage,
 			unSelectAllItems
@@ -106,11 +105,11 @@ class EnhancedTable extends React.PureComponent {
 			title,
 			classes,
 			columns,
-			handleRequestSort,
+			// handleRequestSort,
 			handleChangeFilter: onFilter = this.onFilter,
 			getButtons,
 		} = props;
-		const { limit, page, total, sort, docs: data = [] } = pagination
+		const { limit, page, total, /*sort,*/ docs: data = [] } = pagination
 		const {
 			selected,
 			columnNames,
