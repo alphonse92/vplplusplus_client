@@ -124,7 +124,7 @@ class EnhancedTable extends React.PureComponent {
 			<Paper className={classes.root}>
 				<div className={classes.tableWrapper}>
 
-					{ // case where not data
+					{ //  case when there arent data
 						!data.length && (
 							<Table className={classes.table} aria-labelledby="tableTitle">
 								<TableBody>
@@ -137,7 +137,7 @@ class EnhancedTable extends React.PureComponent {
 							</Table>
 						)}
 
-					{ // case where is data
+					{ // case when there are data
 						!!data.length && (
 							<React.Fragment>
 								{!!showFilterComponent && <EnhancedTableFilter onFilter={onFilter} options={columnNames} />}

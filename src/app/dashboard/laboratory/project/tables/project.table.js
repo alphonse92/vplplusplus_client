@@ -6,6 +6,7 @@ import { MaterialTable } from '../../../../../lib/components/material/tables/mat
 import { ActionCreators } from './../redux/actions';
 import { ActionCreators as ActionCreatorsForErrors } from './../../../../../redux/modals/actions';
 import DownloadIcon from '@material-ui/icons/CloudDownloadOutlined';
+import UploadIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
@@ -149,7 +150,7 @@ class ProjectTable extends React.Component {
 			handleSelectAllItems,
 		} = this
 
-		const { pagination, onCreateNewProject } = props
+		const { pagination } = props
 
 		const buttonsWhenSelected = [
 			{ key: 0, label: 'Edit', icon: <EditIcon />, onClick: this.onEdit },
@@ -161,7 +162,7 @@ class ProjectTable extends React.Component {
 		const buttonsWhenNotSelected = [
 			{ key: 0, label: 'Filter Data', icon: <FilterListIcon />, onClick: this.handleChangeFilter },
 			{ key: 1, label: 'Create new Project', icon: <AddIcon />, onClick: this.onCreateNewProject },
-			{ key: 2, label: 'Create from file', icon: <Icon className={'fas fa-file-upload'} />, onClick: this.onCreateNewProjectFromFile },
+			{ key: 2, label: 'Create from file', icon: <UploadIcon />, onClick: this.onCreateNewProjectFromFile },
 		]
 
 		pagination.docs = pagination.docs.reduce((array, doc) => {
@@ -181,8 +182,10 @@ class ProjectTable extends React.Component {
 
 		const emptyComponent = (
 			<div style={{ textAlign: 'center', width: '100%' }}>
-				<p>No projects to shown.</p>
-				<Button variant="contained" color="primary" onClick={onCreateNewProject}><AddIcon /> Start a New Project</Button>
+				<p>No projects to shown</p>
+				<Button color="primary" onClick={this.onCreateNewProject}><AddIcon /> Start a New Project</Button>
+				or
+				<Button color="primary" onClick={this.onCreateNewProjectFromFile}><UploadIcon /> Import one</Button>
 			</div>
 		)
 
