@@ -96,7 +96,6 @@ const CREATE_PROJECT_NAME = 'CREATE_PROJECT'
 Actions[CREATE_PROJECT_NAME] = {
 	DISPATCHER: (data = {}, opts) => (dispatcher, getStore) => {
 		const store = getStore()
-		console.log(store)
 		const { project = store.projects.create.project } = data
 		const { tests = store.projects.create.tests } = data
 		const getRequest = () => ProjectService.createProject({ ...project, tests })
