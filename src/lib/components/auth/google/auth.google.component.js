@@ -3,20 +3,32 @@ import React, { Component } from 'react'
 
 export class MvGoogleAuth extends Component {
 	static logout = async () => new Promise(async (resolve, reject) => {
-		const GoogleAuth = await MvGoogleAuth.getGoogleAuth()
-		await GoogleAuth.signOut()
-		resolve()
+		try {
+			const GoogleAuth = await MvGoogleAuth.getGoogleAuth()
+			if (GoogleAuth) await GoogleAuth.signOut()
+			resolve()
+		} catch (e) { reject(e) }
+
 	})
 	static getGoogleAuth = async () => new Promise((resolve, reject) => {
 		window.gapi.load('auth2', async () => {
-			const GoogleAuth = await window.gapi.auth2.init()
-			resolve(GoogleAuth)
+			try {
+				const GoogleAuth = await window.gapi.auth2.init()
+				resolve(GoogleAuth)
+			} catch (e) {
+				resolve(null)
+			}
+
 		})
 	})
 	static isSignedIn = async () => {
-		const GoogleAuth = await MvGoogleAuth.getGoogleAuth()
-		const isSignedIn = GoogleAuth.isSignedIn.get()
-		return isSignedIn
+		try {
+			const GoogleAuth = await MvGoogleAuth.getGoogleAuth()
+			const isSignedIn = GoogleAuth.isSignedIn.get()
+			return isSignedIn
+		} catch (e) {
+			return false
+		}
 	}
 
 	constructor(props) {

@@ -14,7 +14,6 @@ const COMPONENT_REDIRECT_TO_DEFAULT = (props) => {
 export default (match, location) => [
 	(<Route exact path={match.url + ''} render={MainPage} />),
 	(<Route exact path={match.url + 'login'} render={withAuth(LoginContainer, false, '/dashboard', [
-		// just users that are not logged in could see the login page
 		(user) => !user || !(user && user.id)
 	])} />),
 	(<Route path={match.url + 'dashboard'} render={withAuth(DashboardContainer, true, '/login')} />),

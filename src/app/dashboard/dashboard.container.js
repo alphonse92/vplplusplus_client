@@ -11,6 +11,7 @@ export const DashboardContainer = (props) => {
 	const { user } = STORE
 	const onSelect = menu => {
 		const { redirect, action } = menu
+		console.log(DISPATCHERS)
 		if (redirect) return history.push(redirect)
 		if (DISPATCHERS[action]) return DISPATCHERS[action]()
 	}

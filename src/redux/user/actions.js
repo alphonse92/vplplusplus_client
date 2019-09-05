@@ -9,7 +9,10 @@ const Actions = {}
 
 const SET_USER_LOGGED_NAME = 'SET_USER_LOGGED'
 Actions[SET_USER_LOGGED_NAME] = {
-	DISPATCHER: (data) => (dispatch, getStore) => UserService.saveUserLogged(data),
+	DISPATCHER: (payload) => (dispatch, getStore) => {
+		UserService.saveUserLogged(payload)
+		dispatch({ type: Actions[SET_USER_LOGGED_NAME].ACTIONS.default.name, payload })
+	},
 	ACTIONS: {
 		default: {
 			name: SET_USER_LOGGED_NAME,
@@ -21,7 +24,8 @@ Actions[SET_USER_LOGGED_NAME] = {
 const LOGOUT_NAME = 'LOGOUT'
 Actions[LOGOUT_NAME] = {
 	DISPATCHER: () => async (dispatcher, getStore) => {
-		await MvAuthLogin.logout()
+		try { await MvAuthLogin.logout() }
+		catch (e) { console.error('error catched', e) }
 		UserService.saveUserLogged(null)
 		const dispatch = { type: SET_USER_LOGGED_NAME, payload: undefined }
 		dispatcher(dispatch)
@@ -36,19 +40,7 @@ Actions[LOGOUT_NAME] = {
 
 const LOGIN_NAME = 'LOGIN'
 Actions[LOGIN_NAME] = {
-	DISPATCHER: (data, onLogin) => {
-		const actions = Actions[LOGIN_NAME].ACTIONS
-		return dispatcher => {
-			const after = (payload) => {
-				const type = Actions[SET_USER_LOGGED_NAME].ACTIONS.default.name
-				const dispatch = { type, payload }
-				dispatcher(dispatch)
-				onLogin(data)
-			}
-			const getRequest = () => Service.login(data)
-			requestDispatcher(dispatcher, actions, getRequest, { after })
-		}
-	},
+	DISPATCHER: (data, after) => dispatcher => requestDispatcher(dispatcher, Actions[LOGIN_NAME].ACTIONS, () => Service.login(data), { after }),
 	ACTIONS: createRequestActions(LOGIN_NAME, {
 		// SET_USER_LOGGED will handle the state.user data
 		fullfilled: (state, action) => {

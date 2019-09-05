@@ -38,12 +38,8 @@ const MvAuthLogin = (props) => {
 		</MvAuth>
 	)
 }
-MvAuthLogin.logout = () => {
-	return Promise.all([MvGoogleAuth.logout(), MvSingleAuth.logout()])
-}
-export {
-	MvAuthLogin
-}
+MvAuthLogin.logout = () => Promise.all([MvGoogleAuth.logout(), MvSingleAuth.logout()])
+export { MvAuthLogin }
 
 
 
