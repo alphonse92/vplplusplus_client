@@ -19,10 +19,10 @@ import { cutStringAndAddDots } from '../../../../lib';
 class ProjectTable extends React.Component {
 	static columns = [
 
-		{ attribute: 'name', key: 'name', numeric: false, disablePadding: true, label: 'Name' },
-		{ attribute: 'description', key: 'description', numeric: false, disablePadding: false, label: 'Description' },
+		{ attribute: 'name', key: 'name', orderable: true, numeric: false, disablePadding: true, label: 'Name' },
+		{ attribute: 'description', key: 'description', orderable: true, numeric: false, disablePadding: false, label: 'Description' },
 		{ attribute: 'is_modificable', key: 'is_modificable', numeric: false, disablePadding: false, label: 'Modificable' },
-		{ attribute: 'activity', key: 'activity', numeric: true, disablePadding: false, label: 'Course Module Id' },
+		{ attribute: 'activity', key: 'activity', orderable: true, numeric: true, disablePadding: false, label: 'Course Module Id' },
 		{ attribute: 'metadata.tests', key: 'tests', numeric: true, disablePadding: false, label: 'Tests' },
 		{ attribute: 'metadata.cases', key: 'cases', numeric: true, disablePadding: false, label: 'Cases' },
 		{ attribute: 'metadata.submissions', key: 'submissions', numeric: true, disablePadding: false, label: 'Submisions' },
@@ -44,6 +44,7 @@ class ProjectTable extends React.Component {
 	}
 
 	componentDidMount() {
+		this.props.DISPATCHERS.SET_ORDER('name')
 		this.props.DISPATCHERS.LOAD_PROJECTS()
 	}
 
@@ -91,8 +92,17 @@ class ProjectTable extends React.Component {
 
 	}
 
+	getCurrentSort = () => this.props.pagination.sort
+	getCurrentDirection = () => this.props.pagination.direction
 	handleRequestSort = (data, value) => {
-		this.props.DISPATCHERS.SET_ORDER(value)
+		const { row } = value
+		const { attribute } = row
+		const currentSort = this.getCurrentSort()
+		const currentDirection = this.getCurrentDirection()
+		const shouldChangeDirection = attribute === currentSort
+
+		if (shouldChangeDirection) this.props.DISPATCHERS.SET_DIRECTION(!currentDirection)
+		else this.props.DISPATCHERS.SET_ORDER(row.attribute)
 		this.props.DISPATCHERS.LOAD_PROJECTS()
 	}
 
@@ -108,7 +118,7 @@ class ProjectTable extends React.Component {
 
 
 	handleChangeFilter = (valueToFind, attributes) => {
-		
+
 	}
 
 	handleSelectItem = async (isSelected, project) => {

@@ -13,12 +13,18 @@ export const EnhancedTableHead = props => {
 
 		const { disablePadding, numeric, orderable, attribute, key, label } = row
 		const isActive = orderable && orderBy === attribute
+
 		const onClick = orderable
 			? createSortHandler({ row, orderBy, order })
 			: () => true
+
+		const tooltipTitle = orderable
+			? `Order by ${row.label}`
+			: 'Not orderable'
+
 		return (
 			<TableCell key={key} align="center" padding={disablePadding ? 'none' : 'default'} sortDirection={orderBy === key ? order : false}>
-				<Tooltip title="Sort" placement={numeric ? 'bottom-end' : 'bottom-start'} enterDelay={300}>
+				<Tooltip title={tooltipTitle} placement={numeric ? 'bottom-end' : 'bottom-start'} enterDelay={300}>
 					<TableSortLabel active={isActive} direction={order} onClick={onClick}>
 						{label}
 					</TableSortLabel>

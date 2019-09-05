@@ -16,6 +16,7 @@ const PATHS = {
 	'list.pagination.limit': 5,
 	'list.pagination.total': 0,
 	'list.pagination.sort': '',
+	'list.pagination.direction': true,
 }
 
 const PROJECT = { root: 'projects' }

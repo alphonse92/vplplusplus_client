@@ -15,8 +15,10 @@ Actions[LOAD_PROJECTS_NAME] = {
 		const { projects } = store
 		const { list } = projects
 		const { pagination } = list
-		const { page, limit, sort: _sort = '' } = pagination
-		const sort = !_sort.length ? 'createdAt' : _sort
+		const { page, limit, sort: _sort = '', direction } = pagination
+		const sortByCol = !_sort.length ? 'createdAt' : _sort
+		const sortPrefix = direction ? "" : '-'
+		const sort = sortPrefix + sortByCol
 		const actions = Actions[LOAD_PROJECTS_NAME].ACTIONS
 		const getRequest = () => ProjectService.getProjects(page, limit, sort)
 		requestDispatcher(dispatcher, actions, getRequest)
@@ -24,7 +26,8 @@ Actions[LOAD_PROJECTS_NAME] = {
 	ACTIONS: createRequestActions(LOAD_PROJECTS_NAME, {
 		fullfilled: (state, action) => {
 			const newState = { ...state }
-			newState.list.pagination = action.payload
+			const newPagination = { ...newState.list.pagination, ...action.payload }
+			newState.list.pagination = newPagination
 			return newState
 		},
 		rejected: (state, action) => {
@@ -172,8 +175,26 @@ Actions[SET_ORDER_NAME] = {
 			}
 		}
 	},
-
 }
+
+const SET_DIRECTION_NAME = 'SET_DIRECTION'
+Actions[SET_DIRECTION_NAME] = {
+	DISPATCHER: (direction) => (dispatcher, getStore) => {
+		dispatcher({ type: Actions[SET_DIRECTION_NAME].ACTIONS.default.name, payload: direction })
+	},
+	ACTIONS: {
+		default: {
+			name: SET_DIRECTION_NAME,
+			reducer: (state, action) => {
+				const newState = { ...state }
+				newState.list.pagination.direction = action.payload
+				return newState
+			}
+		}
+	},
+}
+
+
 const SET_LIMIT_NAME = 'SET_LIMIT'
 Actions[SET_LIMIT_NAME] = {
 	DISPATCHER: (limit) => (dispatcher, getStore) => {
