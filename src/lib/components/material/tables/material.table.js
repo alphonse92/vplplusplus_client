@@ -109,7 +109,7 @@ class EnhancedTable extends React.PureComponent {
 			handleChangeFilter: onFilter = this.onFilter,
 			getButtons,
 		} = props;
-		const { limit, page, total, /*sort,*/ docs: data = [] } = pagination
+		const { limit, page, total, sort, direction, docs: data = [] } = pagination
 		const {
 			selected,
 			columnNames,
@@ -148,6 +148,8 @@ class EnhancedTable extends React.PureComponent {
 								/>
 								<Table className={classes.table} aria-labelledby="tableTitle">
 									{!!data.length && <EnhancedTableHead
+										orderBy={sort}
+										order={direction ? 'asc' : 'desc'}
 										onRequestSort={handleRequestSort}
 										rowCount={data.length}
 										columns={columns}

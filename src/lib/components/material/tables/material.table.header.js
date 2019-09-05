@@ -11,8 +11,8 @@ export const EnhancedTableHead = props => {
 	const createSortHandler = property => event => onRequestSort(event, property);
 	const getCellByColumns = row => {
 
-		const { disablePadding, numeric, orderable, id, key, label } = row
-		const isActive = orderable && orderBy === id
+		const { disablePadding, numeric, orderable, attribute, key, label } = row
+		const isActive = orderable && orderBy === attribute
 		const onClick = orderable
 			? createSortHandler({ row, orderBy, order })
 			: () => true

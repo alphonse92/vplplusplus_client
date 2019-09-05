@@ -3,12 +3,12 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 // import { Button, } from '@material-ui/core'
 import DownloadIcon from '@material-ui/icons/CloudDownloadOutlined';
-import UploadIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import EyeIcon from '@material-ui/icons/RemoveRedEyeOutlined';
 import Icon from '@material-ui/core/Icon';
+import UploadIcon from '@material-ui/icons/CloudUploadOutlined';
+import AddIcon from '@material-ui/icons/Add';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { ProjectService } from '../../../services/project';
@@ -21,10 +21,10 @@ class StudentTable extends React.Component {
 
 	static columns = [
 		{ attribute: 'username', key: 'username', orderable: true, numeric: false, disablePadding: true, label: 'Username' },
-		{ attribute: 'firstname', key: 'firstname', orderable: true, numeric: false, disablePadding: true, label: 'Firstame' },
 		{ attribute: 'lastname', key: 'lastname', orderable: true, numeric: false, disablePadding: true, label: 'Lastname' },
-		{ attribute: 'id', key: 'id', numeric: true, orderable: true, disablePadding: true, label: 'Moodle id' },
+		{ attribute: 'firstname', key: 'firstname', orderable: true, numeric: false, disablePadding: true, label: 'Firstame' },
 		{ attribute: 'email', key: 'is_modificable', orderable: true, numeric: false, disablePadding: false, label: 'Email' },
+		{ attribute: 'id', key: 'id', numeric: true, orderable: true, disablePadding: true, label: 'Moodle id' },
 	]
 
 	static mapStateToProps = (state) => {
@@ -42,6 +42,7 @@ class StudentTable extends React.Component {
 	}
 
 	componentDidMount() {
+		this.props.DISPATCHERS.SET_ORDER('lastname')
 		this.props.DISPATCHERS.LOAD_STUDENTS()
 	}
 
@@ -85,8 +86,19 @@ class StudentTable extends React.Component {
 
 	}
 
-	handleRequestSort = (data, value) => {
-		console.log(value)
+	getCurrentSort = () => this.props.pagination.sort
+	getCurrentDirection = () => this.props.pagination.direction
+	handleRequestSort = (event, value) => {
+
+		const { row } = value
+		const { attribute } = row
+		const currentSort = this.getCurrentSort()
+		const currentDirection = this.getCurrentDirection()
+		const shouldChangeDirection = attribute === currentSort
+
+		if (shouldChangeDirection) this.props.DISPATCHERS.SET_DIRECTION(!currentDirection)
+		else this.props.DISPATCHERS.SET_ORDER(row.attribute)
+		this.props.DISPATCHERS.LOAD_STUDENTS()
 	}
 
 	handleChangePage = (data, value) => {
@@ -156,9 +168,9 @@ class StudentTable extends React.Component {
 		]
 
 		const buttonsWhenNotSelected = [
-			{ key: 'no-selected-project-filter', label: 'Filter Data', icon: <FilterListIcon />, onClick: this.handleChangeFilter },
-			{ key: 'no-selected-project-new-project', label: 'Create new Project', icon: <AddIcon />, onClick: this.onCreateNewProject },
-			{ key: 'no-selected-project-import-from-json', label: 'Create from file', icon: <UploadIcon />, onClick: this.onCreateNewProjectFromFile },
+			// { key: 'no-selected-project-filter', label: 'Filter Data', icon: <FilterListIcon />, onClick: this.handleChangeFilter },
+			// { key: 'no-selected-project-new-project', label: 'Create new Project', icon: <AddIcon />, onClick: this.onCreateNewProject },
+			// { key: 'no-selected-project-import-from-json', label: 'Create from file', icon: <UploadIcon />, onClick: this.onCreateNewProjectFromFile },
 		]
 
 		const getButtons = (project_ids_selected = []) => {
