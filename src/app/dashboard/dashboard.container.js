@@ -11,7 +11,6 @@ export const DashboardContainer = (props) => {
 	const { user } = STORE
 	const onSelect = menu => {
 		const { redirect, action } = menu
-		console.log(DISPATCHERS)
 		if (redirect) return history.push(redirect)
 		if (DISPATCHERS[action]) return DISPATCHERS[action]()
 	}
@@ -39,8 +38,6 @@ export const DashboardContainer = (props) => {
 			menu.items = orderBy(items, ['order'], ['asc'])
 			return menu
 		})
-
-	console.log(userMenu)
 	return (
 		<React.Fragment>
 			<DashboardNavbar openAtStart menu={userMenu} onSelect={onSelect} >

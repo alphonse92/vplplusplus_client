@@ -93,7 +93,7 @@ class EnhancedTable extends React.PureComponent {
 		const {
 			state,
 			props,
-			// handleSelectAllItems,
+			handleSelectAllItems,
 			handleChangeRowsPerPage,
 			onChangePage,
 			unSelectAllItems
@@ -105,7 +105,7 @@ class EnhancedTable extends React.PureComponent {
 			title,
 			classes,
 			columns,
-			// handleRequestSort,
+			handleRequestSort,
 			handleChangeFilter: onFilter = this.onFilter,
 			getButtons,
 		} = props;
@@ -148,10 +148,7 @@ class EnhancedTable extends React.PureComponent {
 								/>
 								<Table className={classes.table} aria-labelledby="tableTitle">
 									{!!data.length && <EnhancedTableHead
-										// order={!!this.state.order}
-										// orderBy={sort}
-										// onSelectAllClick={handleSelectAllItems}
-										// onRequestSort={handleRequestSort}
+										onRequestSort={handleRequestSort}
 										rowCount={data.length}
 										columns={columns}
 									/>}

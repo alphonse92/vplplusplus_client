@@ -20,11 +20,11 @@ import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals
 class StudentTable extends React.Component {
 
 	static columns = [
-		{ attribute: 'username', key: 'username', numeric: false, disablePadding: true, label: 'Username' },
-		{ attribute: 'firstname', key: 'firstname', numeric: false, disablePadding: true, label: 'Firstame' },
-		{ attribute: 'lastname', key: 'lastname', numeric: false, disablePadding: true, label: 'Lastname' },
-		{ attribute: 'id', key: 'id', numeric: true, disablePadding: true, label: 'Moodle id' },
-		{ attribute: 'email', key: 'is_modificable', numeric: false, disablePadding: false, label: 'Email' },
+		{ attribute: 'username', key: 'username', orderable: true, numeric: false, disablePadding: true, label: 'Username' },
+		{ attribute: 'firstname', key: 'firstname', orderable: true, numeric: false, disablePadding: true, label: 'Firstame' },
+		{ attribute: 'lastname', key: 'lastname', orderable: true, numeric: false, disablePadding: true, label: 'Lastname' },
+		{ attribute: 'id', key: 'id', numeric: true, orderable: true, disablePadding: true, label: 'Moodle id' },
+		{ attribute: 'email', key: 'is_modificable', orderable: true, numeric: false, disablePadding: false, label: 'Email' },
 	]
 
 	static mapStateToProps = (state) => {
@@ -86,8 +86,7 @@ class StudentTable extends React.Component {
 	}
 
 	handleRequestSort = (data, value) => {
-		this.props.DISPATCHERS.SET_ORDER(value)
-		this.props.DISPATCHERS.LOAD_STUDENTS()
+		console.log(value)
 	}
 
 	handleChangePage = (data, value) => {

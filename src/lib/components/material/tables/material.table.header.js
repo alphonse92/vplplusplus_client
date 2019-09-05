@@ -3,46 +3,42 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
+import { TableSortLabel, Tooltip } from '@material-ui/core';
 
+export const EnhancedTableHead = props => {
 
+	const { onSelectAllClick, order, orderBy, numSelected, rowCount, columns, onRequestSort } = props;
+	const createSortHandler = property => event => onRequestSort(event, property);
+	const getCellByColumns = row => {
 
-export class EnhancedTableHead extends React.Component {
-	createSortHandler = property => event => {
-		this.props.onRequestSort(event, property);
-	};
-
-	render() {
-		const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+		const { disablePadding, numeric, orderable, id, key, label } = row
+		const isActive = orderable && orderBy === id
+		const onClick = orderable
+			? createSortHandler({ row, orderBy, order })
+			: () => true
 		return (
-			<TableHead>
-				<TableRow>
-					<TableCell padding="checkbox">
-						{typeof numSelected === "number" && <Checkbox
-							indeterminate={numSelected > 0 && numSelected < rowCount}
-							checked={numSelected === rowCount}
-							onChange={onSelectAllClick}
-						/>}
-					</TableCell>
-					{
-						this.props.columns.map(
-							row => (
-								<TableCell key={row.key} align="center" padding={row.disablePadding ? 'none' : 'default'} sortDirection={orderBy === row.key ? order : false}>
-									{row.label}
-								</TableCell>
-							)
-						)
-					}
-				</TableRow>
-			</TableHead>
-		);
+			<TableCell key={key} align="center" padding={disablePadding ? 'none' : 'default'} sortDirection={orderBy === key ? order : false}>
+				<Tooltip title="Sort" placement={numeric ? 'bottom-end' : 'bottom-start'} enterDelay={300}>
+					<TableSortLabel active={isActive} direction={order} onClick={onClick}>
+						{label}
+					</TableSortLabel>
+				</Tooltip>
+			</TableCell>
+		)
 	}
-}
 
-// EnhancedTableHead.propTypes = {
-// 	numSelected: PropTypes.number.isRequired,
-// 	onRequestSort: PropTypes.func.isRequired,
-// 	onSelectAllClick: PropTypes.func.isRequired,
-// 	order: PropTypes.string.isRequired,
-// 	orderBy: PropTypes.string.isRequired,
-// 	rowCount: PropTypes.number.isRequired,
-// };
+	return (
+		<TableHead>
+			<TableRow>
+				<TableCell padding="checkbox">
+					{typeof numSelected === "number" && <Checkbox
+						indeterminate={numSelected > 0 && numSelected < rowCount}
+						checked={numSelected === rowCount}
+						onChange={onSelectAllClick}
+					/>}
+				</TableCell>
+				{columns.map(getCellByColumns)}
+			</TableRow>
+		</TableHead>
+	);
+}
