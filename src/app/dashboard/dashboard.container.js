@@ -3,7 +3,7 @@ import { Switch } from 'react-router'
 import { orderBy } from 'lodash'
 import DashboardNavbar from './dashboard.navbar';
 import getRoutes from './dashboard.routes'
-import { ITEM_MENU_BY_SCOPE, GROUP_ORDER } from './dashboard.navbar.schema'
+import { ITEM_MENU_BY_SCOPE } from './dashboard.navbar.schema'
 import './styles.sass'
 
 export const DashboardContainer = (props) => {

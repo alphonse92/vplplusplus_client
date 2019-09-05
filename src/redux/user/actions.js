@@ -40,16 +40,10 @@ Actions[LOGIN_NAME] = {
 		const actions = Actions[LOGIN_NAME].ACTIONS
 		return dispatcher => {
 			const after = (payload) => {
-				if (!payload.ok) return
-
 				const type = Actions[SET_USER_LOGGED_NAME].ACTIONS.default.name
-				const { data } = payload
-				const dispatch = { type, payload: data, }
-				UserService.saveUserLogged(data)
+				const dispatch = { type, payload }
 				dispatcher(dispatch)
 				onLogin(data)
-
-
 			}
 			const getRequest = () => Service.login(data)
 			requestDispatcher(dispatcher, actions, getRequest, { after })
