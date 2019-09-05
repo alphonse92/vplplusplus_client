@@ -4,6 +4,7 @@ import { UserRedux } from './user'
 
 import { LibRedux } from './../lib/redux/store'
 import { ProjectRedux } from '../app/dashboard/laboratory/project/redux';
+import { StudentRedux } from '../app/dashboard/student/redux';
 import { ModalRedux } from './modals'
 
 export const getReducer = history => combineReducers({
@@ -11,5 +12,6 @@ export const getReducer = history => combineReducers({
 	lib: LibRedux.REDUCER,
 	user: UserRedux.REDUCER,
 	projects: ProjectRedux.REDUCER.projects,
+	students: StudentRedux.REDUCER.students,
 	modals: ModalRedux.REDUCER.modals,
 })

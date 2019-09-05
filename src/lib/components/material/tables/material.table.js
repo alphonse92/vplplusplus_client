@@ -196,11 +196,5 @@ const styles = theme => ({
 	},
 });
 
-// EnhancedTable.propTypes = {
-// 	classes: PropTypes.object.isRequired,
-// 	pagination: PropTypes.object.isRequired,
-// 	columns: PropTypes.array.isRequired,
-// 	title: PropTypes.string,
-// };
 
 export const MaterialTable = withStyles(styles)(EnhancedTable);

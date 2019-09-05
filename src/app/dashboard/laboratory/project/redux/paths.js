@@ -13,7 +13,7 @@ const PATHS = {
 	'topics.list.pagination.sort': '',
 	'list.pagination.docs': [],
 	'list.pagination.page': 1,
-	'list.pagination.limit': 25,
+	'list.pagination.limit': 5,
 	'list.pagination.total': 0,
 	'list.pagination.sort': '',
 }
