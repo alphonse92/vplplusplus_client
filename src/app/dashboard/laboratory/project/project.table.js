@@ -2,9 +2,9 @@ import React from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Button, } from '@material-ui/core'
-import { MaterialTable } from '../../../../../lib/components/material/tables/material.table';
-import { ActionCreators } from './../redux/actions';
-import { ActionCreators as ActionCreatorsForErrors } from './../../../../../redux/modals/actions';
+import { MaterialTable } from '../../../../lib/components/material/tables/material.table';
+import { ActionCreators } from './redux/actions';
+import { ActionCreators as ActionCreatorsForErrors } from '../../../../redux/modals/actions';
 import DownloadIcon from '@material-ui/icons/CloudDownloadOutlined';
 import UploadIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -13,8 +13,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import EyeIcon from '@material-ui/icons/RemoveRedEyeOutlined';
 import Icon from '@material-ui/core/Icon';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import { ProjectService } from '../../../../../services/project';
-import { cutStringAndAddDots } from '../../../../../lib';
+import { ProjectService } from '../../../../services/project';
+import { cutStringAndAddDots } from '../../../../lib';
 
 class ProjectTable extends React.Component {
 	static columns = [
