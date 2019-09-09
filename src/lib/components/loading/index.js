@@ -12,8 +12,8 @@ const styles = {
 function LinearIndeterminate(props) {
 	const { classes } = props;
 	return (
-		<div style={{ position: 'fixed', width: '100%' }} className={classes.root}>
-			<LinearProgress color="secondary" />
+		<div style={{ position: 'fixed', width: '100%', zIndex:'999999999' }} className={classes.root}>
+			<LinearProgress color="primary" />
 			{props.children}
 		</div>
 	);
