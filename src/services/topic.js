@@ -6,8 +6,11 @@ export class TopicService extends WebService {
   static localStorageUserKey = "User:data"
 
   constructor() {
-    const user = UserService.getUserLogged()
-    super('topic', user ? user.token : undefined)
+    const getToken = () => {
+      const user = UserService.getUserLogged()
+      return user ? user.token : undefined
+    }
+    super('topic', getToken)
   }
 
   find(query) {

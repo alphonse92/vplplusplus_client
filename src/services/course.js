@@ -6,8 +6,11 @@ export class CourseService extends WebService {
   static localStorageUserKey = "User:data"
 
   constructor() {
-    const user = UserService.getUserLogged()
-    super('course', user ? user.token : undefined)
+    const getToken = ()=>{
+      const user = UserService.getUserLogged()
+      return user ? user.token : undefined
+    }
+    super('course', getToken)
   }
 
   getMoodleActivities() {

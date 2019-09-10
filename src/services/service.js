@@ -7,7 +7,10 @@ export class WebService {
 	}
 
 	getToken() {
-		return this.token
+		const isFN = typeof this.token === 'function'
+		const tokenToREturn = isFN ? this.token() : this.token
+		console.log({ isFN, token: this.token, tokenToREturn })
+		return tokenToREturn
 	}
 
 	getUrl() {
@@ -16,7 +19,7 @@ export class WebService {
 
 	createHeaders() {
 		const headers = new Headers()
-		const { token } = this
+		const token = this.getToken()
 		headers.append('content-type', 'application/json')
 		if (token) headers.append('Authorization', `Bearer ${token}`)
 		return headers

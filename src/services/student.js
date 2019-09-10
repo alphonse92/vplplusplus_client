@@ -6,8 +6,11 @@ class StudentServiceClass extends WebService {
   static localStorageUserKey = "User:data"
 
   constructor() {
-    const user = UserService.getUserLogged()
-    super('users/students', user ? user.token : undefined)
+    const getToken = ()=>{
+      const user = UserService.getUserLogged()
+      return user ? user.token : undefined
+    }
+    super('users/students', getToken)
   }
 
   getStudents(page, limit, sort) {

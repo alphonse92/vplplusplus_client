@@ -6,8 +6,11 @@ class ProjectServiceClass extends WebService {
   static localStorageUserKey = "User:data"
 
   constructor() {
-    const user = UserService.getUserLogged()
-    super('project', user ? user.token : undefined)
+    const getToken = ()=>{
+      const user = UserService.getUserLogged()
+      return user ? user.token : undefined
+    }
+    super('project', getToken)
   }
 
   createProject(project) {
