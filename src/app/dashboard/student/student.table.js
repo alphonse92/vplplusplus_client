@@ -1,18 +1,8 @@
 import React from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-// import { Button, } from '@material-ui/core'
-import DownloadIcon from '@material-ui/icons/CloudDownloadOutlined';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import EyeIcon from '@material-ui/icons/RemoveRedEyeOutlined';
-import Icon from '@material-ui/core/Icon';
-import UploadIcon from '@material-ui/icons/CloudUploadOutlined';
-import AddIcon from '@material-ui/icons/Add';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import ReportIcon from '@material-ui/icons/AssignmentOutlined';
 
-import { ProjectService } from '../../../services/project';
-// import { cutStringAndAddDots } from '../../../lib';
 import { MaterialTable } from '../../../lib/components/material/tables/material.table';
 import { ActionCreators } from './redux/actions';
 import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals/actions';
@@ -46,46 +36,6 @@ class StudentTable extends React.Component {
 		this.props.DISPATCHERS.LOAD_STUDENTS()
 	}
 
-	onProjectExportedFileSelected = (event) => {
-		const { target = {} } = event
-		const { files = [] } = target
-		const [file] = files
-
-		if (!file) return
-
-		const reader = new FileReader()
-		reader.onloadend = () => {
-			const { result: content } = reader
-			try {
-				const projectJson = JSON.parse(content)
-				this.props.onCreateNewProjectFromJson(projectJson)
-			} catch (e) {
-				this.props.DISPATCHERS.SET_ERROR({ type: 'web', error: { message: 'Just json files are allowed.' } })
-			}
-		}
-		reader.readAsText(file)
-	}
-
-	onCreateNewProject = () => {
-		this.props.onCreateNewProject()
-	}
-	onEdit = () => {
-		const { _id } = this.selected_student
-		this.props.onCreateNewProject(_id)
-	}
-
-	onDelete = () => {
-		const { _id } = this.selected_student
-		this.props.DISPATCHERS.DELETE_PROJECT(_id, {
-			after: () => {
-				this.selected_student = []
-				this.props.DISPATCHERS.LOAD_STUDENTS()
-			},
-			onError: this.props.DISPATCHERS.SET_ERROR
-		})
-
-	}
-
 	getCurrentSort = () => this.props.pagination.sort
 	getCurrentDirection = () => this.props.pagination.direction
 	handleRequestSort = (event, value) => {
@@ -99,6 +49,7 @@ class StudentTable extends React.Component {
 		if (shouldChangeDirection) this.props.DISPATCHERS.SET_DIRECTION(!currentDirection)
 		else this.props.DISPATCHERS.SET_ORDER(row.attribute)
 		this.props.DISPATCHERS.LOAD_STUDENTS()
+
 	}
 
 	handleChangePage = (data, value) => {
@@ -111,30 +62,14 @@ class StudentTable extends React.Component {
 		this.handleChangePage(data, 0)
 	}
 
-
-	handleSelectItem = async (isSelected, project) => {
+	handleSelectItem = async (isSelected, student) => {
 		if (isSelected) {
 			delete this.selected_student
 			return []
 		}
-		this.selected_student = project
-		return [project._id]
+		this.selected_student = student
+		return [student._id]
 
-	}
-
-	handleSelectAllItems = async (selectedItems, projects) => {
-		if (selectedItems.length) return []
-		return projects.map(p => p._id)
-	};
-
-	exportAsMoodle = () => {
-		const { _id } = this.selected_student
-		ProjectService.exportMoodleActivity(_id)
-	}
-
-	exportAsJson = () => {
-		const { _id } = this.selected_student
-		ProjectService.exportJson(_id)
 	}
 
 	render() {
@@ -154,32 +89,16 @@ class StudentTable extends React.Component {
 
 		const { pagination } = props
 
-		const buttonsWhenSelectedAProjectBlocked = [
-			{ key: 'project-blocked-show', label: 'See', icon: <EyeIcon />, onClick: this.onEdit },
-			{ key: 'project-blocked-export', label: 'Export', icon: <DownloadIcon />, onClick: this.exportAsJson },
-			{ key: 'project-blocked-export-as-moodle', label: 'Download Moodle', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
+		const studentButtons = [
+			{ key: 'student-selected-show-report', label: 'Show Report', icon: <ReportIcon />, onClick: this.showReport },
 		]
 
-		const buttonsWhenSelectedAProjectIsNotBlocked = [
-			{ key: 'project-unblocked-edit', label: 'Edit', icon: <EditIcon />, onClick: this.onEdit },
-			{ key: 'project-unblocked-delete', label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
-			{ key: 'project-unblocked-export', label: 'Export', icon: <DownloadIcon />, onClick: this.exportAsJson },
-			{ key: 'project-unblocked-export-as-moodle', label: 'Download Moodle', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
-		]
-
-		const buttonsWhenNotSelected = [
-			// { key: 'no-selected-project-filter', label: 'Filter Data', icon: <FilterListIcon />, onClick: this.handleChangeFilter },
-			// { key: 'no-selected-project-new-project', label: 'Create new Project', icon: <AddIcon />, onClick: this.onCreateNewProject },
-			// { key: 'no-selected-project-import-from-json', label: 'Create from file', icon: <UploadIcon />, onClick: this.onCreateNewProjectFromFile },
-		]
-
-		const getButtons = (project_ids_selected = []) => {
-			const [projectId] = project_ids_selected
-			const { docs: projects = [] } = pagination
-			const projectSelected = projects.find(({ _id }) => projectId === _id)
-			if (!projectSelected) return buttonsWhenNotSelected
-			if (!ProjectService.isBlocked(projectSelected)) return buttonsWhenSelectedAProjectIsNotBlocked
-			return buttonsWhenSelectedAProjectBlocked
+		const getButtons = (student_ids_selected = []) => {
+			const [studentId] = student_ids_selected
+			const { docs: students = [] } = pagination
+			const studentSelected = students.find(({ _id }) => studentId === _id)
+			if (studentSelected) return studentButtons
+			return []
 		}
 
 		const emptyComponent = (
