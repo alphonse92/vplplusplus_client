@@ -54,7 +54,6 @@ export async function requestDispatcher(dispatch, action, getRequest, opts = {})
 		throwErrorAtRequestError(responseParsed)
 		dispatchRequesSuccess(dispatch, responseParsed, action, opts)
 	} catch (error) {
-		console.log(error)
 		dispatch({
 			type: action.rejected.name,
 			payload: error

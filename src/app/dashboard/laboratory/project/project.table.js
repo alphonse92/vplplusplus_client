@@ -13,12 +13,16 @@ import EditIcon from '@material-ui/icons/Edit';
 import EyeIcon from '@material-ui/icons/RemoveRedEyeOutlined';
 import Icon from '@material-ui/core/Icon';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import ReportIcon from '@material-ui/icons/AssignmentOutlined';
 import { ProjectService } from '../../../../services/project';
 import { cutStringAndAddDots } from '../../../../lib';
+import { ProjectReportModal } from './project.report.modal';
 
 class ProjectTable extends React.Component {
+	state = {
+		showReportModal: false
+	}
 	static columns = [
-
 		{ attribute: 'name', key: 'name', orderable: true, numeric: false, disablePadding: true, label: 'Name' },
 		{ attribute: 'description', key: 'description', orderable: true, numeric: false, disablePadding: false, label: 'Description' },
 		{ attribute: 'is_modificable', key: 'is_modificable', numeric: false, disablePadding: false, label: 'Modificable' },
@@ -144,6 +148,17 @@ class ProjectTable extends React.Component {
 		ProjectService.exportJson(_id)
 	}
 
+	showReportModal = () => {
+		this.setState({ showReportModal: true })
+	}
+
+	onCloseReportModal = ({ ok }) => {
+		if (ok) {
+			// redirect to the report page after load
+		}
+		this.setState({ showReportModal: false })
+	}
+
 	render() {
 
 
@@ -177,6 +192,7 @@ class ProjectTable extends React.Component {
 
 		const buttonsWhenSelectedAProjectBlocked = [
 			{ key: 'project-blocked-show', label: 'See', icon: <EyeIcon />, onClick: this.onEdit },
+			{ key: 'project-blocked-report', label: 'Get report', icon: <ReportIcon />, onClick: this.showReportModal },
 			{ key: 'project-blocked-export', label: 'Export', icon: <DownloadIcon />, onClick: this.exportAsJson },
 			{ key: 'project-blocked-export-as-moodle', label: 'Download Moodle', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
 		]
@@ -230,6 +246,7 @@ class ProjectTable extends React.Component {
 
 		return (
 			<React.Fragment>
+				<ProjectReportModal open={this.state.showReportModal} onClose={this.onCloseReportModal}/>
 				<input
 					type='file'
 					id={ProjectTable.fileLoaderId}

@@ -9,7 +9,6 @@ export class WebService {
 	getToken() {
 		const isFN = typeof this.token === 'function'
 		const tokenToREturn = isFN ? this.token() : this.token
-		console.log({ isFN, token: this.token, tokenToREturn })
 		return tokenToREturn
 	}
 
