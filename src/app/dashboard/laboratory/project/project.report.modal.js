@@ -8,21 +8,21 @@ import Dialog from '@material-ui/core/Dialog';
 
 export class ProjectReportModal extends React.Component {
 
-  state = {}
+  state = { form: {} }
 
   handleChange = (event, value) => {
     this.setState({ value });
   }
 
   handleModalResponse = (isOk) => () => {
-    this.props.onClose && this.props.onClose({ ok: isOk, value: this.state.value })
+    this.props.onClose && this.props.onClose({ ok: isOk, value: this.state.form })
   }
 
 
   render() {
     return (
       <Dialog size="md" fullWidth open={this.props.open}  >
-        <DialogTitle>Create project reort</DialogTitle>
+        <DialogTitle>Create project report</DialogTitle>
         <DialogContent>
           <p>aswedasdasd</p>
         </DialogContent>
