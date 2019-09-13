@@ -39,6 +39,7 @@ export class ProjectReportModalClass extends React.Component {
     typeDateSelect: ProjectReportModalClass.Date.type.semestre,
     form: {
       semestre: 1,
+      currentYear: moment().get('year')
     }
   }
 
@@ -46,12 +47,42 @@ export class ProjectReportModalClass extends React.Component {
     this.props.DISPATCHERS.GET_TOPICS()
   }
 
+  getSemestre = (nSem, year) => {
+    if (nSem === 1) return {
+      from: `${year}-01-01`,
+      to: `${year}-06-30`
+    }
+    return {
+      from: `${year}-07-1`,
+      to: `${year}-12-31`
+    }
+  }
+
+  getForm = () => {
+    console.log('getting form from ', this.state.form)
+    const selectBySem = this.isSelectingBySemestre()
+    const { topics = [] } = this.props
+    const selectedTopics = this.selectedTopics || []
+    const formValue = {
+      ...this.state.form,
+      topics: selectedTopics.map(({ index }) => topics[index])
+    }
+
+    if (selectBySem) {
+      const { from, to } = this.getSemestre(formValue.semestre, formValue.currentYear)
+      formValue.from = from
+      formValue.to = to
+    }
+
+    return formValue
+  }
+
   handleChange = (event, value) => {
     this.setState({ value });
   }
 
   handleModalResponse = (isOk) => () => {
-    this.props.onClose && this.props.onClose({ ok: isOk, value: this.state.form })
+    this.props.onClose && this.props.onClose({ ok: isOk, value: this.getForm() })
   }
 
   handleToggleDatePicker = (event) => {
@@ -80,13 +111,17 @@ export class ProjectReportModalClass extends React.Component {
     this.setState({ form: newForm })
   }
 
+  setDate = (attribute) => (event) => {
+    const { target } = event
+    const { value } = target
+    this.setState({ form: { ...this.state.form, [attribute]: value } })
+  }
+
   isSelectingBySemestre = () => ProjectReportModalClass.Date.type.semestre === this.state.typeDateSelect
 
   getDateComponent = (showSemestre) => {
     const momentNow = moment()
     const currentYear = this.state.form.currentYear
-      ? this.state.form.currentYear
-      : momentNow.get('year')
 
     if (showSemestre) return (
 
@@ -116,28 +151,32 @@ export class ProjectReportModalClass extends React.Component {
         <TextField
           label="From"
           type="date"
-          defaultValue={momentNow.format('YYYY-MM-DD')}
+          defaultValue={this.state.form.from || momentNow.format('YYYY-MM-DD')}
           InputLabelProps={{
             shrink: true,
           }}
-          onChange={console.log}
+          onChange={this.setDate('from')}
         />
         <TextField
           label="From"
           type="date"
-          defaultValue={momentNow.format('YYYY-MM-DD')}
+          defaultValue={this.state.form.to || momentNow.format('YYYY-MM-DD')}
           InputLabelProps={{
             shrink: true,
           }}
-          onChange={console.log}
+          onChange={this.setDate('to')}
         />
       </React.Fragment>
 
     )
   }
 
-  extractOptionsFromTopics = ({ _id: value, name, description: label }) => {
-    return { value, label }
+  onChangeTopic = selectedTopics => {
+    this.selectedTopics = selectedTopics
+  }
+
+  extractOptionsFromTopics = ({ _id: value, name, description: label }, index) => {
+    return { value, label, index }
   }
 
   render() {
@@ -157,7 +196,7 @@ export class ProjectReportModalClass extends React.Component {
                 color="primary"
               />
             }
-            label={bySem?'Filter by Semestre':'Custom range dates'}
+            label={bySem ? 'Filter by Semestre' : 'Custom range dates'}
           />
           {this.getDateComponent(showSemestreDatePicker)}
         </>

@@ -152,7 +152,9 @@ class ProjectTable extends React.Component {
 		this.setState({ showReportModal: true })
 	}
 
-	onCloseReportModal = ({ ok }) => {
+	onCloseReportModal = (data) => {
+		console.log(data)
+		const { ok } = data
 		if (ok) {
 			// redirect to the report page after load
 		}
@@ -246,7 +248,7 @@ class ProjectTable extends React.Component {
 
 		return (
 			<React.Fragment>
-				<ProjectReportModal open={this.state.showReportModal} onClose={this.onCloseReportModal}/>
+				<ProjectReportModal open={this.state.showReportModal} onClose={this.onCloseReportModal} />
 				<input
 					type='file'
 					id={ProjectTable.fileLoaderId}
