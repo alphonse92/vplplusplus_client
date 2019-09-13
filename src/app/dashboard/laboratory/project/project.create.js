@@ -95,7 +95,7 @@ class ProjectCreateComponent extends React.Component {
 		const { create, course, topics, error } = projects
 		const { project, tests } = create
 		const { activities = [] } = course
-		return { error, project, tests, activities, topics: topics.list.pagination }
+		return { error, project, tests, activities, topics: topics.list.pagination.docs }
 	}
 
 	static mapDispatchToProps = (dispatch) => {
