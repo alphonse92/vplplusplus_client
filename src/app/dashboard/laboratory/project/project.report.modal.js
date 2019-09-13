@@ -59,7 +59,7 @@ export class ProjectReportModalClass extends React.Component {
   }
 
   getForm = () => {
-    console.log('getting form from ', this.state.form)
+  
     const selectBySem = this.isSelectingBySemestre()
     const { topics = [] } = this.props
     const selectedTopics = this.selectedTopics || []
@@ -75,6 +75,7 @@ export class ProjectReportModalClass extends React.Component {
     }
 
     return formValue
+    
   }
 
   handleChange = (event, value) => {

@@ -153,12 +153,11 @@ class ProjectTable extends React.Component {
 	}
 
 	onCloseReportModal = (data) => {
-		console.log(data)
 		const { ok } = data
+		console.log(data)
 		if (ok) {
 			// redirect to the report page after load
-		}
-		this.setState({ showReportModal: false })
+		} else return this.setState({ showReportModal: false })
 	}
 
 	render() {
