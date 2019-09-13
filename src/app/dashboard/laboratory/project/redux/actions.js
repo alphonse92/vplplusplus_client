@@ -86,7 +86,7 @@ Actions[GET_TOPICS_NAME] = {
 	ACTIONS: createRequestActions(GET_TOPICS_NAME, {
 		fullfilled: (state, action) => {
 			const newState = { ...state }
-			newState.topics.list.pagination = action.payload
+			newState.topics.list.pagination.docs = action.payload
 			return newState
 		},
 		rejected: (state, action) => {

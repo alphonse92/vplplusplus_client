@@ -9,7 +9,8 @@ export const Typeahead = (props) => {
     defaultValue = [],
     onClear,
     isDisabled,
-    placeholder
+    placeholder,
+    portal = true
   } = props
 
   const _onChange = (currentSelected = [], data) => {
@@ -31,13 +32,13 @@ export const Typeahead = (props) => {
         options={options}
         isDisabled={isDisabled}
         defaultValue={defaultValue}
-        menuPortalTarget={document.getElementById(divId)}
+        menuPortalTarget={portal ? document.getElementById(divId) : undefined}
         menuPosition='absolute'
         menuPlacement='bottom'
         placeholder={placeholder}
         onChange={_onChange}
       />
-      <div id={divId} />
+      {portal && <div id={divId} />}
     </React.Fragment>
 
   )
