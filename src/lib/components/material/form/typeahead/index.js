@@ -32,9 +32,10 @@ export const Typeahead = (props) => {
         options={options}
         isDisabled={isDisabled}
         defaultValue={defaultValue}
-        menuPortalTarget={portal ? document.getElementById(divId) : undefined}
+        menuPortalTarget={document.body}
         menuPosition='absolute'
         menuPlacement='bottom'
+        styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
         placeholder={placeholder}
         onChange={_onChange}
       />

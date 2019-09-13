@@ -116,7 +116,16 @@ export class ProjectReportModalClass extends React.Component {
         <TextField
           label="From"
           type="date"
-          defaultValue={"2017-05-24"}
+          defaultValue={momentNow.format('YYYY-MM-DD')}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={console.log}
+        />
+        <TextField
+          label="From"
+          type="date"
+          defaultValue={momentNow.format('YYYY-MM-DD')}
           InputLabelProps={{
             shrink: true,
           }}
@@ -135,21 +144,20 @@ export class ProjectReportModalClass extends React.Component {
     const showSemestreDatePicker = this.isSelectingBySemestre()
     const { topics = [] } = this.props
     const topicOptions = topics.map(this.extractOptionsFromTopics)
-
-    console.log(this.props, topics, topicOptions)
+    const bySem = this.isSelectingBySemestre()
     const DateComponent = () => {
       return (
         <>
           <FormControlLabel
             control={
               <Switch
-                checked={this.isSelectingBySemestre()}
+                checked={bySem}
                 onChange={this.handleToggleDatePicker}
                 value="checkedB"
                 color="primary"
               />
             }
-            label="Primary"
+            label={bySem?'Filter by Semestre':'Custom range dates'}
           />
           {this.getDateComponent(showSemestreDatePicker)}
         </>
