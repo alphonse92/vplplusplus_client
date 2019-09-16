@@ -93,7 +93,6 @@ class EnhancedTable extends React.PureComponent {
 		const {
 			state,
 			props,
-			handleSelectAllItems,
 			handleChangeRowsPerPage,
 			onChangePage,
 			unSelectAllItems
