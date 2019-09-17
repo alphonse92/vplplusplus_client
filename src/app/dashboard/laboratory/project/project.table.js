@@ -15,15 +15,13 @@ import ReportIcon from '@material-ui/icons/AssignmentOutlined';
 import { ActionCreators as ActionCreatorsForErrors } from '../../../../redux/modals/actions';
 import { MaterialTable } from '../../../../lib/components/material/tables/material.table';
 import { ProjectService } from '../../../../services/project';
-import { ProjectReportModal } from './project.report.modal';
+
 import { cutStringAndAddDots } from '../../../../lib';
 import { ActionCreators } from './redux/actions';
 import { ActionCreators as ReportRedux } from './../../report/redux/actions';
 
 class ProjectTable extends React.Component {
-	state = {
-		showReportModal: false
-	}
+
 	static columns = [
 		{ attribute: 'name', key: 'name', orderable: true, numeric: false, disablePadding: true, label: 'Name' },
 		{ attribute: 'description', key: 'description', orderable: true, numeric: false, disablePadding: false, label: 'Description' },
@@ -142,7 +140,8 @@ class ProjectTable extends React.Component {
 	};
 
 	exportAsMoodle = () => {
-		const { _id } = this.selected_project
+		const { _id } = this.selected_projectshowReportModal
+
 		ProjectService.exportMoodleActivity(_id)
 	}
 
@@ -151,23 +150,10 @@ class ProjectTable extends React.Component {
 		ProjectService.exportJson(_id)
 	}
 
-	showReportModal = () => {
-		this.setState({ showReportModal: true })
-	}
 
-	onCloseReportModal = ({ ok, value }) => {
-
-		if (ok) {
-			const { _id: project_id } = this.selected_project
-			const { from: date_from, to: date_to, topics: arrayOfTopics } = value
-			const topics = arrayOfTopics.map(t => t.name)
-			const data = { project_id, date_from, date_to, topics }
-			const after = () => {
-				this.props.onCreateReport()
-			}
-			const opts = { after }
-			this.props.DISPATCHERS.GET_PROJECT_REPORT(data, opts)
-		} else return this.setState({ showReportModal: false })
+	redirectToReportProject = () => {
+		const { _id: project_id } = this.selected_project
+		this.props.onCreateReport(project_id)
 	}
 
 	render() {
@@ -203,7 +189,7 @@ class ProjectTable extends React.Component {
 
 		const buttonsWhenSelectedAProjectBlocked = [
 			{ key: 'project-blocked-show', label: 'See', icon: <EyeIcon />, onClick: this.onEdit },
-			{ key: 'project-blocked-report', label: 'Get report', icon: <ReportIcon />, onClick: this.showReportModal },
+			{ key: 'project-blocked-report', label: 'Get report', icon: <ReportIcon />, onClick: this.redirectToReportProject },
 			{ key: 'project-blocked-export', label: 'Export', icon: <DownloadIcon />, onClick: this.exportAsJson },
 			{ key: 'project-blocked-export-as-moodle', label: 'Download Moodle', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
 		]
@@ -257,7 +243,7 @@ class ProjectTable extends React.Component {
 
 		return (
 			<React.Fragment>
-				<ProjectReportModal open={this.state.showReportModal} onClose={this.onCloseReportModal} />
+
 				<input
 					type='file'
 					id={ProjectTable.fileLoaderId}

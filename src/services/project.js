@@ -70,6 +70,15 @@ class ProjectServiceClass extends WebService {
     const options = { method: 'GET', qs: query }
     return super.request(options, `/${id}/report/`)
   }
+  getProjectsReport(from, to, topics = []) {
+    const query = {
+      from: from || undefined,
+      to: to || undefined,
+      topic: topics,
+    }
+    const options = { method: 'GET', qs: query }
+    return super.request(options, `/report/user/`)
+  }
 }
 
 export const ProjectService = new ProjectServiceClass()

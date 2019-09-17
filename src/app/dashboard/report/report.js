@@ -4,15 +4,20 @@ import { connect } from 'react-redux'
 import { ActionCreators } from './redux/actions';
 import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals/actions';
 import { Flex } from '../../../lib/components/flex';
-import { ReportHeader } from './report.header';
-import { NoReportsComponent } from './report.nosubmissions';
+import { ReportProject } from './report.project';
+import { ReportStudent } from './report.student';
+import { ProjectReportModal } from './../laboratory/project/project.report.modal';
 
 class Report extends React.Component {
 
+	state = {
+		showReportModal: false
+	}
+
 	static mapStateToProps = (state) => {
 		const { report } = state
-		const { project, student = [] } = report
-		return { project, student }
+		const { project = [], student = [] } = report
+		return { report: { project, student } }
 	}
 
 	static mapDispatchToProps = (dispatch) => {
@@ -23,21 +28,44 @@ class Report extends React.Component {
 		return { DISPATCHERS }
 	}
 
+	componentDidMountProjects = () => {
+		const { id: project_id } = this.props.match.params
+		if (project_id) return this.props.DISPATCHERS.GET_PROJECT_REPORT({ project_id })
+		else return this.props.DISPATCHERS.GET_PROJECTS_REPORT()
+	}
+
 	componentDidMount() {
+		if (this.props.isProjectReport)
+			return this.componentDidMountProjects()
+		return this.componentDidMountProjects()
+
+	}
+
+	showReportModal = () => {
+		this.setState({ showReportModal: true })
+	}
+
+	onCloseReportModal = ({ ok, value }) => {
+
+		if (ok) {
+			const { id: project_id } = this.props.match.params
+			const { from: date_from, to: date_to, topics: arrayOfTopics } = value
+			const topics = arrayOfTopics.map(t => t.name)
+			const data = { project_id, date_from, date_to, topics }
+			this.props.DISPATCHERS.GET_PROJECT_REPORT(data)
+		} else return this.setState({ showReportModal: false })
 	}
 
 
 	render() {
-		const { project: isProjectReport = true, reports = [] } = this.props
-		const thereReports = !!reports.length
-		const title = isProjectReport ? "Project Report" : "Student Report"
-		const Body = () => thereReports
-			? <NoReportsComponent />
-			: <NoReportsComponent />
+		const { project: isProjectReport = true } = this.props
+		const ReportComponent = () => isProjectReport
+			? <ReportProject report={this.props.report.project} />
+			: <ReportStudent report={this.props.report.student} />
 		return (
 			<Flex vertical width="100%">
-				<ReportHeader title={title} />
-				<NoReportsComponent />
+				<ProjectReportModal open={this.state.showReportModal} onClose={this.onCloseReportModal} />
+				<ReportComponent />
 			</Flex>
 		)
 
