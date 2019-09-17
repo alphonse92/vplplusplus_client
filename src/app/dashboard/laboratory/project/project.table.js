@@ -2,9 +2,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Button, } from '@material-ui/core'
-import { MaterialTable } from '../../../../lib/components/material/tables/material.table';
-import { ActionCreators } from './redux/actions';
-import { ActionCreators as ActionCreatorsForErrors } from '../../../../redux/modals/actions';
 import DownloadIcon from '@material-ui/icons/CloudDownloadOutlined';
 import UploadIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -14,9 +11,14 @@ import EyeIcon from '@material-ui/icons/RemoveRedEyeOutlined';
 import Icon from '@material-ui/core/Icon';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import ReportIcon from '@material-ui/icons/AssignmentOutlined';
+
+import { ActionCreators as ActionCreatorsForErrors } from '../../../../redux/modals/actions';
+import { MaterialTable } from '../../../../lib/components/material/tables/material.table';
 import { ProjectService } from '../../../../services/project';
-import { cutStringAndAddDots } from '../../../../lib';
 import { ProjectReportModal } from './project.report.modal';
+import { cutStringAndAddDots } from '../../../../lib';
+import { ActionCreators } from './redux/actions';
+import { ActionCreators as ReportRedux } from './../../report/redux/actions';
 
 class ProjectTable extends React.Component {
 	state = {
@@ -41,7 +43,8 @@ class ProjectTable extends React.Component {
 	static mapDispatchToProps = (dispatch) => {
 		const DISPATCHERS = {
 			...bindActionCreators({ ...ActionCreators }, dispatch),
-			...bindActionCreators({ ...ActionCreatorsForErrors }, dispatch)
+			...bindActionCreators({ ...ActionCreatorsForErrors }, dispatch),
+			...bindActionCreators({ ...ReportRedux }, dispatch)
 		}
 
 		return { DISPATCHERS }
@@ -152,11 +155,16 @@ class ProjectTable extends React.Component {
 		this.setState({ showReportModal: true })
 	}
 
-	onCloseReportModal = (data) => {
-		const { ok } = data
-		console.log(data)
+	onCloseReportModal = ({ ok, value }) => {
+
 		if (ok) {
-			// redirect to the report page after load
+			const { _id: project_id } = this.selected_project
+			const { from: date_from, to: date_to, topics: arrayOfTopics } = value
+			const topics = arrayOfTopics.map(t => t.name)
+			const data = { project_id, date_from, date_to, topics }
+			const after = () => this.props.history.push({ pathname: 'report' })
+			const opts = { after }
+			this.props.DISPATCHERS.GET_PROJECT_REPORT(data, opts)
 		} else return this.setState({ showReportModal: false })
 	}
 

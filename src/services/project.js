@@ -65,8 +65,10 @@ class ProjectServiceClass extends WebService {
     return isblocked
   }
 
-  getProjectReport(project_id, date_from, date_start, topics) {
-
+  getProjectReport(id, from, to, topics) {
+    const query = { topic: topics, from, to }
+    const options = { method: 'GET', qs: query }
+    return super.request(options, `/${id}/report/`)
   }
 }
 
