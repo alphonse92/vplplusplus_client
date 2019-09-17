@@ -34,14 +34,22 @@ export class ProjectReportModalClass extends React.Component {
       custom: 'custom',
     }
   }
-
-  state = {
-    typeDateSelect: ProjectReportModalClass.Date.type.semestre,
-    form: {
-      semestre: 1,
-      currentYear: moment().get('year')
+  constructor(props) {
+    super(props)
+    const currentMoment = moment()
+    const currentYear = currentMoment.get('year')
+    const startOfFirstSemestre = moment(`${currentYear}-01-01`, 'YYYY-MM-DD')
+    const endOfFirstSemestre = moment(`${currentYear}-06-30`, 'YYYY-MM-DD')
+    const isFirstSemestre =
+      currentMoment.isSameOrAfter(startOfFirstSemestre)
+      && currentMoment.isSameOrBefore(endOfFirstSemestre)
+    const semestre = isFirstSemestre ? 1 : 2
+    this.state = {
+      typeDateSelect: ProjectReportModalClass.Date.type.semestre,
+      form: { semestre, currentYear, }
     }
   }
+
 
   componentDidMount() {
     this.props.DISPATCHERS.GET_TOPICS()
@@ -59,7 +67,7 @@ export class ProjectReportModalClass extends React.Component {
   }
 
   getForm = () => {
-  
+
     const selectBySem = this.isSelectingBySemestre()
     const { topics = [] } = this.props
     const selectedTopics = this.selectedTopics || []
@@ -75,7 +83,7 @@ export class ProjectReportModalClass extends React.Component {
     }
 
     return formValue
-    
+
   }
 
   handleChange = (event, value) => {

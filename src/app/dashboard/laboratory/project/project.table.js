@@ -162,7 +162,9 @@ class ProjectTable extends React.Component {
 			const { from: date_from, to: date_to, topics: arrayOfTopics } = value
 			const topics = arrayOfTopics.map(t => t.name)
 			const data = { project_id, date_from, date_to, topics }
-			const after = () => this.props.history.push('report')
+			const after = () => {
+				this.props.onCreateReport()
+			}
 			const opts = { after }
 			this.props.DISPATCHERS.GET_PROJECT_REPORT(data, opts)
 		} else return this.setState({ showReportModal: false })
