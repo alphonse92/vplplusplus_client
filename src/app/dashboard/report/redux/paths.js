@@ -2,6 +2,7 @@ import { set } from 'lodash'
 
 const PATHS = {
 	'project': [],
+	'student': [],
 }
 
 const REPORT = { root: 'report' }

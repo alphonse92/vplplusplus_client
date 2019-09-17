@@ -10,9 +10,9 @@ import { NoReportsComponent } from './report.nosubmissions';
 class Report extends React.Component {
 
 	static mapStateToProps = (state) => {
-		const { report } = state
-		const { project, student = [] } = report
-		return { project, student }
+		const { students } = state
+		const { list } = students
+		return { ...list }
 	}
 
 	static mapDispatchToProps = (dispatch) => {
@@ -28,7 +28,10 @@ class Report extends React.Component {
 
 
 	render() {
-		const { project: isProjectReport = true, reports = [] } = this.props
+		const {
+			isProjectReport = true,
+			reports = []
+		} = this.props
 		const thereReports = !!reports.length
 		const title = isProjectReport ? "Project Report" : "Student Report"
 		const Body = () => thereReports
