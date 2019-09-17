@@ -13,7 +13,7 @@ Actions[GET_PROJECT_REPORT_NAME] = {
 	},
 	ACTIONS: createRequestActions(GET_PROJECT_REPORT_NAME, {
 		fullfilled: (state, action) => {
-			const newState = { ...state, project: { ...action.payload } }
+			const newState = { ...state, project: action.payload }
 			return newState
 		},
 		rejected: (state, action) => {
@@ -23,14 +23,14 @@ Actions[GET_PROJECT_REPORT_NAME] = {
 }
 const GET_PROJECTS_REPORT_NAME = 'GET_PROJECTS_REPORT'
 Actions[GET_PROJECTS_REPORT_NAME] = {
-	DISPATCHER: ( opts) => (dispatcher) => {
+	DISPATCHER: (opts) => (dispatcher) => {
 		const actions = Actions[GET_PROJECTS_REPORT_NAME].ACTIONS
 		const getRequest = () => ProjectService.getProjectsReport()
 		requestDispatcher(dispatcher, actions, getRequest, opts)
 	},
 	ACTIONS: createRequestActions(GET_PROJECTS_REPORT_NAME, {
 		fullfilled: (state, action) => {
-			const newState = { ...state, project: { ...action.payload } }
+			const newState = { ...state, project: action.payload }
 			return newState
 		},
 		rejected: (state, action) => {

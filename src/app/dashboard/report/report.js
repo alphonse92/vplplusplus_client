@@ -59,9 +59,11 @@ class Report extends React.Component {
 
 	render() {
 		const { project: isProjectReport = true } = this.props
+		const { report } = this.props
+		const { project = [], student = [] } = report
 		const ReportComponent = () => isProjectReport
-			? <ReportProject report={this.props.report.project} />
-			: <ReportStudent report={this.props.report.student} />
+			? <ReportProject report={project} />
+			: <ReportStudent report={student} />
 		return (
 			<Flex vertical width="100%">
 				<ProjectReportModal open={this.state.showReportModal} onClose={this.onCloseReportModal} />
