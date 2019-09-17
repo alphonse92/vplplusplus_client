@@ -40,7 +40,7 @@ class Report extends React.Component {
 		return (
 			<Flex vertical width="100%">
 				<ReportHeader title={title} />
-				<Body />
+				<NoReportsComponent />
 			</Flex>
 		)
 

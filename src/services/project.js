@@ -6,7 +6,7 @@ class ProjectServiceClass extends WebService {
   static localStorageUserKey = "User:data"
 
   constructor() {
-    const getToken = ()=>{
+    const getToken = () => {
       const user = UserService.getUserLogged()
       return user ? user.token : undefined
     }
@@ -63,6 +63,10 @@ class ProjectServiceClass extends WebService {
   isBlocked(project) {
     const isblocked = project && !!project._id && !!project.summaries && project.summaries.length > 0
     return isblocked
+  }
+
+  getProjectReport(project_id, date_from, date_start, topics) {
+
   }
 }
 
