@@ -45,8 +45,8 @@ export class UserReportTab extends React.Component {
           </ListItemIcon>
           <ListItemText
             inset
-            primary={<p style={{ color: skill.text }}>{fullname}</p>}
-            secondary={<span style={{ color: color.text }} >{`moodle id: ${id} - ${email}  `}</span>} />
+            primary={<p style={{ color: skill.text }}><strong>{fullname}</strong></p>}
+            secondary={<small style={{ color: color.text }} >{`moodle id: ${id} - ${email}  `}</small>} />
           {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
         <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
