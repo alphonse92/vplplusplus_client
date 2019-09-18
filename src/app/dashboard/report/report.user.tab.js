@@ -45,7 +45,7 @@ export class UserReportTab extends React.Component {
           </ListItemIcon>
           <ListItemText
             inset
-            primary={<p style={{ color: skill.text }}><strong>{fullname}</strong></p>}
+            primary={<p style={{ color: skill.text }}>{fullname}</p>}
             secondary={<small style={{ color: color.text }} >{`moodle id: ${id} - ${email}  `}</small>} />
           {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
