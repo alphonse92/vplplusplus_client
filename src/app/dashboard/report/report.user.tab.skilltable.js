@@ -11,9 +11,7 @@ export const SkillLevelTag = props => {
   const integer = +skill.toFixed(0)
   const fixed = +skill.toFixed(2)
   const color = SkillMapColors[integer - 1]
-  console.log(integer + 0)
-  console.log({ integer, fixed, skill, color, SkillMapColors })
-  return <span style={{ padding: '7px 13px', backgroundColor: color.color, color: color.text }}>{fixed}</span>
+  return <span style={{ padding: '3px', backgroundColor: color.color, color: color.text }}>{fixed}</span>
 }
 
 export const SkillsTable = (props) => {
