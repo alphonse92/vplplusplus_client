@@ -21,8 +21,8 @@ export const SkillsTable = (props) => {
     <Table >
       <TableHead>
         <TableRow>
-          <TableCell>Name</TableCell>
-          <TableCell>Description</TableCell>
+          <TableCell>Topic</TableCell>
+          <TableCell>The student know</TableCell>
           <TableCell>
             <Tooltip title=" (%) The level shows the student hability of a topic." placement='bottom'>
               <div>Level*</div>
@@ -33,7 +33,6 @@ export const SkillsTable = (props) => {
               <div>Effort*</div>
             </Tooltip>
           </TableCell>
-          <TableCell><div>Cases</div></TableCell>
           <TableCell>
             <Tooltip title="Test cases approved" placement='bottom'>
               <div>Approved*</div>
@@ -45,6 +44,7 @@ export const SkillsTable = (props) => {
               <div>Not Approved*</div>
             </Tooltip>
           </TableCell>
+          <TableCell><div>Cases</div></TableCell>
           <TableCell>
             <Tooltip title="This coefficient has been multiplied to the level to punish a student that never resolved a test case" placement='bottom'>
               <div>Penalization*</div>
@@ -59,9 +59,9 @@ export const SkillsTable = (props) => {
             <TableCell >{description}</TableCell>
             <TableCell ><SkillLevelTag skill={level} /></TableCell>
             <TableCell >{effort}</TableCell>
-            <TableCell >{total}</TableCell>
             <TableCell >{approved}</TableCell>
             <TableCell >{not_approved}</TableCell>
+            <TableCell >{total}</TableCell>
             <TableCell >{negative_coefficent.toFixed(2)}</TableCell>
           </TableRow>
         ))}
