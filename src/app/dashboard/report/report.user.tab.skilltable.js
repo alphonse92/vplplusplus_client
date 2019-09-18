@@ -1,20 +1,89 @@
 import React from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Collapse,
+  TableCell,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  ListSubheader
+} from '@material-ui/core'
+import {
+  ExpandLess as ExpandLessIcon,
+  ExpandMore as ExpandMoreIcon,
+} from '@material-ui/icons';
+import { withStyles } from '@material-ui/core/styles';
+
 import { SkillMapColors } from '../../../constants';
-import { Tooltip, Collapse, TableCell } from '@material-ui/core';
+import { Flex } from '../../../lib/components/flex';
 
 export const SkillLevelTag = props => {
   const { skill = 0 } = props
   const integer = +skill.toFixed(0)
   const fixed = +skill.toFixed(2)
   const color = SkillMapColors[integer - 1]
-  return <span style={{ padding: '3px', backgroundColor: color.color, color: color.text }}>{fixed}</span>
+  return <span style={{ padding: '3px', backgroundColor: color.color, color: color.text }}>{fixed}%</span>
 }
 
-export class SkillsTable extends React.Component {
+const SkillMoreInfoStyles = theme => ({
+  root: {
+    '&:hover': {
+      backgroundColor: 'transparent !important',
+      cursor: 'pointer'
+    }
+  }
+});
+
+class SkillMoreInfoNoStyled extends React.Component {
+
+  state = {}
+
+  toggle = id => () => {
+    if (this.state.currentOpenTest !== id)
+      return this.setState({ currentOpenTest: id })
+    return this.setState({ currentOpenTest: undefined })
+  }
+  render() {
+    const { currentOpenTest } = this.state
+    const { skill, classes } = this.props
+    const { tests = [] } = skill
+
+    return (
+      <List >
+        <ListSubheader>{`Test Cases`}</ListSubheader>
+        {
+          tests.map((test) => {
+            const { name, objective, _id } = test
+            const isOpen = currentOpenTest === _id
+            console.log({ isOpen, currentOpenTest, _id })
+            return (
+              <React.Fragment key={_id}>
+                <ListItem classes={classes} onClick={this.toggle(_id)}>
+                  <ListItemIcon><i className="fas fa-flask"></i></ListItemIcon>
+                  <ListItemText primary={name} secondary={objective} />
+                  {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                </ListItem>
+                <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
+                  <p>asdasdasd a asdasd</p>
+                </Collapse>
+              </React.Fragment>
+
+            )
+          })
+        }
+      </List>
+    )
+  }
+}
+
+export const SkillMoreInfo = withStyles(SkillMoreInfoStyles)(SkillMoreInfoNoStyled)
+
+class SkillsTableNoStyled extends React.Component {
 
   state = {
     showMoreInfoMap: {
@@ -28,7 +97,7 @@ export class SkillsTable extends React.Component {
   }
 
   render() {
-    const { skills } = this.props;
+    const { skills, classes } = this.props;
     return (
       <React.Fragment>
         <Table>
@@ -82,11 +151,11 @@ export class SkillsTable extends React.Component {
                   </TableRow>
                   {
                     showMoreInfo &&
-                    <TableRow >
+                    <TableRow classes={classes}>
                       <TableCell colSpan="8">
                         <Collapse style={{ root: { padding: '0px' } }} in={showMoreInfo} timeout="auto" unmountOnExit>
-                          more info
-                      </Collapse>
+                          <SkillMoreInfo skill={skill} />
+                        </Collapse>
                       </TableCell>
                     </TableRow>
                   }
@@ -99,3 +168,12 @@ export class SkillsTable extends React.Component {
     );
   }
 }
+
+const SkillsTableStyles = theme => ({
+  root: {
+    '&:hover': {
+      backgroundColor: 'transparent !important'
+    }
+  }
+});
+export const SkillsTable = withStyles(SkillsTableStyles)(SkillsTableNoStyled)
