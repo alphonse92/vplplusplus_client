@@ -28,8 +28,8 @@ export class SkillsTable extends React.Component {
     this.setState({ showMoreInfo: { ...map, [name]: !!map[name] } })
   }
 
-  render(props) {
-    const { skills } = props;
+  render() {
+    const { skills } = this.props;
     return (
       <Table >
         <TableHead>
