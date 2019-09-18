@@ -36,17 +36,21 @@ export class UserReportTab extends React.Component {
     const fullname = startCase(`${firstname} ${lastname}`)
     const fixed = +skill.toFixed(0)
     const color = SkillMapColors[fixed - 1]
-
+    const iconStyle = {
+      width: '100%',
+      height: '100%',
+      fontSize: '13px',
+    }
     return (
-      <Paper style={{ marginBottom: '13px', backgroundColor: color.color, color: color.text }} >
+      <Paper style={{ marginBottom: '13px', borderTop: '7px solid', borderTopColor: color.color, color: color.text }} >
         <ListItem button onClick={this.toggle}>
           <ListItemIcon>
-            <Icon style={{ color: color.text }}>{skill.toFixed(2)}</Icon>
+            <Icon style={iconStyle}>{skill.toFixed(2)}</Icon>
           </ListItemIcon>
           <ListItemText
             inset
-            primary={<p style={{ color: skill.text }}>{fullname}</p>}
-            secondary={<small style={{ color: color.text }} >{`moodle id: ${id} - ${email}  `}</small>} />
+            primary={fullname}
+            secondary={<small>{`moodle id: ${id} - ${email}  `}</small>} />
           {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
         <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
