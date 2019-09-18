@@ -11,7 +11,6 @@ import {
 import {
   ExpandLess as ExpandLessIcon
   , ExpandMore as ExpandMoreIcon
-  , Code as CodeIcon
 } from '@material-ui/icons';
 import { UserReportTabContent } from './report.user.tab.content';
 import { SkillMapColors } from '../../../constants';
@@ -33,7 +32,7 @@ export class UserReportTab extends React.Component {
 
     const { report } = this.props
     const { isOpen } = this.state
-    const { firstname, lastname, email, id, skill = 0, projects, skills } = report
+    const { firstname, lastname, email, id, skill = 0 } = report
     const fullname = startCase(`${firstname} ${lastname}`)
     const color = SkillMapColors[skill.toFixed(0)]
 
@@ -46,7 +45,7 @@ export class UserReportTab extends React.Component {
           <ListItemText
             inset
             primary={<p style={{ color: skill.text }}>{fullname}</p>}
-            secondary={<p tyle={{ color: color.text }} >{`moodle id: ${id} - ${email}  `}</p>} />
+            secondary={<span style={{ color: color.text }} >{`moodle id: ${id} - ${email}  `}</span>} />
           {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
         <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
