@@ -7,7 +7,7 @@ export const NoReportsComponent = () => {
       <Flex vertical width="100%" margin="7px">
         <Card>
           <CardContent>
-            <p style={{ textAlign: 'center' }}>Project has not reports. It is be caused because no students has submitted subbmisions yet.</p>
+            <p style={{ textAlign: 'center' }}>Project has not reports. It is be caused because no students has submitted subbmisions yet to the selected filter.</p>
           </CardContent>
         </Card>
       </Flex>

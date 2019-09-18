@@ -10,6 +10,7 @@ import { Flex } from '../../../lib/components/flex';
 import { ReportProject } from './report.project';
 import { ReportStudent } from './report.student';
 import { ProjectReportModal } from './../laboratory/project/project.report.modal';
+import { NoReportsComponent } from './report.nosubmissions';
 
 class Report extends React.Component {
 
@@ -55,25 +56,37 @@ class Report extends React.Component {
 			const { from: date_from, to: date_to, topics: arrayOfTopics } = value
 			const topics = arrayOfTopics.map(t => t.name)
 			const data = { project_id, date_from, date_to, topics }
-			this.props.DISPATCHERS.GET_PROJECT_REPORT(data)
-		} else return this.setState({ showReportModal: false })
+
+			if (project_id)
+				this.props.DISPATCHERS.GET_PROJECT_REPORT(data)
+			else
+				this.props.DISPATCHERS.GET_PROJECTS_REPORT(data)
+
+		}
+		this.setState({ showReportModal: false })
 	}
 
 
 	render() {
 		const { project: isProjectReport = true } = this.props
 		const { report } = this.props
-		const { project = [], student = [] } = report
-		const ReportComponent = () => isProjectReport
-			? <ReportProject report={project} />
-			: <ReportStudent report={student} />
+		const reportData = isProjectReport
+			? report.project
+			: report.student
+
+		const ReportComponent = reportData.length ?
+			(props) => isProjectReport
+				? <ReportProject {...props} />
+				: <ReportStudent {...props} />
+			: () => <NoReportsComponent />
+			
 		return (
 			<Flex vertical width="100%">
 				<ProjectReportModal open={this.state.showReportModal} onClose={this.onCloseReportModal} />
 				<Flex horizontal reverse>
-					<Button color="primary" onClick={console.log}><FilterList />Filter </Button>
+					<Button onClick={this.showReportModal}><FilterList />Filter </Button>
 				</Flex>
-				<ReportComponent />
+				<ReportComponent report={reportData} />
 			</Flex>
 		)
 
