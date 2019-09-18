@@ -4,11 +4,11 @@ import {
 } from '@material-ui/core';
 import { SkillsTable } from './report.user.tab.skilltable';
 
-export const UserReportTabContent = (props)=>{
+export const UserReportTabContent = (props) => {
   const { report } = props
   const { skills } = report
   return (
-    <Paper>
+    <Paper elevation={0}>
       <SkillsTable skills={skills} />
     </Paper >
   )

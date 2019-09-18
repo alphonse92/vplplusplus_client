@@ -34,7 +34,8 @@ export class UserReportTab extends React.Component {
     const { isOpen } = this.state
     const { firstname, lastname, email, id, skill = 0 } = report
     const fullname = startCase(`${firstname} ${lastname}`)
-    const color = SkillMapColors[skill.toFixed(0)]
+    const fixed = +skill.toFixed(0)
+    const color = SkillMapColors[fixed - 1]
 
     return (
       <Paper style={{ marginBottom: '13px', backgroundColor: color.color, color: color.text }} >
