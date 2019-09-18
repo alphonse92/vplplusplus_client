@@ -16,6 +16,8 @@ import {
 import {
   ExpandLess as ExpandLessIcon,
   ExpandMore as ExpandMoreIcon,
+  ErrorOutline as SubmissionFailedIcon,
+  DoneAll as SubmisionSuccessfullIcon,
 } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -58,9 +60,8 @@ class SkillMoreInfoNoStyled extends React.Component {
         <ListSubheader>{`Test Cases`}</ListSubheader>
         {
           tests.map((test) => {
-            const { name, objective, _id } = test
+            const { name, objective, _id, summaries = [] } = test
             const isOpen = currentOpenTest === _id
-            console.log({ isOpen, currentOpenTest, _id })
             return (
               <React.Fragment key={_id}>
                 <ListItem classes={classes} onClick={this.toggle(_id)}>
@@ -69,7 +70,26 @@ class SkillMoreInfoNoStyled extends React.Component {
                   {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                 </ListItem>
                 <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
-                  <p>asdasdasd a asdasd</p>
+                  <List >
+                    {
+                      summaries.map(({ _id, approved, createdAt }) => {
+                        const IconSummary = () => !approved
+                          ? <SubmissionFailedIcon />
+                          : <SubmisionSuccessfullIcon />
+                        const label = approved
+                          ? 'Submission passed'
+                          : 'Submission not passed'
+                        return (
+                          <ListItem key={_id}>
+                            <ListItemIcon><IconSummary /></ListItemIcon>
+                            <ListItemText primary={label} secondary={createdAt} />
+                          </ListItem>
+                        )
+                      })
+                    }
+
+
+                  </List>
                 </Collapse>
               </React.Fragment>
 
