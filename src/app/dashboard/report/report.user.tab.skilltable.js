@@ -11,13 +11,16 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  ListSubheader
+  ListSubheader,
+  ListItemSecondaryAction,
+  IconButton
 } from '@material-ui/core'
 import {
   ExpandLess as ExpandLessIcon,
   ExpandMore as ExpandMoreIcon,
   ErrorOutline as SubmissionFailedIcon,
   DoneAll as SubmisionSuccessfullIcon,
+  AssignmentOutlined as ReportIcon,
 } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -83,12 +86,13 @@ class SkillMoreInfoNoStyled extends React.Component {
                           <ListItem key={_id}>
                             <ListItemIcon><IconSummary /></ListItemIcon>
                             <ListItemText primary={label} secondary={createdAt} />
+                            {/* <ListItemSecondaryAction onClick={console.log}>
+                              <IconButton aria-label="See Project"> <ReportIcon /> </IconButton>
+                            </ListItemSecondaryAction> */}
                           </ListItem>
                         )
                       })
                     }
-
-
                   </List>
                 </Collapse>
               </React.Fragment>
@@ -124,7 +128,7 @@ class SkillsTableNoStyled extends React.Component {
           <TableHead>
             <TableRow>
               <TableCell>Topic</TableCell>
-              <TableCell >The student know</TableCell>
+              <TableCell >The student knows</TableCell>
               <TableCell>
                 <Tooltip title=" (%) The level shows the student hability of a topic." placement='bottom'>
                   <div>Level*</div>
