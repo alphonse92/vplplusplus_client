@@ -5,8 +5,6 @@ import { NoReportsComponent } from './report.nosubmissions';
 
 export const ReportStudent = (props) => {
 
-	const { report } = props
-
 	return (
 		<Flex vertical width="100%">
 			<ReportHeader title='Student Report' />

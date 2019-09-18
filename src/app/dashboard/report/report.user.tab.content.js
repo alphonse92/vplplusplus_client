@@ -10,6 +10,7 @@ export const UserReportTabContent = (props) => {
   return (
     <Paper elevation={0}>
       <SkillsTable skills={skills} />
+      <p style={{ textAlign: 'center' }}><small>* Means there a usefull tooltip in table header</small></p>
     </Paper >
   )
 } 

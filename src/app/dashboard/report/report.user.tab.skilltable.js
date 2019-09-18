@@ -5,6 +5,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { SkillMapColors } from '../../../constants';
+import { Tooltip } from '@material-ui/core';
 
 export const SkillLevelTag = props => {
   const { skill = 0 } = props
@@ -22,12 +23,33 @@ export const SkillsTable = (props) => {
         <TableRow>
           <TableCell>Name</TableCell>
           <TableCell>Description</TableCell>
-          <TableCell>Level</TableCell>
-          <TableCell>Effort</TableCell>
-          <TableCell>Cases</TableCell>
-          <TableCell>Cases Approved</TableCell>
-          <TableCell>Cases Not Approved</TableCell>
-          <TableCell>Penalization</TableCell>
+          <TableCell>
+            <Tooltip title=" (%) The level shows the student hability of a topic." placement='bottom'>
+              <div>Level*</div>
+            </Tooltip>
+          </TableCell>
+          <TableCell>
+            <Tooltip title="Shows the number of attempts to resolve a test case (unit test)" placement='bottom'>
+              <div>Effort*</div>
+            </Tooltip>
+          </TableCell>
+          <TableCell><div>Cases</div></TableCell>
+          <TableCell>
+            <Tooltip title="Test cases approved" placement='bottom'>
+              <div>Approved*</div>
+            </Tooltip>
+
+          </TableCell>
+          <TableCell>
+            <Tooltip title="Test cases not approved" placement='bottom'>
+              <div>Not Approved*</div>
+            </Tooltip>
+          </TableCell>
+          <TableCell>
+            <Tooltip title="This coefficient has been multiplied to the level to punish a student that never resolved a test case" placement='bottom'>
+              <div>Penalization*</div>
+            </Tooltip>
+          </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>

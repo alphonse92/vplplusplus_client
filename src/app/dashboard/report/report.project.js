@@ -1,6 +1,5 @@
 import React from 'react';
 import { Flex } from '../../../lib/components/flex';
-import { ReportHeader } from './report.header';
 import { NoReportsComponent } from './report.nosubmissions';
 import { UserReportTab } from './report.user.tab';
 
