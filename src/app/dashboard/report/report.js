@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Button, Card } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { FilterList } from '@material-ui/icons';
 
 import { ActionCreators } from './redux/actions';
@@ -79,7 +79,7 @@ class Report extends React.Component {
 				? <ReportProject {...props} />
 				: <ReportStudent {...props} />
 			: () => <NoReportsComponent />
-			
+
 		return (
 			<Flex vertical width="100%">
 				<ProjectReportModal open={this.state.showReportModal} onClose={this.onCloseReportModal} />

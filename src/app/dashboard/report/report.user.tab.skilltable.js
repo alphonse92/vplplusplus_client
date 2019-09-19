@@ -12,20 +12,20 @@ import {
   ListItemText,
   ListItemIcon,
   ListSubheader,
-  ListItemSecondaryAction,
-  IconButton
+  // ListItemSecondaryAction,
+  // IconButton
 } from '@material-ui/core'
 import {
   ExpandLess as ExpandLessIcon,
   ExpandMore as ExpandMoreIcon,
   ErrorOutline as SubmissionFailedIcon,
   DoneAll as SubmisionSuccessfullIcon,
-  AssignmentOutlined as ReportIcon,
+  // AssignmentOutlined as ReportIcon,
 } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-
+import { orderBy } from 'lodash'
 import { SkillMapColors } from '../../../constants';
-import { Flex } from '../../../lib/components/flex';
+
 
 export const SkillLevelTag = props => {
   const { skill = 0 } = props
@@ -121,7 +121,8 @@ class SkillsTableNoStyled extends React.Component {
   }
 
   render() {
-    const { skills, classes } = this.props;
+    const { skills: noOrderedSkills, classes } = this.props;
+    const skills = orderBy(noOrderedSkills, ['info.level'], ['desc'])
     return (
       <React.Fragment>
         <Table>
