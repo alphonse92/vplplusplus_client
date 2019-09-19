@@ -1,3 +1,4 @@
+import { orderBy } from 'lodash'
 import { extractActionCreators, requestDispatcher, createRequestActions } from '../../../../lib'
 import { ProjectService } from '../../../../services/project';
 
@@ -13,7 +14,7 @@ Actions[GET_PROJECT_REPORT_NAME] = {
 	},
 	ACTIONS: createRequestActions(GET_PROJECT_REPORT_NAME, {
 		fullfilled: (state, action) => {
-			const newState = { ...state, project: action.payload }
+			const newState = { ...state, project: orderBy(action.payload, ['skill'], ['desc']) }
 			return newState
 		},
 		rejected: (state, action) => {

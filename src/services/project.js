@@ -1,6 +1,6 @@
 import { WebService } from "./service";
 import { UserService } from './user'
-
+import { orderBy } from 'lodash'
 class ProjectServiceClass extends WebService {
 
   static localStorageUserKey = "User:data"
@@ -113,7 +113,7 @@ class ProjectServiceClass extends WebService {
 
       }, {})
 
-    return Object.values(map)
+    return orderBy(Object.values(map)['level'], ['desc'])
   }
 }
 
