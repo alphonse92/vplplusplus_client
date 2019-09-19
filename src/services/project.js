@@ -80,6 +80,29 @@ class ProjectServiceClass extends WebService {
     return super.request(options, `/report/user/`)
   }
 
+  getTestCasesByDifficult(report) {
+    const map = report
+      .reduce((testMap, userReport) => {
+
+        const { skills = [] } = userReport
+
+        skills.forEach(skill => {
+          const { tests } = skill
+          return tests.forEach(({ _id, name, objective, summaries_not_approved }) => {
+            testMap[_id] = testMap[_id]
+              ? { ...testMap[_id], summaries_not_approved: testMap[_id].summaries_not_approved + summaries_not_approved.length }
+              : { _id, name, objective, summaries_not_approved: summaries_not_approved.length }
+          })
+        })
+
+        return testMap
+
+      }, {})
+
+    return orderBy(Object.values(map), ['summaries_not_approved'], ['desc'])
+
+  }
+
   getTheMostSkilledStudentByTopic(report) {
 
     const map = report

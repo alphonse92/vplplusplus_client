@@ -22,7 +22,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { ProjectService } from '../../../services/project';
 
-class MostSkilledStudentsByTopicCardNoStyled extends React.Component {
+class MostDifficultTestCardNoStyled extends React.Component {
 
   state = {
     isOpen: false
@@ -36,7 +36,9 @@ class MostSkilledStudentsByTopicCardNoStyled extends React.Component {
 
     const { report, classes } = this.props
     const { isOpen } = this.state
-    const topics = ProjectService.getTheMostSkilledStudentByTopic(report)
+    const testCases = ProjectService.getTestCasesByDifficult(report)
+
+    console.log(testCases)
 
     return (
       <Paper style={{ marginBottom: '13px', borderTop: '7px solid' }} >
@@ -46,34 +48,30 @@ class MostSkilledStudentsByTopicCardNoStyled extends React.Component {
           </ListItemIcon>
           <ListItemText
             inset
-            primary="Most Skilled Students"
-            secondary="By topic" />
+            primary="Test Cases difficult"
+            secondary="These test cases required most effort to be solved" />
           {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
         <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Topic</TableCell>
-                <TableCell >Student</TableCell>
-                <TableCell >Skill</TableCell>
+                <TableCell>Test</TableCell>
+                <TableCell >Objective</TableCell>
+                <TableCell >*Effort</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {topics.map((topic) => {
-                const { name, description, level, students = [] } = topic
-                const [firstStudent, ...restOfStudents] = students
-                const rowSpan = students.length
+              {testCases.map((testCase) => {
+                const { name, objective, summaries_not_approved } = testCase
                 return (
                   <React.Fragment key={name} >
                     <TableRow className={classes.tr}>
-                      <TableCell rowSpan={rowSpan}>{description}</TableCell>
-                      <TableCell>{firstStudent.fullname}</TableCell>
-                      <TableCell rowSpan={rowSpan}>{level.toFixed(2)}</TableCell>
+                      <TableCell>{name}</TableCell>
+                      <TableCell>{objective}</TableCell>
+                      <TableCell>{summaries_not_approved}</TableCell>
                     </TableRow>
-                    {
-                      rowSpan > 1 && restOfStudents.map(student => <TableRow className={classes.tr}><TableCell >{student.fullname}</TableCell></TableRow>)
-                    }
+
                   </React.Fragment>
                 )
               })}
@@ -94,4 +92,4 @@ const tableStyles = theme => ({
   }
 });
 
-export const MostSkilledStudentsByTopicCard = withStyles(tableStyles)(MostSkilledStudentsByTopicCardNoStyled)
+export const MostDifficultTestCard = withStyles(tableStyles)(MostDifficultTestCardNoStyled)
