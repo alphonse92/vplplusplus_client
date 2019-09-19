@@ -5,8 +5,9 @@ import {
   , ListItem
   , ListItemIcon
   , ListItemText
-  , Collapse,
-  Icon
+  , Collapse
+  , Icon
+  , Tooltip
 } from '@material-ui/core';
 import {
   ExpandLess as ExpandLessIcon
@@ -45,7 +46,10 @@ export class UserReportTab extends React.Component {
       <Paper style={{ marginBottom: '13px', borderTop: '7px solid', borderTopColor: color.color, color: color.text }} >
         <ListItem button onClick={this.toggle}>
           <ListItemIcon>
-            <Icon style={iconStyle}>{skill.toFixed(2)}</Icon>
+            <Tooltip title='Student Skill' placement='bottom' enterDelay={100}>
+              <Icon style={iconStyle}>{skill.toFixed(2)}</Icon>
+            </Tooltip>
+
           </ListItemIcon>
           <ListItemText
             inset

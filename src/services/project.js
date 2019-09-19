@@ -79,6 +79,42 @@ class ProjectServiceClass extends WebService {
     const options = { method: 'GET', qs: query }
     return super.request(options, `/report/user/`)
   }
+
+  getTheMostSkilledStudentByTopic(report) {
+
+    const map = report
+      // flat
+      .map(userReport => {
+        const { id, firstname, lastname, skills = [] } = userReport
+        const fullname = `${firstname} ${lastname}`
+        return skills.map(skill => {
+          const { name, description, info: { level } } = skill
+          return { student: { id, fullname }, topic: { name, description, level } }
+        })
+      })
+      // put all in a single array
+      .reduce((acc, arrayOfUserTopics) => acc.concat(arrayOfUserTopics), [])
+      // map the topics
+      .reduce((map, userReport) => {
+        const { student: studentTopic, topic } = userReport
+        const { id, fullname } = studentTopic
+        const { name, description, level: noFixedLevel } = topic
+        const level = +noFixedLevel.toFixed(2)
+        const student = { id, fullname }
+        const skillInMap = map[name]
+        if (!skillInMap || (skillInMap && level > skillInMap.level)) {
+          return { ...map, [name]: { name, description, level, students: [student] } }
+        } else if (level === skillInMap.level) {
+          const students = map[name].students.concat([student])
+          return { ...map, [name]: { name, description, level, students } }
+        } else {
+          return { ...map }
+        }
+
+      }, {})
+
+    return Object.values(map)
+  }
 }
 
 export const ProjectService = new ProjectServiceClass()
