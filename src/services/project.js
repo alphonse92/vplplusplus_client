@@ -113,7 +113,7 @@ class ProjectServiceClass extends WebService {
 
       }, {})
 
-    return orderBy(Object.values(map)['level'], ['desc'])
+    return orderBy(Object.values(map), ['level'], ['desc'])
   }
 }
 
