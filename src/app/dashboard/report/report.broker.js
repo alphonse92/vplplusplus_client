@@ -32,11 +32,12 @@ class ReportBroker extends React.Component {
 		return { DISPATCHERS }
 	}
 
-	loadReports = (data) => {
-		const { match, project: isProjectReport = true } = this.props
+	loadReports = (data = {}) => {
+		const { match, project: isProjectReport } = this.props
 		const { params } = match
 		const { id } = params
-		if (isProjectReport) return this.props.DISPATCHERS.GET_PROJECT_REPORT({ user: id, ...data })
+
+		if (!isProjectReport) return this.props.DISPATCHERS.GET_STUDENT_REPORT({ user_id: id, ...data })
 		if (id) return this.props.DISPATCHERS.GET_PROJECT_REPORT({ project_id: id, ...data })
 		else return this.props.DISPATCHERS.GET_PROJECTS_REPORT()
 	}
@@ -70,8 +71,11 @@ class ReportBroker extends React.Component {
 			? report.project
 			: report.student
 
-		const ReportComponent = reportData.length ?
-			(props) => isProjectReport
+		console.log(reportData)
+
+
+		const ReportComponent = reportData.length
+			? (props) => isProjectReport
 				? <ReportProject {...props} showUserReport={this.props.showUserReport} />
 				: <ReportStudent {...props} />
 			: () => <NoReportsComponent />
