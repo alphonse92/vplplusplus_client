@@ -33,12 +33,14 @@ class ReportBroker extends React.Component {
 	}
 
 	loadReports = (data = {}) => {
-		const { match, project: isProjectReport } = this.props
+		const { match, isProjectReport } = this.props
 		const { params } = match
 		const { id } = params
 
+		console.log({ isProjectReport, id })
+
 		if (!isProjectReport) return this.props.DISPATCHERS.GET_STUDENT_REPORT({ user_id: id, ...data })
-		if (id) return this.props.DISPATCHERS.GET_PROJECT_REPORT({ project_id: id, ...data })
+		else if (id) return this.props.DISPATCHERS.GET_PROJECT_REPORT({ project_id: id, ...data })
 		else return this.props.DISPATCHERS.GET_PROJECTS_REPORT()
 	}
 
