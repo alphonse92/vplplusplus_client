@@ -73,9 +73,6 @@ class ReportBroker extends React.Component {
 			? report.project
 			: report.student
 
-		console.log({ report, reportData })
-
-
 		const ReportComponent = reportData.length
 			? (props) => isProjectReport
 				? <ReportProject {...props} showUserReport={this.props.showUserReport} />
@@ -85,7 +82,7 @@ class ReportBroker extends React.Component {
 		return (
 			<Flex vertical width="100%">
 				<ProjectReportModal open={this.state.showReportModal} onClose={this.onCloseReportModal} />
-				<Flex horizontal reverse>
+				<Flex horizontal>
 					<Button onClick={this.showReportModal}><FilterList />Filter </Button>
 				</Flex>
 				<ReportComponent report={reportData} />
