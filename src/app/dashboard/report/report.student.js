@@ -10,7 +10,7 @@ export const ReportStudent = (props) => {
 	return (
 		<Flex vertical width="100%">
 			<Typography variant="h5" gutterBottom>Student Reports</Typography>
-			<UserReportTab report={report[0]} />
+			<UserReportTab report={report[0]} showProjects />
 		</Flex>
 	)
 }
