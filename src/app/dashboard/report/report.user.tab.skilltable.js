@@ -12,6 +12,8 @@ import {
   ListItemText,
   ListItemIcon,
   ListSubheader,
+  Typography,
+  Button
   // ListItemSecondaryAction,
   // IconButton
 } from '@material-ui/core'
@@ -25,6 +27,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import { orderBy } from 'lodash'
 import { SkillMapColors } from '../../../constants';
+import { Flex } from '../../../lib/components/flex';
 
 
 export const SkillLevelTag = props => {
@@ -53,6 +56,13 @@ class SkillMoreInfoNoStyled extends React.Component {
       return this.setState({ currentOpenTest: id })
     return this.setState({ currentOpenTest: undefined })
   }
+
+  openProjectReport = project => () => {
+
+  }
+  openReportt = project => () => {
+
+  }
   render() {
     const { currentOpenTest } = this.state
     const { skill, classes } = this.props
@@ -63,40 +73,49 @@ class SkillMoreInfoNoStyled extends React.Component {
         <ListSubheader>{`Test Cases`}</ListSubheader>
         {
           tests.map((test) => {
-            const { name, objective, _id, summaries = [] } = test
+            const { name, objective, _id, summaries = [], project } = test
             const isOpen = currentOpenTest === _id
             return (
               <React.Fragment key={_id}>
                 <ListItem classes={classes} onClick={this.toggle(_id)}>
                   <ListItemIcon><i className="fas fa-flask"></i></ListItemIcon>
-                  <ListItemText primary={name} secondary={objective} />
+                  <ListItemText primary={name} secondary={
+                    <React.Fragment>
+                      <Typography component="span">{objective}</Typography>
+                      {`Project: ${project.name}`}
+                    </React.Fragment>
+                  } />
                   {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                 </ListItem>
                 <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
-                  <List >
-                    {
-                      summaries.map(({ _id, approved, createdAt }) => {
-                        const IconSummary = () => !approved
-                          ? <SubmissionFailedIcon />
-                          : <SubmisionSuccessfullIcon />
-                        const label = approved
-                          ? 'Submission passed'
-                          : 'Submission not passed'
-                        return (
-                          <ListItem key={_id}>
-                            <ListItemIcon><IconSummary /></ListItemIcon>
-                            <ListItemText primary={label} secondary={createdAt} />
-                            {/* <ListItemSecondaryAction onClick={console.log}>
-                              <IconButton aria-label="See Project"> <ReportIcon /> </IconButton>
-                            </ListItemSecondaryAction> */}
-                          </ListItem>
-                        )
-                      })
-                    }
-                  </List>
+                  <Flex marginLeft="4em" vertical>
+                    <Flex horizontal>
+                      <Button onClick={this.openProjectReport(project)} >Open project report</Button>
+                      <Button onClick={this.openReportt(project)} >Open project</Button>
+                    </Flex>
+                    <Flex vertical>
+                      <List>
+                        {
+                          summaries.map(({ _id, approved, createdAt }) => {
+                            const IconSummary = () => !approved
+                              ? <SubmissionFailedIcon />
+                              : <SubmisionSuccessfullIcon />
+                            const label = approved
+                              ? 'Submission passed'
+                              : 'Submission not passed'
+                            return (
+                              <ListItem key={_id} >
+                                <ListItemIcon><IconSummary /></ListItemIcon>
+                                <ListItemText primary={label} secondary={createdAt} />
+                              </ListItem>
+                            )
+                          })
+                        }
+                      </List>
+                    </Flex>
+                  </Flex>
                 </Collapse>
               </React.Fragment>
-
             )
           })
         }
