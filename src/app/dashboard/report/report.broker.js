@@ -82,7 +82,7 @@ class ReportBroker extends React.Component {
 		return (
 			<Flex vertical width="100%">
 				<ProjectReportModal open={this.state.showReportModal} onClose={this.onCloseReportModal} />
-				<Flex horizontal>
+				<Flex horizontal reverse>
 					<Button onClick={this.showReportModal}><FilterList />Filter </Button>
 				</Flex>
 				<ReportComponent report={reportData} />
