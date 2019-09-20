@@ -13,7 +13,7 @@ import {
   ExpandLess as ExpandLessIcon
   , ExpandMore as ExpandMoreIcon
 } from '@material-ui/icons';
-import { UserReportTabContent } from './report.user.tab.content';
+import { UserReportTableCard } from './report.user.table.card';
 import { SkillMapColors } from '../../../constants';
 
 export class UserReportTab extends React.Component {
@@ -63,7 +63,7 @@ export class UserReportTab extends React.Component {
           {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
         <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
-          <UserReportTabContent showProjects={this.props.showProjects} onOpenUserReport={this.openUserReport(report)} report={report} />
+          <UserReportTableCard  onOpenUserReport={this.openUserReport(report)} report={report} />
         </Collapse>
       </ Paper>
     )
