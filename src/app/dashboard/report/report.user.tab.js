@@ -29,9 +29,10 @@ export class UserReportTab extends React.Component {
     this.setState({ isOpen: !this.state.isOpen })
   }
 
-  openUserReport = (report) => () => {
-    this.props.showUserReport && this.props.showUserReport(report)
-  }
+  openUserReport = report =>
+    this.props.showUserReport
+      ? () => this.props.showUserReport(report)
+      : undefined
 
   render() {
 
