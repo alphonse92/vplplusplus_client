@@ -1,6 +1,6 @@
 import React from 'react'
-import { Report } from './report'
+import { ReportBroker } from './report.broker'
 
 export const Main = (props) => {
-	return <Report isProjectReport {...props} />
+	return <ReportBroker isProjectReport {...props} />
 }

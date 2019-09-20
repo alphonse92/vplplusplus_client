@@ -9,10 +9,10 @@ import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals
 import { Flex } from '../../../lib/components/flex';
 import { ReportProject } from './report.project';
 import { ReportStudent } from './report.student';
-import { ProjectReportModal } from './../laboratory/project/project.report.modal';
+import { ProjectReportModal } from '../laboratory/project/project.report.modal';
 import { NoReportsComponent } from './report.nosubmissions';
 
-class Report extends React.Component {
+class ReportBroker extends React.Component {
 
 	state = {
 		showReportModal: false
@@ -95,10 +95,10 @@ class Report extends React.Component {
 }
 
 const ConnectedReport = connect(
-	Report.mapStateToProps,
-	Report.mapDispatchToProps,
-)(Report)
+	ReportBroker.mapStateToProps,
+	ReportBroker.mapDispatchToProps,
+)(ReportBroker)
 
 export {
-	ConnectedReport as Report
+	ConnectedReport as ReportBroker
 }
