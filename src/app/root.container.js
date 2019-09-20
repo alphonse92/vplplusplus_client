@@ -3,7 +3,7 @@ import React from 'react'
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
-import pink from '@material-ui/core/colors/pink';
+import lightBlue from '@material-ui/core/colors/lightBlue';
 import { App } from './app.container'
 import './styles.sass'
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
@@ -19,7 +19,7 @@ const theme = createMuiTheme({
 	},
 	palette: {
 		primary: red,
-		secondary: pink,
+		secondary: lightBlue,
 	},
 	overrides: {
 		MuiListItem: {
