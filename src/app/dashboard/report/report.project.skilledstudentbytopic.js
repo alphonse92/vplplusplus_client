@@ -39,7 +39,7 @@ class MostSkilledStudentsByTopicCardNoStyled extends React.Component {
     const topics = ProjectService.getTheMostSkilledStudentByTopic(report)
 
     return (
-      <Paper style={{ marginBottom: '13px', borderTop: '7px solid' }} >
+      <Paper style={{ marginBottom: '13px', borderTop: '7px solid', width:'100%'}} >
         <ListItem button onClick={this.toggle}>
           <ListItemIcon>
             <StarBorder />

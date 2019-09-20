@@ -38,10 +38,8 @@ class MostDifficultTestCardNoStyled extends React.Component {
     const { isOpen } = this.state
     const testCases = ProjectService.getTestCasesByDifficult(report)
 
-    console.log(testCases)
-
     return (
-      <Paper style={{ marginBottom: '13px', borderTop: '7px solid' }} >
+      <Paper style={{ marginBottom: '13px', borderTop: '7px solid', width:'100%' }} >
         <ListItem button onClick={this.toggle}>
           <ListItemIcon>
             <StarBorder />
