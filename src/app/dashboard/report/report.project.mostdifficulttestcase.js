@@ -58,7 +58,7 @@ class MostDifficultTestCardNoStyled extends React.Component {
               <TableRow>
                 <TableCell>Test</TableCell>
                 <TableCell >Objective</TableCell>
-                <TableCell >*Effort</TableCell>
+                <TableCell >Failted attemps</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -66,11 +66,11 @@ class MostDifficultTestCardNoStyled extends React.Component {
                 const { name, objective, summaries_not_approved } = testCase
                 return (
                   <React.Fragment key={name} >
-                    <TableRow className={classes.tr}>
+                    {summaries_not_approved > 0 && <TableRow className={classes.tr}>
                       <TableCell>{name}</TableCell>
                       <TableCell>{objective}</TableCell>
                       <TableCell>{summaries_not_approved}</TableCell>
-                    </TableRow>
+                    </TableRow>}
 
                   </React.Fragment>
                 )
