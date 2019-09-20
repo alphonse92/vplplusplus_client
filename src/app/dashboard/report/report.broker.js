@@ -32,17 +32,17 @@ class ReportBroker extends React.Component {
 		return { DISPATCHERS }
 	}
 
-	componentDidMountProjects = () => {
-		const { id: project_id } = this.props.match.params
-		if (project_id) return this.props.DISPATCHERS.GET_PROJECT_REPORT({ project_id })
+	loadReports = (data) => {
+		const { match, project: isProjectReport = true } = this.props
+		const { params } = match
+		const { id } = params
+		if (isProjectReport) return this.props.DISPATCHERS.GET_PROJECT_REPORT({ user: id, ...data })
+		if (id) return this.props.DISPATCHERS.GET_PROJECT_REPORT({ project_id: id, ...data })
 		else return this.props.DISPATCHERS.GET_PROJECTS_REPORT()
 	}
 
 	componentDidMount() {
-		if (this.props.isProjectReport)
-			return this.componentDidMountProjects()
-		return this.componentDidMountProjects()
-
+		this.loadReports()
 	}
 
 	showReportModal = () => {
@@ -56,11 +56,7 @@ class ReportBroker extends React.Component {
 			const { from: date_from, to: date_to, topics: arrayOfTopics } = value
 			const topics = arrayOfTopics.map(t => t.name)
 			const data = { project_id, date_from, date_to, topics }
-
-			if (project_id)
-				this.props.DISPATCHERS.GET_PROJECT_REPORT(data)
-			else
-				this.props.DISPATCHERS.GET_PROJECTS_REPORT(data)
+			this.loadReports(data)
 
 		}
 		this.setState({ showReportModal: false })
