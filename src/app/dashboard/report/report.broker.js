@@ -76,7 +76,7 @@ class ReportBroker extends React.Component {
 
 		const ReportComponent = reportData.length ?
 			(props) => isProjectReport
-				? <ReportProject {...props} />
+				? <ReportProject {...props} showUserReport={this.props.showUserReport} />
 				: <ReportStudent {...props} />
 			: () => <NoReportsComponent />
 

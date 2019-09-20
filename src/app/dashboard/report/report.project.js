@@ -17,7 +17,7 @@ export const ReportProject = (props) => {
 				<MostDifficultTestCard report={report} />
 			</Flex>
 			<Typography variant="h5" gutterBottom>Student Reports</Typography>
-			{report.map(r => <UserReportTab key={r._id} report={r} />)}
+			{report.map(r => <UserReportTab key={r._id} report={r} showUserReport={props.showUserReport} />)}
 		</Flex>
 	)
 }

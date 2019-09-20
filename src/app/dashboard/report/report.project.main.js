@@ -2,5 +2,7 @@ import React from 'react'
 import { ReportBroker } from './report.broker'
 
 export const Main = (props) => {
-	return <ReportBroker isProjectReport {...props} />
+	const pathname = 'report/student/'
+	const showUserReport = ({ _id: id }) => props.history.push(`${pathname}${id ? id : ''}`)
+	return <ReportBroker isProjectReport {...props} showUserReport={showUserReport} />
 }

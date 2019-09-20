@@ -29,6 +29,10 @@ export class UserReportTab extends React.Component {
     this.setState({ isOpen: !this.state.isOpen })
   }
 
+  openUserReport = (report) => () => {
+    this.props.showUserReport && this.props.showUserReport(report)
+  }
+
   render() {
 
     const { report } = this.props
@@ -58,7 +62,7 @@ export class UserReportTab extends React.Component {
           {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
         <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
-          <UserReportTabContent onOpenUserReport={console.log} report={report} />
+          <UserReportTabContent onOpenUserReport={this.openUserReport(report)} report={report} />
         </Collapse>
       </ Paper>
     )
