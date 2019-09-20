@@ -67,7 +67,7 @@ class ReportBroker extends React.Component {
 
 
 	render() {
-		const { project: isProjectReport } = this.props
+		const {  isProjectReport } = this.props
 		const { report } = this.props
 		const reportData = isProjectReport
 			? report.project
