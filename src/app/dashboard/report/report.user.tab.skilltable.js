@@ -90,7 +90,7 @@ class SkillMoreInfoNoStyled extends React.Component {
                 <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
                   <Flex marginLeft="4em" vertical>
                     <Flex horizontal>
-                      <Button variant="contained" color="secondary" onClick={this.openProjectReport(project)} >Open project report</Button>
+                      <Button variant="contained" style={{marginRight:'13px'}}color="secondary" onClick={this.openProjectReport(project)} >Open project report</Button>
                       <Button variant="contained" color="secondary" onClick={this.openReportt(project)} >Open project</Button>
                     </Flex>
                     <Flex vertical>
