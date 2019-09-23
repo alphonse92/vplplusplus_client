@@ -22,30 +22,30 @@ const theme = createMuiTheme({
 		secondary: lightBlue,
 	},
 	overrides: {
-		MuiListItem: {
-			root: {
-				"&$selected": {
-					background: HoverAndSelected
-				},
-				'&:hover': {
-					background: HoverAndSelected
-				},
-				'&:focus': {
-					background: HoverAndSelected
-				}
-			},
-		},
-		MuiTableRow: {
-			root: {
-				"&$selected": {
-					background: HoverAndSelected
-				},
-				'&:hover': {
-					background: HoverAndSelected,
-				}
-			},
+		// MuiListItem: {
+		// 	root: {
+		// 		"&$selected": {
+		// 			background: HoverAndSelected
+		// 		},
+		// 		'&:hover': {
+		// 			background: HoverAndSelected
+		// 		},
+		// 		'&:focus': {
+		// 			background: HoverAndSelected
+		// 		}
+		// 	},
+		// },
+		// MuiTableRow: {
+		// 	root: {
+		// 		"&$selected": {
+		// 			background: HoverAndSelected
+		// 		},
+		// 		'&:hover': {
+		// 			background: HoverAndSelected,
+		// 		}
+		// 	},
 
-		},
+		// },
 		MuiIcon: {
 			root: {
 				'&.fas': {

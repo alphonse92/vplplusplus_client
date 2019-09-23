@@ -6,7 +6,7 @@ import {
 import { SkillsTable } from './report.user.tab.skilltable';
 import ReportIcon from '@material-ui/icons/AssignmentOutlined';
 export const UserReportTableCard = (props) => {
-  const { report } = props
+  const { report,showProjectReport, openProject } = props
   const { skills, projects } = report
   const projectsMap = projects.reduce((acc, project) => ({ [project._id]: project }), {})
   const skillsWithProject = skills.map(skill => {
@@ -14,11 +14,10 @@ export const UserReportTableCard = (props) => {
     const newTests = tests.map(t => ({ ...t, project: projectsMap[t.project] }))
     return { ...skill, tests: newTests }
   })
-  console.log(skillsWithProject)
   return (
     <Paper elevation={0}>
       {props.onOpenUserReport && <Button onClick={props.onOpenUserReport}><ReportIcon />Open User Report </Button>}
-      <SkillsTable skills={skillsWithProject} />
+      <SkillsTable skills={skillsWithProject} onOpenProject={openProject} onOpenProjectReport={showProjectReport} />
       <p style={{ textAlign: 'center' }}><small>* Means there a usefull tooltip in table header</small></p>
     </Paper >
   )

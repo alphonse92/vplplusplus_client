@@ -66,14 +66,12 @@ class ProjectServiceClass extends WebService {
   }
 
   getProjectReport(id, from, to, topics) {
-    console.log('get project report')
     const query = { topic: topics, from, to }
     const options = { method: 'GET', qs: query }
     return super.request(options, `/${id}/report/`)
   }
 
   getStudentReport(id, from, to, topics) {
-    console.log('get student report')
     const query = { topic: topics, from, to }
     const options = { method: 'GET', qs: query }
     return super.request(options, `/report/user/${id}/`)

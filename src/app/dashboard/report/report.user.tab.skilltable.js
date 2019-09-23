@@ -30,6 +30,15 @@ import { SkillMapColors } from '../../../constants';
 import { Flex } from '../../../lib/components/flex';
 
 
+export const ActionButtonsComponent = ({ onOpenProjectReport, onOpenProject }) => {
+  return (
+    <Flex horizontal>
+      {onOpenProjectReport && <Button variant="contained" style={{ marginRight: '13px' }} color="secondary" onClick={onOpenProject} >Open project report</Button>}
+      {onOpenProject && <Button variant="contained" color="secondary" onClick={onOpenProjectReport} >Open project</Button>}
+    </Flex>
+  )
+}
+
 export const SkillLevelTag = props => {
   const { skill = 0 } = props
   const integer = +skill.toFixed(0)
@@ -58,14 +67,16 @@ class SkillMoreInfoNoStyled extends React.Component {
   }
 
   openProjectReport = project => () => {
-
+    this.props.onOpenProjectReport && this.props.onOpenProjectReport(project)
   }
+
   openReportt = project => () => {
-
+    this.props.onOpenProject && this.props.onOpenProject(project)
   }
+  
   render() {
     const { currentOpenTest } = this.state
-    const { skill, classes } = this.props
+    const { skill, classes, onOpenProjectReport, onOpenProject } = this.props
     const { tests = [] } = skill
 
     return (
@@ -89,10 +100,9 @@ class SkillMoreInfoNoStyled extends React.Component {
                 </ListItem>
                 <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
                   <Flex marginLeft="4em" vertical>
-                    <Flex horizontal>
-                      <Button variant="contained" style={{marginRight:'13px'}}color="secondary" onClick={this.openProjectReport(project)} >Open project report</Button>
-                      <Button variant="contained" color="secondary" onClick={this.openReportt(project)} >Open project</Button>
-                    </Flex>
+
+                    <ActionButtonsComponent onOpenProjectReport={this.onOpenProjectReport(project)} onOpenProject={this.openReportt(project)} />
+
                     <Flex vertical>
                       <List>
                         {
