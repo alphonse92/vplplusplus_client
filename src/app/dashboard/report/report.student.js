@@ -11,7 +11,6 @@ export const ReportStudent = (props) => {
 	const [userReport] = report
 	const { firstname, lastname } = userReport
 	const fullname = startCase(`${firstname} ${lastname}`)
-
 	return (
 		<Flex vertical width="100%">
 			<Typography variant="h5" gutterBottom>Report of {fullname}</Typography>

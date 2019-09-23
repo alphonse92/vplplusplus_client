@@ -33,8 +33,8 @@ import { Flex } from '../../../lib/components/flex';
 export const ActionButtonsComponent = ({ onOpenProjectReport, onOpenProject }) => {
   return (
     <Flex horizontal>
-      {onOpenProjectReport && <Button variant="contained" style={{ marginRight: '13px' }} color="secondary" onClick={onOpenProject} >Open project report</Button>}
-      {onOpenProject && <Button variant="contained" color="secondary" onClick={onOpenProjectReport} >Open project</Button>}
+      {onOpenProjectReport && <Button variant="contained" style={{ marginRight: '13px' }} color="secondary" onClick={onOpenProjectReport} >Open project report</Button>}
+      {onOpenProject && <Button variant="contained" color="secondary" onClick={onOpenProject} >Open project</Button>}
     </Flex>
   )
 }
@@ -78,7 +78,7 @@ class SkillMoreInfoNoStyled extends React.Component {
     const { currentOpenTest } = this.state
     const { skill, classes } = this.props
     const { tests = [] } = skill
-
+    const shouldShowTheActionsButton = this.props.onOpenProjectReport && this.props.onOpenProject
     return (
       <List >
         <ListSubheader>{`Test Cases`}</ListSubheader>
@@ -101,7 +101,9 @@ class SkillMoreInfoNoStyled extends React.Component {
                 <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
                   <Flex marginLeft="4em" vertical>
 
-                    <ActionButtonsComponent onOpenProjectReport={this.openProjectReport(project)} onOpenProject={this.openReportt(project)} />
+                    {
+                      shouldShowTheActionsButton && <ActionButtonsComponent onOpenProjectReport={this.openProjectReport(project)} onOpenProject={this.openReportt(project)} />
+                    }
 
                     <Flex vertical>
                       <List>
@@ -150,7 +152,7 @@ class SkillsTableNoStyled extends React.Component {
   }
 
   render() {
-    const { skills: noOrderedSkills, classes } = this.props;
+    const { skills: noOrderedSkills, classes, onOpenProjectReport, onOpenProject } = this.props
     const skills = orderBy(noOrderedSkills, ['info.level'], ['desc'])
     return (
       <React.Fragment>
@@ -208,7 +210,7 @@ class SkillsTableNoStyled extends React.Component {
                     <TableRow classes={classes}>
                       <TableCell colSpan="8">
                         <Collapse style={{ root: { padding: '0px' } }} in={showMoreInfo} timeout="auto" unmountOnExit>
-                          <SkillMoreInfo skill={skill} />
+                          <SkillMoreInfo skill={skill} onOpenProjectReport={onOpenProjectReport} onOpenProject={onOpenProject} />
                         </Collapse>
                       </TableCell>
                     </TableRow>
