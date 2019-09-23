@@ -73,10 +73,10 @@ class SkillMoreInfoNoStyled extends React.Component {
   openReportt = project => () => {
     this.props.onOpenProject && this.props.onOpenProject(project)
   }
-  
+
   render() {
     const { currentOpenTest } = this.state
-    const { skill, classes, onOpenProjectReport, onOpenProject } = this.props
+    const { skill, classes } = this.props
     const { tests = [] } = skill
 
     return (
@@ -101,7 +101,7 @@ class SkillMoreInfoNoStyled extends React.Component {
                 <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
                   <Flex marginLeft="4em" vertical>
 
-                    <ActionButtonsComponent onOpenProjectReport={this.onOpenProjectReport(project)} onOpenProject={this.openReportt(project)} />
+                    <ActionButtonsComponent onOpenProjectReport={this.openProjectReport(project)} onOpenProject={this.openReportt(project)} />
 
                     <Flex vertical>
                       <List>

@@ -11,7 +11,7 @@ import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
 // const PRIMARY = '#f62a2c'
 // const SECONDARY = '#f75a3f'
-const HoverAndSelected = 'rgba(247, 83,	 61, 0.17) !important'
+// const HoverAndSelected = 'rgba(247, 83,	 61, 0.17) !important'
 // const PRIMARY_DEGRADEE = 'linear-gradient(45deg, #f62a2c 30%, #f88852 150%)'
 const theme = createMuiTheme({
 	typography: {
