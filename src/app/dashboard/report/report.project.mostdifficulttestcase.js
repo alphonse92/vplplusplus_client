@@ -20,8 +20,6 @@ import {
 
 import { withStyles } from '@material-ui/core/styles';
 
-import { ProjectService } from '../../../services/project';
-
 class MostDifficultTestCardNoStyled extends React.Component {
 
   state = {

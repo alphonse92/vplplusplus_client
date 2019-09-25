@@ -8,7 +8,7 @@ import { UserReportTableCard } from './report.user.table.card';
 
 export const ReportStudent = (props) => {
 	const { report: StudentReport = [], showProjectReport, openProject } = props
-	const { report = [], stadistics = [] } = StudentReport
+	const { report = [] /*, stadistics = [] */ } = StudentReport
 	const [userReport] = report
 	const { firstname, lastname } = userReport
 	const fullname = startCase(`${firstname} ${lastname}`)
