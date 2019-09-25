@@ -13,9 +13,13 @@ export const ReportProject = (props) => {
 	return (
 		<Flex vertical width="100%">
 			<Typography variant="h5" gutterBottom>Stadistics</Typography>
-			<Flex horizontal width="100%">
+			<Flex vertical width="100%">
 				<MostSkilledStudentsByTopicCard data={mostSkilledStudents} />
+			</Flex>
+			<Flex vertical width="100%">
 				<MostDifficultTestCard data={mostDifficultTest} />
+			</Flex>
+			<Flex vertical width="100%">
 				<ProjectReportTimelineCard data={timeline} />
 			</Flex>
 			<Typography variant="h5" gutterBottom>Student Reports</Typography>
