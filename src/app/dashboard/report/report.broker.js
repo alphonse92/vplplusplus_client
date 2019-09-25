@@ -20,7 +20,7 @@ class ReportBroker extends React.Component {
 
 	static mapStateToProps = (state) => {
 		const { report } = state
-		const { project = [], student = [] } = report
+		const { project = {}, student = {} } = report
 		return { report: { project, student } }
 	}
 
@@ -71,7 +71,7 @@ class ReportBroker extends React.Component {
 			? report.project
 			: report.student
 
-		const ReportComponent = reportData.length
+		const ReportComponent = reportData.report.length
 			? (reportComponentProos) => isProjectReport
 				? <ReportProject {...reportComponentProos} showUserReport={props.showUserReport} />
 				: <ReportStudent {...reportComponentProos} showProjectReport={props.showProjectReport} openProject={props.openProject} />

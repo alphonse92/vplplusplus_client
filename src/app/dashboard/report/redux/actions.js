@@ -14,7 +14,10 @@ Actions[GET_PROJECT_REPORT_NAME] = {
 	},
 	ACTIONS: createRequestActions(GET_PROJECT_REPORT_NAME, {
 		fullfilled: (state, action) => {
-			const newState = { ...state, project: orderBy(action.payload, ['skill'], ['desc']) }
+			const { payload: projectReport } = action
+			const report = orderBy(projectReport.report, ['skill'], ['desc'])
+			const { stadistics } = projectReport
+			const newState = { ...state, project: { report, stadistics } }
 			return newState
 		},
 		rejected: (state, action) => {
