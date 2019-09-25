@@ -34,9 +34,8 @@ class MostDifficultTestCardNoStyled extends React.Component {
 
   render() {
 
-    const { report, classes } = this.props
+    const { data, classes } = this.props
     const { isOpen } = this.state
-    const testCases = ProjectService.getTestCasesByDifficult(report)
 
     return (
       <Paper style={{ marginBottom: '13px', borderTop: '7px solid', width:'100%' }} >
@@ -60,7 +59,7 @@ class MostDifficultTestCardNoStyled extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {testCases.map((testCase) => {
+              {data.map((testCase) => {
                 const { name, objective, summaries_not_approved } = testCase
                 return (
                   <React.Fragment key={name} >

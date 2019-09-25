@@ -34,12 +34,11 @@ class MostSkilledStudentsByTopicCardNoStyled extends React.Component {
 
   render() {
 
-    const { report, classes } = this.props
+    const { classes, data } = this.props
     const { isOpen } = this.state
-    const topics = ProjectService.getTheMostSkilledStudentByTopic(report)
 
     return (
-      <Paper style={{ marginBottom: '13px', borderTop: '7px solid', width:'100%'}} >
+      <Paper style={{ marginBottom: '13px', borderTop: '7px solid', width: '100%' }} >
         <ListItem button onClick={this.toggle}>
           <ListItemIcon>
             <StarBorder />
@@ -60,7 +59,7 @@ class MostSkilledStudentsByTopicCardNoStyled extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {topics.map((topic) => {
+              {data.map((topic) => {
                 const { name, description, level, students = [] } = topic
                 const [firstStudent, ...restOfStudents] = students
                 const rowSpan = students.length

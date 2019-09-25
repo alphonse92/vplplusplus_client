@@ -12,10 +12,10 @@ export const ReportProject = (props) => {
 		<Flex vertical width="100%">
 			<Typography variant="h5" gutterBottom>Stadistics</Typography>
 			<Flex horizontal width="100%">
-				<MostSkilledStudentsByTopicCard report={report} />
+				<MostSkilledStudentsByTopicCard data={stadistics.mostSkilledStudents} />
 			</Flex>
 			<Flex horizontal width="100%">
-				<MostDifficultTestCard report={report} />
+				<MostDifficultTestCard data={stadistics.mostDifficultTestrt} />
 			</Flex>
 			<Typography variant="h5" gutterBottom>Student Reports</Typography>
 			{report.map(r => <UserReportTab key={r._id} report={r} showUserReport={props.showUserReport} />)}
