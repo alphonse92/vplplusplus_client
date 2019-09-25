@@ -36,7 +36,7 @@ class MostDifficultTestCardNoStyled extends React.Component {
 
     const { data, classes } = this.props
     const { isOpen } = this.state
-
+    console.log(data)
     return (
       <Paper style={{ marginBottom: '13px', borderTop: '7px solid', width:'100%' }} >
         <ListItem button onClick={this.toggle}>

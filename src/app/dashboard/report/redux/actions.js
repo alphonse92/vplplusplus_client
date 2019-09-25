@@ -35,7 +35,10 @@ Actions[GET_PROJECTS_REPORT_NAME] = {
 	},
 	ACTIONS: createRequestActions(GET_PROJECTS_REPORT_NAME, {
 		fullfilled: (state, action) => {
-			const newState = { ...state, project: action.payload }
+			const { payload: projectReport } = action
+			const report = orderBy(projectReport.report, ['skill'], ['desc'])
+			const { stadistics } = projectReport
+			const newState = { ...state, project: { report, stadistics } }
 			return newState
 		},
 		rejected: (state, action) => {
@@ -54,7 +57,10 @@ Actions[GET_STUDENT_REPORT] = {
 	},
 	ACTIONS: createRequestActions(GET_STUDENT_REPORT, {
 		fullfilled: (state, action) => {
-			const newState = { ...state, student: orderBy(action.payload, ['skill'], ['desc']) }
+			const { payload: StudentReport } = action
+			const report = orderBy(StudentReport.report, ['skill'], ['desc'])
+			const { stadistics } = StudentReport
+			const newState = { ...state, student: { report, stadistics } }
 			return newState
 		},
 		rejected: (state, action) => {
