@@ -36,11 +36,14 @@ class ReportFilterButton extends React.Component {
   onCloseReportModal = ({ ok, value }) => {
 
     if (ok) {
-      const { project } = this.props
+      const { project_id, student_id } = this.props
       const { from, to, topic: topics } = value
       const topic = topics.map(t => t.name)
       const data = { from, to, topic }
-      this.props.DISPATCHERS.SET_FILTER(!!project, data)
+      const id = project_id || student_id
+      const fnName = project_id ? 'GET_PROJECT_REPORT' : 'GET_STUDENT_REPORT'
+      this.props.DISPATCHERS.SET_FILTER(!!project_id, data)
+      this.props.DISPATCHERS[fnName]({ id })
     }
     this.setState({ showReportModal: false })
   }

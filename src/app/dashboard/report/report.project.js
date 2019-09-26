@@ -1,4 +1,5 @@
 import React from 'react';
+import { isEqual } from 'lodash'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -32,22 +33,14 @@ class UserReportTabs extends React.Component {
 		return { DISPATCHERS }
 	}
 
-	loadProject(data = {}) {
+	loadProject() {
 		const { project_id } = this.props
-
+		console.log('loading project')
 		return this.props.DISPATCHERS.GET_PROJECT_REPORT({ project_id })
 	}
 
 	componentDidMount() {
 		this.loadProject()
-	}
-
-	shouldComponentUpdate(prevProps) {
-		const { report: prevReport = [] } = prevProps
-		const { report } = this.props
-		console.log('should  user report tabs component update', prevProps.project_id !== this.props.project_id, { prevProps, props: this.props })
-		return prevProps.project_id !== this.props.project_id
-			|| prevReport.length !== report.length
 	}
 
 	render() {
@@ -68,13 +61,13 @@ const ConnectedUserReportTabs = connect(
 )(UserReportTabs)
 
 export const ReportProject = (props) => {
-	const { report: ProjectReport = {}, project_id } = props
-	const { report = [], stadistics = {} } = ProjectReport
-	const { mostDifficultTest = [], mostSkilledStudents = [] } = stadistics
+	
+	const { project_id } = props
+
 	return (
 		<Flex vertical width="100%">
 			<Flex horizontal reverse>
-				<ReportFilterButton project />
+				<ReportFilterButton project_id={project_id} />
 			</Flex>
 			{/* <Typography variant="h5" gutterBottom>Stadistics</Typography> */}
 

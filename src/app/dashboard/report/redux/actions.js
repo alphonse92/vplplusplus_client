@@ -7,16 +7,19 @@ const Actions = {}
 const SET_FILTER_NAME = 'SET_FILTER'
 Actions[SET_FILTER_NAME] = {
 	DISPATCHER: (project, data) => (dispatcher) => {
-		dispatcher({ type: SET_PROJECT_TIMELINE_FILTER_NAME, payload: { project, data } })
+		dispatcher({ type: Actions[SET_FILTER_NAME].ACTIONS.default.name, payload: { project, data } })
 	},
-	ACTIONS: createRequestActions(SET_FILTER_NAME, {
-		fullfilled: (state, action) => {
-			const { project, data } = action.payload
-			const newState = { ...state }
-			newState[project ? 'project' : 'student'].filter = { ...data }
-			return newState
+	ACTIONS: {
+		default: {
+			name: SET_FILTER_NAME,
+			reducer: (state, action) => {
+				const { project, data } = action.payload
+				const newState = { ...state }
+				newState[project ? 'project' : 'student'].filter = { ...data }
+				return newState
+			}
 		}
-	}),
+	},
 }
 
 const SET_PROJECT_TIMELINE_FILTER_NAME = 'SET_PROJECT_TIMELINE_FILTER'
@@ -83,9 +86,9 @@ const GET_PROJECT_REPORT_NAME = 'GET_PROJECT_REPORT'
 Actions[GET_PROJECT_REPORT_NAME] = {
 	DISPATCHER: (data, opts) => (dispatcher, getStore) => {
 		const { from, to, topic } = get(getStore(), 'report.project.filter', {})
-		const { project_id } = data
+		const { id } = data
 		const actions = Actions[GET_PROJECT_REPORT_NAME].ACTIONS
-		const getRequest = () => ProjectService.getProjectReport(project_id, from, to, topic)
+		const getRequest = () => ProjectService.getProjectReport(id, from, to, topic)
 		requestDispatcher(dispatcher, actions, getRequest, opts)
 	},
 	ACTIONS: createRequestActions(GET_PROJECT_REPORT_NAME, {
@@ -114,7 +117,7 @@ Actions[GET_PROJECTS_REPORT_NAME] = {
 			const { payload: projectReport } = action
 			const report = orderBy(projectReport.report, ['skill'], ['desc'])
 			const { stadistics } = projectReport
-			const newState = { ...state, project: {...state.project, report, stadistics } }
+			const newState = { ...state, project: { ...state.project, report, stadistics } }
 			return newState
 		},
 		rejected: (state, action) => {
@@ -126,9 +129,9 @@ Actions[GET_PROJECTS_REPORT_NAME] = {
 const GET_STUDENT_REPORT = 'GET_STUDENT_REPORT'
 Actions[GET_STUDENT_REPORT] = {
 	DISPATCHER: (data, opts) => (dispatcher) => {
-		const { user_id, date_from, date_to, topics } = data
+		const { id, date_from, date_to, topics } = data
 		const actions = Actions[GET_STUDENT_REPORT].ACTIONS
-		const getRequest = () => ProjectService.getStudentReport(user_id, date_from, date_to, topics)
+		const getRequest = () => ProjectService.getStudentReport(id, date_from, date_to, topics)
 		requestDispatcher(dispatcher, actions, getRequest, opts)
 	},
 	ACTIONS: createRequestActions(GET_STUDENT_REPORT, {
