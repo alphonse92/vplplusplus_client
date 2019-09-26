@@ -4,6 +4,39 @@ import { ProjectService } from '../../../../services/project';
 
 const Actions = {}
 
+
+const GET_PROJECT_TIMELINE_NAME = 'GET_PROJECT_TIMELINE'
+Actions[GET_PROJECT_TIMELINE_NAME] = {
+	DISPATCHER: (data, opts) => (dispatcher) => {
+		const {
+			project_id,
+			from,
+			type = 'months',
+			each = 6,
+			steps = 4,
+			topic = []
+		} = data
+		const actions = Actions[GET_PROJECT_TIMELINE_NAME].ACTIONS
+		const getRequest = () => ProjectService.getReportTimeline(project_id, from, type, each, steps, topic)
+		requestDispatcher(dispatcher, actions, getRequest, opts)
+	},
+	ACTIONS: createRequestActions(GET_PROJECT_TIMELINE_NAME, {
+		fullfilled: (state, action) => {
+
+			return state
+
+			const { payload: projectReport } = action
+			const report = orderBy(projectReport.report, ['skill'], ['desc'])
+			const { stadistics } = projectReport
+			const newState = { ...state, project: { report, stadistics } }
+			return newState
+		},
+		rejected: (state, action) => {
+			return { ...state }
+		}
+	}),
+}
+
 const GET_PROJECT_REPORT_NAME = 'GET_PROJECT_REPORT'
 Actions[GET_PROJECT_REPORT_NAME] = {
 	DISPATCHER: (data, opts) => (dispatcher) => {

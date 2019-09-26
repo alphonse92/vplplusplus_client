@@ -87,6 +87,20 @@ class ProjectServiceClass extends WebService {
     return super.request(options, `/report/user/`)
   }
 
+
+  getReportTimeline(project_id, from, type = 'months', each = 6, steps = 4, topic = []) {
+    const query = {
+      project_id
+      , from
+      , type
+      , each
+      , steps
+      , topic
+    }
+    const options = { method: 'GET', qs: query }
+    return super.request(options, `/${project_id}/report/timeline/`)
+  }
+
   getTestCasesByDifficult(report) {
     const map = report
       .reduce((testMap, userReport) => {
