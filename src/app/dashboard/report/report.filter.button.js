@@ -10,10 +10,16 @@ import { FilterList } from '@material-ui/icons';
 import { Flex } from '../../../lib/components/flex';
 import { ProjectReportModal } from '../laboratory/project/project.report.modal';
 
-export class ReportFilterButton extends React.Component {
+class ReportFilterButton extends React.Component {
 
   state = {
     showReportModal: false
+  }
+  static mapStateToProps = (state) => {
+    const { report: root } = state
+    const { project = {} } = root
+    const { filter = {} } = project
+    return { filter }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -49,4 +55,13 @@ export class ReportFilterButton extends React.Component {
 
 
   }
+}
+
+const connectedComponent = connect(
+  ReportFilterButton.mapStateToProps,
+  ReportFilterButton.mapDispatchToProps,
+)(ReportFilterButton)
+
+export {
+  connectedComponent as ReportFilterButton
 }
