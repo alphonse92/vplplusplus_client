@@ -1,7 +1,7 @@
 import React from 'react';
-import { isEqual } from 'lodash'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+
 
 import { ActionCreators } from './redux/actions';
 import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals/actions';
@@ -59,30 +59,36 @@ const ConnectedUserReportTabs = connect(
 	UserReportTabs.mapDispatchToProps,
 )(UserReportTabs)
 
-export const ReportProject = (props) => {
-	const { project_id } = props
+const ReportProject = (props) => {
+	console.log(props)
+	const { project_id, showUserReport, mostSkilledStudents = [], mostDifficultTest = [] } = props
 	return (
 		<Flex vertical width="100%">
-			<Flex horizontal reverse>
-				<ReportFilterButton project_id={project_id} />
-			</Flex>
-			{/* <Typography variant="h5" gutterBottom>Stadistics</Typography> */}
-
-			{/* <Flex vertical width="100%">
-				<MostSkilledStudentsByTopicCard data={mostSkilledStudents} />
-			</Flex>
-
-			<Flex vertical width="100%">
-				<MostDifficultTestCard data={mostDifficultTest} />
-			</Flex>
-
-			<Flex vertical width="100%">
-				<ProjectReportTimelineCard project_id={project_id} />
-			</Flex> */}
-
-
-			<ConnectedUserReportTabs project_id={project_id} showUserReport={props.showUserReport} />
+			<Flex horizontal reverse><ReportFilterButton project_id={project_id} /></Flex>
+			{mostSkilledStudents.length && <Flex vertical width="100%"><MostSkilledStudentsByTopicCard data={mostSkilledStudents} /></Flex>}
+			{mostDifficultTest.length && <Flex vertical width="100%"><MostDifficultTestCard data={mostDifficultTest} /></Flex>}
+			{/* <Flex vertical width="100%"><ProjectReportTimelineCard project_id={project_id} /></Flex> */}
+			<ConnectedUserReportTabs project_id={project_id} showUserReport={showUserReport} />
 
 		</Flex>
 	)
 }
+
+ReportProject.mapStateToProps = (state) => {
+	const { report } = state
+	const { project = {} } = report
+	const { stadistics } = project
+	const { mostDifficultTest = [], mostSkilledStudents = [] } = stadistics
+	return { mostDifficultTest, mostSkilledStudents }
+}
+ReportProject.mapDispatchToProps = (dispatch) => ({})
+
+const ReportProjectConnected = connect(
+	ReportProject.mapStateToProps,
+	ReportProject.mapDispatchToProps,
+)(ReportProject)
+
+export {
+	ReportProjectConnected as ReportProject
+}
+

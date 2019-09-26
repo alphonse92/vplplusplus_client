@@ -34,7 +34,6 @@ class MostSkilledStudentsByTopicCardNoStyled extends React.Component {
 
     const { classes, data } = this.props
     const { isOpen } = this.state
-
     return (
       <Paper style={{ marginBottom: '13px', borderTop: '7px solid', width: '100%' }} >
         <ListItem button onClick={this.toggle}>
