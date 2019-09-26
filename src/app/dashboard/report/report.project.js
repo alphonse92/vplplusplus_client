@@ -46,7 +46,7 @@ class UserReportTabs extends React.Component {
 		const { report } = this.props
 		return (
 			<React.Fragment>
-				<Typography variant="h5" gutterBottom>Student Reports</Typography>
+				{!!report.length && <Typography variant="h5" gutterBottom>Student Reports</Typography>}
 				{!report.length && <NoReportsComponent />}
 				{report.map(r => <UserReportTab key={r._id} report={r} showUserReport={this.props.showUserReport} />)}
 			</React.Fragment>
@@ -65,9 +65,9 @@ const ReportProject = (props) => {
 	return (
 		<Flex vertical width="100%">
 			<Flex horizontal reverse><ReportFilterButton project_id={project_id} /></Flex>
-			{mostSkilledStudents.length && <Flex vertical width="100%"><MostSkilledStudentsByTopicCard data={mostSkilledStudents} /></Flex>}
-			{mostDifficultTest.length && <Flex vertical width="100%"><MostDifficultTestCard data={mostDifficultTest} /></Flex>}
-			{/* <Flex vertical width="100%"><ProjectReportTimelineCard project_id={project_id} /></Flex> */}
+			{!!mostSkilledStudents.length && <Flex vertical width="100%"><MostSkilledStudentsByTopicCard data={mostSkilledStudents} /></Flex>}
+			{!!mostDifficultTest.length && <Flex vertical width="100%"><MostDifficultTestCard data={mostDifficultTest} /></Flex>}
+			<Flex vertical width="100%"><ProjectReportTimelineCard project_id={project_id} /></Flex>
 			<ConnectedUserReportTabs project_id={project_id} showUserReport={showUserReport} />
 
 		</Flex>

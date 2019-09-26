@@ -45,7 +45,7 @@ class ProjectReportTimelineCardNoStyled extends React.Component {
 
 
   componentDidMount(prevProps) {
-
+    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
   }
 
   toggle = () => {
