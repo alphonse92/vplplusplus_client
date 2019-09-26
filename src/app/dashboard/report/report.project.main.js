@@ -1,8 +1,8 @@
 import React from 'react'
-import { ReportBroker } from './report.broker'
+import { ReportProject } from './report.project'
 
 export const Main = (props) => {
 	const pathname = '/dashboard/report/student/'
 	const showUserReport = ({ id }) => props.history.push(`${pathname}${id ? id : ''}`)
-	return <ReportBroker isProjectReport {...props} showUserReport={showUserReport} />
+	return <ReportProject project_id={props.match.params.id} showUserReport={showUserReport} />
 }

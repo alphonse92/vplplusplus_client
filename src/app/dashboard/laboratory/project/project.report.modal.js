@@ -73,7 +73,7 @@ export class ProjectReportModalClass extends React.Component {
     const selectedTopics = this.selectedTopics || []
     const formValue = {
       ...this.state.form,
-      topics: selectedTopics.map(({ index }) => topics[index])
+      topic: selectedTopics.map(({ index }) => topics[index])
     }
 
     if (selectBySem) {

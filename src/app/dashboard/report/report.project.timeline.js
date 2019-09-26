@@ -28,9 +28,11 @@ class ProjectReportTimelineCardNoStyled extends React.Component {
   }
 
   static mapStateToProps = (state) => {
-    const { report } = state
-    const { project = {}, student = {} } = report
-    return { report: { project, student } }
+    const { report: root } = state
+    const { project = {} } = root
+    const { stadistics = {} } = project
+    const { timeline = { options: {}, datasets: [] } } = stadistics
+    return { timeline }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -42,11 +44,17 @@ class ProjectReportTimelineCardNoStyled extends React.Component {
   }
 
 
+  componentDidMount(prevProps) {
+
+  }
+
   toggle = () => {
     this.setState({ isOpen: !this.state.isOpen })
   }
 
   render() {
+
+    console.log(this.props)
 
     const example = [
       {

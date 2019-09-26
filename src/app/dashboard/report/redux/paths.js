@@ -1,10 +1,17 @@
 import { set } from 'lodash'
 
 const PATHS = {
+	'project.filter': {},
 	'project.report': [],
 	'project.stadistics': {},
 	'project.statadistics.timeline.datasets': [],
-	'project.statadistics.timeline.options': {},
+	'project.statadistics.timeline.options': {
+		type: 'months'
+		, each: 6
+		, steps: 4
+		, topic: []
+	},
+	'student.filter': [],
 	'student.report': [],
 	'student.stadistics': {},
 

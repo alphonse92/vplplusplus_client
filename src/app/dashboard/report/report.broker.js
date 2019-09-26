@@ -1,49 +1,17 @@
 import React from 'react';
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 import { Button } from '@material-ui/core';
 import { FilterList } from '@material-ui/icons';
 
-import { ActionCreators } from './redux/actions';
-import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals/actions';
+
 import { Flex } from '../../../lib/components/flex';
 import { ReportProject } from './report.project';
 import { ReportStudent } from './report.student';
 import { ProjectReportModal } from '../laboratory/project/project.report.modal';
-import { NoReportsComponent } from './report.nosubmissions';
 
 class ReportBroker extends React.Component {
 
 	state = {
 		showReportModal: false
-	}
-
-	static mapStateToProps = (state) => {
-		const { report } = state
-		const { project = {}, student = {} } = report
-		return { report: { project, student } }
-	}
-
-	static mapDispatchToProps = (dispatch) => {
-		const DISPATCHERS = {
-			...bindActionCreators({ ...ActionCreators }, dispatch),
-			...bindActionCreators({ ...ActionCreatorsForErrors }, dispatch)
-		}
-		return { DISPATCHERS }
-	}
-
-	loadReports = (data = {}) => {
-		const { match, isProjectReport } = this.props
-		const { params } = match
-		const { id } = params
-
-		if (!isProjectReport) return this.props.DISPATCHERS.GET_STUDENT_REPORT({ user_id: id, ...data })
-		else if (id) return this.props.DISPATCHERS.GET_PROJECT_REPORT({ project_id: id, ...data })
-		else return this.props.DISPATCHERS.GET_PROJECTS_REPORT()
-	}
-
-	componentDidMount() {
-		this.loadReports()
 	}
 
 	showReportModal = () => {
@@ -63,19 +31,14 @@ class ReportBroker extends React.Component {
 		this.setState({ showReportModal: false })
 	}
 
-
 	render() {
 		const { props } = this
-		const { report, isProjectReport } = props
-		const reportData = isProjectReport
-			? report.project
-			: report.student
+		const { isProjectReport } = props
 
-		const ReportComponent = reportData.report.length
-			? (reportComponentProos) => isProjectReport
-				? <ReportProject {...reportComponentProos} showUserReport={props.showUserReport} />
-				: <ReportStudent {...reportComponentProos} showProjectReport={props.showProjectReport} openProject={props.openProject} />
-			: () => <NoReportsComponent />
+
+		const ReportComponent = isProjectReport
+			? (reportComponentProos) => <ReportProject {...reportComponentProos} project_id={this.props.match.params.id} showUserReport={props.showUserReport} />
+			: (reportComponentProos) => <ReportStudent {...reportComponentProos} showProjectReport={props.showProjectReport} openProject={props.openProject} />
 
 		return (
 			<Flex vertical width="100%">
@@ -83,7 +46,7 @@ class ReportBroker extends React.Component {
 				<Flex horizontal reverse>
 					<Button onClick={this.showReportModal}><FilterList />Filter </Button>
 				</Flex>
-				<ReportComponent report={reportData} />
+				<ReportComponent />
 			</Flex>
 		)
 
@@ -91,11 +54,6 @@ class ReportBroker extends React.Component {
 	}
 }
 
-const ConnectedReport = connect(
-	ReportBroker.mapStateToProps,
-	ReportBroker.mapDispatchToProps,
-)(ReportBroker)
-
 export {
-	ConnectedReport as ReportBroker
+	ReportBroker
 }
