@@ -35,8 +35,7 @@ class UserReportTabs extends React.Component {
 
 	loadProject() {
 		const { project_id } = this.props
-		console.log('loading project')
-		return this.props.DISPATCHERS.GET_PROJECT_REPORT({ project_id })
+		return this.props.DISPATCHERS.GET_PROJECT_REPORT({ id: project_id })
 	}
 
 	componentDidMount() {
@@ -61,9 +60,7 @@ const ConnectedUserReportTabs = connect(
 )(UserReportTabs)
 
 export const ReportProject = (props) => {
-	
 	const { project_id } = props
-
 	return (
 		<Flex vertical width="100%">
 			<Flex horizontal reverse>
@@ -84,7 +81,7 @@ export const ReportProject = (props) => {
 			</Flex> */}
 
 
-			<ConnectedUserReportTabs project_id={props.project_id} showUserReport={props.showUserReport} />
+			<ConnectedUserReportTabs project_id={project_id} showUserReport={props.showUserReport} />
 
 		</Flex>
 	)

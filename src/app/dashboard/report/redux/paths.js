@@ -1,7 +1,29 @@
 import { set } from 'lodash'
+import moment from 'moment'
+
+const now = moment()
+const currentYear = now.get('year')
+const startOfFirstSemestre = moment(`${currentYear}-01-01`, 'YYYY-MM-DD')
+const endOfFirstSemestre = moment(`${currentYear}-06-30`, 'YYYY-MM-DD')
+
+const isFirstSemestre =
+	now.isSameOrAfter(startOfFirstSemestre)
+	&& now.isSameOrBefore(endOfFirstSemestre)
+
+const firstSemestreRange = {
+	from: `${currentYear}-01-01`,
+	to: `${currentYear}-06-30`
+}
+
+const secondSemestreRAnge = {
+	from: `${currentYear}-07-1`,
+	to: `${currentYear}-12-31`
+}
+
+const range = isFirstSemestre ? firstSemestreRange : secondSemestreRAnge
 
 const PATHS = {
-	'project.filter': {},
+	'project.filter': { ...range, topic: [] },
 	'project.report': [],
 	'project.stadistics': {},
 	'project.statadistics.timeline.datasets': [],
