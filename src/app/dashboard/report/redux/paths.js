@@ -26,8 +26,8 @@ const PATHS = {
 	'project.filter': { ...range, topic: [] },
 	'project.report': [],
 	'project.stadistics': {},
-	'project.statadistics.timeline.datasets': [],
-	'project.statadistics.timeline.options': {
+	'project.stadistics.timeline.datasets': [],
+	'project.stadistics.timeline.options': {
 		type: 'months'
 		, each: 6
 		, steps: 4

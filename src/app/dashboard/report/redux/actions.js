@@ -15,7 +15,7 @@ Actions[SET_FILTER_NAME] = {
 			reducer: (state, action) => {
 				const { project, data } = action.payload
 				const newState = { ...state }
-				newState[project ? 'project' : 'student'].filter = { ...data }
+				state[project ? 'project' : 'student'].filter = { ...data }
 				return newState
 			}
 		}
@@ -30,9 +30,8 @@ Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
 	},
 	ACTIONS: createRequestActions(SET_PROJECT_TIMELINE_FILTER_NAME, {
 		fullfilled: (state, action) => {
-			const newState = { ...state }
-			newState.project.stadistics.timeline.options = { ...action.payload }
-			return newState
+			state.project.stadistics.timeline.options = { ...action.payload }
+			return state
 		}
 	}),
 }
@@ -42,11 +41,10 @@ Actions[CLEAR_PROJECT_TIMELINE_DATASETS_NAME] = {
 	DISPATCHER: () => (dispatcher) => {
 		dispatcher({ type: CLEAR_PROJECT_TIMELINE_DATASETS_NAME })
 	},
-	ACTIONS: createRequestActions(CLEAR_PROJECT_TIMELINE_DATASETS_NAME, {
+	ACTIONS: createRequestActions(SET_PROJECT_TIMELINE_FILTER_NAME, {
 		fullfilled: (state, action) => {
-			const newState = { ...state }
-			newState.project.stadistics.timeline.datasets = []
-			return newState
+			state.project.stadistics.timeline.datasets = []
+			return state
 		}
 	}),
 }
@@ -69,15 +67,12 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 	},
 	ACTIONS: createRequestActions(GET_PROJECT_TIMELINE_NAME, {
 		fullfilled: (state, action) => {
-			const newState = { ...state }
 			const { payload: newDataSet } = action
-			const { timeline } = { ...newState.project.stadistics.timeline }
-			timeline.datasets = state.project.stadistics.timeline.datasets.concat(newDataSet)
-			timeline.requestedAt = Date.now()
-			return newState
+			state.project.stadistics.timeline.datasets = state.project.stadistics.timeline.datasets.concat(newDataSet)
+			return state
 		},
 		rejected: (state, action) => {
-			return { ...state }
+			return state
 		}
 	}),
 }
@@ -100,7 +95,7 @@ Actions[GET_PROJECT_REPORT_NAME] = {
 			return newState
 		},
 		rejected: (state, action) => {
-			return { ...state }
+			return state
 		}
 	}),
 }
@@ -121,7 +116,7 @@ Actions[GET_PROJECTS_REPORT_NAME] = {
 			return newState
 		},
 		rejected: (state, action) => {
-			return { ...state }
+			return state
 		}
 	}),
 }
@@ -143,7 +138,7 @@ Actions[GET_STUDENT_REPORT] = {
 			return newState
 		},
 		rejected: (state, action) => {
-			return { ...state }
+			return state
 		}
 	}),
 }
