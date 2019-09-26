@@ -93,7 +93,7 @@ Actions[GET_PROJECT_REPORT_NAME] = {
 			const { payload: projectReport } = action
 			const report = orderBy(projectReport.report, ['skill'], ['desc'])
 			const { stadistics } = projectReport
-			const newState = { ...state, project: { report, stadistics } }
+			const newState = { ...state, project: { ...projectReport, report, stadistics } }
 			return newState
 		},
 		rejected: (state, action) => {
@@ -114,7 +114,7 @@ Actions[GET_PROJECTS_REPORT_NAME] = {
 			const { payload: projectReport } = action
 			const report = orderBy(projectReport.report, ['skill'], ['desc'])
 			const { stadistics } = projectReport
-			const newState = { ...state, project: { report, stadistics } }
+			const newState = { ...state, project: { ...projectReport, report, stadistics } }
 			return newState
 		},
 		rejected: (state, action) => {
@@ -136,7 +136,7 @@ Actions[GET_STUDENT_REPORT] = {
 			const { payload: StudentReport } = action
 			const report = orderBy(StudentReport.report, ['skill'], ['desc'])
 			const { stadistics } = StudentReport
-			const newState = { ...state, student: { report, stadistics } }
+			const newState = { ...state, project: { ...StudentReport, report, stadistics } }
 			return newState
 		},
 		rejected: (state, action) => {

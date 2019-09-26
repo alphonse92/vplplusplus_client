@@ -20,8 +20,8 @@ class UserReportTabs extends React.Component {
 	static mapStateToProps = (state) => {
 		const { report: root } = state
 		const { project = {} } = root
-		const { report = [] } = project
-		return { report }
+		const { report = [], filter } = project
+		return { report, filter }
 	}
 
 	static mapDispatchToProps = (dispatch) => {
