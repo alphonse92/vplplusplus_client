@@ -68,6 +68,7 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 	ACTIONS: createRequestActions(GET_PROJECT_TIMELINE_NAME, {
 		fullfilled: (state, action) => {
 			const { payload: newDataSet } = action
+			console.log(state)
 			state.project.stadistics.timeline.datasets = state.project.stadistics.timeline.datasets.concat(newDataSet)
 			return state
 		},
@@ -109,11 +110,17 @@ Actions[GET_PROJECTS_REPORT_NAME] = {
 	},
 	ACTIONS: createRequestActions(GET_PROJECTS_REPORT_NAME, {
 		fullfilled: (state, action) => {
-			const { payload: projectReport } = action
-			const report = orderBy(projectReport.report, ['skill'], ['desc'])
-			const { stadistics } = projectReport
-			const newState = { ...state, project: { ...state.project, report, stadistics } }
-			return newState
+			const { payload: projectReportPayload } = action
+			const report = orderBy(projectReportPayload.report, ['skill'], ['desc'])
+			const { stadistics: statsFromPayload } = projectReportPayload
+			const { mostDifficultTest, mostSkilledStudents, avg } = statsFromPayload
+
+			state.project.report = report
+			state.project.stadistics.mostDifficultTest = mostDifficultTest
+			state.project.stadistics.mostSkilledStudents = mostSkilledStudents
+			state.project.stadistics.avg = avg
+
+			return state
 		},
 		rejected: (state, action) => {
 			return state

@@ -22,7 +22,7 @@ function dispatchInitActions(dispatch, action) {
 function dispatchRequesSuccess(dispatch, { data }, action, opts = {}) {
 	const { fullfilled } = action
 	const formattedData = opts.format ? opts.format(data) : data
-	setLoading(dispatch,false)
+	setLoading(dispatch, false)
 	dispatch({ type: fullfilled.name, payload: formattedData, })
 	opts.after && opts.after(formattedData)
 }
@@ -54,6 +54,7 @@ export async function requestDispatcher(dispatch, action, getRequest, opts = {})
 		throwErrorAtRequestError(responseParsed)
 		dispatchRequesSuccess(dispatch, responseParsed, action, opts)
 	} catch (error) {
+		console.log('error requesting', error)
 		dispatch({
 			type: action.rejected.name,
 			payload: error
