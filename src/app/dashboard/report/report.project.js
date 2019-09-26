@@ -60,7 +60,6 @@ const ConnectedUserReportTabs = connect(
 )(UserReportTabs)
 
 const ReportProject = (props) => {
-	console.log(props)
 	const { project_id, showUserReport, mostSkilledStudents = [], mostDifficultTest = [] } = props
 	return (
 		<Flex vertical width="100%">

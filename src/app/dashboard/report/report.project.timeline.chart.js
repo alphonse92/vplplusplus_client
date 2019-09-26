@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { ActionCreators } from './redux/actions';
 import { Line } from 'react-chartjs-2';
 
-class ProjectReportTimelineChart extends React.Components {
+class ProjectReportTimelineChart extends React.Component{
   static mapStateToProps = (state) => {
     const { report: root } = state
     const { project = {} } = root
@@ -20,7 +20,7 @@ class ProjectReportTimelineChart extends React.Components {
     return { DISPATCHERS }
   }
 
-  componentDidMount(prevProps) {
+  componentDidMount() {
     console.log('did mount')
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
   }
