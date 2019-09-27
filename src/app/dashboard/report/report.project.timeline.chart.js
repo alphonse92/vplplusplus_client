@@ -83,7 +83,7 @@ class ProjectReportTimelineChart extends React.Component {
 
   render() {
     const { timeline, options = {} } = this.props
-    const { datasets = []: storeDataSets } = timeline
+    const { datasets: storeDataSets = [] } = timeline
     const mostLengthyDataset = storeDataSets.reduce(
       (mostLength, ds) => ds.lenght >= mostLength ? ds.timeline.length : mostLength,
       0
