@@ -46,7 +46,7 @@ class ProjectReportTimelineChart extends React.Component {
       }]
     },
     tooltips: {
-      intersect: true,
+      intersect: false,
       mode: 'index',
       callbacks: {
         label: function (tooltipItem, myData) {
@@ -76,31 +76,42 @@ class ProjectReportTimelineChart extends React.Component {
     return { DISPATCHERS }
   }
 
-  componentDidMount() {
-    console.log('did mount')
-    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
-  }
+  state = {}
 
-  render() {
-    const { timeline, options = {} } = this.props
-    const { datasets: storeDataSets = [] } = timeline
-    const mostLengthyDataset = storeDataSets.reduce(
-      (mostLength, ds) => ds.lenght >= mostLength ? ds.timeline.length : mostLength,
+  componentDidMount() {
+    console.log('mountings chart')
+
+    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
+
+    const { timeline } = this.props
+    const datasets = timeline.datasets
+    const mostLengthyDataset = datasets.reduce(
+      (mostLength, ds) => ds.lenght >= mostLength ? ds.reports.length : mostLength,
       0
     )
     const labels = Array.from(Array(mostLengthyDataset), (a, index) => index)
-    const datasets = storeDataSets.map(ds => {
-      const { project, timeline } = ds
+    const chardatasets = datasets.map(ds => {
+      const { project, reports } = ds
       const custom = {
         label: cutStringAndAddDots(project.name),
-        data: timeline.map(({ skill }) => skill)
+        data: reports.map(({ skill }) => skill)
       }
       return { ...ProjectReportTimelineChart.DATASET_BASE, custom }
     })
 
+    this.setState({ datasets: chardatasets, labels })
+  }
+
+  render() {
+    console.log('render')
+    const { options: chartOpts = {} } = this.props
+    const { datasets = [], labels = [] } = this.state
 
     return (
-      <Line data={{ labels, datasets }} options={{ ...ProjectReportTimelineChart.OPTS_BASE, ...options }} />
+      <React.Fragment>
+        {!!datasets.length && <Line data={{ labels, datasets }} options={{ ...ProjectReportTimelineChart.OPTS_BASE, ...chartOpts }} />}
+        {!datasets.length && <p>No data to shown</p>}
+      </React.Fragment>
     )
   }
 }
