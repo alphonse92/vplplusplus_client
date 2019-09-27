@@ -89,7 +89,7 @@ class ProjectReportTimelineChart extends React.Component {
       0
     )
     const labels = Array.from(Array(mostLengthyDataset), (a, index) => index)
-    const datasets = this.props.datasets.map(ds => {
+    const datasets = storeDataSets.map(ds => {
       const { project, timeline } = ds
       const custom = {
         label: cutStringAndAddDots(project.name),
