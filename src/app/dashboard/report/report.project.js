@@ -59,28 +59,33 @@ const ConnectedUserReportTabs = connect(
 	UserReportTabs.mapDispatchToProps,
 )(UserReportTabs)
 
-const ReportProject = (props) => {
-	const { project_id, showUserReport, mostSkilledStudents = [], mostDifficultTest = [] } = props
-	return (
-		<Flex vertical width="100%">
-			<Flex horizontal reverse><ReportFilterButton project_id={project_id} /></Flex>
-			{!!mostSkilledStudents.length && <Flex vertical width="100%"><MostSkilledStudentsByTopicCard data={mostSkilledStudents} /></Flex>}
-			{!!mostDifficultTest.length && <Flex vertical width="100%"><MostDifficultTestCard data={mostDifficultTest} /></Flex>}
-			<Flex vertical width="100%"><ProjectReportTimelineCard project_id={project_id} /></Flex>
-			<ConnectedUserReportTabs project_id={project_id} showUserReport={showUserReport} />
+class ReportProject extends React.Component {
 
-		</Flex>
-	)
-}
+	static mapStateToProps = (state) => {
+		const { report: root } = state
+		const { project = {} } = root
+		const { stadistics, report } = project
+		const { mostDifficultTest = [], mostSkilledStudents = [] } = stadistics
+		return { report, mostDifficultTest, mostSkilledStudents }
+	}
 
-ReportProject.mapStateToProps = (state) => {
-	const { report } = state
-	const { project = {} } = report
-	const { stadistics } = project
-	const { mostDifficultTest = [], mostSkilledStudents = [] } = stadistics
-	return { mostDifficultTest, mostSkilledStudents }
+	static mapDispatchToProps = () => ({})
+
+	render() {
+		const { props } = this
+		const { project_id, report, showUserReport, mostSkilledStudents = [], mostDifficultTest = [] } = props
+		return (
+			<Flex vertical width="100%">
+				<Flex horizontal reverse><ReportFilterButton project_id={project_id} /></Flex>
+				{!!mostSkilledStudents.length && <Flex vertical width="100%"><MostSkilledStudentsByTopicCard project_id={project_id} data={mostSkilledStudents} /></Flex>}
+				{!!mostDifficultTest.length && <Flex vertical width="100%"><MostDifficultTestCard project_id={project_id} data={mostDifficultTest} /></Flex>}
+				{!!report.length && <Flex vertical width="100%"><ProjectReportTimelineCard project_id={project_id} /></Flex>}
+				<ConnectedUserReportTabs project_id={project_id} showUserReport={showUserReport} />
+
+			</Flex>
+		)
+	}
 }
-ReportProject.mapDispatchToProps = (dispatch) => ({})
 
 const ReportProjectConnected = connect(
 	ReportProject.mapStateToProps,
