@@ -1,4 +1,5 @@
 import React from 'react';
+import { capitalize } from 'lodash'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { ActionCreators } from './redux/actions';
@@ -83,7 +84,7 @@ class ProjectReportTimelineChart extends React.Component {
 
   render() {
     const { props } = this
-    const { datasets, options: chartOpts = {} } = props
+    const { datasets, options = {} } = props
     const mostLengthyDataset = datasets.reduce(
       (mostLength, ds) => ds.reports.length >= mostLength ? ds.reports.length : mostLength,
       0
@@ -98,11 +99,25 @@ class ProjectReportTimelineChart extends React.Component {
       return { ...ProjectReportTimelineChart.DATASET_BASE, ...custom }
     })
 
-    const options = { ...ProjectReportTimelineChart.OPTS_BASE, ...chartOpts }
-    const data = { labels, datasets: chardatasets }
-    const lineProps = { data, options }
+    const chartOpts = {
+      ...{
+        ...ProjectReportTimelineChart.OPTS_BASE,
+        scales: {
+          ...ProjectReportTimelineChart.OPTS_BASE.scales,
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: capitalize(options.type)
+            }
+          }],
+        },
+      },
+      ...options,
 
-    console.log({ datasets, lineProps })
+    }
+
+    const data = { labels, datasets: chardatasets }
+    const lineProps = { data, options: chartOpts }
 
     return (
       <Line {...lineProps} />
