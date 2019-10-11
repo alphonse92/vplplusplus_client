@@ -10,7 +10,7 @@ import {
 import {
   ExpandLess as ExpandLessIcon
   , ExpandMore as ExpandMoreIcon,
-  ShowChart
+  TimelapseOutlined
 } from '@material-ui/icons';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -34,7 +34,7 @@ class ProjectReportTimelineCardNoStyled extends React.Component {
       <Paper style={{ marginBottom: '13px', borderTop: '7px solid', width: '100%' }} >
         <ListItem button onClick={this.toggle}>
           <ListItemIcon>
-            <ShowChart />
+            <TimelapseOutlined />
           </ListItemIcon>
           <ListItemText
             inset
