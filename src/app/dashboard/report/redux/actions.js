@@ -41,14 +41,12 @@ Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
 		const payload = { from, type, each, steps, topic }
 		const name = Actions[SET_PROJECT_TIMELINE_FILTER_NAME].ACTIONS.default.name
 		const dispatcherData = { type: name, payload }
-		console.log(dispatcherData)
 		dispatcher(dispatcherData)
 	},
 	ACTIONS: {
 		default: {
 			name: SET_PROJECT_TIMELINE_FILTER_NAME,
 			reducer: (state, action) => {
-				console.log(action)
 				state.project.stadistics.timeline.options = { ...action.payload }
 				return state
 			}
