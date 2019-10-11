@@ -40,7 +40,7 @@ Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
 		} = data
 		const payload = { from, type, each, steps, topic }
 		console.log({ data, payload })
-		dispatcher({ type: SET_PROJECT_TIMELINE_FILTER_NAME, payload })
+		dispatcher({ type: Actions[SET_PROJECT_TIMELINE_FILTER_NAME].ACTIONS.default.name, payload })
 	},
 	ACTIONS: createRequestActions(SET_PROJECT_TIMELINE_FILTER_NAME, {
 		default: {
