@@ -125,8 +125,8 @@ class ProjectReportTimelineChart extends React.Component {
 
     return (
       <React.Fragment>
-        {(datasets && datasets.length) && <Line {...lineProps} />}
-        {(!(datasets && datasets.length)) && <NoDataComponent />}
+        {!!(datasets && datasets.length) && <Line {...lineProps} />}
+        {!!(!datasets || !datasets.length) && <NoDataComponent />}
       </React.Fragment>
     )
 
