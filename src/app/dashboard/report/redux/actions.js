@@ -24,9 +24,15 @@ Actions[SET_FILTER_NAME] = {
 
 const SET_PROJECT_TIMELINE_FILTER_NAME = 'SET_PROJECT_TIMELINE_FILTER'
 Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
-	DISPATCHER: (data) => (dispatcher) => {
-		const { from, type = 'months', each = 6, steps = 4, topic = [] } = data
-		dispatcher({ type: SET_PROJECT_TIMELINE_FILTER_NAME, payload: { from, type, each, steps, topic } })
+	DISPATCHER: (data) => (dispatcher,getStore) => {
+		const store = getStore()
+		const { report: root = {} } = store
+		const { project = {} } = root
+		const { stadistics = {} } = project
+		const { timeline = {} } = stadistics
+		const { options: optionsFromStore = {} } = timeline
+		const { from, type, each, steps, topic } = data
+		dispatcher({ type: SET_PROJECT_TIMELINE_FILTER_NAME, payload: { ...optionsFromStore, from, type, each, steps, topic } })
 	},
 	ACTIONS: createRequestActions(SET_PROJECT_TIMELINE_FILTER_NAME, {
 		fullfilled: (state, action) => {

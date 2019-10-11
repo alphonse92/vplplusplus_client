@@ -7,6 +7,19 @@ import { Line } from 'react-chartjs-2';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import { cutStringAndAddDots } from '../../../lib';
 import { Flex } from '../../../lib/components/flex';
+import { Select, MenuItem } from '@material-ui/core';
+
+const LineChartTypeOptions = [
+  'years',
+  'quarters',
+  'months',
+  'weeks',
+  'days',
+  'hours',
+  'minutes',
+  'seconds',
+  'milliseconds',
+]
 
 /**
  * This component will show a filter to filter the report by
@@ -20,8 +33,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { project } = root
     const { stadistics } = project
     const { timeline } = stadistics
-    const { datasets, options } = timeline
-    return { datasets, options }
+    const { options } = timeline
+    return { options }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -30,14 +43,28 @@ class ProjectReportTimelineChartOptions extends React.Component {
     }
     return { DISPATCHERS }
   }
+  state = {
+    age: LineChartTypeOptions[0]
+  }
 
   loadRepor = () => {
     // DISPATCHERS.SETFILTER
     // DISPACHERS.LOAD_REPORT
   }
 
+  handleChange = attribute => event => {
+    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ [attribute]: event.target.value })
+  };
+
   render() {
-    return <p>{JSON.stringify(this.props.options)}</p>
+    console.log(this.props.options)
+    return <Flex horizontal>
+      <Select
+        value={this.props.options.type}
+        onChange={this.handleChange('type')}>
+        {LineChartTypeOptions.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
+      </Select>
+    </Flex>
   }
 }
 
