@@ -59,12 +59,15 @@ Actions[CLEAR_PROJECT_TIMELINE_DATASETS_NAME] = {
 	DISPATCHER: () => (dispatcher) => {
 		dispatcher({ type: CLEAR_PROJECT_TIMELINE_DATASETS_NAME })
 	},
-	ACTIONS: createRequestActions(CLEAR_PROJECT_TIMELINE_DATASETS_NAME, {
-		fullfilled: (state, action) => {
-			state.project.stadistics.timeline.datasets = []
-			return state
+	ACTIONS: {
+		default: {
+			name: CLEAR_PROJECT_TIMELINE_DATASETS_NAME,
+			reducer: (state, action) => {
+				state.project.stadistics.timeline.datasets = []
+				return state
+			}
 		}
-	}),
+	},
 }
 
 const GET_PROJECT_TIMELINE_NAME = 'GET_PROJECT_TIMELINE'
