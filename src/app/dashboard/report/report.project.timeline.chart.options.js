@@ -46,18 +46,13 @@ class ProjectReportTimelineChartOptions extends React.Component {
   state = {
     age: LineChartTypeOptions[0]
   }
-
-  loadRepor = () => {
-    // DISPATCHERS.SETFILTER
-    // DISPACHERS.LOAD_REPORT
-  }
-
+  
   handleChange = attribute => event => {
     this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ [attribute]: event.target.value })
+    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
   };
 
   render() {
-    console.log(this.props.options)
     return <Flex horizontal>
       <Select
         value={this.props.options.type}

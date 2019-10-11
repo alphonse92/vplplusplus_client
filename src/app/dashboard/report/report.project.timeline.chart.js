@@ -126,7 +126,7 @@ class ProjectReportTimelineChart extends React.Component {
 
     return (
       <React.Fragment>
-        <ProjectReportTimelineChartOptions />
+        <ProjectReportTimelineChartOptions   project_id={this.props.project_id} />
         {!!(datasets && datasets.length) && <Line {...lineProps} />}
         {!!(!datasets || !datasets.length) && <NoDataComponent />}
       </React.Fragment>
