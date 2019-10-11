@@ -92,7 +92,7 @@ class ProjectReportTimelineChart extends React.Component {
       (mostLength, ds) => ds.reports.length >= mostLength ? ds.reports.length : mostLength,
       0
     )
-    const labels = Array.from(Array(mostLengthyDataset), (a, index) => index + 1)
+    const labels = Array.from(Array(mostLengthyDataset), (a, index) => (index + 1) * options.steps)
     const chardatasets = datasets.map(ds => {
       const { project, reports } = ds
       const custom = {
@@ -110,7 +110,7 @@ class ProjectReportTimelineChart extends React.Component {
           xAxes: [{
             scaleLabel: {
               display: true,
-              labelString: capitalize(options.type)
+              labelString: `Every ${options.steps} ${capitalize(options.type)} from ${options.from ? options.from : 'project starts'}`
             }
           }],
         },
@@ -126,7 +126,7 @@ class ProjectReportTimelineChart extends React.Component {
 
     return (
       <React.Fragment>
-        <ProjectReportTimelineChartOptions   project_id={this.props.project_id} />
+        <ProjectReportTimelineChartOptions project_id={this.props.project_id} />
         {!!(datasets && datasets.length) && <Line {...lineProps} />}
         {!!(!datasets || !datasets.length) && <NoDataComponent />}
       </React.Fragment>
