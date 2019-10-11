@@ -123,7 +123,12 @@ class ProjectReportTimelineChart extends React.Component {
     const data = { labels, datasets: chardatasets }
     const lineProps = { data, options: chartOpts }
 
-    return !(datasets && datasets.length) ? <NoDataComponent /> : <Line {...lineProps} />
+    return (
+      <React.Fragment>
+        {(datasets && datasets.length) && <Line {...lineProps} />}
+        {(datasets && datasets.length) &&& <NoDataComponent />}
+      </React.Fragment>
+    )
 
   }
 }
