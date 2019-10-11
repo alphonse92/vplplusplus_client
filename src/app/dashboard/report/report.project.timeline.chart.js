@@ -7,6 +7,7 @@ import { Line } from 'react-chartjs-2';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import { cutStringAndAddDots } from '../../../lib';
 import { Flex } from '../../../lib/components/flex';
+import { ProjectReportTimelineChartOptions } from './report.project.timeline.chart.options';
 
 class ProjectReportTimelineChart extends React.Component {
   static DATASET_BASE = {
@@ -125,6 +126,7 @@ class ProjectReportTimelineChart extends React.Component {
 
     return (
       <React.Fragment>
+        <ProjectReportTimelineChartOptions />
         {!!(datasets && datasets.length) && <Line {...lineProps} />}
         {!!(!datasets || !datasets.length) && <NoDataComponent />}
       </React.Fragment>
@@ -132,11 +134,6 @@ class ProjectReportTimelineChart extends React.Component {
 
   }
 }
-
-
-
-
-
 
 const ProjectReportTimelineChartConnected = connect(
   ProjectReportTimelineChart.mapStateToProps,
