@@ -68,8 +68,12 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 	ACTIONS: createRequestActions(GET_PROJECT_TIMELINE_NAME, {
 		fullfilled: (state, action) => {
 			const { payload } = action
-			state.project.stadistics.timeline.datasets = state.project.stadistics.timeline.datasets.concat(payload)
-			return state
+			const newState = { ...state }
+			newState.project.stadistics.timeline.datasets = [
+				...newState.project.stadistics.timeline.datasets,
+				payload
+			]
+			return newState
 		},
 		rejected: (state, action) => {
 			return state

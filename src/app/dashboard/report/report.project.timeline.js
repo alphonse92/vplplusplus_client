@@ -42,9 +42,8 @@ class ProjectReportTimelineCardNoStyled extends React.Component {
             secondary="You can see the project progress along the time" />
           {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
-        <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
           <ProjectReportTimelineChart project_id={this.props.project_id} />
-        </Collapse>
+        {/* <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>        </Collapse> */}
       </ Paper>
     )
   }

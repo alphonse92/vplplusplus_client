@@ -63,10 +63,11 @@ class ProjectReportTimelineChart extends React.Component {
 
   static mapStateToProps = (state) => {
     const { report: root } = state
-    const { project = {} } = root
-    const { stadistics = {} } = project
-    const { timeline = { options: {}, datasets: [] } } = stadistics
-    return { timeline }
+    const { project } = root
+    const { stadistics } = project
+    const { timeline } = stadistics
+    const { datasets, options } = timeline
+    return { datasets, options }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -76,42 +77,35 @@ class ProjectReportTimelineChart extends React.Component {
     return { DISPATCHERS }
   }
 
-  state = {}
-
   componentDidMount() {
-    console.log('mountings chart')
-
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
+  }
 
-    const { timeline } = this.props
-    const datasets = timeline.datasets
+  render() {
+    const { props } = this
+    const { datasets, options: chartOpts = {} } = props
     const mostLengthyDataset = datasets.reduce(
-      (mostLength, ds) => ds.lenght >= mostLength ? ds.reports.length : mostLength,
+      (mostLength, ds) => ds.reports.length >= mostLength ? ds.reports.length : mostLength,
       0
     )
-    const labels = Array.from(Array(mostLengthyDataset), (a, index) => index)
+    const labels = Array.from(Array(mostLengthyDataset), (a, index) => index + 1)
     const chardatasets = datasets.map(ds => {
       const { project, reports } = ds
       const custom = {
         label: cutStringAndAddDots(project.name),
         data: reports.map(({ skill }) => skill)
       }
-      return { ...ProjectReportTimelineChart.DATASET_BASE, custom }
+      return { ...ProjectReportTimelineChart.DATASET_BASE, ...custom }
     })
 
-    this.setState({ datasets: chardatasets, labels })
-  }
+    const options = { ...ProjectReportTimelineChart.OPTS_BASE, ...chartOpts }
+    const data = { labels, datasets: chardatasets }
+    const lineProps = { data, options }
 
-  render() {
-    console.log('render')
-    const { options: chartOpts = {} } = this.props
-    const { datasets = [], labels = [] } = this.state
+    console.log({ datasets, lineProps })
 
     return (
-      <React.Fragment>
-        {!!datasets.length && <Line data={{ labels, datasets }} options={{ ...ProjectReportTimelineChart.OPTS_BASE, ...chartOpts }} />}
-        {!datasets.length && <p>No data to shown</p>}
-      </React.Fragment>
+      <Line {...lineProps} />
     )
   }
 }
