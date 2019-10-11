@@ -4,7 +4,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { ActionCreators } from './redux/actions';
 import { Line } from 'react-chartjs-2';
+import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import { cutStringAndAddDots } from '../../../lib';
+import { Flex } from '../../../lib/components/flex';
 
 class ProjectReportTimelineChart extends React.Component {
   static DATASET_BASE = {
@@ -116,12 +118,13 @@ class ProjectReportTimelineChart extends React.Component {
 
     }
 
+    const NoDataComponent = () => <Flex margin='13px' vertical alignItems='center' fontSize='13px' textAlign='center'><ErrorOutlineOutlined /> No data to show</Flex>
+
     const data = { labels, datasets: chardatasets }
     const lineProps = { data, options: chartOpts }
 
-    return (
-      <Line {...lineProps} />
-    )
+    return datasets && datasets.length ? <NoDataComponent /> : <Line {...lineProps} />
+
   }
 }
 
