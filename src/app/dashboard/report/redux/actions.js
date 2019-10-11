@@ -39,19 +39,21 @@ Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
 			topic = optionsFromStore.topic,
 		} = data
 		const payload = { from, type, each, steps, topic }
-		console.log({ data, payload })
-		dispatcher({ type: Actions[SET_PROJECT_TIMELINE_FILTER_NAME].ACTIONS.default.name, payload })
+		const name = Actions[SET_PROJECT_TIMELINE_FILTER_NAME].ACTIONS.default.name
+		const dispatcherData = { type: name, payload }
+		console.log(dispatcherData)
+		dispatcher(dispatcherData)
 	},
-	ACTIONS: createRequestActions(SET_PROJECT_TIMELINE_FILTER_NAME, {
+	ACTIONS: {
 		default: {
 			name: SET_PROJECT_TIMELINE_FILTER_NAME,
 			reducer: (state, action) => {
+				console.log(action)
 				state.project.stadistics.timeline.options = { ...action.payload }
-				console.log(action.payload)
 				return state
 			}
 		}
-	}),
+	},
 }
 
 const CLEAR_PROJECT_TIMELINE_DATASETS_NAME = 'CLEAR_PROJECT_TIMELINE_DATASETS'
@@ -59,7 +61,7 @@ Actions[CLEAR_PROJECT_TIMELINE_DATASETS_NAME] = {
 	DISPATCHER: () => (dispatcher) => {
 		dispatcher({ type: CLEAR_PROJECT_TIMELINE_DATASETS_NAME })
 	},
-	ACTIONS: createRequestActions(SET_PROJECT_TIMELINE_FILTER_NAME, {
+	ACTIONS: createRequestActions(CLEAR_PROJECT_TIMELINE_DATASETS_NAME, {
 		fullfilled: (state, action) => {
 			state.project.stadistics.timeline.datasets = []
 			return state
