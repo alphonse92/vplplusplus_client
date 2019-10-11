@@ -15,7 +15,7 @@ import {
 import {
   ExpandLess as ExpandLessIcon
   , ExpandMore as ExpandMoreIcon,
-  StarBorder
+  TrendingDown
 } from '@material-ui/icons';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -43,7 +43,7 @@ class MostDifficultTestCardNoStyled extends React.Component {
       <Paper style={{ marginBottom: '13px', borderTop: '7px solid', width: '100%' }} >
         <ListItem button onClick={this.toggle}>
           <ListItemIcon>
-            <StarBorder />
+            <TrendingDown />
           </ListItemIcon>
           <ListItemText
             inset
