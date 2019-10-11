@@ -24,20 +24,32 @@ Actions[SET_FILTER_NAME] = {
 
 const SET_PROJECT_TIMELINE_FILTER_NAME = 'SET_PROJECT_TIMELINE_FILTER'
 Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
-	DISPATCHER: (data) => (dispatcher,getStore) => {
+	DISPATCHER: (data) => (dispatcher, getStore) => {
 		const store = getStore()
 		const { report: root = {} } = store
 		const { project = {} } = root
 		const { stadistics = {} } = project
 		const { timeline = {} } = stadistics
 		const { options: optionsFromStore = {} } = timeline
-		const { from, type, each, steps, topic } = data
-		dispatcher({ type: SET_PROJECT_TIMELINE_FILTER_NAME, payload: { ...optionsFromStore, from, type, each, steps, topic } })
+		const {
+			from = optionsFromStore.from,
+			type = optionsFromStore.type,
+			each = optionsFromStore.each,
+			steps = optionsFromStore.steps,
+			topic = optionsFromStore.topic,
+		} = data
+		const payload = { from, type, each, steps, topic }
+		console.log({ data, payload })
+		dispatcher({ type: SET_PROJECT_TIMELINE_FILTER_NAME, payload })
 	},
 	ACTIONS: createRequestActions(SET_PROJECT_TIMELINE_FILTER_NAME, {
-		fullfilled: (state, action) => {
-			state.project.stadistics.timeline.options = { ...action.payload }
-			return state
+		default: {
+			name: SET_PROJECT_TIMELINE_FILTER_NAME,
+			reducer: (state, action) => {
+				state.project.stadistics.timeline.options = { ...action.payload }
+				console.log(action.payload)
+				return state
+			}
 		}
 	}),
 }
