@@ -7,7 +7,7 @@ import { Line } from 'react-chartjs-2';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import { cutStringAndAddDots } from '../../../lib';
 import { Flex } from '../../../lib/components/flex';
-import { Select, MenuItem } from '@material-ui/core';
+import { Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
 
 const LineChartTypeOptions = [
   'years',
@@ -20,6 +20,8 @@ const LineChartTypeOptions = [
   'seconds',
   'milliseconds',
 ]
+
+const PeriodOpts = Array.from(Array(10), (v, i) => i + 1)
 
 /**
  * This component will show a filter to filter the report by
@@ -54,12 +56,41 @@ class ProjectReportTimelineChartOptions extends React.Component {
   };
 
   render() {
+    const { type, each, steps, from } = this.props.options
+
     return <Flex horizontal>
-      <Select
-        value={this.props.options.type}
-        onChange={this.handleChange('type')}>
-        {LineChartTypeOptions.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
-      </Select>
+      <p>Every {each} {type} from {from ? 'project starts' : from} Until {steps} periods</p>
+      <FormControl >
+        <InputLabel shrink htmlFor="age-label-placeholder">Period</InputLabel>
+        <Select
+          value={type}
+          onChange={this.handleChange('type')}>
+          {LineChartTypeOptions.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
+        </Select>
+        <FormHelperText>Select the project period submissions. Default: project creation date</FormHelperText>
+      </FormControl>
+
+      <FormControl >
+        <InputLabel shrink htmlFor="age-label-placeholder">Period</InputLabel>
+        <Select
+          value={each}
+          onChange={this.handleChange('each')}>
+          {PeriodOpts.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
+        </Select>
+        <FormHelperText>This value shows the period frequency</FormHelperText>
+      </FormControl>
+
+      <FormControl >
+        <InputLabel shrink htmlFor="age-label-placeholder">Steps</InputLabel>
+        <Select
+          value={steps}
+          onChange={this.handleChange('steps')}>
+          {PeriodOpts.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
+        </Select>
+        <FormHelperText>This value shows many times the report will taked </FormHelperText>
+      </FormControl>
+
+
     </Flex>
   }
 }
