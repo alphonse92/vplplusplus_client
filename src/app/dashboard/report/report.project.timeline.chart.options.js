@@ -35,8 +35,9 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { project } = root
     const { stadistics, report } = project
     const { timeline, mostSkilledStudents } = stadistics
-    const { options, loading } = timeline
-    return { loading, options, report, mostSkilledStudents }
+    const { options = {}, loading } = timeline
+    const { type, each, steps, from, topic } = options
+    return { loading, report, mostSkilledStudents, type, each, steps, from, topic }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -51,19 +52,19 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
   componentDidMount() {
 
-    const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
-    this.topics = topics
-    this.topicOptions = topics.map(({ name: value, description: label }, index) => ({ value, label, index }))
 
-    const { report, project_id, options } = this.props
+
+    const { report, project_id, from: fromFilter } = this.props
     if (report.length && project_id) {
       // if project_id exists, then all user reports has the same project
       const [firstReport = {}] = report
       const { projects = [] } = firstReport
       const [firstProject = {}] = projects
       const { createdAt: from } = firstProject
-      const { from: fromFilter } = options
-      fromFilter !== from && this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ from })
+      if (fromFilter !== from) {
+        console.log('update filter ')
+        this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ from })
+      }
     }
     else if (report.length && !project_id) {
       // get the first project that was created for example
@@ -75,14 +76,12 @@ class ProjectReportTimelineChartOptions extends React.Component {
   isLoadingReport = () => this.props.loading
 
   handleChange = attribute => event => {
-    if (this.isLoadingReport()) return
     this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ [attribute]: event.target.value })
     this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
   };
 
   onChangeTopic = selectedTopics => {
-    if (this.isLoadingReport()) return
     const topic = selectedTopics ? selectedTopics : []
     this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ topic })
     if (!selectedTopics || selectedTopics.length === 1) this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
@@ -91,10 +90,12 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
 
   render() {
-    const { topicOptions, props } = this
-    const { options } = props
-    const { type, each, steps, from, topic } = options
-
+    const { props } = this
+    const { type, each, steps, from, topic } = props
+    const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
+    const topicOptions = topics.map(({ name: value, description: label }, index) => ({ value, label, index }))
+    
+    console.log(topicOptions)
     return (
 
       <Flex horizontal >
@@ -104,7 +105,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
           <TextField
             label="From"
             type="date"
-            defaultValue={from || moment().format('YYYY-MM-DD')}
+            defaultValue={moment(from).format('YYYY-MM-DD')}
             InputLabelProps={{
               shrink: true,
             }}

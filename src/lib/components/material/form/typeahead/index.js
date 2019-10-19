@@ -2,6 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 
 export const Typeahead = (props) => {
+
   const { options = [], name,
     onChange,
     onSelect,
@@ -12,7 +13,7 @@ export const Typeahead = (props) => {
     placeholder,
     portal = true
   } = props
-
+  console.log(options)
   const _onChange = (currentSelected = [], data) => {
     const { action, option } = data
     if (onChange) return onChange(currentSelected, data)

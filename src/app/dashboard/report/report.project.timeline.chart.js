@@ -8,6 +8,7 @@ import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import { cutStringAndAddDots } from '../../../lib';
 import { Flex } from '../../../lib/components/flex';
 import { ProjectReportTimelineChartOptions } from './report.project.timeline.chart.options';
+import { MATERIAL_COLORS } from '../../../constants';
 
 class ProjectReportTimelineChart extends React.Component {
   static DATASET_BASE = {
@@ -43,11 +44,11 @@ class ProjectReportTimelineChart extends React.Component {
         }
       }],
       yAxes: [{
+        min: 0,
+        max: 100,
         scaleLabel: {
           display: true,
           labelString: 'Skill Student Average',
-          min: 0,
-          max: 100,
         }
       }]
     },
@@ -98,9 +99,12 @@ class ProjectReportTimelineChart extends React.Component {
     const labels = Array.from(Array(mostLengthyDataset), (a, index) => (index + 1) * options.steps)
     const chardatasets = datasets.map(ds => {
       const { project, reports } = ds
+      const color = MATERIAL_COLORS[Math.random() * MATERIAL_COLORS.length]
       const custom = {
         label: cutStringAndAddDots(project.name),
-        data: reports.map(({ skill }) => skill)
+        data: reports.map(({ skill }) => skill),
+        backgroundColor: color,
+        borderColor: color,
       }
       return { ...ProjectReportTimelineChart.DATASET_BASE, ...custom }
     })
@@ -134,7 +138,7 @@ class ProjectReportTimelineChart extends React.Component {
       nodata: !isLoading && (!datasets || !datasets.length),
       loading: isLoading
     }
-
+    console.log(colors)
     return (
       <React.Fragment>
         {shouldShow.options && <ProjectReportTimelineChartOptions project_id={this.props.project_id} />}

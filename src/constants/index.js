@@ -1,11 +1,23 @@
-import {
+
+import * as colors from '@material-ui/core/colors';
+import faker from 'faker'
+
+export const MATERIAL_COLORS = faker.helpers.shuffle(Object
+  .keys(colors)
+  .reduce((all, name) => {
+    const values = Object.values(colors[name])
+    return [...all, ...values]
+  }, []))
+
+
+const {
   yellow,
   red,
   deepOrange,
   lightGreen,
   lightBlue,
   grey
-} from '@material-ui/core/colors';
+} = colors
 
 export const Labels = {}
 
