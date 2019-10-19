@@ -21,8 +21,7 @@ class UserReportTabs extends React.Component {
 	static mapStateToProps = (state) => {
 		const { report: root } = state
 		const { project = {} } = root
-		const { report = [], stadistics } = project
-		const { timeline } = stadistics
+		const { report = [] } = project
 		return { report }
 	}
 
