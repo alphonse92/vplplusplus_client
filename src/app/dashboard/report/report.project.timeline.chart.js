@@ -92,17 +92,19 @@ class ProjectReportTimelineChart extends React.Component {
   render() {
     const { props } = this
     const { labels, datasets, options = {} } = props
-    const chardatasets = datasets.map((ds) => {
+    const { steps } = options
+    const chardatasets = datasets.map((ds, idx) => {
       const idxColor = Math.floor(Math.random() * MATERIAL_COLORS.length)
       const color = MATERIAL_COLORS[idxColor]
-      const [label] = labels
+      const label = labels[idx]
       const data = ds.map(({ skill }) => skill)
-      console.log({ data, label, ds })
       const custom = {
         data,
         label,
         backgroundColor: color,
         borderColor: color,
+        pointBackgroundColor: color,
+        pointBorderColor: color
       }
       return { ...ProjectReportTimelineChart.DATASET_BASE, ...custom }
     })
@@ -126,7 +128,7 @@ class ProjectReportTimelineChart extends React.Component {
 
     const NoDataComponent = () => <Flex margin='13px' vertical alignItems='center' fontSize='13px' textAlign='center'><ErrorOutlineOutlined /> No data to show</Flex>
 
-    const data = { labels, datasets: chardatasets }
+    const data = { labels: Array.from(Array(steps), (v, i) => i), datasets: chardatasets }
     const lineProps = { data, options: chartOpts }
     const isLoading = this.props.loading
 
