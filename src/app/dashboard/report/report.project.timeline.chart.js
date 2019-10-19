@@ -84,6 +84,7 @@ class ProjectReportTimelineChart extends React.Component {
   }
 
   componentDidMount() {
+    this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
   }
 
@@ -127,18 +128,22 @@ class ProjectReportTimelineChart extends React.Component {
     const lineProps = { data, options: chartOpts }
     const isLoading = this.props.loading
 
-    const shouldShowReportTimelineOptions = !isLoading
-    const shouldShowLine = !isLoading && datasets && datasets.length
-    const shouldShowNoDataComponent = !isLoading && (!datasets || !datasets.length)
-    const shouldShowLoading = isLoading
+    const shouldShow = {
+      options: !isLoading,
+      line: !isLoading && datasets && datasets.length,
+      nodata: !isLoading && (!datasets || !datasets.length),
+      loading: isLoading
+    }
+
+    console.log(shouldShow)
 
     return (
       <React.Fragment>
-        {shouldShowReportTimelineOptions && <ProjectReportTimelineChartOptions project_id={this.props.project_id} />}
-        {shouldShowLine && <Line {...lineProps} />}
-        {shouldShowNoDataComponent && <NoDataComponent />}
-        {shouldShowLoading && <p>Loading timeline</p>}
-      </React.Fragment>
+        {shouldShow.options && <ProjectReportTimelineChartOptions project_id={this.props.project_id} />}
+        {shouldShow.line && <Line {...lineProps} />}
+        {shouldShow.nodata && <NoDataComponent />}
+        {shouldShow.loading && <p>Loading timeline</p>}
+      </React.Fragment >
     )
 
   }

@@ -73,6 +73,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     }
   }
   isLoadingReport = () => this.props.loading
+
   handleChange = attribute => event => {
     if (this.isLoadingReport()) return
     this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ [attribute]: event.target.value })
@@ -84,7 +85,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     if (this.isLoadingReport()) return
     const topic = selectedTopics ? selectedTopics : []
     this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ topic })
-    !selectedTopics || selectedTopics.length === 1 && this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
+    if (!selectedTopics || selectedTopics.length === 1) this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
   }
 

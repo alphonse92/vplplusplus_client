@@ -41,8 +41,6 @@ function setLoading(dispatcher, isLoading, callback) {
 }
 
 function before(action, dispatch, callback) {
-
-	dispatch({ type: action.init.name })
 	setLoading(dispatch, true, callback)
 }
 
