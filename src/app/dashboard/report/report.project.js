@@ -23,7 +23,6 @@ class UserReportTabs extends React.Component {
 		const { project = {} } = root
 		const { report = [], stadistics } = project
 		const { timeline } = stadistics
-		const { options } = timeline
 		return { report }
 	}
 
