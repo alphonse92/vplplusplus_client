@@ -11,7 +11,6 @@ export const Typeahead = (props) => {
     onClear,
     isDisabled,
     placeholder,
-    portal = true
   } = props
 
   const _onChange = (currentSelected = [], data) => {
@@ -22,9 +21,7 @@ export const Typeahead = (props) => {
     else if (onClear && action === 'clear') return onClear(true)
   }
 
-  const divId = `${name}-select-portal`
   return (
-    <React.Fragment>
       <Select
         isMulti
         isSearchable
@@ -40,8 +37,5 @@ export const Typeahead = (props) => {
         placeholder={placeholder}
         onChange={_onChange}
       />
-      {portal && <div id={divId} />}
-    </React.Fragment>
-
   )
 }
