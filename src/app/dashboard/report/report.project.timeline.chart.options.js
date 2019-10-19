@@ -1,13 +1,12 @@
 import React from 'react';
+import moment from 'moment'
 import { capitalize } from 'lodash'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { ActionCreators } from './redux/actions';
-import { Line } from 'react-chartjs-2';
-import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import { cutStringAndAddDots } from '../../../lib';
 import { Flex } from '../../../lib/components/flex';
-import { Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
+import { Select, MenuItem, FormControl, InputLabel, TextField } from '@material-ui/core';
 
 const LineChartTypeOptions = [
   'years',
@@ -33,10 +32,10 @@ class ProjectReportTimelineChartOptions extends React.Component {
   static mapStateToProps = (state) => {
     const { report: root } = state
     const { project } = root
-    const { stadistics } = project
+    const { stadistics, report } = project
     const { timeline } = stadistics
     const { options } = timeline
-    return { options }
+    return { options, report }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -49,6 +48,25 @@ class ProjectReportTimelineChartOptions extends React.Component {
     age: LineChartTypeOptions[0]
   }
 
+  componentDidMount() {
+    const { report, project_id, options } = this.props
+    if (report.length && project_id) {
+      // if project_id exists, then all user reports has the same project
+      const [firstReport = {}] = report
+      const { projects = [] } = firstReport
+      const [firstProject = {}] = projects
+      const { createdAt: from } = firstProject
+      const { from: fromFilter } = options
+      fromFilter !== from && this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ from })
+    }
+    else if (report.length && !project_id) {
+      // get the first project that was created for example
+    }
+    else {
+      // is a user report...  get the first project that was created in all report.projects array
+    }
+  }
+
   handleChange = attribute => event => {
     this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ [attribute]: event.target.value })
     this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
@@ -59,21 +77,35 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { type, each, steps, from } = this.props.options
     const MarginRight = '13px'
     return <Flex vertical>
-      <p>Take {steps} of {each} {type}</p>
+
       <Flex horizontal>
         <Flex marginRight={MarginRight}>
           <FormControl >
-            <InputLabel shrink htmlFor="age-label-placeholder">Time range</InputLabel>
+            <InputLabel shrink htmlFor="from-label-placeholder">Time range</InputLabel>
+            <TextField
+              label="From"
+              type="date"
+              defaultValue={from || moment().format('YYYY-MM-DD')}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={this.handleChange('from')}
+            />
+          </FormControl>
+        </Flex>
+        <Flex marginRight={MarginRight}>
+          <FormControl >
+            <InputLabel shrink htmlFor="type-label-placeholder">Time range</InputLabel>
             <Select
               value={type}
               onChange={this.handleChange('type')}>
-              {LineChartTypeOptions.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
+              {LineChartTypeOptions.map(opt => <MenuItem key={opt} value={opt}>{capitalize(opt)}</MenuItem>)}
             </Select>
           </FormControl>
         </Flex>
         <Flex marginRight={MarginRight}>
           <FormControl >
-            <InputLabel shrink htmlFor="age-label-placeholder">Period</InputLabel>
+            <InputLabel shrink htmlFor="each-label-placeholder">Period</InputLabel>
             <Select
               value={each}
               onChange={this.handleChange('each')}>
@@ -83,13 +115,16 @@ class ProjectReportTimelineChartOptions extends React.Component {
         </Flex>
         <Flex marginRight={MarginRight}>
           <FormControl >
-            <InputLabel shrink htmlFor="age-label-placeholder">Frequency</InputLabel>
+            <InputLabel shrink htmlFor="steps-label-placeholder">Frequency</InputLabel>
             <Select
               value={steps}
               onChange={this.handleChange('steps')}>
               {PeriodOpts.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
             </Select>
           </FormControl>
+        </Flex>
+        <Flex marginRight={MarginRight}>
+          <p>Take {steps} of {each} {type} from {from}</p>
         </Flex>
       </Flex>
     </Flex>

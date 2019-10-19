@@ -21,8 +21,10 @@ class UserReportTabs extends React.Component {
 	static mapStateToProps = (state) => {
 		const { report: root } = state
 		const { project = {} } = root
-		const { report = [], filter } = project
-		return { report, filter }
+		const { report = [], stadistics } = project
+		const { timeline } = stadistics
+		const { options } = timeline
+		return { report }
 	}
 
 	static mapDispatchToProps = (dispatch) => {
@@ -40,9 +42,8 @@ class UserReportTabs extends React.Component {
 
 	componentDidMount() {
 		this.loadProject()
-		console.log(this.props.report)
-		false && this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ from: new Date() })
 	}
+
 
 	render() {
 		const { report } = this.props
@@ -54,6 +55,7 @@ class UserReportTabs extends React.Component {
 			</React.Fragment>
 		)
 	}
+
 }
 
 const ConnectedUserReportTabs = connect(
