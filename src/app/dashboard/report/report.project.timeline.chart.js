@@ -73,8 +73,8 @@ class ProjectReportTimelineChart extends React.Component {
     const { project } = root
     const { stadistics } = project
     const { timeline } = stadistics
-    const { datasets, options, loading } = timeline
-    return { datasets, options, loading }
+    const { datasets, labels, options, loading } = timeline
+    return { datasets, options, loading, labels }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -91,19 +91,16 @@ class ProjectReportTimelineChart extends React.Component {
 
   render() {
     const { props } = this
-    const { datasets, options = {} } = props
-    const mostLengthyDataset = datasets.reduce(
-      (mostLength, ds) => ds.reports.length >= mostLength ? ds.reports.length : mostLength,
-      0
-    )
-    const labels = Array.from(Array(mostLengthyDataset), (a, index) => (index + 1) * options.steps)
-    const chardatasets = datasets.map(ds => {
-      const { project, reports } = ds
+    const { labels, datasets, options = {} } = props
+    console.log({ labels, datasets })
+    const chardatasets = datasets.map((ds) => {
       const idxColor = Math.floor(Math.random() * MATERIAL_COLORS.length)
       const color = MATERIAL_COLORS[idxColor]
+      const [label] = labels
+      const data = ds.map(({ skill }) => skill)
       const custom = {
-        label: cutStringAndAddDots(project.name),
-        data: reports.map(({ skill }) => skill),
+        data,
+        label,
         backgroundColor: color,
         borderColor: color,
       }

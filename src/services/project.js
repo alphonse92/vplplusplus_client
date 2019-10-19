@@ -102,6 +102,7 @@ class ProjectServiceClass extends WebService {
     return super.request(options, `/${project_id}/report/timeline/`)
   }
 
+  // deprecated, this function has been moved to api
   getTestCasesByDifficult(report) {
     const map = report
       .reduce((testMap, userReport) => {
@@ -124,7 +125,7 @@ class ProjectServiceClass extends WebService {
     return orderBy(Object.values(map), ['summaries_not_approved'], ['desc'])
 
   }
-
+  // deprecated, this function has been moved to api
   getTheMostSkilledStudentByTopic(report) {
 
     const map = report

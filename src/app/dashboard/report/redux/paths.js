@@ -27,6 +27,7 @@ const PATHS = {
 	'project.report': [],
 	'project.stadistics': {},
 	'project.stadistics.timeline.datasets': [],
+	'project.stadistics.timeline.labels': [],
 	'project.stadistics.timeline.options': {
 		type: 'months'
 		, each: 6
