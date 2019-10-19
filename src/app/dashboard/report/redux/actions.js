@@ -97,7 +97,7 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 				...state.project.stadistics.timeline.datasets,
 				payload
 			]
-			state.loading = false
+			state.project.stadistics.timeline.loading = false
 			return state
 		},
 		rejected: (state, action) => {

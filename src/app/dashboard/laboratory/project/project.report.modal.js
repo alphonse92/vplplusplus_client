@@ -222,7 +222,7 @@ export class ProjectReportModalClass extends React.Component {
               id='topics'
               name='topics'
               onChange={selectedTopics => this.selectedTopics = selectedTopics}
-              options={topics.map(({ _id: value, name, description: label }, index) => ({ value, label, index }))}
+              options={topicOptions}
               defaultValue={this.selectedTopics}
               placeholder="Select topic"
               portal={false}

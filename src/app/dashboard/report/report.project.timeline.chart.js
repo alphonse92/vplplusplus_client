@@ -73,7 +73,7 @@ class ProjectReportTimelineChart extends React.Component {
     const { stadistics } = project
     const { timeline } = stadistics
     const { datasets, options, loading } = timeline
-    return { datasets, options }
+    return { datasets, options, loading }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -134,8 +134,6 @@ class ProjectReportTimelineChart extends React.Component {
       nodata: !isLoading && (!datasets || !datasets.length),
       loading: isLoading
     }
-
-    console.log(shouldShow)
 
     return (
       <React.Fragment>
