@@ -83,6 +83,9 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { topics, props } = this
     const { options } = props
     const { type, each, steps, from, topic } = options
+
+    console.log({ topics, topic })
+
     return (
 
       <Flex horizontal>
