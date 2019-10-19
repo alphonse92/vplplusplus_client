@@ -7,6 +7,7 @@ import { ActionCreators } from './redux/actions';
 import { cutStringAndAddDots } from '../../../lib';
 import { Flex } from '../../../lib/components/flex';
 import { Select, MenuItem, FormControl, InputLabel, TextField } from '@material-ui/core';
+import { Typeahead } from '../../../lib/components/material/form/typeahead';
 
 const LineChartTypeOptions = [
   'years',
@@ -33,9 +34,9 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { report: root } = state
     const { project } = root
     const { stadistics, report } = project
-    const { timeline } = stadistics
+    const { timeline, mostSkilledStudents } = stadistics
     const { options } = timeline
-    return { options, report }
+    return { options, report, mostSkilledStudents }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -49,6 +50,10 @@ class ProjectReportTimelineChartOptions extends React.Component {
   }
 
   componentDidMount() {
+
+    const topics = this.props.mostSkilledStudents.map(({ description, name }) => ({ description, name }))
+    this.topics = topics
+
     const { report, project_id, options } = this.props
     if (report.length && project_id) {
       // if project_id exists, then all user reports has the same project
@@ -73,61 +78,68 @@ class ProjectReportTimelineChartOptions extends React.Component {
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
   };
 
+
   render() {
-    const { type, each, steps, from } = this.props.options
-    const MarginRight = '13px'
-    return <Flex vertical>
+    const { topics, props } = this
+    const { options } = props
+    const { type, each, steps, from, topic } = options
+    return (
 
       <Flex horizontal>
-        <Flex marginRight={MarginRight}>
-          <FormControl >
-            <InputLabel shrink htmlFor="from-label-placeholder">Time range</InputLabel>
-            <TextField
-              label="From"
-              type="date"
-              defaultValue={from || moment().format('YYYY-MM-DD')}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={this.handleChange('from')}
-            />
-          </FormControl>
-        </Flex>
-        <Flex marginRight={MarginRight}>
-          <FormControl >
-            <InputLabel shrink htmlFor="type-label-placeholder">Time range</InputLabel>
-            <Select
-              value={type}
-              onChange={this.handleChange('type')}>
-              {LineChartTypeOptions.map(opt => <MenuItem key={opt} value={opt}>{capitalize(opt)}</MenuItem>)}
-            </Select>
-          </FormControl>
-        </Flex>
-        <Flex marginRight={MarginRight}>
-          <FormControl >
-            <InputLabel shrink htmlFor="each-label-placeholder">Period</InputLabel>
-            <Select
-              value={each}
-              onChange={this.handleChange('each')}>
-              {PeriodOpts.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
-            </Select>
-          </FormControl>
-        </Flex>
-        <Flex marginRight={MarginRight}>
-          <FormControl >
-            <InputLabel shrink htmlFor="steps-label-placeholder">Frequency</InputLabel>
-            <Select
-              value={steps}
-              onChange={this.handleChange('steps')}>
-              {PeriodOpts.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
-            </Select>
-          </FormControl>
-        </Flex>
-        <Flex marginRight={MarginRight}>
-          <p>Take {steps} of {each} {type} from {from}</p>
-        </Flex>
+
+        <FormControl >
+          <InputLabel shrink htmlFor="from-label-placeholder">Time range</InputLabel>
+          <TextField
+            label="From"
+            type="date"
+            defaultValue={from || moment().format('YYYY-MM-DD')}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={this.handleChange('from')}
+          />
+        </FormControl>
+
+        <Typeahead
+          id='topics'
+          name='topics'
+          onChange={this.handleChange('topic')}
+          options={topics}
+          defaultValue={topic}
+          placeholder="Select topic"
+          portal={false}
+        />
+
+        <FormControl >
+          <InputLabel shrink htmlFor="type-label-placeholder">Time range</InputLabel>
+          <Select
+            value={type}
+            onChange={this.handleChange('type')}>
+            {LineChartTypeOptions.map(opt => <MenuItem key={opt} value={opt}>{capitalize(opt)}</MenuItem>)}
+          </Select>
+        </FormControl>
+
+        <FormControl >
+          <InputLabel shrink htmlFor="each-label-placeholder">Period</InputLabel>
+          <Select
+            value={each}
+            onChange={this.handleChange('each')}>
+            {PeriodOpts.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
+          </Select>
+        </FormControl>
+
+        <FormControl >
+          <InputLabel shrink htmlFor="steps-label-placeholder">Frequency</InputLabel>
+          <Select
+            value={steps}
+            onChange={this.handleChange('steps')}>
+            {PeriodOpts.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
+          </Select>
+        </FormControl>
+        <p>Take {steps} of {each} {type} from {from}</p>
+
       </Flex>
-    </Flex>
+    )
   }
 }
 

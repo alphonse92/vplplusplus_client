@@ -220,11 +220,10 @@ export class ProjectReportModalClass extends React.Component {
             <DateComponent />
             <Typeahead
               id='topics'
-              onChange={this.onChangeTopic}
-              options={topicOptions}
-              defaultValue={this.selectedTopics}
               name='topics'
-              isDisabled={this.state.readOnly}
+              onChange={selectedTopics => this.selectedTopics = selectedTopics}
+              options={topics.map(({ _id: value, name, description: label }, index) => ({ value, label, index }))}
+              defaultValue={this.selectedTopics}
               placeholder="Select topic"
               portal={false}
             />
