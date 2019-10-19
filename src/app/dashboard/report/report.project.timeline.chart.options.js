@@ -57,40 +57,41 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
   render() {
     const { type, each, steps, from } = this.props.options
-
-    return <Flex horizontal>
-      <p>Every {each} {type} from {from ? 'project starts' : from} Until {steps} periods</p>
-      <FormControl >
-        <InputLabel shrink htmlFor="age-label-placeholder">Period</InputLabel>
-        <Select
-          value={type}
-          onChange={this.handleChange('type')}>
-          {LineChartTypeOptions.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
-        </Select>
-        <FormHelperText>Select the project period submissions. Default: project creation date</FormHelperText>
-      </FormControl>
-
-      <FormControl >
-        <InputLabel shrink htmlFor="age-label-placeholder">Period</InputLabel>
-        <Select
-          value={each}
-          onChange={this.handleChange('each')}>
-          {PeriodOpts.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
-        </Select>
-        <FormHelperText>This value shows the period frequency</FormHelperText>
-      </FormControl>
-
-      <FormControl >
-        <InputLabel shrink htmlFor="age-label-placeholder">Steps</InputLabel>
-        <Select
-          value={steps}
-          onChange={this.handleChange('steps')}>
-          {PeriodOpts.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
-        </Select>
-        <FormHelperText>This value shows many times the report will taked </FormHelperText>
-      </FormControl>
-
-
+    const MarginRight = '13px'
+    return <Flex vertical>
+      <p>Take {steps} of {each} {type}</p>
+      <Flex horizontal>
+        <Flex marginRight={MarginRight}>
+          <FormControl >
+            <InputLabel shrink htmlFor="age-label-placeholder">Time range</InputLabel>
+            <Select
+              value={type}
+              onChange={this.handleChange('type')}>
+              {LineChartTypeOptions.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
+            </Select>
+          </FormControl>
+        </Flex>
+        <Flex marginRight={MarginRight}>
+          <FormControl >
+            <InputLabel shrink htmlFor="age-label-placeholder">Period</InputLabel>
+            <Select
+              value={each}
+              onChange={this.handleChange('each')}>
+              {PeriodOpts.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
+            </Select>
+          </FormControl>
+        </Flex>
+        <Flex marginRight={MarginRight}>
+          <FormControl >
+            <InputLabel shrink htmlFor="age-label-placeholder">Frequency</InputLabel>
+            <Select
+              value={steps}
+              onChange={this.handleChange('steps')}>
+              {PeriodOpts.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
+            </Select>
+          </FormControl>
+        </Flex>
+      </Flex>
     </Flex>
   }
 }

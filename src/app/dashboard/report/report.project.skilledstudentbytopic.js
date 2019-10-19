@@ -74,7 +74,7 @@ class MostSkilledStudentsByTopicCardNoStyled extends React.Component {
                         <TableCell rowSpan={rowSpan}>{level.toFixed(2)}</TableCell>
                       </TableRow>
                       {
-                        rowSpan > 1 && restOfStudents.map(student => <TableRow className={classes.tr}><TableCell >{student.fullname}</TableCell></TableRow>)
+                        rowSpan > 1 && restOfStudents.map(student => <TableRow key={student.id} className={classes.tr}><TableCell >{student.fullname}</TableCell></TableRow>)
                       }
                     </React.Fragment>
                   )

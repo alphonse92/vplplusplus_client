@@ -40,6 +40,8 @@ class UserReportTabs extends React.Component {
 
 	componentDidMount() {
 		this.loadProject()
+		console.log(this.props.report)
+		false && this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ from: new Date() })
 	}
 
 	render() {

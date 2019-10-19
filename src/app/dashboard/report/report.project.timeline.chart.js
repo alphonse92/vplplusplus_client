@@ -45,7 +45,9 @@ class ProjectReportTimelineChart extends React.Component {
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'Skill Student Average'
+          labelString: 'Skill Student Average',
+          min: 0,
+          max: 100,
         }
       }]
     },
