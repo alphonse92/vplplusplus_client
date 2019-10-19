@@ -84,7 +84,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
   };
 
   onChangeTopic = selectedTopics => {
-    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ topic: selectedTopics })
+    const topic = selectedTopics ? selectedTopics : []
+    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ topic })
     this.triggerUpdateTimeline()
   }
 
