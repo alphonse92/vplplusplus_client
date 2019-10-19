@@ -51,8 +51,9 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
   componentDidMount() {
 
-    const topics = this.props.mostSkilledStudents.map(({ description, name }) => ({ description, name }))
+    const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
     this.topics = topics
+    this.topicOptions = topics.map(({ _id: value, name, description: label }, index) => ({ value, label, index }))
 
     const { report, project_id, options } = this.props
     if (report.length && project_id) {
@@ -80,11 +81,11 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
 
   render() {
-    const { topics, props } = this
+    const { topicOptions, props } = this
     const { options } = props
     const { type, each, steps, from, topic } = options
 
-    console.log({ topics, topic })
+    console.log({ topics: this.topics, topicOptions, topic })
 
     return (
 
@@ -107,7 +108,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
           id='topics'
           name='topics'
           onChange={this.handleChange('topic')}
-          options={topics}
+          options={topicOptions}
           defaultValue={topic}
           placeholder="Select topic"
           portal={false}
