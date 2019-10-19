@@ -72,23 +72,24 @@ Actions[CLEAR_PROJECT_TIMELINE_DATASETS_NAME] = {
 
 const GET_PROJECT_TIMELINE_NAME = 'GET_PROJECT_TIMELINE'
 Actions[GET_PROJECT_TIMELINE_NAME] = {
-	DISPATCHER: (project_id, opts) => (dispatcher, getStore) => {
+	DISPATCHER: (project_id, opts = {}, reqOpts = {}) => (dispatcher, getStore) => {
 		const store = getStore()
 		const { report: root = {} } = store
 		const { project = {} } = root
 		const { stadistics = {} } = project
 		const { timeline = {} } = stadistics
 		const { options = {} } = timeline
+		const { override = {}, separeByTopic = false } = opts
 		// load the opts from the store
-		const { from, type, each, steps, topic: arrayOfTopics, } = options
-		const topic = arrayOfTopics.map(({ value }) => value)
+		const { from, type, each, steps, topic, } = { ...options, ...override }
 		const actions = Actions[GET_PROJECT_TIMELINE_NAME].ACTIONS
-		const getRequest = () => ProjectService.getReportTimeline(project_id, from, type, each, steps, topic)
-		requestDispatcher(dispatcher, actions, getRequest, opts)
+		const getRequest = () => ProjectService.getReportTimeline(project_id, from, type, each, steps, topic, separeByTopic)
+		requestDispatcher(dispatcher, actions, getRequest, reqOpts)
 	},
 	ACTIONS: createRequestActions(GET_PROJECT_TIMELINE_NAME, {
 		init: (state, action) => {
 			state.project.stadistics.timeline.loading = true
+			state.project.stadistics.timeline.error = false
 			return state
 		},
 		fullfilled: (state, action) => {
@@ -98,9 +99,12 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 				payload
 			]
 			state.project.stadistics.timeline.loading = false
+			state.project.stadistics.timeline.error = false
 			return state
 		},
 		rejected: (state, action) => {
+			state.project.stadistics.timeline.loading = false
+			state.project.stadistics.timeline.error = true
 			return state
 		}
 	}),

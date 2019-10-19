@@ -52,6 +52,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
   componentDidMount() {
 
+    console.log('did mont')
 
 
     const { report, project_id, from: fromFilter } = this.props
@@ -76,26 +77,35 @@ class ProjectReportTimelineChartOptions extends React.Component {
   isLoadingReport = () => this.props.loading
 
   handleChange = attribute => event => {
-    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ [attribute]: event.target.value })
     this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
+    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ [attribute]: event.target.value })
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
   };
 
   onChangeTopic = selectedTopics => {
-    const topic = selectedTopics ? selectedTopics : []
+    const arrayOfSelectedTopics = selectedTopics ? selectedTopics : []
+    const topic = arrayOfSelectedTopics.map(({ value }) => value)
+    
+    if (!selectedTopics || selectedTopics.length === 1)
+      this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
+
     this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ topic })
-    if (!selectedTopics || selectedTopics.length === 1) this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
+
+    this.selectedTopics = selectedTopics
   }
 
 
   render() {
+
+    if (!this.props.show) return <React.Fragment></React.Fragment>
+
     const { props } = this
-    const { type, each, steps, from, topic } = props
+    const { type, each, steps, from } = props
     const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
     const topicOptions = topics.map(({ name: value, description: label }, index) => ({ value, label, index }))
-    
-    console.log(topicOptions)
+
+    console.log(this.selectedTopics)
     return (
 
       <Flex horizontal >
@@ -118,7 +128,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
           name='topics'
           onChange={this.onChangeTopic}
           options={topicOptions}
-          defaultValue={topic}
+          defaultValue={this.selectedTopics}
           placeholder="Select topic"
           portal={false}
         />

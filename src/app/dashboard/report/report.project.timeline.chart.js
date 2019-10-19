@@ -99,7 +99,8 @@ class ProjectReportTimelineChart extends React.Component {
     const labels = Array.from(Array(mostLengthyDataset), (a, index) => (index + 1) * options.steps)
     const chardatasets = datasets.map(ds => {
       const { project, reports } = ds
-      const color = MATERIAL_COLORS[Math.random() * MATERIAL_COLORS.length]
+      const idxColor = Math.floor(Math.random() * MATERIAL_COLORS.length)
+      const color = MATERIAL_COLORS[idxColor]
       const custom = {
         label: cutStringAndAddDots(project.name),
         data: reports.map(({ skill }) => skill),
@@ -138,10 +139,10 @@ class ProjectReportTimelineChart extends React.Component {
       nodata: !isLoading && (!datasets || !datasets.length),
       loading: isLoading
     }
-    console.log(colors)
+
     return (
       <React.Fragment>
-        {shouldShow.options && <ProjectReportTimelineChartOptions project_id={this.props.project_id} />}
+        <ProjectReportTimelineChartOptions show={shouldShow.options} project_id={this.props.project_id} />
         {shouldShow.line && <Line {...lineProps} />}
         {shouldShow.nodata && <NoDataComponent />}
         {shouldShow.loading && <p>Loading timeline</p>}
