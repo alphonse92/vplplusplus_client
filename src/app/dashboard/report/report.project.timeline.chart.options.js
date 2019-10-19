@@ -35,8 +35,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { project } = root
     const { stadistics, report } = project
     const { timeline, mostSkilledStudents } = stadistics
-    const { options } = timeline
-    return { options, report, mostSkilledStudents }
+    const { options, loading } = timeline
+    return { loading, options, report, mostSkilledStudents }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -72,14 +72,16 @@ class ProjectReportTimelineChartOptions extends React.Component {
       // is a user report...  get the first project that was created in all report.projects array
     }
   }
-
+  isLoadingReport = () => this.props.loading
   handleChange = attribute => event => {
+    if (this.isLoadingReport()) return
     this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ [attribute]: event.target.value })
     this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
   };
 
   onChangeTopic = selectedTopics => {
+    if (this.isLoadingReport()) return
     const topic = selectedTopics ? selectedTopics : []
     this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ topic })
     !selectedTopics || selectedTopics.length === 1 && this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
@@ -92,11 +94,9 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { options } = props
     const { type, each, steps, from, topic } = options
 
-    console.log({ topics: this.topics, topicOptions, topic })
-
     return (
 
-      <Flex horizontal>
+      <Flex horizontal >
 
         <FormControl >
           <InputLabel shrink htmlFor="from-label-placeholder">Time range</InputLabel>

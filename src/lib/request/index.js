@@ -40,13 +40,15 @@ function setLoading(dispatcher, isLoading, callback) {
 	callback && callback()
 }
 
-function before(dispatcher, callback) {
-	setLoading(dispatcher, true, callback)
+function before(action, dispatch, callback) {
+
+	dispatch({ type: action.init.name })
+	setLoading(dispatch, true, callback)
 }
 
 export async function requestDispatcher(dispatch, action, getRequest, opts = {}) {
 	try {
-		await before(dispatch, opts.before)
+		await before(action, dispatch, opts.before)
 		const request = getRequest()
 		dispatchInitActions(dispatch, action)
 		const response = await request

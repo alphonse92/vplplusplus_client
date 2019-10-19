@@ -72,7 +72,7 @@ class ProjectReportTimelineChart extends React.Component {
     const { project } = root
     const { stadistics } = project
     const { timeline } = stadistics
-    const { datasets, options } = timeline
+    const { datasets, options, loading } = timeline
     return { datasets, options }
   }
 
@@ -125,12 +125,19 @@ class ProjectReportTimelineChart extends React.Component {
 
     const data = { labels, datasets: chardatasets }
     const lineProps = { data, options: chartOpts }
+    const isLoading = this.props.loading
+
+    const shouldShowReportTimelineOptions = !isLoading
+    const shouldShowLine = !isLoading && datasets && datasets.length
+    const shouldShowNoDataComponent = !isLoading && (!datasets || !datasets.length)
+    const shouldShowLoading = isLoading
 
     return (
       <React.Fragment>
-        <ProjectReportTimelineChartOptions project_id={this.props.project_id} />
-        {!!(datasets && datasets.length) && <Line {...lineProps} />}
-        {!!(!datasets || !datasets.length) && <NoDataComponent />}
+        {shouldShowReportTimelineOptions && <ProjectReportTimelineChartOptions project_id={this.props.project_id} />}
+        {shouldShowLine && <Line {...lineProps} />}
+        {shouldShowNoDataComponent && <NoDataComponent />}
+        {shouldShowLoading && <p>Loading timeline</p>}
       </React.Fragment>
     )
 

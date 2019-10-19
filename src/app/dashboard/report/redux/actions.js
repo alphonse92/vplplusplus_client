@@ -87,14 +87,18 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 		requestDispatcher(dispatcher, actions, getRequest, opts)
 	},
 	ACTIONS: createRequestActions(GET_PROJECT_TIMELINE_NAME, {
+		init: (state, action) => {
+			state.project.stadistics.timeline.loading = true
+			return state
+		},
 		fullfilled: (state, action) => {
 			const { payload } = action
-			const newState = { ...state }
-			newState.project.stadistics.timeline.datasets = [
-				...newState.project.stadistics.timeline.datasets,
+			state.project.stadistics.timeline.datasets = [
+				...state.project.stadistics.timeline.datasets,
 				payload
 			]
-			return newState
+			state.loading = false
+			return state
 		},
 		rejected: (state, action) => {
 			return state
