@@ -80,8 +80,8 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 		const { timeline = {} } = stadistics
 		const { options = {} } = timeline
 		// load the opts from the store
-		const { from, type, each, steps, topic, } = options
-
+		const { from, type, each, steps, topic: arrayOfTopics, } = options
+		const topic = arrayOfTopics.map(({ name }) => name)
 		const actions = Actions[GET_PROJECT_TIMELINE_NAME].ACTIONS
 		const getRequest = () => ProjectService.getReportTimeline(project_id, from, type, each, steps, topic)
 		requestDispatcher(dispatcher, actions, getRequest, opts)

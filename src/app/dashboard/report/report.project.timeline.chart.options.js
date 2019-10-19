@@ -53,7 +53,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
     const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
     this.topics = topics
-    this.topicOptions = topics.map(({ _id: value, name, description: label }, index) => ({ value, label, index }))
+    this.topicOptions = topics.map(({ name: value, description: label }, index) => ({ value, label, index }))
 
     const { report, project_id, options } = this.props
     if (report.length && project_id) {
@@ -73,11 +73,20 @@ class ProjectReportTimelineChartOptions extends React.Component {
     }
   }
 
-  handleChange = attribute => event => {
-    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ [attribute]: event.target.value })
+  triggerUpdateTimeline = () => {
     this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
+  }
+
+  handleChange = attribute => event => {
+    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ [attribute]: event.target.value })
+    this.triggerUpdateTimeline()
   };
+
+  onChangeTopic = selectedTopics => {
+    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ topic: selectedTopics })
+    this.triggerUpdateTimeline()
+  }
 
 
   render() {
@@ -107,7 +116,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
         <Typeahead
           id='topics'
           name='topics'
-          onChange={this.handleChange('topic')}
+          onChange={this.onChangeTopic}
           options={topicOptions}
           defaultValue={topic}
           placeholder="Select topic"
