@@ -96,7 +96,7 @@ class ProjectReportTimelineChart extends React.Component {
     const chardatasets = datasets.map((ds, idx) => {
       const idxColor = Math.floor(Math.random() * MATERIAL_COLORS.length)
       const color = MATERIAL_COLORS[idxColor]
-      const label = labels[idx]
+      const label = cutStringAndAddDots(labels[idx])
       const data = ds.map(({ skill }) => skill)
       const custom = {
         data,
