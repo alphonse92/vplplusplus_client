@@ -73,20 +73,17 @@ class ProjectReportTimelineChartOptions extends React.Component {
     }
   }
 
-  triggerUpdateTimeline = () => {
-    this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
-    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
-  }
-
   handleChange = attribute => event => {
     this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ [attribute]: event.target.value })
-    this.triggerUpdateTimeline()
+    this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
+    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
   };
 
   onChangeTopic = selectedTopics => {
     const topic = selectedTopics ? selectedTopics : []
     this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ topic })
-    this.triggerUpdateTimeline()
+    !selectedTopics || selectedTopics.length === 1 && this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
+    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
   }
 
 
