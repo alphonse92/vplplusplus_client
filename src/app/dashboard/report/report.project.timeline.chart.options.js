@@ -105,7 +105,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const marginRowBottom = "13px"
     return (
       <Flex vertical>
-        <Typography variant="subtitle2" gutterBottom>Timeline Generator Options</Typography>
+        <Typography variant="title" gutterBottom>Timeline Generator Options</Typography>
         <Flex vertical marginBottom={marginRowBottom}>
           <Typeahead
             id='topics'

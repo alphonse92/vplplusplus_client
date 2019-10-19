@@ -9,6 +9,7 @@ import { cutStringAndAddDots } from '../../../lib';
 import { Flex } from '../../../lib/components/flex';
 import { ProjectReportTimelineChartOptions } from './report.project.timeline.chart.options';
 import { MATERIAL_COLORS } from '../../../constants';
+import { Typography } from '@material-ui/core';
 
 class ProjectReportTimelineChart extends React.Component {
   static DATASET_BASE = {
@@ -142,7 +143,13 @@ class ProjectReportTimelineChart extends React.Component {
     return (
       <React.Fragment>
         <ProjectReportTimelineChartOptions show={shouldShow.options} project_id={this.props.project_id} />
-        {shouldShow.line && <Line {...lineProps} />}
+        {shouldShow.line && (
+          <React.Fragment>
+            <Typography variant="title" gutterBottom>Timeline</Typography>
+            <Line {...lineProps} />
+          </React.Fragment>
+
+        )}
         {shouldShow.nodata && <NoDataComponent />}
         {shouldShow.loading && <p>Loading timeline</p>}
       </React.Fragment >
