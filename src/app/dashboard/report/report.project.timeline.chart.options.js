@@ -52,9 +52,6 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
   componentDidMount() {
 
-    console.log('did mont')
-
-
     const { report, project_id, from: fromFilter } = this.props
     if (report.length && project_id) {
       // if project_id exists, then all user reports has the same project
@@ -63,7 +60,6 @@ class ProjectReportTimelineChartOptions extends React.Component {
       const [firstProject = {}] = projects
       const { createdAt: from } = firstProject
       if (fromFilter !== from) {
-        console.log('update filter ')
         this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ from })
       }
     }
@@ -76,23 +72,21 @@ class ProjectReportTimelineChartOptions extends React.Component {
   }
   isLoadingReport = () => this.props.loading
 
+  triggerChangeOptions = (data) => {
+    const options = { separeByTopic: this.selectedTopics && !!this.selectedTopics.length }
+    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER(data)
+    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id, options)
+  }
+
   handleChange = attribute => event => {
-    this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
-    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ [attribute]: event.target.value })
-    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
+    this.triggerChangeOptions({ [attribute]: event.target.value })
   };
 
   onChangeTopic = selectedTopics => {
     const arrayOfSelectedTopics = selectedTopics ? selectedTopics : []
     const topic = arrayOfSelectedTopics.map(({ value }) => value)
-    
-    if (!selectedTopics || selectedTopics.length === 1)
-      this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
-
-    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ topic })
-    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
-
     this.selectedTopics = selectedTopics
+    this.triggerChangeOptions({ topic })
   }
 
 
@@ -105,7 +99,6 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
     const topicOptions = topics.map(({ name: value, description: label }, index) => ({ value, label, index }))
 
-    console.log(this.selectedTopics)
     return (
 
       <Flex horizontal >

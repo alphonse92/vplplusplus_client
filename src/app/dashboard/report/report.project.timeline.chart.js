@@ -92,12 +92,12 @@ class ProjectReportTimelineChart extends React.Component {
   render() {
     const { props } = this
     const { labels, datasets, options = {} } = props
-    console.log({ labels, datasets })
     const chardatasets = datasets.map((ds) => {
       const idxColor = Math.floor(Math.random() * MATERIAL_COLORS.length)
       const color = MATERIAL_COLORS[idxColor]
       const [label] = labels
       const data = ds.map(({ skill }) => skill)
+      console.log({ data, label, ds })
       const custom = {
         data,
         label,
