@@ -72,7 +72,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
   isLoadingReport = () => this.props.loading
 
   loadProjectTimeline = () => {
-    const options = { separeByTopic: this.selectedTopics && !!this.selectedTopics.length }
+    const options = { separeByTopic: this.selected && this.selected.topic && !!this.selected.topic.length }
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id, options)
   }
 
@@ -94,20 +94,21 @@ class ProjectReportTimelineChartOptions extends React.Component {
     this.triggerChangeOptions({ [nameAttribute]: options })
   }
 
-  onSelectAllTypeahead = (attribute, options) => () => this.onChangeTopic(attribute)(options)
+  onSelectAllTypeahead = (attribute, options) => () => this.onChangeTypeahead(attribute)(options)
 
   render() {
 
     if (!this.props.show) return <React.Fragment></React.Fragment>
 
     const { props, selected = {} } = this
-    const { topics: selectedTopics, projects: selectedProjects } = selected
+    const { topic: selectedTopics = [], projects: selectedProjects = [] } = selected
     const { type, each, steps, from } = props
     const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
     const topicOptions = topics.map(({ name: value, description }, index) => ({ value, label: `${value} - ${description}`, index }))
     const width = `${100 / 4}%`
     const marginRowBottom = "13px"
     const styleTypeahead = { container: base => ({ flexGrow: 1 }) }
+    console.log(selected)
     return (
       <Flex vertical>
         <Typography variant="h6" gutterBottom>Timeline Generator Options</Typography>
@@ -133,7 +134,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
               name='projects'
               onChange={this.onChangeTypeahead('topic')}
               options={topicOptions}
-              defaultValue={[...selectedTopics]}
+              defaultValue={[...selectedProjects]}
               placeholder="Compare with another projects"
               portal={false}
               styles={styleTypeahead}
