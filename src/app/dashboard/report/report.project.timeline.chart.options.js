@@ -103,7 +103,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const topicOptions = topics.map(({ name: value, description }, index) => ({ value, label: `${value} - ${description}`, index }))
     const width = `${100 / 4}%`
     const marginRowBottom = "13px"
-
+    const styleTypeahead = { container: base => ({ flexGrow: 1 }) }
     return (
       <Flex vertical>
         <Typography variant="h6" gutterBottom>Timeline Generator Options</Typography>
@@ -117,7 +117,22 @@ class ProjectReportTimelineChartOptions extends React.Component {
               defaultValue={[...selectedTopics]}
               placeholder="Select topic"
               portal={false}
-              styles={{ container: base => ({ flexGrow: 1 }) }}
+              styles={styleTypeahead}
+            />
+            <Button color="primary" onClick={this.onSelectAllTopic(topicOptions)} >Select all</Button>
+          </Flex>
+        </Flex>
+        <Flex vertical marginBottom={marginRowBottom}>
+          <Flex horizontal>
+            <Typeahead
+              id='projects'
+              name='projects'
+              onChange={this.onChangeTopic}
+              options={topicOptions}
+              defaultValue={[...selectedTopics]}
+              placeholder="Compare with another projects"
+              portal={false}
+              styles={styleTypeahead}
             />
             <Button color="primary" onClick={this.onSelectAllTopic(topicOptions)} >Select all</Button>
           </Flex>
