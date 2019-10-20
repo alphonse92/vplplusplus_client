@@ -54,7 +54,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
   }
 
   componentDidMount() {
-
+    this.props.DISPATCHERS.LIST_PROJECTS()
     const { report, project_id, from: fromFilter } = this.props
     if (report.length && project_id) {
       // if project_id exists, then all user reports has the same project
