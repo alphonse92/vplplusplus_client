@@ -162,7 +162,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
             <Typeahead
               id='projects'
               name='projects'
-              onChange={this.onChangeTypeahead('topic')}
+              onChange={this.onChangeTypeahead('projects')}
               options={projectsOptions}
               defaultValue={[...selectedProjects]}
               placeholder="Compare with another projects"
