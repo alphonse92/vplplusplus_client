@@ -91,6 +91,8 @@ class ProjectReportTimelineChart extends React.Component {
     return { DISPATCHERS }
   }
 
+  state = {}
+
   componentDidMount() {
     this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
