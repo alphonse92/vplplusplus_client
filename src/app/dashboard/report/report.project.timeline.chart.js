@@ -104,10 +104,10 @@ class ProjectReportTimelineChart extends React.Component {
 
     const { topic = [], projects = [], append } = event
 
-    let { labelMap, labelIndex = 0 } = this.state
-    
+    let { labelMap = {}, labelIndex = 0 } = this.state
+
     // reset if the options isnot appening data to the chart
-    
+
     if (!append) {
       labelIndex = 0
       labelMap = {}
@@ -146,7 +146,7 @@ class ProjectReportTimelineChart extends React.Component {
       const color = MATERIAL_COLORS[idxColor]
       const labelIndex = labels[idx] || {}
       const labelInMap = labelMap[labelIndex] || {}
-      const { tag } = labelInMap
+      const { tag = labels[idx] } = labelInMap
       const data = ds.map(({ skill }) => skill ? skill : 0)
       const custom = {
         data,
