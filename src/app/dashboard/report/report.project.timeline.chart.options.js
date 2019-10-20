@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { ActionCreators } from './redux/actions';
 import { Flex } from '../../../lib/components/flex';
-import { Select, MenuItem, FormControl, InputLabel, TextField, Button, Typography } from '@material-ui/core';
+import { Select, MenuItem, FormControl, InputLabel, TextField, Button, Typography, FormControlLabel, Switch } from '@material-ui/core';
 import { Typeahead } from '../../../lib/components/material/form/typeahead';
 
 const LineChartTypeOptions = [
@@ -46,7 +46,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     return { DISPATCHERS }
   }
   state = {
-    age: LineChartTypeOptions[0]
+    persistData: false
   }
 
   componentDidMount() {
@@ -70,9 +70,15 @@ class ProjectReportTimelineChartOptions extends React.Component {
     }
   }
   isLoadingReport = () => this.props.loading
+
+  togglePersistData = () => {
+    this.setState({ persistData: !this.state.persistData })
+  }
+
   clearData = () => this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
-  loadProjectTimeline = clean => () => {
-    if (clean) this.clearData()
+
+  loadProjectTimeline = () => {
+    if (!this.persistData) this.clearData()
     const options = { separeByTopic: this.selected && this.selected.topic && !!this.selected.topic.length }
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id, options)
   }
@@ -101,7 +107,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
     if (!this.props.show) return <React.Fragment></React.Fragment>
 
-    const { props, selected = {} } = this
+    const { props, selected = {}, state } = this
+    const { persistData } = state
     const { topic: selectedTopics = [], projects: selectedProjects = [] } = selected
     const { type, each, steps, from } = props
     const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
@@ -189,8 +196,17 @@ class ProjectReportTimelineChartOptions extends React.Component {
           </Flex>
         </Flex>
         <Flex horizontal reverse marginBottom={marginRowBottom}>
-          <Button color="primary" onClick={this.loadProjectTimeline(true)}>Load</Button>
-          <Button color="primary" onClick={this.loadProjectTimeline(false)}>Add to the chart</Button>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={persistData}
+                onChange={this.togglePersistData}
+                color="primary"
+              />
+            }
+            label="Primary"
+          />
+          <Button color="primary" onClick={this.loadProjectTimeline}>Load</Button>
           <Button color="primary" onClick={this.clearData}>Reset</Button>
         </Flex>
       </Flex>
