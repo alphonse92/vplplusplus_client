@@ -98,7 +98,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const customOpts = { separeByTopic: this.selected && this.selected.topic && !!this.selected.topic.length }
     const currentOptions = this.props.options
 
-    const { topic, projects } = this.state.selected
+    const { topic, projects } = this.selected
     const { from, type, each, steps } = currentOptions
 
     const eventData = { from, type, each, steps, topic, projects }
