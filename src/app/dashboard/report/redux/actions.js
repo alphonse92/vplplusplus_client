@@ -94,15 +94,18 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 			return state
 		},
 		fullfilled: (state, action) => {
-			const { payload } = action
-			const { reports } = payload
 			const labels = []
 			const datasets = []
+			const { payload } = action
 
-			reports.forEach(dataReport => {
-				const { title, dataset } = dataReport
-				labels.push(title)
-				datasets.push(dataset)
+			payload.forEach(projectReport => {
+				const { reports } = projectReport
+				reports.forEach(dataReport => {
+					const { title, dataset } = dataReport
+					labels.push(title)
+					datasets.push(dataset)
+				})
+
 			})
 
 			const actualDatasets = state.project.stadistics.timeline.datasets
