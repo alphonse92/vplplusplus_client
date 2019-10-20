@@ -100,48 +100,57 @@ class ProjectReportTimelineChart extends React.Component {
 
   getLabelByTopicAndProject = ({ name: nameTopic }, { name: nameProject }) => `${nameTopic}-${nameProject}`
 
-  onLoadProject = ({ topic = [], projects = [] }) => {
+  onLoadProject = (event) => {
 
-    const labelMap = {}
+    const { topic = [], projects = [], append } = event
+
+    let { labelMap, labelIndex = 0 } = this.state
+    
+    // reset if the options isnot appening data to the chart
+    
+    if (!append) {
+      labelIndex = 0
+      labelMap = {}
+    }
 
     if (topic.length && projects.length) {
-      let idx = 0
       topic.forEach(topicSelected => {
         const { data: topic } = topicSelected
         projects.forEach(projectSelected => {
           const { data: project } = projectSelected
           const label = this.getLabelByTopicAndProject(topic, project)
-          idx++
-          labelMap[label] = { label, topic, project, tag: idx }
+          labelIndex++
+          labelMap[label] = { label, topic, project, tag: labelIndex }
         })
       })
     } else if (topic.length) {
       topic.forEach((topicSelected, index) => {
         const { data: topic } = topicSelected
         const label = topic.name
-        labelMap[label] = { label, topic, tag: index }
+        labelIndex++
+        labelMap[label] = { label, topic, tag: labelIndex }
       })
     }
 
-    this.setState({ labelMap })
+    this.setState({ labelMap, labelIndex })
   }
 
   render() {
     const { props, state = {} } = this
-    const { labelMap } = state
+    const { labelMap = {} } = state
     const { labels, datasets, options = {}, loading: isLoading, error: isError } = props
     const { steps } = options
-
-    console.log(labelMap)
 
     const chardatasets = datasets.map((ds, idx) => {
       const idxColor = Math.floor(Math.random() * MATERIAL_COLORS.length)
       const color = MATERIAL_COLORS[idxColor]
-      const label = labels[idx]
+      const labelIndex = labels[idx] || {}
+      const labelInMap = labelMap[labelIndex] || {}
+      const { tag } = labelInMap
       const data = ds.map(({ skill }) => skill ? skill : 0)
       const custom = {
         data,
-        label,
+        label: labels[idx],
         backgroundColor: color,
         borderColor: color,
         pointBackgroundColor: color,

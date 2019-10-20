@@ -99,7 +99,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const customOpts = { separeByTopic: this.selected && this.selected.topic && !!this.selected.topic.length }
     const { topic = [], projects = [] } = this.selected
     const { from, type, each, steps } = this.props
-    const eventData = { from, type, each, steps, topic, projects }
+    const { persistData: append } = this.state
+    const eventData = { from, type, each, steps, topic, projects, append }
     this.props.onLoad && this.props.onLoad(eventData)
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id, customOpts)
 
