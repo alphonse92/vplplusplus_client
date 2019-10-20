@@ -9,7 +9,6 @@ import { cutStringAndAddDots } from '../../../lib';
 import { Flex } from '../../../lib/components/flex';
 import { ProjectReportTimelineChartOptions } from './report.project.timeline.chart.options';
 import { MATERIAL_COLORS } from '../../../constants';
-import { Typography } from '@material-ui/core';
 
 class ProjectReportTimelineChart extends React.Component {
   static DATASET_BASE = {
