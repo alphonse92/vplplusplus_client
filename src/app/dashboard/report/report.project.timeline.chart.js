@@ -150,7 +150,7 @@ class ProjectReportTimelineChart extends React.Component {
       const data = ds.map(({ skill }) => skill ? skill : 0)
       const custom = {
         data,
-        label: labels[idx],
+        label: data,
         backgroundColor: color,
         borderColor: color,
         pointBackgroundColor: color,
