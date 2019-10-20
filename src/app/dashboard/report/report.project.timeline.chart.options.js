@@ -44,8 +44,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
   static mapDispatchToProps = (dispatch) => {
     const { LIST_PROJECTS } = ProjectActions
     const DISPATCHERS = {
-      ...bindActionCreators({ ...ActionCreators }, dispatch),
-      LIST_PROJECTS
+      ...bindActionCreators({ ...ActionCreators, LIST_PROJECTS }, dispatch),
+
     }
     return { DISPATCHERS }
   }
@@ -54,6 +54,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
   }
 
   componentDidMount() {
+    console.log('did mount')
     this.props.DISPATCHERS.LIST_PROJECTS()
     const { report, project_id, from: fromFilter } = this.props
     if (report.length && project_id) {

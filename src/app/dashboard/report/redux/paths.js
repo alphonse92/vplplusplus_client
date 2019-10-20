@@ -33,6 +33,7 @@ const PATHS = {
 		, each: 6
 		, steps: 4
 		, topic: []
+		, projects : []
 	},
 	'student.filter': [],
 	'student.report': [],
