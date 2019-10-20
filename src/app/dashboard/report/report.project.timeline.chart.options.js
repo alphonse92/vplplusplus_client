@@ -75,11 +75,22 @@ class ProjectReportTimelineChartOptions extends React.Component {
     this.setState({ persistData: !this.state.persistData })
   }
 
-  clearData = () => this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
+  clearData = () => {
+    this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
+  }
+
+  clearTypeaheadOptions = () =>
+    Object
+      .keys(this.select)
+      .forEach(typeaheadAttribute => {
+        this.select[typeaheadAttribute] = []
+      })
+
 
   loadProjectTimeline = () => {
     if (!this.state.persistData) this.clearData()
     const options = { separeByTopic: this.selected && this.selected.topic && !!this.selected.topic.length }
+    this.clearTypeaheadAttributes()
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id, options)
   }
 
