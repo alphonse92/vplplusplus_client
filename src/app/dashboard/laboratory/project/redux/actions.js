@@ -8,6 +8,22 @@ const TopicService = new TopicServiceClass()
 
 const Actions = {}
 
+const LIST_PROJECTS_NAME = 'LIST_PROJECTS'
+Actions[LIST_PROJECTS_NAME] = {
+	DISPATCHER: () => (dispatcher) => {
+		const actions = Actions[LIST_PROJECTS_NAME].ACTIONS
+		const getRequest = () => ProjectService.listProjects()
+		requestDispatcher(dispatcher, actions, getRequest)
+	},
+	ACTIONS: createRequestActions(LIST_PROJECTS_NAME, {
+		fullfilled: (state, action) => {
+			state.list.all = action.payload
+			return state
+		},
+		rejected: (state, action) => state
+	}),
+}
+
 const LOAD_PROJECTS_NAME = 'LOAD_PROJECTS'
 Actions[LOAD_PROJECTS_NAME] = {
 	DISPATCHER: () => (dispatcher, getStore) => {
@@ -35,6 +51,7 @@ Actions[LOAD_PROJECTS_NAME] = {
 		}
 	}),
 }
+
 const LOAD_PROJECT_NAME = 'LOAD_PROJECT'
 Actions[LOAD_PROJECT_NAME] = {
 	DISPATCHER: (id) => (dispatcher, getStore) => {

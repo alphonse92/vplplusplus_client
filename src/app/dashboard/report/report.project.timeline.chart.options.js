@@ -3,11 +3,11 @@ import moment from 'moment'
 import { capitalize } from 'lodash'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { ActionCreators as ProjectActions } from '../laboratory/project/redux/actions'
 import { ActionCreators } from './redux/actions';
 import { Flex } from '../../../lib/components/flex';
 import { Select, MenuItem, FormControl, InputLabel, TextField, Button, Typography, FormControlLabel, Switch } from '@material-ui/core';
 import { Typeahead } from '../../../lib/components/material/form/typeahead';
-
 const LineChartTypeOptions = [
   'years',
   'quarters',
@@ -30,18 +30,22 @@ const PeriodOpts = Array.from(Array(10), (v, i) => i + 1)
  */
 class ProjectReportTimelineChartOptions extends React.Component {
   static mapStateToProps = (state) => {
-    const { report: root } = state
+    const { report: root, projects: projectScope } = state
+    const { list: listOfProjects } = projectScope
+    const { all: projects = [] } = listOfProjects
     const { project } = root
     const { stadistics, report } = project
     const { timeline, mostSkilledStudents } = stadistics
     const { options, loading } = timeline
     const { type, each, steps, from, topic } = options
-    return { loading, report, mostSkilledStudents, type, each, steps, from, topic }
+    return { loading, report, mostSkilledStudents, type, each, steps, from, topic, projects }
   }
 
   static mapDispatchToProps = (dispatch) => {
+    const { LIST_PROJECTS } = ProjectActions
     const DISPATCHERS = {
       ...bindActionCreators({ ...ActionCreators }, dispatch),
+      LIST_PROJECTS
     }
     return { DISPATCHERS }
   }
@@ -90,7 +94,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
 
   loadProjectTimeline = () => {
-    
+
     const options = { separeByTopic: this.selected && this.selected.topic && !!this.selected.topic.length }
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id, options)
 
@@ -120,14 +124,16 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
   render() {
 
+    console.log(this.props)
     if (!this.props.show) return <React.Fragment></React.Fragment>
 
     const { props, selected = {}, state } = this
     const { persistData } = state
     const { topic: selectedTopics = [], projects: selectedProjects = [] } = selected
-    const { type, each, steps, from } = props
+    const { type, each, steps, from, projects } = props
     const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
     const topicOptions = topics.map(({ name: value, description }, index) => ({ value, label: `${value} - ${description}`, index }))
+    const projectsOptions = projects.map(({ name: label, _id: value }, index) => ({ value, label }))
     const width = `${100 / 4}%`
     const marginRowBottom = "13px"
     const styleTypeahead = { container: () => ({ flexGrow: 1 }) }
@@ -156,7 +162,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
               id='projects'
               name='projects'
               onChange={this.onChangeTypeahead('topic')}
-              options={topicOptions}
+              options={projectsOptions}
               defaultValue={[...selectedProjects]}
               placeholder="Compare with another projects"
               portal={false}

@@ -11,6 +11,7 @@ const PATHS = {
 	'topics.list.pagination.limit': 25,
 	'topics.list.pagination.total': 0,
 	'topics.list.pagination.sort': '',
+	'list.all': [],
 	'list.pagination.docs': [],
 	'list.pagination.page': 1,
 	'list.pagination.limit': 5,
