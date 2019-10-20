@@ -168,6 +168,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
             <FormControl >
               <InputLabel shrink htmlFor="type-label-placeholder">Time range</InputLabel>
               <Select
+                disabled={persistData}
                 value={type}
                 onChange={this.handleChange('type')}>
                 {LineChartTypeOptions.map(opt => <MenuItem key={opt} value={opt}>{capitalize(opt)}</MenuItem>)}
@@ -178,6 +179,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
             <FormControl >
               <InputLabel shrink htmlFor="each-label-placeholder">Period</InputLabel>
               <Select
+                disabled={persistData}
                 value={each}
                 onChange={this.handleChange('each')}>
                 {PeriodOpts.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
@@ -188,6 +190,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
             <FormControl >
               <InputLabel shrink htmlFor="steps-label-placeholder">Frequency</InputLabel>
               <Select
+                disabled={persistData}
                 value={steps}
                 onChange={this.handleChange('steps')}>
                 {PeriodOpts.map(opt => <MenuItem key={opt} value={opt}>{opt}</MenuItem>)}
@@ -196,6 +199,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
           </Flex>
         </Flex>
         <Flex horizontal reverse marginBottom={marginRowBottom}>
+          <Button color="primary" onClick={this.loadProjectTimeline}>Load</Button>
+          <Button color="primary" onClick={this.clearData}>Reset</Button>
           <FormControlLabel
             control={
               <Switch
@@ -204,10 +209,9 @@ class ProjectReportTimelineChartOptions extends React.Component {
                 color="primary"
               />
             }
-            label="Primary"
+            label="Add to the current chart"
           />
-          <Button color="primary" onClick={this.loadProjectTimeline}>Load</Button>
-          <Button color="primary" onClick={this.clearData}>Reset</Button>
+
         </Flex>
       </Flex>
 
