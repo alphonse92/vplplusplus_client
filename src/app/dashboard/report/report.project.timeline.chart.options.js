@@ -4,7 +4,6 @@ import { capitalize } from 'lodash'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { ActionCreators } from './redux/actions';
-import { cutStringAndAddDots } from '../../../lib';
 import { Flex } from '../../../lib/components/flex';
 import { Select, MenuItem, FormControl, InputLabel, TextField, Button, Typography } from '@material-ui/core';
 import { Typeahead } from '../../../lib/components/material/form/typeahead';
