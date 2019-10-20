@@ -93,7 +93,7 @@ class ProjectServiceClass extends WebService {
   }
 
 
-  getReportTimeline(project_id, from, type = 'months', each = 6, steps = 4, topic = [], separeByTopic) {
+  getReportTimeline(project_id, from, type = 'months', each = 6, steps = 4, topic = [], projects = [], separeByTopic) {
     const query = {
       project_id
       , from
@@ -101,6 +101,7 @@ class ProjectServiceClass extends WebService {
       , each
       , steps
       , topic
+      , projects
       , separeByTopic
     }
     const options = { method: 'GET', qs: query }
