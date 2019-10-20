@@ -82,7 +82,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
   clearTypeaheadOptions = () => {
     this.triggerChangeOptions({ topic: [], projects: [] })
     Object
-      .keys(this.select)
+      .keys(this.selected)
       .forEach(typeaheadAttribute => {
         this.select[typeaheadAttribute] = []
       })
