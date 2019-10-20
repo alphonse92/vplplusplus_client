@@ -49,6 +49,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     }
     return { DISPATCHERS }
   }
+  selected = {}
   state = {
     persistData: false
   }
@@ -96,13 +97,9 @@ class ProjectReportTimelineChartOptions extends React.Component {
   loadProjectTimeline = () => {
 
     const customOpts = { separeByTopic: this.selected && this.selected.topic && !!this.selected.topic.length }
-    const currentOptions = this.props.options
-
-    const { topic, projects } = this.selected
-    const { from, type, each, steps } = currentOptions
-
+    const { topic = [], projects = [] } = this.selected
+    const { from, type, each, steps } = this.props
     const eventData = { from, type, each, steps, topic, projects }
-    console.log({ eventData })
     this.props.onLoad && this.props.onLoad(eventData)
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id, customOpts)
 
