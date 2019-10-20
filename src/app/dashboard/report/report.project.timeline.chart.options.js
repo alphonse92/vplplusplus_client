@@ -84,20 +84,24 @@ class ProjectReportTimelineChartOptions extends React.Component {
     this.triggerChangeOptions({ [attribute]: event.target.value })
   };
 
-  onChangeTopic = selectedTopics => {
-    const arrayOfSelectedTopics = selectedTopics ? selectedTopics : []
-    const topic = arrayOfSelectedTopics.map(({ value }) => value)
-    this.selectedTopics = selectedTopics
-    this.triggerChangeOptions({ topic })
+  onChangeTypeahead = nameAttribute => selectedOptions => {
+    const arrayOfSelectedTopics = selectedOptions ? selectedOptions : []
+    const options = arrayOfSelectedTopics.map(({ value }) => value)
+    
+    const { selected = {} } = this
+    this.selected = { ...selected, [nameAttribute]: selectedOptions }
+
+    this.triggerChangeOptions({ [nameAttribute]: options })
   }
 
-  onSelectAllTopic = options => () => this.onChangeTopic(options)
+  onSelectAllTypeahead = (attribute, options) => () => this.onChangeTopic(attribute)(options)
 
   render() {
 
     if (!this.props.show) return <React.Fragment></React.Fragment>
 
-    const { props, selectedTopics = [] } = this
+    const { props, selected } = this
+    const { topics: selectedTopics, projects: selectedProjects } = selected
     const { type, each, steps, from } = props
     const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
     const topicOptions = topics.map(({ name: value, description }, index) => ({ value, label: `${value} - ${description}`, index }))
@@ -112,14 +116,14 @@ class ProjectReportTimelineChartOptions extends React.Component {
             <Typeahead
               id='topics'
               name='topics'
-              onChange={this.onChangeTopic}
+              onChange={this.onChangeTypeahead('topic')}
               options={topicOptions}
               defaultValue={[...selectedTopics]}
               placeholder="Select topic"
               portal={false}
               styles={styleTypeahead}
             />
-            <Button color="primary" onClick={this.onSelectAllTopic(topicOptions)} >Select all</Button>
+            <Button color="primary" onClick={this.onSelectAllTypeahead('topic', topicOptions)} >Select all</Button>
           </Flex>
         </Flex>
         <Flex vertical marginBottom={marginRowBottom}>
@@ -127,14 +131,14 @@ class ProjectReportTimelineChartOptions extends React.Component {
             <Typeahead
               id='projects'
               name='projects'
-              onChange={this.onChangeTopic}
+              onChange={this.onChangeTypeahead('topic')}
               options={topicOptions}
               defaultValue={[...selectedTopics]}
               placeholder="Compare with another projects"
               portal={false}
               styles={styleTypeahead}
             />
-            <Button color="primary" onClick={this.onSelectAllTopic(topicOptions)} >Select all</Button>
+            <Button color="primary" onClick={this.onSelectAllTypeahead('topic', topicOptions)} >Select all</Button>
           </Flex>
         </Flex>
         <Flex horizontal marginBottom={marginRowBottom}>
