@@ -80,8 +80,8 @@ class ProjectReportTimelineChart extends React.Component {
     const { project } = root
     const { stadistics } = project
     const { timeline } = stadistics
-    const { datasets, labels, options, loading } = timeline
-    return { datasets, options, loading, labels }
+    const { datasets, labels, options, loading, error } = timeline
+    return { datasets, options, loading, labels, error }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -98,7 +98,7 @@ class ProjectReportTimelineChart extends React.Component {
 
   render() {
     const { props } = this
-    const { labels, datasets, options = {} } = props
+    const { labels, datasets, options = {}, loading: isLoading, error: isError } = props
     const { steps } = options
     const chardatasets = datasets.map((ds, idx) => {
       const idxColor = Math.floor(Math.random() * MATERIAL_COLORS.length)
@@ -140,21 +140,21 @@ class ProjectReportTimelineChart extends React.Component {
 
     const data = { labels: Array.from(Array(steps), (v, i) => i), datasets: chardatasets }
     const lineProps = { data, options: chartOpts }
-    const isLoading = this.props.loading
-
     const shouldShow = {
-      options: !isLoading,
-      line: !isLoading && datasets && datasets.length,
-      nodata: !isLoading && (!datasets || !datasets.length),
-      loading: isLoading
+      options: !isError && !isLoading,
+      line: !isError && !isLoading && datasets && datasets.length,
+      nodata: !isError && !isLoading && (!datasets || !datasets.length),
+      loading: isLoading,
+      error: isError
     }
 
     return (
       <Flex vertical margin="13px">
         <ProjectReportTimelineChartOptions show={shouldShow.options} project_id={this.props.project_id} />
-        {shouldShow.line && <Line {...lineProps} />}
-        {shouldShow.nodata && <NoDataComponent />}
-        {shouldShow.loading && <p>Loading timeline</p>}
+        {!!shouldShow.line && <Line {...lineProps} />}
+        {!!shouldShow.nodata && <NoDataComponent />}
+        {!!shouldShow.loading && <p>Loading timeline</p>}
+        {!!shouldShow.error && <p>Something happend please contact to the administrator</p>}
       </Flex >
     )
 

@@ -104,8 +104,11 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 				datasets.push(dataset)
 			})
 
-			state.project.stadistics.timeline.labels = labels
-			state.project.stadistics.timeline.datasets = datasets
+			const actualDatasets = state.project.stadistics.timeline.datasets
+			const actualLabels = state.project.stadistics.timeline.labels
+
+			state.project.stadistics.timeline.labels = [...actualLabels, ...labels]
+			state.project.stadistics.timeline.datasets = [...actualDatasets, ...datasets]
 			state.project.stadistics.timeline.loading = false
 			state.project.stadistics.timeline.error = false
 			return state

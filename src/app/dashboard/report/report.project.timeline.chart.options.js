@@ -70,9 +70,9 @@ class ProjectReportTimelineChartOptions extends React.Component {
     }
   }
   isLoadingReport = () => this.props.loading
-
+  clearData = () => this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
   loadProjectTimeline = clean => () => {
-    if (clean) this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
+    if (clean) this.clearData()
     const options = { separeByTopic: this.selected && this.selected.topic && !!this.selected.topic.length }
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id, options)
   }
@@ -189,8 +189,9 @@ class ProjectReportTimelineChartOptions extends React.Component {
           </Flex>
         </Flex>
         <Flex horizontal reverse marginBottom={marginRowBottom}>
-          <Button color="primary" onClick={this.loadProjectTimeline(true)}>Clean and reload</Button>
-          <Button color="primary" onClick={this.loadProjectTimeline(false)}>Reload</Button>
+          <Button color="primary" onClick={this.loadProjectTimeline(true)}>Load</Button>
+          <Button color="primary" onClick={this.loadProjectTimeline(false)}>Add to the chart</Button>
+          <Button color="primary" onClick={this.clearData}>Reset</Button>
         </Flex>
       </Flex>
 
