@@ -64,6 +64,7 @@ Actions[CLEAR_PROJECT_TIMELINE_DATASETS_NAME] = {
 			name: CLEAR_PROJECT_TIMELINE_DATASETS_NAME,
 			reducer: (state, action) => {
 				state.project.stadistics.timeline.datasets = []
+				state.project.stadistics.timeline.labels = []
 				return state
 			}
 		}
