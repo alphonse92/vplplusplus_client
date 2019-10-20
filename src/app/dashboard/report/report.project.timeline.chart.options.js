@@ -54,7 +54,6 @@ class ProjectReportTimelineChartOptions extends React.Component {
   }
 
   componentDidMount() {
-    console.log('did mount')
     this.props.DISPATCHERS.LIST_PROJECTS()
     const { report, project_id, from: fromFilter } = this.props
     if (report.length && project_id) {
@@ -112,20 +111,20 @@ class ProjectReportTimelineChartOptions extends React.Component {
   };
 
   onChangeTypeahead = nameAttribute => selectedOptions => {
-    const arrayOfSelectedTopics = selectedOptions ? selectedOptions : []
-    const options = arrayOfSelectedTopics.map(({ value }) => value)
-
+    const arrayOfSelectedOptions = selectedOptions ? selectedOptions : []
+    const options = arrayOfSelectedOptions.map(({ value }) => value)
     const { selected = {} } = this
-    this.selected = { ...selected, [nameAttribute]: arrayOfSelectedTopics }
 
-    this.triggerChangeOptions({ [nameAttribute]: options })
+    this.selected = { ...selected, [nameAttribute]: arrayOfSelectedOptions }
+    const payload = { [nameAttribute]: options }
+    console.log(payload)
+    this.triggerChangeOptions(payload)
   }
 
   onSelectAllTypeahead = (attribute, options) => () => this.onChangeTypeahead(attribute)(options)
 
   render() {
 
-    console.log(this.props)
     if (!this.props.show) return <React.Fragment></React.Fragment>
 
     const { props, selected = {}, state } = this
