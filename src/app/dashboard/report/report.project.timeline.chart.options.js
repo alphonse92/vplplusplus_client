@@ -35,7 +35,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { project } = root
     const { stadistics, report } = project
     const { timeline, mostSkilledStudents } = stadistics
-    const { options = {}, loading } = timeline
+    const { options, loading } = timeline
     const { type, each, steps, from, topic } = options
     return { loading, report, mostSkilledStudents, type, each, steps, from, topic }
   }
@@ -92,30 +92,36 @@ class ProjectReportTimelineChartOptions extends React.Component {
     this.triggerChangeOptions({ topic })
   }
 
+  onSelectAllTopic = options => () => this.onChangeTopic(options)
 
   render() {
 
     if (!this.props.show) return <React.Fragment></React.Fragment>
 
-    const { props } = this
+    const { props, selectedTopics = [] } = this
     const { type, each, steps, from } = props
     const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
     const topicOptions = topics.map(({ name: value, description }, index) => ({ value, label: `${value} - ${description}`, index }))
     const width = `${100 / 4}%`
     const marginRowBottom = "13px"
+
     return (
       <Flex vertical>
-        <Typography variant="title" gutterBottom>Timeline Generator Options</Typography>
+        <Typography variant="h6" gutterBottom>Timeline Generator Options</Typography>
         <Flex vertical marginBottom={marginRowBottom}>
-          <Typeahead
-            id='topics'
-            name='topics'
-            onChange={this.onChangeTopic}
-            options={topicOptions}
-            defaultValue={this.selectedTopics}
-            placeholder="Select topic"
-            portal={false}
-          />
+          <Flex horizontal>
+            <Typeahead
+              id='topics'
+              name='topics'
+              onChange={this.onChangeTopic}
+              options={topicOptions}
+              defaultValue={[...selectedTopics]}
+              placeholder="Select topic"
+              portal={false}
+              styles={{ container: base => ({ flexGrow: 1 }) }}
+            />
+            <Button color="primary" onClick={this.onSelectAllTopic(topicOptions)} >Select all</Button>
+          </Flex>
         </Flex>
         <Flex horizontal marginBottom={marginRowBottom}>
           <Flex vertical width={width}>

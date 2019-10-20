@@ -123,8 +123,10 @@ class ProjectReportTimelineChart extends React.Component {
           }],
         },
       },
-      ...options,
-
+      title: {
+        display: true,
+        text: 'Project Timeline'
+      }
     }
 
     const NoDataComponent = () => <Flex margin='13px' vertical alignItems='center' fontSize='13px' textAlign='center'><ErrorOutlineOutlined /> No data to show</Flex>
@@ -141,18 +143,12 @@ class ProjectReportTimelineChart extends React.Component {
     }
 
     return (
-      <React.Fragment>
+      <Flex vertical margin="13px">
         <ProjectReportTimelineChartOptions show={shouldShow.options} project_id={this.props.project_id} />
-        {shouldShow.line && (
-          <React.Fragment>
-            <Typography variant="title" gutterBottom>Timeline</Typography>
-            <Line {...lineProps} />
-          </React.Fragment>
-
-        )}
+        {shouldShow.line && <Line {...lineProps} />}
         {shouldShow.nodata && <NoDataComponent />}
         {shouldShow.loading && <p>Loading timeline</p>}
-      </React.Fragment >
+      </Flex >
     )
 
   }

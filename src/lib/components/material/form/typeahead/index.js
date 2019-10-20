@@ -11,6 +11,7 @@ export const Typeahead = (props) => {
     onClear,
     isDisabled,
     placeholder,
+    styles = {}
   } = props
 
   const _onChange = (currentSelected = [], data) => {
@@ -22,20 +23,21 @@ export const Typeahead = (props) => {
   }
 
   return (
-      <Select
-        isMulti
-        isSearchable
-        isClearable
-        name={name}
-        options={options}
-        isDisabled={isDisabled}
-        defaultValue={defaultValue}
-        menuPortalTarget={document.body}
-        menuPosition='absolute'
-        menuPlacement='bottom'
-        styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
-        placeholder={placeholder}
-        onChange={_onChange}
-      />
+    <Select
+      isMulti
+      isSearchable
+      isClearable
+      name={name}
+      options={options}
+      isDisabled={isDisabled}
+      defaultValue={defaultValue}
+      value={defaultValue}
+      menuPortalTarget={document.body}
+      menuPosition='absolute'
+      menuPlacement='bottom'
+      styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }), ...styles, }}
+      placeholder={placeholder}
+      onChange={_onChange}
+    />
   )
 }
