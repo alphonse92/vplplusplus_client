@@ -186,7 +186,7 @@ class ProjectReportTimelineChart extends React.Component {
         <ProjectReportTimelineChartOptions
           show={shouldShow.options}
           project_id={this.props.project_id}
-          onLoad={console.log} />
+          onLoad={this.onLoadProject} />
         {!!shouldShow.line && <Line {...lineProps} />}
         {!!shouldShow.nodata && <NoDataComponent />}
         {!!shouldShow.loading && <p>Loading timeline</p>}
