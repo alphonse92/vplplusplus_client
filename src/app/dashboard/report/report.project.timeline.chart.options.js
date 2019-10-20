@@ -87,7 +87,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
   onChangeTypeahead = nameAttribute => selectedOptions => {
     const arrayOfSelectedTopics = selectedOptions ? selectedOptions : []
     const options = arrayOfSelectedTopics.map(({ value }) => value)
-    
+
     const { selected = {} } = this
     this.selected = { ...selected, [nameAttribute]: selectedOptions }
 
@@ -100,7 +100,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
     if (!this.props.show) return <React.Fragment></React.Fragment>
 
-    const { props, selected } = this
+    const { props, selected = {} } = this
     const { topics: selectedTopics, projects: selectedProjects } = selected
     const { type, each, steps, from } = props
     const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
