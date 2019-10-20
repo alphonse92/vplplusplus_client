@@ -71,7 +71,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
   }
   isLoadingReport = () => this.props.loading
 
-  loadProjectTimeline = () => {
+  loadProjectTimeline = clean => () => {
+    if (clean) this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
     const options = { separeByTopic: this.selected && this.selected.topic && !!this.selected.topic.length }
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id, options)
   }
@@ -89,7 +90,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const options = arrayOfSelectedTopics.map(({ value }) => value)
 
     const { selected = {} } = this
-    this.selected = { ...selected, [nameAttribute]: selectedOptions }
+    this.selected = { ...selected, [nameAttribute]: arrayOfSelectedTopics }
 
     this.triggerChangeOptions({ [nameAttribute]: options })
   }
@@ -187,8 +188,9 @@ class ProjectReportTimelineChartOptions extends React.Component {
             </FormControl>
           </Flex>
         </Flex>
-        <Flex vertical marginBottom={marginRowBottom}>
-          <Button color="primary" onClick={this.loadProjectTimeline}>Reload</Button>
+        <Flex horizontal reverse marginBottom={marginRowBottom}>
+          <Button color="primary" onClick={this.loadProjectTimeline(true)}>Clean and reload</Button>
+          <Button color="primary" onClick={this.loadProjectTimeline(false)}>Reload</Button>
         </Flex>
       </Flex>
 

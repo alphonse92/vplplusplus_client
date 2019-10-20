@@ -46,6 +46,13 @@ class ProjectReportTimelineChart extends React.Component {
       yAxes: [{
         min: 0,
         max: 100,
+        display: true,
+        ticks: {
+          beginAtZero: true,
+          steps: 20,
+          stepValue: 5,
+          max: 100
+        },
         scaleLabel: {
           display: true,
           labelString: 'Skill Student Average',
@@ -97,7 +104,7 @@ class ProjectReportTimelineChart extends React.Component {
       const idxColor = Math.floor(Math.random() * MATERIAL_COLORS.length)
       const color = MATERIAL_COLORS[idxColor]
       const label = cutStringAndAddDots(labels[idx])
-      const data = ds.map(({ skill }) => skill)
+      const data = ds.map(({ skill }) => skill ? skill : 0)
       const custom = {
         data,
         label,
@@ -114,6 +121,7 @@ class ProjectReportTimelineChart extends React.Component {
         ...ProjectReportTimelineChart.OPTS_BASE,
         scales: {
           ...ProjectReportTimelineChart.OPTS_BASE.scales,
+
           xAxes: [{
             scaleLabel: {
               display: true,
