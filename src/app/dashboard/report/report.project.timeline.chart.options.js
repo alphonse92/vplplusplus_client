@@ -107,8 +107,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const topicOptions = topics.map(({ name: value, description }, index) => ({ value, label: `${value} - ${description}`, index }))
     const width = `${100 / 4}%`
     const marginRowBottom = "13px"
-    const styleTypeahead = { container: base => ({ flexGrow: 1 }) }
-    console.log(selected)
+    const styleTypeahead = { container: () => ({ flexGrow: 1 }) }
+
     return (
       <Flex vertical>
         <Typography variant="h6" gutterBottom>Timeline Generator Options</Typography>
