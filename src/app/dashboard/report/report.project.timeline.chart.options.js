@@ -84,7 +84,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     Object
       .keys(this.selected)
       .forEach(typeaheadAttribute => {
-        this.select[typeaheadAttribute] = []
+        this.selected[typeaheadAttribute] = []
       })
   }
 
