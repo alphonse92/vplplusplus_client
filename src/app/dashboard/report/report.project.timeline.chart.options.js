@@ -32,13 +32,13 @@ class ProjectReportTimelineChartOptions extends React.Component {
   static mapStateToProps = (state) => {
     const { report: root, projects: projectScope } = state
     const { list: listOfProjects } = projectScope
-    const { all: projects = [] } = listOfProjects
+    const { all: projectList = [] } = listOfProjects
     const { project } = root
     const { stadistics, report } = project
     const { timeline, mostSkilledStudents } = stadistics
     const { options, loading } = timeline
-    const { type, each, steps, from, topic } = options
-    return { loading, report, mostSkilledStudents, type, each, steps, from, topic, projects }
+    const { type, each, steps, from, topic, projects } = options
+    return { loading, report, mostSkilledStudents, type, each, steps, from, topic, projects, projectList }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -130,10 +130,13 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { props, selected = {}, state } = this
     const { persistData } = state
     const { topic: selectedTopics = [], projects: selectedProjects = [] } = selected
-    const { type, each, steps, from, projects } = props
+    const { type, each, steps, from, projectList } = props
+    
     const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
     const topicOptions = topics.map(({ name: value, description }, index) => ({ value, label: `${value} - ${description}`, index }))
-    const projectsOptions = projects.map(({ name: label, _id: value }, index) => ({ value, label }))
+    
+    const projectsOptions = projectList.map(({ name: label, _id: value }, index) => ({ value, label }))
+    
     const width = `${100 / 4}%`
     const marginRowBottom = "13px"
     const styleTypeahead = { container: () => ({ flexGrow: 1 }) }
