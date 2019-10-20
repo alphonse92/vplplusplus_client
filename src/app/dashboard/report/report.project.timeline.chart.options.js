@@ -138,9 +138,15 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { type, each, steps, from, projectList } = props
 
     const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
-    const topicOptions = topics.map(({ name: value, description }, index) => ({ value, label: `${value} - ${description}`, index }))
+    const topicOptions = topics.map((data) => {
+      const { name: value, description: label } = data
+      return { value, label, data }
+    })
 
-    const projectsOptions = projectList.map(({ name: label, _id: value }, index) => ({ value, label }))
+    const projectsOptions = projectList.map((data) => {
+      const { name: label, _id: value } = data
+      return { value, label, data }
+    })
 
     const width = `${100 / 4}%`
     const marginRowBottom = "13px"

@@ -96,14 +96,46 @@ class ProjectReportTimelineChart extends React.Component {
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
   }
 
+  getLabelByTopicAndProject = ({ name: nameTopic }, { name: nameProject }) => `${nameTopic}-${nameProject}`
+
+  onLoadProject = ({ topic = [], projects = [] }) => {
+
+    const labelMap = {}
+
+    if (topic.length && projects.length) {
+      let idx = 0
+      topic.forEach(topicSelected => {
+        const { data: topic } = topicSelected
+        projects.forEach(projectSelected => {
+          const { data: project } = projectSelected
+          const label = this.getLabelByTopicAndProject(topic, project)
+          idx++
+          labelMap[label] = { label, topic, project, tag: idx }
+        })
+      })
+    } else if (topic.length) {
+      topic.forEach((topicSelected, index) => {
+        const { data: topic } = topicSelected
+        const label = topic.name
+        labelMap[label] = { label, topic, tag: index }
+      })
+    }
+
+    this.setState({ labelMap })
+  }
+
   render() {
-    const { props } = this
+    const { props, state = {} } = this
+    const { labelMap } = state
     const { labels, datasets, options = {}, loading: isLoading, error: isError } = props
     const { steps } = options
+
+    console.log(labelMap)
+
     const chardatasets = datasets.map((ds, idx) => {
       const idxColor = Math.floor(Math.random() * MATERIAL_COLORS.length)
       const color = MATERIAL_COLORS[idxColor]
-      const label = cutStringAndAddDots(labels[idx])
+      const label = labels[idx]
       const data = ds.map(({ skill }) => skill ? skill : 0)
       const custom = {
         data,
@@ -121,7 +153,6 @@ class ProjectReportTimelineChart extends React.Component {
         ...ProjectReportTimelineChart.OPTS_BASE,
         scales: {
           ...ProjectReportTimelineChart.OPTS_BASE.scales,
-
           xAxes: [{
             scaleLabel: {
               display: true,
