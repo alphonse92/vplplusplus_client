@@ -169,7 +169,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
               portal={false}
               styles={styleTypeahead}
             />
-            <Button color="primary" onClick={this.onSelectAllTypeahead('projects', topicOptions)} >Select all</Button>
+            <Button color="primary" onClick={this.onSelectAllTypeahead('projects', projectsOptions)} >Select all</Button>
           </Flex>
         </Flex>
         <Flex horizontal marginBottom={marginRowBottom}>
