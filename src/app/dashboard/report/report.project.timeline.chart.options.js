@@ -79,12 +79,14 @@ class ProjectReportTimelineChartOptions extends React.Component {
     this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
   }
 
-  clearTypeaheadOptions = () =>
+  clearTypeaheadOptions = () => {
+    this.triggerChangeOptions({ topic: [], projects: [] })
     Object
       .keys(this.select)
       .forEach(typeaheadAttribute => {
         this.select[typeaheadAttribute] = []
       })
+  }
 
 
   loadProjectTimeline = () => {
