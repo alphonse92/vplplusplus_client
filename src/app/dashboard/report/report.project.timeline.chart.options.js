@@ -95,8 +95,16 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
   loadProjectTimeline = () => {
 
-    const options = { separeByTopic: this.selected && this.selected.topic && !!this.selected.topic.length }
-    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id, options)
+    const customOpts = { separeByTopic: this.selected && this.selected.topic && !!this.selected.topic.length }
+    const currentOptions = this.props.options
+
+    const { topic, projects } = this.state.selected
+    const { from, type, each, steps } = currentOptions
+
+    const eventData = { from, type, each, steps, topic, projects }
+    console.log({ eventData })
+    this.props.onLoad && this.props.onLoad(eventData)
+    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id, customOpts)
 
     if (!this.state.persistData) this.clearData()
     this.clearTypeaheadOptions()
@@ -117,7 +125,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
     this.selected = { ...selected, [nameAttribute]: arrayOfSelectedOptions }
     const payload = { [nameAttribute]: options }
-    console.log(payload)
+
     this.triggerChangeOptions(payload)
   }
 
@@ -131,12 +139,12 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { persistData } = state
     const { topic: selectedTopics = [], projects: selectedProjects = [] } = selected
     const { type, each, steps, from, projectList } = props
-    
+
     const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
     const topicOptions = topics.map(({ name: value, description }, index) => ({ value, label: `${value} - ${description}`, index }))
-    
+
     const projectsOptions = projectList.map(({ name: label, _id: value }, index) => ({ value, label }))
-    
+
     const width = `${100 / 4}%`
     const marginRowBottom = "13px"
     const styleTypeahead = { container: () => ({ flexGrow: 1 }) }

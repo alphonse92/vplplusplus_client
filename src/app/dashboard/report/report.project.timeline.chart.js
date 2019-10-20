@@ -150,7 +150,10 @@ class ProjectReportTimelineChart extends React.Component {
 
     return (
       <Flex vertical margin="13px">
-        <ProjectReportTimelineChartOptions show={shouldShow.options} project_id={this.props.project_id} />
+        <ProjectReportTimelineChartOptions
+          show={shouldShow.options}
+          project_id={this.props.project_id}
+          onLoad={console.log} />
         {!!shouldShow.line && <Line {...lineProps} />}
         {!!shouldShow.nodata && <NoDataComponent />}
         {!!shouldShow.loading && <p>Loading timeline</p>}
