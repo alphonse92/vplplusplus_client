@@ -9,7 +9,7 @@ import { cutStringAndAddDots } from '../../../lib';
 import { Flex } from '../../../lib/components/flex';
 import { ProjectReportTimelineChartOptions } from './report.project.timeline.chart.options';
 import { MATERIAL_COLORS } from '../../../constants';
-import { Table, TableHead, TableRow, TableBody, TableCell, Typography } from '@material-ui/core';
+import { Table, TableHead, TableRow, TableBody, TableCell, Typography, Switch } from '@material-ui/core';
 
 const ProjectReportTimeLabelTable = (props) => {
   const { data = [] } = props
@@ -133,20 +133,25 @@ class ProjectReportTimelineChart extends React.Component {
   }
 
   getLabelByTopicAndProject = ({ name: nameTopic }, { name: nameProject }) => `${nameTopic}-${nameProject}`
+  
+  toggleEmptyData = () => this.setState({ hideEmptyDatasets: !this.state.hideEmptyDatasets })
 
   render() {
-    const { props } = this
+    const { props, state } = this
+    const { hideEmptyDatasets } = state
     const { labels, datasets, options = {}, loading: isLoading, error: isError } = props
     const { steps } = options
     const labelDefinitions = []
-    const chardatasets = datasets.map((ds, idx) => {
+    const chardatasets = datasets.reduce((acc, ds, idx) => {
+      const data = ds.map(({ skill }) => skill ? skill : 0)
+      const sum = data.reduce((sum, d) => d + sum, 0)
+      if (hideEmptyDatasets && !sum) return acc
       const idxColor = Math.floor(Math.random() * MATERIAL_COLORS.length)
       const color = MATERIAL_COLORS[idxColor]
-      const label = idx
-      const data = ds.map(({ skill }) => skill ? skill : 0)
+      const label = acc.length
       const custom = {
         data,
-        label: idx,
+        label,
         backgroundColor: color,
         borderColor: color,
         pointBackgroundColor: color,
@@ -155,8 +160,8 @@ class ProjectReportTimelineChart extends React.Component {
 
       labelDefinitions.push({ color, label, ...labels[idx] })
 
-      return { ...ProjectReportTimelineChart.DATASET_BASE, ...custom }
-    })
+      return [...acc, { ...ProjectReportTimelineChart.DATASET_BASE, ...custom }]
+    }, [])
 
     const chartOpts = {
       ...{
@@ -188,14 +193,24 @@ class ProjectReportTimelineChart extends React.Component {
       loading: isLoading,
       error: isError
     }
-
+    const ToggleEmptyData = () => <FormControlLabel
+      control={
+        <Switch
+          checked={hideEmptyDatasets}
+          onChange={this.toggleEmptyData}
+          color="primary"
+        />
+      }
+      label="Add to the current chart"
+    />
     return (
       <Flex vertical margin="13px">
         <ProjectReportTimelineChartOptions
           show={shouldShow.options}
           project_id={this.props.project_id}
         />
-        {!!shouldShow.line &&  <ProjectReportTimeLabelTable data={labelDefinitions} />}
+        {!!shouldShow.line && <ToggleEmptyData />}
+        {!!shouldShow.line && <ProjectReportTimeLabelTable data={labelDefinitions} />}
         {!!shouldShow.line && <Line {...lineProps} />}
         {!!shouldShow.nodata && <NoDataComponent />}
         {!!shouldShow.loading && <p>Loading timeline</p>}
