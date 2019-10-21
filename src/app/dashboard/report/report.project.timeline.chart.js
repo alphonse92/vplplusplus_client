@@ -26,13 +26,14 @@ const ProjectReportTimeLabelTable = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((def) => {
+          {data.map((def, idx) => {
             const { label, topic, project, color } = def
-            let TopicText = topic && topic.length ? topic.join(',') : "All"
+            let TopicText = topic && topic.length ? topic.map(({ name }) => name).join(',') : "All"
+            console.log(def)
             return (
-              <TableRow>
+              <TableRow key={idx}>
                 <TableCell><span style={{ padding: '7px', backgroundColor: color }}>{label}</span></TableCell>
-                <TableCell>{project}</TableCell>
+                <TableCell>{project.name}</TableCell>
                 <TableCell>{TopicText}</TableCell>
               </TableRow>
             )
