@@ -27,11 +27,11 @@ const ProjectReportTimeLabelTable = (props) => {
         </TableHead>
         <TableBody>
           {data.map((def) => {
-            const { label, topic, project } = def
+            const { label, topic, project, color } = def
             let TopicText = topic && topic.length ? topic.join(',') : "All"
             return (
               <TableRow>
-                <TableCell>{label}</TableCell>
+                <TableCell><span style={{ padding: '7px', backgroundColor: color }}>{label}</span></TableCell>
                 <TableCell>{project}</TableCell>
                 <TableCell>{TopicText}</TableCell>
               </TableRow>
@@ -134,43 +134,6 @@ class ProjectReportTimelineChart extends React.Component {
 
   getLabelByTopicAndProject = ({ name: nameTopic }, { name: nameProject }) => `${nameTopic}-${nameProject}`
 
-  onLoadProject = (event) => {
-
-    console.log(event)
-
-    // const { topic = [], projects = [], append } = event
-
-    // let { labelMap = {}, labelIndex = 0 } = this.state
-
-    // // reset if the options isnot appening data to the chart
-
-    // if (!append) {
-    //   labelIndex = 0
-    //   labelMap = {}
-    // }
-
-    // if (topic.length && projects.length) {
-    //   topic.forEach(topicSelected => {
-    //     const { data: topic } = topicSelected
-    //     projects.forEach(projectSelected => {
-    //       const { data: project } = projectSelected
-    //       const label = this.getLabelByTopicAndProject(topic, project)
-    //       labelIndex++
-    //       labelMap[label] = { label, topic, project, tag: labelIndex }
-    //     })
-    //   })
-    // } else if (topic.length) {
-    //   topic.forEach((topicSelected, index) => {
-    //     const { data: topic } = topicSelected
-    //     const label = topic.name
-    //     labelIndex++
-    //     labelMap[label] = { label, topic, tag: labelIndex }
-    //   })
-    // }
-
-    // this.setState({ labelMap, labelIndex })
-  }
-
   render() {
     const { props } = this
     const { labels, datasets, options = {}, loading: isLoading, error: isError } = props
@@ -190,7 +153,7 @@ class ProjectReportTimelineChart extends React.Component {
         pointBorderColor: color
       }
 
-      labelDefinitions.push({ label, ...labels[idx] })
+      labelDefinitions.push({ color, label, ...labels[idx] })
 
       return { ...ProjectReportTimelineChart.DATASET_BASE, ...custom }
     })
@@ -231,7 +194,7 @@ class ProjectReportTimelineChart extends React.Component {
         <ProjectReportTimelineChartOptions
           show={shouldShow.options}
           project_id={this.props.project_id}
-          onLoad={this.onLoadProject} />
+        />
         <ProjectReportTimeLabelTable data={labelDefinitions} />
         {!!shouldShow.line && <Line {...lineProps} />}
         {!!shouldShow.nodata && <NoDataComponent />}
