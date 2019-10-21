@@ -98,12 +98,13 @@ class ProjectReportTimelineChart extends React.Component {
       mode: 'index',
       callbacks: {
         label: function (tooltipItem, myData) {
-          var label = myData.datasets[tooltipItem.datasetIndex].label || '';
-          if (label) {
-            label += ': ';
-          }
-          label += parseFloat(tooltipItem.value).toFixed(2);
-          return label;
+          const index = tooltipItem.datasetIndex
+          const def = `No label ${index}`
+          const { label } = myData.datasets[index]
+          const text = isNaN(label)
+            ? def
+            : `Index-${label}: ${parseFloat(tooltipItem.value).toFixed(2)}`
+          return text
         }
       }
     }
@@ -227,6 +228,7 @@ class ProjectReportTimelineChart extends React.Component {
         </Flex>
       )
     }
+
     return (
       <Flex vertical margin="13px">
         <ProjectReportTimelineChartOptions show={shouldShow.options} project_id={this.props.project_id} />
