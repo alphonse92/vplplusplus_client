@@ -125,7 +125,9 @@ class ProjectReportTimelineChart extends React.Component {
     return { DISPATCHERS }
   }
 
-  state = {}
+  state = {
+    hideEmptyDatasets: true
+  }
 
   componentDidMount() {
     this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
@@ -133,7 +135,7 @@ class ProjectReportTimelineChart extends React.Component {
   }
 
   getLabelByTopicAndProject = ({ name: nameTopic }, { name: nameProject }) => `${nameTopic}-${nameProject}`
-  
+
   toggleEmptyData = () => this.setState({ hideEmptyDatasets: !this.state.hideEmptyDatasets })
 
   render() {
@@ -145,10 +147,12 @@ class ProjectReportTimelineChart extends React.Component {
     const chardatasets = datasets.reduce((acc, ds, idx) => {
       const data = ds.map(({ skill }) => skill ? skill : 0)
       const sum = data.reduce((sum, d) => d + sum, 0)
-      if (hideEmptyDatasets && !sum) return acc
-      const idxColor = Math.floor(Math.random() * MATERIAL_COLORS.length)
-      const color = MATERIAL_COLORS[idxColor]
+      if (hideEmptyDatasets && !sum) {
+        return acc
+      }
+
       const label = acc.length
+      const color = MATERIAL_COLORS[label]
       const custom = {
         data,
         label,
@@ -201,7 +205,7 @@ class ProjectReportTimelineChart extends React.Component {
           color="primary"
         />
       }
-      label="Add to the current chart"
+      label="Hidde empty datat"
     />
     return (
       <Flex vertical margin="13px">
