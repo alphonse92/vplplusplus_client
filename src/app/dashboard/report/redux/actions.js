@@ -66,6 +66,8 @@ Actions[CLEAR_PROJECT_TIMELINE_DATASETS_NAME] = {
 			reducer: (state, action) => {
 				state.project.stadistics.timeline.datasets = []
 				state.project.stadistics.timeline.labels = []
+				state.project.stadistics.timeline.loading = false
+				state.project.stadistics.timeline.error = undefined
 				return state
 			}
 		}

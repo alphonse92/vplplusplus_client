@@ -219,9 +219,9 @@ class ProjectReportTimelineChart extends React.Component {
       if (!props.error) return <Wrapper>{no_data_label}</Wrapper>
 
       const { data = {} } = props.error
-      const { error = {} } = data
+      const { error = { status: 500 } } = data
       const { message = def_error } = error
-      const text = props.status === 500 ? def_error : message
+      const text = props.error.status === 500 ? def_error : message
       return (
         <Flex margin='13px' vertical alignItems='center' fontSize='13px' textAlign='center'><ErrorOutlineOutlined />
           {text}
