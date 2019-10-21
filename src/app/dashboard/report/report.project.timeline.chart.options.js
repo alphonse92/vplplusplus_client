@@ -76,8 +76,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
   }
   isLoadingReport = () => this.props.loading
 
-  togglePersistData = () => {
-    this.setState({ persistData: !this.state.persistData })
+  toggle = attribute => () => {
+    this.setState({ [attribute]: !this.state[attribute] })
   }
 
   clearData = () => {
@@ -85,6 +85,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
   }
 
   clearTypeaheadOptions = () => {
+    if (!this.state.clearInputs) return
     this.triggerChangeOptions({ topic: [], projects: [] })
     Object
       .keys(this.selected)
@@ -134,7 +135,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     if (!this.props.show) return <React.Fragment></React.Fragment>
 
     const { props, selected = {}, state } = this
-    const { persistData } = state
+    const { persistData, clearInputs } = state
     const { topic: selectedTopics = [], projects: selectedProjects = [] } = selected
     const { type, each, steps, from, projectList } = props
 
@@ -241,11 +242,21 @@ class ProjectReportTimelineChartOptions extends React.Component {
             control={
               <Switch
                 checked={persistData}
-                onChange={this.togglePersistData}
+                onChange={this.toggle('persistData')}
                 color="primary"
               />
             }
             label="Add to the current chart"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={clearInputs}
+                onChange={this.toggle('clearInputs')}
+                color="primary"
+              />
+            }
+            label="Clear inputs"
           />
 
         </Flex>
