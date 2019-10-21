@@ -210,7 +210,7 @@ class ProjectReportTimelineChart extends React.Component {
     const NoDataComponent = (props) => {
       const def_error = 'Something happend please contact to the administrator'
       const no_data_label = 'No data to show'
-      const Wrapper = <Flex margin='13px' vertical alignItems='center' fontSize='13px' textAlign='center'>
+      const Wrapper = () => <Flex margin='13px' vertical alignItems='center' fontSize='13px' textAlign='center'>
         <ErrorOutlineOutlined />{props.children}
       </Flex>
 
