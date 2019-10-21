@@ -91,7 +91,7 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 	ACTIONS: createRequestActions(GET_PROJECT_TIMELINE_NAME, {
 		init: (state, action) => {
 			state.project.stadistics.timeline.loading = true
-			state.project.stadistics.timeline.error = false
+			state.project.stadistics.timeline.error = undefined
 			return state
 		},
 		fullfilled: (state, action) => {
@@ -115,12 +115,12 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 			state.project.stadistics.timeline.labels = [...actualLabels, ...labels]
 			state.project.stadistics.timeline.datasets = [...actualDatasets, ...datasets]
 			state.project.stadistics.timeline.loading = false
-			state.project.stadistics.timeline.error = false
+			state.project.stadistics.timeline.error = undefined
 			return state
 		},
 		rejected: (state, action) => {
 			state.project.stadistics.timeline.loading = false
-			state.project.stadistics.timeline.error = true
+			state.project.stadistics.timeline.error = action.payload
 			return state
 		}
 	}),

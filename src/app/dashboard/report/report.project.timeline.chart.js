@@ -141,7 +141,7 @@ class ProjectReportTimelineChart extends React.Component {
   render() {
     const { props, state } = this
     const { hideEmptyDatasets } = state
-    const { labels, datasets, options = {}, loading: isLoading, error: isError } = props
+    const { labels, datasets, options = {}, loading: isLoading, error } = props
     const { steps } = options
     const labelDefinitions = []
     const chardatasets = datasets.reduce((acc, ds, idx) => {
@@ -186,16 +186,15 @@ class ProjectReportTimelineChart extends React.Component {
       }
     }
 
-    const NoDataComponent = () => <Flex margin='13px' vertical alignItems='center' fontSize='13px' textAlign='center'><ErrorOutlineOutlined /> No data to show</Flex>
+
 
     const data = { labels: Array.from(Array(steps), (v, i) => i), datasets: chardatasets }
     const lineProps = { data, options: chartOpts }
     const shouldShow = {
-      options: !isError && !isLoading,
-      line: !isError && !isLoading && datasets && datasets.length,
-      nodata: !isError && !isLoading && (!datasets || !datasets.length),
+      options: !isLoading,
+      line: !isLoading && datasets && datasets.length,
+      nodata: (!isLoading && error) || (!isLoading && (!datasets || !datasets.length)),
       loading: isLoading,
-      error: isError
     }
     const ToggleEmptyData = () => <FormControlLabel
       control={
@@ -207,18 +206,32 @@ class ProjectReportTimelineChart extends React.Component {
       }
       label="Hidde empty datat"
     />
+
+    const NoDataComponent = (props) => {
+      const def_error = 'Something happend please contact to the administrator'
+      const no_data_label = 'No data to show'
+      const Wrapper = <Flex margin='13px' vertical alignItems='center' fontSize='13px' textAlign='center'><ErrorOutlineOutlined />{props.children}</Flex>
+      
+      if (props.error) return <Wrapper>{no_data_label}</Wrapper>
+
+      const { data = {} } = props.error
+      const { error = {} } = data
+      const { message = def_error } = error
+      const text = props.status === 500 ? def_error : message
+      return (
+        <Flex margin='13px' vertical alignItems='center' fontSize='13px' textAlign='center'><ErrorOutlineOutlined />
+          {text}
+        </Flex>
+      )
+    }
     return (
       <Flex vertical margin="13px">
-        <ProjectReportTimelineChartOptions
-          show={shouldShow.options}
-          project_id={this.props.project_id}
-        />
+        <ProjectReportTimelineChartOptions show={shouldShow.options} project_id={this.props.project_id} />
         {!!shouldShow.line && <ToggleEmptyData />}
         {!!shouldShow.line && <ProjectReportTimeLabelTable data={labelDefinitions} />}
         {!!shouldShow.line && <Line {...lineProps} />}
-        {!!shouldShow.nodata && <NoDataComponent />}
+        {!!shouldShow.nodata && <NoDataComponent error={error} />}
         {!!shouldShow.loading && <p>Loading timeline</p>}
-        {!!shouldShow.error && <p>Something happend please contact to the administrator</p>}
       </Flex >
     )
 
