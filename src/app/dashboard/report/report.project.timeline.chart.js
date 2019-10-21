@@ -28,8 +28,7 @@ const ProjectReportTimeLabelTable = (props) => {
         <TableBody>
           {data.map((def, idx) => {
             const { label, topic, project, color } = def
-            let TopicText = topic && topic.length ? topic.map(({ name }) => name).join(',') : "All"
-            console.log(def)
+            let TopicText = topic && topic.length ? topic.map(({ description }) => description).join(',') : "All"
             return (
               <TableRow key={idx}>
                 <TableCell><span style={{ padding: '7px', backgroundColor: color }}>{label}</span></TableCell>
@@ -196,7 +195,7 @@ class ProjectReportTimelineChart extends React.Component {
           show={shouldShow.options}
           project_id={this.props.project_id}
         />
-        <ProjectReportTimeLabelTable data={labelDefinitions} />
+        {!!shouldShow.line &&  <ProjectReportTimeLabelTable data={labelDefinitions} />}
         {!!shouldShow.line && <Line {...lineProps} />}
         {!!shouldShow.nodata && <NoDataComponent />}
         {!!shouldShow.loading && <p>Loading timeline</p>}
