@@ -102,8 +102,8 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 			payload.forEach(projectReport => {
 				const { reports } = projectReport
 				reports.forEach(dataReport => {
-					const { title, dataset } = dataReport
-					labels.push(title)
+					const { label, dataset } = dataReport
+					labels.push(label)
 					datasets.push(dataset)
 				})
 

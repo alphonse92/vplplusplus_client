@@ -9,6 +9,40 @@ import { cutStringAndAddDots } from '../../../lib';
 import { Flex } from '../../../lib/components/flex';
 import { ProjectReportTimelineChartOptions } from './report.project.timeline.chart.options';
 import { MATERIAL_COLORS } from '../../../constants';
+import { Table, TableHead, TableRow, TableBody, TableCell, Typography } from '@material-ui/core';
+
+const ProjectReportTimeLabelTable = (props) => {
+  const { data = [] } = props
+  if (!data.length) return <React.Fragment></React.Fragment>
+  return (
+    <Flex vertical>
+      <Typography variant="h6" gutterBottom>Timeline meanings</Typography>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Number</TableCell>
+            <TableCell>Project</TableCell>
+            <TableCell>Topic</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((def) => {
+            const { label, topic, project } = def
+            let TopicText = topic && topic.length ? topic.join(',') : "All"
+            return (
+              <TableRow>
+                <TableCell>{label}</TableCell>
+                <TableCell>{project}</TableCell>
+                <TableCell>{TopicText}</TableCell>
+              </TableRow>
+            )
+          })}
+        </TableBody>
+      </Table>
+    </Flex>
+
+  )
+}
 
 class ProjectReportTimelineChart extends React.Component {
   static DATASET_BASE = {
@@ -102,60 +136,62 @@ class ProjectReportTimelineChart extends React.Component {
 
   onLoadProject = (event) => {
 
-    const { topic = [], projects = [], append } = event
+    console.log(event)
 
-    let { labelMap = {}, labelIndex = 0 } = this.state
+    // const { topic = [], projects = [], append } = event
 
-    // reset if the options isnot appening data to the chart
+    // let { labelMap = {}, labelIndex = 0 } = this.state
 
-    if (!append) {
-      labelIndex = 0
-      labelMap = {}
-    }
+    // // reset if the options isnot appening data to the chart
 
-    if (topic.length && projects.length) {
-      topic.forEach(topicSelected => {
-        const { data: topic } = topicSelected
-        projects.forEach(projectSelected => {
-          const { data: project } = projectSelected
-          const label = this.getLabelByTopicAndProject(topic, project)
-          labelIndex++
-          labelMap[label] = { label, topic, project, tag: labelIndex }
-        })
-      })
-    } else if (topic.length) {
-      topic.forEach((topicSelected, index) => {
-        const { data: topic } = topicSelected
-        const label = topic.name
-        labelIndex++
-        labelMap[label] = { label, topic, tag: labelIndex }
-      })
-    }
+    // if (!append) {
+    //   labelIndex = 0
+    //   labelMap = {}
+    // }
 
-    this.setState({ labelMap, labelIndex })
+    // if (topic.length && projects.length) {
+    //   topic.forEach(topicSelected => {
+    //     const { data: topic } = topicSelected
+    //     projects.forEach(projectSelected => {
+    //       const { data: project } = projectSelected
+    //       const label = this.getLabelByTopicAndProject(topic, project)
+    //       labelIndex++
+    //       labelMap[label] = { label, topic, project, tag: labelIndex }
+    //     })
+    //   })
+    // } else if (topic.length) {
+    //   topic.forEach((topicSelected, index) => {
+    //     const { data: topic } = topicSelected
+    //     const label = topic.name
+    //     labelIndex++
+    //     labelMap[label] = { label, topic, tag: labelIndex }
+    //   })
+    // }
+
+    // this.setState({ labelMap, labelIndex })
   }
 
   render() {
-    const { props, state = {} } = this
-    const { labelMap = {} } = state
+    const { props } = this
     const { labels, datasets, options = {}, loading: isLoading, error: isError } = props
     const { steps } = options
-
+    const labelDefinitions = []
     const chardatasets = datasets.map((ds, idx) => {
       const idxColor = Math.floor(Math.random() * MATERIAL_COLORS.length)
       const color = MATERIAL_COLORS[idxColor]
-      const labelIndex = labels[idx] || {}
-      const labelInMap = labelMap[labelIndex] || {}
-      const { tag = labels[idx] } = labelInMap
+      const label = idx
       const data = ds.map(({ skill }) => skill ? skill : 0)
       const custom = {
         data,
-        label: tag,
+        label: idx,
         backgroundColor: color,
         borderColor: color,
         pointBackgroundColor: color,
         pointBorderColor: color
       }
+
+      labelDefinitions.push({ label, ...labels[idx] })
+
       return { ...ProjectReportTimelineChart.DATASET_BASE, ...custom }
     })
 
@@ -196,6 +232,7 @@ class ProjectReportTimelineChart extends React.Component {
           show={shouldShow.options}
           project_id={this.props.project_id}
           onLoad={this.onLoadProject} />
+        <ProjectReportTimeLabelTable data={labelDefinitions} />
         {!!shouldShow.line && <Line {...lineProps} />}
         {!!shouldShow.nodata && <NoDataComponent />}
         {!!shouldShow.loading && <p>Loading timeline</p>}
