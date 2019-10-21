@@ -2,20 +2,11 @@
 import * as colors from '@material-ui/core/colors';
 import faker from 'faker'
 
-console.log(colors)
-
 export const MATERIAL_COLORS = faker.helpers.shuffle(Object
   .keys(colors)
   .reduce((all, name) => {
-
-    const omit = ['100', '200', '300', '400']
-    if (omit.includes(name)) {
-      console.log('omiting ', name)
-      return all
-    }
-
-    const values = Object.values(colors[name])
-    return [...all, ...values]
+    const [c50, c100, c200, c300, c400, ...rest] = Object.values(colors[name])
+    return [...all, ...rest]
   }, []))
 
 
