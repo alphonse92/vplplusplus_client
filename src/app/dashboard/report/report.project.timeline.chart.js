@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { ActionCreators } from './redux/actions';
 import { Line } from 'react-chartjs-2';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
-import { cutStringAndAddDots } from '../../../lib';
 import { Flex } from '../../../lib/components/flex';
 import { ProjectReportTimelineChartOptions } from './report.project.timeline.chart.options';
 import { MATERIAL_COLORS } from '../../../constants';
