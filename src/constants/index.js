@@ -5,6 +5,7 @@ import faker from 'faker'
 export const MATERIAL_COLORS = faker.helpers.shuffle(Object
   .keys(colors)
   .reduce((all, name) => {
+    // eslint-disable-next-line no-unused-vars
     const [c50, c100, c200, c300, c400, ...rest] = Object.values(colors[name])
     return [...all, ...rest]
   }, []))
