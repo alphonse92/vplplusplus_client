@@ -9,7 +9,7 @@ import { cutStringAndAddDots } from '../../../lib';
 import { Flex } from '../../../lib/components/flex';
 import { ProjectReportTimelineChartOptions } from './report.project.timeline.chart.options';
 import { MATERIAL_COLORS } from '../../../constants';
-import { Table, TableHead, TableRow, TableBody, TableCell, Typography, Switch } from '@material-ui/core';
+import { Table, TableHead, TableRow, TableBody, TableCell, Typography, Switch, FormControlLabel } from '@material-ui/core';
 
 const ProjectReportTimeLabelTable = (props) => {
   const { data = [] } = props
