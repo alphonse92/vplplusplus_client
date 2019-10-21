@@ -62,9 +62,9 @@ class MostDifficultTestCardNoStyled extends React.Component {
             </TableHead>
             <TableBody>
               {data.map((testCase) => {
-                const { name, objective, summaries_not_approved } = testCase
+                const { _id,name, objective, summaries_not_approved } = testCase
                 return (
-                  <React.Fragment key={name} >
+                  <React.Fragment key={_id} >
                     {summaries_not_approved > 0 && <TableRow className={classes.tr}>
                       <TableCell>{name}</TableCell>
                       <TableCell>{objective}</TableCell>
