@@ -79,8 +79,6 @@ const OPTS_BASE = {
 
 class ProjectReportTimelineChart extends React.Component {
 
-
-
   static mapStateToProps = (state) => {
     const { report: root } = state
     const { project } = root
@@ -105,8 +103,6 @@ class ProjectReportTimelineChart extends React.Component {
     this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.id)
   }
-
-  getLabelByTopicAndProject = ({ name: nameTopic }, { name: nameProject }) => `${nameTopic}-${nameProject}`
 
   toggleEmptyData = () => this.setState({ hideEmptyDatasets: !this.state.hideEmptyDatasets })
 
