@@ -5,11 +5,16 @@ import { NoReportsComponent } from './report.nosubmissions'
 
 export const UserReportTabs = (props) => {
   const { report } = props
+  const shouldShow = {
+    nodata: report.length === 0,
+    title: report.length > 0,
+    data: report.length > 0,
+  }
   return (
     <React.Fragment>
-      {!!report.length && <Typography variant="h5" gutterBottom>Student Reports</Typography>}
-      {!report.length && <NoReportsComponent />}
-      {report.map(r => <UserReportTab key={r._id} report={r} showUserReport={this.props.showUserReport} />)}
+      {shouldShow.title && <Typography variant="h5" gutterBottom>Student Reports</Typography>}
+      {shouldShow.nodata && <NoReportsComponent />}
+      {report.map(r => <UserReportTab key={r._id} report={r} />)}
     </React.Fragment>
   )
 

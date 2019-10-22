@@ -73,6 +73,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     else {
       // is a user report...  get the first project that was created in all report.projects array
     }
+    
   }
   isLoadingReport = () => this.props.loading
 

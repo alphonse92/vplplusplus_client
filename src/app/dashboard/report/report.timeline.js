@@ -14,7 +14,7 @@ import {
 } from '@material-ui/icons';
 
 import { withStyles } from '@material-ui/core/styles';
-import { ProjectReportTimelineChart } from './report.project.timeline.chart';
+import { ProjectReportTimelineChart } from './report.timeline.chart';
 
 class ProjectReportTimelineCardNoStyled extends React.Component {
 
@@ -44,7 +44,7 @@ class ProjectReportTimelineCardNoStyled extends React.Component {
         </ListItem>
 
         <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
-          <ProjectReportTimelineChart project_id={this.props.project_id} />
+          <ProjectReportTimelineChart  />
         </Collapse>
       </ Paper>
     )

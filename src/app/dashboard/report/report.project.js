@@ -42,17 +42,18 @@ class ReportProject extends React.Component {
 		}
 	}
 
-	componentDidMount(){
+	componentDidMount() {
 		this.loadProject()
 	}
 
 	render() {
-		const { props } = this
+		const { props, handleCloseFilterModal } = this
 		const { report = [], mostSkilledStudents = [], mostDifficultTest = [] } = props
-		const reportProps = { report, mostSkilledStudents, mostDifficultTest }
+		const reportProps = { report, mostSkilledStudents, mostDifficultTest, handleCloseFilterModal }
 		return <Report {...reportProps} />
 
 	}
+	
 }
 
 const ReportProjectConnected = connect(

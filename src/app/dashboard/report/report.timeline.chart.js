@@ -6,7 +6,7 @@ import { ActionCreators } from './redux/actions';
 import { Line } from 'react-chartjs-2';
 import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import { Flex } from '../../../lib/components/flex';
-import { ProjectReportTimelineChartOptions } from './report.project.timeline.chart.options';
+import { ProjectReportTimelineChartOptions } from './report.timeline.chart.options';
 import { MATERIAL_COLORS } from '../../../constants';
 import { Table, TableHead, TableRow, TableBody, TableCell, Typography, Switch, FormControlLabel } from '@material-ui/core';
 
@@ -131,7 +131,7 @@ class ProjectReportTimelineChart extends React.Component {
 
   componentDidMount() {
     this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
-    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id)
+    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.id)
   }
 
   getLabelByTopicAndProject = ({ name: nameTopic }, { name: nameProject }) => `${nameTopic}-${nameProject}`
@@ -230,7 +230,7 @@ class ProjectReportTimelineChart extends React.Component {
 
     return (
       <Flex vertical margin="13px">
-        <ProjectReportTimelineChartOptions show={shouldShow.options} project_id={this.props.project_id} />
+        <ProjectReportTimelineChartOptions show={shouldShow.options} project_id={this.props.id} />
         {!!shouldShow.line && <ToggleEmptyData />}
         {!!shouldShow.line && <ProjectReportTimeLabelTable data={labelDefinitions} />}
         {!!shouldShow.line && <Line {...lineProps} />}
