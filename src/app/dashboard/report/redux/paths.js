@@ -35,6 +35,8 @@ const PATHS = {
 		, topic: []
 		, projects: []
 		, id: undefined
+		, showProjectFilter: false
+		, showStudentFilter: false
 	},
 	'student.filter': [],
 	'student.report': [],

@@ -26,7 +26,7 @@ class ReportProject extends React.Component {
 
 	loadProject() {
 		const { id } = this.props
-		this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ id })
+		this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ id, showProjectFilter: true, showStudentFilter: false })
 		this.props.DISPATCHERS.GET_PROJECT_REPORT({ id })
 	}
 

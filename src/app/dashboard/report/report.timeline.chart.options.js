@@ -37,8 +37,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { stadistics, report } = project
     const { timeline, mostSkilledStudents } = stadistics
     const { options, loading } = timeline
-    const { type, each, steps, from, topic, projects, id } = options
-    return { loading, report, mostSkilledStudents, type, each, steps, from, topic, projects, projectList, id }
+    const { type, each, steps, from, topic, projects, id, showProjectFilter, showStudentFilter } = options
+    return { loading, report, mostSkilledStudents, type, each, steps, from, topic, projects, projectList, id, showProjectFilter, showStudentFilter }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -56,7 +56,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
   componentDidMount() {
 
-    this.props.DISPATCHERS.LIST_PROJECTS()
+    this.props.showProjectFilter && this.props.DISPATCHERS.LIST_PROJECTS()
 
     const { report, from: fromFilter, id } = this.props
     if (report.length && id) {
@@ -140,8 +140,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
     const { props, selected = {}, state } = this
     const { persistData, clearInputs } = state
-    const { topic: selectedTopics = [], projects: selectedProjects = [] } = selected
-    const { type, each, steps, from, projectList } = props
+    const { topic: selectedTopics = [], projects: selectedProjects = [], selectedStudents = [] } = selected
+    const { type, each, steps, from, projectList = [], studentList = [] } = props
 
     const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
     const topicOptions = topics.map((data) => {
@@ -151,6 +151,12 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
     const projectsOptions = projectList.map((data) => {
       const { name: label, _id: value } = data
+      return { value, label, data }
+    })
+
+    const studentOptions = studentList.map((data) => {
+      const { name, lastname, _id: value } = data
+      const label = `${name} ${lastname}` 
       return { value, label, data }
     })
 
@@ -176,7 +182,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
             <Button color="primary" onClick={this.onSelectAllTypeahead('topic', topicOptions)} >Select all</Button>
           </Flex>
         </Flex>
-        <Flex vertical marginBottom={marginRowBottom}>
+        {this.props.showProjectFilter && <Flex vertical marginBottom={marginRowBottom}>
           <Flex horizontal>
             <Typeahead
               id='projects'
@@ -190,7 +196,22 @@ class ProjectReportTimelineChartOptions extends React.Component {
             />
             <Button color="primary" onClick={this.onSelectAllTypeahead('projects', projectsOptions)} >Select all</Button>
           </Flex>
-        </Flex>
+        </Flex>}
+        {this.props.showStudentFilter && <Flex vertical marginBottom={marginRowBottom}>
+          <Flex horizontal>
+            <Typeahead
+              id='students'
+              name='students'
+              onChange={this.onChangeTypeahead('students')}
+              options={studentOptions}
+              defaultValue={[...selectedStudents]}
+              placeholder="Compare with another students"
+              portal={false}
+              styles={styleTypeahead}
+            />
+            <Button color="primary" onClick={this.onSelectAllTypeahead('students', studentOptions)} >Select all</Button>
+          </Flex>
+        </Flex>}
         <Flex horizontal marginBottom={marginRowBottom}>
           <Flex vertical width={width}>
             <FormControl >
