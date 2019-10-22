@@ -1,9 +1,5 @@
 import React from 'react';
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
-import { ActionCreators } from './redux/actions';
-
 
 import { Button } from '@material-ui/core';
 import { FilterList } from '@material-ui/icons';
@@ -22,29 +18,14 @@ class ReportFilterButton extends React.Component {
     return { filter }
   }
 
-  static mapDispatchToProps = (dispatch) => {
-    const DISPATCHERS = {
-      ...bindActionCreators({ ...ActionCreators }, dispatch),
-    }
-    return { DISPATCHERS }
-  }
+  static mapDispatchToProps = () => ({})
 
   showReportModal = () => {
     this.setState({ showReportModal: true })
   }
 
-  onCloseReportModal = ({ ok, value }) => {
-
-    if (ok) {
-      const { project_id, student_id } = this.props
-      const { from, to, topic: topics } = value
-      const topic = topics.map(t => t.name)
-      const data = { from, to, topic }
-      const id = project_id || student_id
-      const fnName = project_id ? 'GET_PROJECT_REPORT' : 'GET_STUDENT_REPORT'
-      this.props.DISPATCHERS.SET_FILTER(!!project_id, data)
-      this.props.DISPATCHERS[fnName]({ id })
-    }
+  onCloseReportModal = (data) => {
+    this.props.onClose && this.props.onClose(data)
     this.setState({ showReportModal: false })
   }
 

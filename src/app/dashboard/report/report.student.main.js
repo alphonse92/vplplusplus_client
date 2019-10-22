@@ -1,5 +1,5 @@
 import React from 'react'
-import { ReportBroker } from './report.broker'
+import { ReportStudent } from './report.student'
 
 export const Main = (props) => {
 	const pathname_project_report = '/dashboard/report/project/'
@@ -8,5 +8,5 @@ export const Main = (props) => {
 	const openProject = ({ _id }) => props.history.push(`${pathname_project_create}${_id ? _id : ''}`)
 	const callbacks = { showProjectReport, openProject }
 	const propsToBePassed = { ...props, ...callbacks }
-	return <ReportBroker  {...propsToBePassed} />
+	return <ReportStudent  {...propsToBePassed} />
 }
