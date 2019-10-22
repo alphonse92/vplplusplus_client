@@ -30,10 +30,9 @@ class MostDifficultTestCardNoStyled extends React.Component {
     this.setState({ isOpen: !this.state.isOpen })
   }
 
-  shouldComponentUpdate(prevprops, prevstate) {
-    return this.state.isOpen !== prevstate.isOpen
-      || this.props.project_id !== prevprops.project_id
-  }
+  // shouldComponentUpdate(prevprops, prevstate) {
+  //   return this.state.isOpen !== prevstate.isOpen
+  // }
 
 
   render() {
@@ -62,7 +61,7 @@ class MostDifficultTestCardNoStyled extends React.Component {
             </TableHead>
             <TableBody>
               {data.map((testCase) => {
-                const { _id,name, objective, summaries_not_approved } = testCase
+                const { _id, name, objective, summaries_not_approved } = testCase
                 return (
                   <React.Fragment key={_id} >
                     {summaries_not_approved > 0 && <TableRow className={classes.tr}>
