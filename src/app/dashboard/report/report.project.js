@@ -26,6 +26,7 @@ class ReportProject extends React.Component {
 
 	loadProject() {
 		const { id } = this.props
+		this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ id })
 		this.props.DISPATCHERS.GET_PROJECT_REPORT({ id })
 	}
 
@@ -35,7 +36,6 @@ class ReportProject extends React.Component {
 			const { from, to, topic: topics } = value
 			const topic = topics.map(t => t.name)
 			this.props.DISPATCHERS.SET_FILTER(true, { from, to, topic })
-			this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ from, id })
 			this.props.DISPATCHERS.GET_PROJECT_REPORT({ id })
 		}
 	}
