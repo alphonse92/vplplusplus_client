@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Flex } from '../../../lib/components/flex';
 import { MostSkilledStudentsByTopicCard } from './report.project.skilledstudentbytopic';
 import { MostDifficultTestCard } from './report.project.mostdifficulttestcase';
-import { ProjectReportTimelineCard } from './report.∫timeline';
+import { ProjectReportTimelineCard } from './report.timeline';
 import { ReportFilterButton } from './report.filter.button';
 import { UserReportTabs } from './report.user.tabs';
 
