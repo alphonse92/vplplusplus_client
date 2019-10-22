@@ -57,9 +57,14 @@ class ProjectReportTimelineChartOptions extends React.Component {
   componentDidMount() {
 
     this.props.showProjectFilter && this.props.DISPATCHERS.LIST_PROJECTS()
+    this.props.showStudentFilter && this.props.DISPATCHERS.LIST_STUDENTS()
 
     const { report, from: fromFilter, id } = this.props
-    if (report.length && id) {
+    const takeFromOfLoadedElement = report && report.length && id
+    const takeFromFirstLoadElements = !report || (report.length && !id)
+    
+    if (takeFromOfLoadedElement) {
+
       const [firstReport = {}] = report
       const { projects = [] } = firstReport
       const [firstProject = {}] = projects
@@ -70,7 +75,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
       }
 
     }
-    else if (report.length && !id) {
+    else if (takeFromFirstLoadElements) {
       // get the first project that was created for example
     }
     else {
@@ -78,6 +83,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     }
 
   }
+
   isLoadingReport = () => this.props.loading
 
   toggle = attribute => () => {
@@ -87,6 +93,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
   clearData = () => {
     this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
   }
+
+  triggerChangeOptions = (data) => this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER(data)
 
   clearTypeaheadOptions = () => {
     if (!this.state.clearInputs) return
@@ -98,6 +106,20 @@ class ProjectReportTimelineChartOptions extends React.Component {
       })
   }
 
+  handleChange = attribute => event => this.triggerChangeOptions({ [attribute]: event.target.value })
+  
+  onSelectAllTypeahead = (attribute, options) => () => this.onChangeTypeahead(attribute)(options)
+  
+  onChangeTypeahead = nameAttribute => selectedOptions => {
+    const arrayOfSelectedOptions = selectedOptions ? selectedOptions : []
+    const options = arrayOfSelectedOptions.map(({ value }) => value)
+    const { selected = {} } = this
+
+    this.selected = { ...selected, [nameAttribute]: arrayOfSelectedOptions }
+    const payload = { [nameAttribute]: options }
+
+    this.triggerChangeOptions(payload)
+  }
 
   loadProjectTimeline = () => {
 
@@ -111,28 +133,9 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
     if (!this.state.persistData) this.clearData()
     this.clearTypeaheadOptions()
+
   }
-
-  triggerChangeOptions = (data) => {
-    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER(data)
-  }
-
-  handleChange = attribute => event => {
-    this.triggerChangeOptions({ [attribute]: event.target.value })
-  };
-
-  onChangeTypeahead = nameAttribute => selectedOptions => {
-    const arrayOfSelectedOptions = selectedOptions ? selectedOptions : []
-    const options = arrayOfSelectedOptions.map(({ value }) => value)
-    const { selected = {} } = this
-
-    this.selected = { ...selected, [nameAttribute]: arrayOfSelectedOptions }
-    const payload = { [nameAttribute]: options }
-
-    this.triggerChangeOptions(payload)
-  }
-
-  onSelectAllTypeahead = (attribute, options) => () => this.onChangeTypeahead(attribute)(options)
+ 
 
   render() {
 
@@ -156,13 +159,13 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
     const studentOptions = studentList.map((data) => {
       const { name, lastname, _id: value } = data
-      const label = `${name} ${lastname}` 
+      const label = `${name} ${lastname}`
       return { value, label, data }
     })
 
     const width = `${100 / 4}%`
     const marginRowBottom = "13px"
-    const styleTypeahead = { container: () => ({ flexGrow: 1 }) }
+    const STYLE_TYPEAHEAD = { container: () => ({ flexGrow: 1 }) }
 
     return (
       <Flex vertical>
@@ -177,7 +180,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
               defaultValue={[...selectedTopics]}
               placeholder="Select topic"
               portal={false}
-              styles={styleTypeahead}
+              styles={STYLE_TYPEAHEAD}
             />
             <Button color="primary" onClick={this.onSelectAllTypeahead('topic', topicOptions)} >Select all</Button>
           </Flex>
@@ -192,7 +195,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
               defaultValue={[...selectedProjects]}
               placeholder="Compare with another projects"
               portal={false}
-              styles={styleTypeahead}
+              styles={STYLE_TYPEAHEAD}
             />
             <Button color="primary" onClick={this.onSelectAllTypeahead('projects', projectsOptions)} >Select all</Button>
           </Flex>
@@ -207,7 +210,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
               defaultValue={[...selectedStudents]}
               placeholder="Compare with another students"
               portal={false}
-              styles={styleTypeahead}
+              styles={STYLE_TYPEAHEAD}
             />
             <Button color="primary" onClick={this.onSelectAllTypeahead('students', studentOptions)} >Select all</Button>
           </Flex>

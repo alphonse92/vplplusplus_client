@@ -101,7 +101,7 @@ class ProjectReportTimelineChart extends React.Component {
 
   componentDidMount() {
     this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
-    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.id)
+    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.options.id)
   }
 
   toggleEmptyData = () => this.setState({ hideEmptyDatasets: !this.state.hideEmptyDatasets })
