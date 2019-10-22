@@ -37,8 +37,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { stadistics, report } = project
     const { timeline, mostSkilledStudents } = stadistics
     const { options, loading } = timeline
-    const { type, each, steps, from, topic, projects } = options
-    return { loading, report, mostSkilledStudents, type, each, steps, from, topic, projects, projectList }
+    const { type, each, steps, from, topic, projects, id } = options
+    return { loading, report, mostSkilledStudents, type, each, steps, from, topic, projects, projectList, id }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -55,25 +55,28 @@ class ProjectReportTimelineChartOptions extends React.Component {
   }
 
   componentDidMount() {
+
     this.props.DISPATCHERS.LIST_PROJECTS()
-    const { report, project_id, from: fromFilter } = this.props
-    if (report.length && project_id) {
-      // if project_id exists, then all user reports has the same project
+
+    const { report, from: fromFilter, id } = this.props
+    if (report.length && id) {
       const [firstReport = {}] = report
       const { projects = [] } = firstReport
       const [firstProject = {}] = projects
       const { createdAt: from } = firstProject
+
       if (fromFilter !== from) {
         this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ from })
       }
+
     }
-    else if (report.length && !project_id) {
+    else if (report.length && !id) {
       // get the first project that was created for example
     }
     else {
       // is a user report...  get the first project that was created in all report.projects array
     }
-    
+
   }
   isLoadingReport = () => this.props.loading
 
@@ -104,7 +107,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { persistData: append } = this.state
     const eventData = { from, type, each, steps, topic, projects, append }
     this.props.onLoad && this.props.onLoad(eventData)
-    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.project_id, customOpts)
+    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.id, customOpts)
 
     if (!this.state.persistData) this.clearData()
     this.clearTypeaheadOptions()

@@ -25,20 +25,18 @@ class ReportProject extends React.Component {
 	}
 
 	loadProject() {
-		const { project_id } = this.props
-		this.props.DISPATCHERS.GET_PROJECT_REPORT({ id: project_id })
+		const { id } = this.props
+		this.props.DISPATCHERS.GET_PROJECT_REPORT({ id })
 	}
 
 	handleCloseFilterModal = ({ ok, value }) => {
 		if (ok) {
-			const { project_id, student_id } = this.props
+			const { id } = this.props
 			const { from, to, topic: topics } = value
 			const topic = topics.map(t => t.name)
-			const data = { from, to, topic }
-			const id = project_id || student_id
-			const fnName = project_id ? 'GET_PROJECT_REPORT' : 'GET_STUDENT_REPORT'
-			this.props.DISPATCHERS.SET_FILTER(!!project_id, data)
-			this.props.DISPATCHERS[fnName]({ id })
+			this.props.DISPATCHERS.SET_FILTER(true, { from, to, topic })
+			this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ from, id })
+			this.props.DISPATCHERS.GET_PROJECT_REPORT({ id })
 		}
 	}
 
@@ -53,7 +51,7 @@ class ReportProject extends React.Component {
 		return <Report {...reportProps} />
 
 	}
-	
+
 }
 
 const ReportProjectConnected = connect(
