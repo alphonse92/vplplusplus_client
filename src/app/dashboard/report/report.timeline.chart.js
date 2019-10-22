@@ -8,106 +8,78 @@ import ErrorOutlineOutlined from '@material-ui/icons/ErrorOutlineOutlined';
 import { Flex } from '../../../lib/components/flex';
 import { ProjectReportTimelineChartOptions } from './report.timeline.chart.options';
 import { MATERIAL_COLORS } from '../../../constants';
-import { Table, TableHead, TableRow, TableBody, TableCell, Typography, Switch, FormControlLabel } from '@material-ui/core';
+import { Switch, FormControlLabel } from '@material-ui/core';
+import { ReportTimelineMeaningTable } from './report.timeline.meaning.table';
 
-const ProjectReportTimeLabelTable = (props) => {
-  const { data = [] } = props
-  if (!data.length) return <React.Fragment></React.Fragment>
-  return (
-    <Flex vertical>
-      <Typography variant="h6" gutterBottom>Timeline meanings</Typography>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Number</TableCell>
-            <TableCell>Project</TableCell>
-            <TableCell>Topic</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((def, idx) => {
-            const { label, topic, project, color } = def
-            let TopicText = topic && topic.length ? topic.map(({ description }) => description).join(',') : "All"
-            return (
-              <TableRow key={idx}>
-                <TableCell><span style={{ padding: '7px', backgroundColor: color }}>{label}</span></TableCell>
-                <TableCell>{project.name}</TableCell>
-                <TableCell>{TopicText}</TableCell>
-              </TableRow>
-            )
-          })}
-        </TableBody>
-      </Table>
-    </Flex>
+const DATASET_BASE = {
 
-  )
+  fill: false,
+  lineTension: 0,
+  backgroundColor: 'rgba(75,192,192,0.4)',
+
+  borderColor: 'rgba(75,192,192,1)',
+  pointBorderColor: 'rgba(75,192,192,1)',
+  pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+  pointHoverBorderColor: 'rgba(220,220,220,1)',
+  pointBackgroundColor: '#fff',
+
+  borderCapStyle: 'butt',
+  borderDash: [],
+  borderDashOffset: 0.0,
+  borderJoinStyle: 'miter',
+  pointBorderWidth: 1,
+  pointHoverRadius: 5,
+  pointHoverBorderWidth: 2,
+  pointRadius: 1,
+  pointHitRadius: 10,
 }
 
-class ProjectReportTimelineChart extends React.Component {
-  static DATASET_BASE = {
 
-    fill: false,
-    lineTension: 0,
-    backgroundColor: 'rgba(75,192,192,0.4)',
-
-    borderColor: 'rgba(75,192,192,1)',
-    pointBorderColor: 'rgba(75,192,192,1)',
-    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-    pointHoverBorderColor: 'rgba(220,220,220,1)',
-    pointBackgroundColor: '#fff',
-
-    borderCapStyle: 'butt',
-    borderDash: [],
-    borderDashOffset: 0.0,
-    borderJoinStyle: 'miter',
-    pointBorderWidth: 1,
-    pointHoverRadius: 5,
-    pointHoverBorderWidth: 2,
-    pointRadius: 1,
-    pointHitRadius: 10,
-    // data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40,]
-  }
-
-  static OPTS_BASE = {
-    scales: {
-      xAxes: [{
-        scaleLabel: {
-          display: true,
-          labelString: 'Time period'
-        }
-      }],
-      yAxes: [{
-        min: 0,
-        max: 100,
+const OPTS_BASE = {
+  scales: {
+    xAxes: [{
+      scaleLabel: {
         display: true,
-        ticks: {
-          beginAtZero: true,
-          steps: 20,
-          stepValue: 5,
-          max: 100
-        },
-        scaleLabel: {
-          display: true,
-          labelString: 'Skill Student Average',
-        }
-      }]
-    },
-    tooltips: {
-      intersect: false,
-      mode: 'index',
-      callbacks: {
-        label: function (tooltipItem, myData) {
-          const index = tooltipItem.datasetIndex
-          const def = `No label ${index}`
-          const { label } = myData.datasets[index]
-          const text = isNaN(label)
-            ? def
-            : `Index-${label}: ${parseFloat(tooltipItem.value).toFixed(2)}`
-          return text
-        }
+        labelString: 'Time period'
+      }
+    }],
+    yAxes: [{
+      min: 0,
+      max: 100,
+      display: true,
+      ticks: {
+        beginAtZero: true,
+        steps: 20,
+        stepValue: 5,
+        max: 100
+      },
+      scaleLabel: {
+        display: true,
+        labelString: 'Skill Student Average',
+      }
+    }]
+  },
+  tooltips: {
+    intersect: false,
+    mode: 'index',
+    callbacks: {
+      label: function (tooltipItem, myData) {
+        const index = tooltipItem.datasetIndex
+        const def = `No label ${index}`
+        const { label } = myData.datasets[index]
+        const text = isNaN(label)
+          ? def
+          : `Index-${label}: ${parseFloat(tooltipItem.value).toFixed(2)}`
+        return text
       }
     }
   }
+}
+
+
+class ProjectReportTimelineChart extends React.Component {
+
+
 
   static mapStateToProps = (state) => {
     const { report: root } = state
@@ -164,14 +136,14 @@ class ProjectReportTimelineChart extends React.Component {
 
       labelDefinitions.push({ color, label, ...labels[idx] })
 
-      return [...acc, { ...ProjectReportTimelineChart.DATASET_BASE, ...custom }]
+      return [...acc, { ...DATASET_BASE, ...custom }]
     }, [])
 
     const chartOpts = {
       ...{
-        ...ProjectReportTimelineChart.OPTS_BASE,
+        ...OPTS_BASE,
         scales: {
-          ...ProjectReportTimelineChart.OPTS_BASE.scales,
+          ...OPTS_BASE.scales,
           xAxes: [{
             scaleLabel: {
               display: true,
@@ -185,8 +157,6 @@ class ProjectReportTimelineChart extends React.Component {
         text: 'Project Timeline'
       }
     }
-
-
 
     const data = { labels: Array.from(Array(steps), (v, i) => i), datasets: chardatasets }
     const lineProps = { data, options: chartOpts }
@@ -232,7 +202,7 @@ class ProjectReportTimelineChart extends React.Component {
       <Flex vertical margin="13px">
         <ProjectReportTimelineChartOptions show={shouldShow.options} project_id={this.props.id} />
         {!!shouldShow.line && <ToggleEmptyData />}
-        {!!shouldShow.line && <ProjectReportTimeLabelTable data={labelDefinitions} />}
+        {!!shouldShow.line && <ReportTimelineMeaningTable data={labelDefinitions} />}
         {!!shouldShow.line && <Line {...lineProps} />}
         {!!shouldShow.nodata && <NoDataComponent error={error} />}
         {!!shouldShow.loading && <p>Loading timeline</p>}
