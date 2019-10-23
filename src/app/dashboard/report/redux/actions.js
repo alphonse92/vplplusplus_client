@@ -6,7 +6,7 @@ const TIMELINE_REQUESTS = {
 	PROJECT: (...parameters) =>
 		() => ProjectService.getReportTimeline(...parameters),
 	STUDENT: (...parameters) =>
-		() => ProjectService.getStudentReport(...parameters),
+		() => ProjectService.getReportTimeline(...parameters),
 }
 
 const PROJECT_REQUESTS = {
