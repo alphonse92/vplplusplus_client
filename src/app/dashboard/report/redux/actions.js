@@ -3,10 +3,10 @@ import { extractActionCreators, requestDispatcher, createRequestActions } from '
 import { ProjectService } from '../../../../services/project';
 
 const TIMELINE_REQUESTS = {
-	LOAD_PROJECT_TIMELINE: (...parameters) =>
+	PROJECT: (...parameters) =>
 		() => ProjectService.getReportTimeline(...parameters),
-	LOAD_STUDENT_TIMELINE: (...parameters) =>
-		() => ProjectService.getReportTimeline(...parameters),
+	STUDENT: (...parameters) =>
+		() => ProjectService.getStudentReport(...parameters),
 }
 
 const Actions = {}
@@ -49,10 +49,10 @@ Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
 			showProjectFilter = optionsFromStore.showProjectFilter,
 			showStudentFilter = optionsFromStore.showStudentFilter,
 			id = optionsFromStore.id,
-			callto = optionsFromStore.callto
+			type = optionsFromStore.type
 		} = data
 
-		const payload = { from, type, each, steps, topic, projects, id, showProjectFilter, showStudentFilter, separeByTopic, callto }
+		const payload = { from, type, each, steps, topic, projects, id, showProjectFilter, showStudentFilter, separeByTopic, type }
 		const name = Actions[SET_PROJECT_TIMELINE_FILTER_NAME].ACTIONS.default.name
 		const dispatcherData = { type: name, payload }
 		dispatcher(dispatcherData)
@@ -96,10 +96,10 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 		const { stadistics = {} } = project
 		const { timeline = {} } = stadistics
 		const { options = {} } = timeline
-		const { from, type, each, steps, topic, projects, callto, id, separeByTopic } = options
+		const { from, type, each, steps, topic, projects, type, id, separeByTopic } = options
 		const actions = Actions[GET_PROJECT_TIMELINE_NAME].ACTIONS
 
-		const getRequest = TIMELINE_REQUESTS[callto]
+		const getRequest = TIMELINE_REQUESTS[type]
 
 		if (getRequest) requestDispatcher(dispatcher, actions, getRequest(id, from, type, each, steps, topic, projects, separeByTopic), opts)
 

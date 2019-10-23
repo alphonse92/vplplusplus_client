@@ -31,7 +31,7 @@ class ReportProject extends React.Component {
 			separeByTopic: true,
 			showProjectFilter: true,
 			showStudentFilter: false,
-			callto: 'LOAD_PROJECT_TIMELINE'
+			type: 'PROJECT'
 		})
 		this.props.DISPATCHERS.GET_PROJECT_REPORT({ id })
 	}

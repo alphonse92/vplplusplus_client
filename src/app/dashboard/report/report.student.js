@@ -1,11 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Flex } from '../../../lib/components/flex';
-import { MostSkilledStudentsByTopicCard } from './report.project.skilledstudentbytopic';
-import { MostDifficultTestCard } from './report.project.mostdifficulttestcase';
-import { ProjectReportTimelineCard } from './report.timeline';
-import { ReportFilterButton } from './report.filter.button';
-import { UserReportTabs } from './report.user.tabs';
+import { bindActionCreators } from 'redux'
+import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals/actions';
+import { ActionCreators } from './redux/actions';
+import { Report } from './report';
 
 
 class ReportStudent extends React.Component {
@@ -14,26 +12,52 @@ class ReportStudent extends React.Component {
 		const { report: root } = state
 		const { project = {} } = root
 		const { stadistics, report } = project
-		const { mostDifficultTest = [], mostSkilledStudents = [] } = stadistics
+		const { mostDifficultTest, mostSkilledStudents } = stadistics
 		return { report, mostDifficultTest, mostSkilledStudents }
 	}
 
-	static mapDispatchToProps = () => ({})
+	static mapDispatchToProps = (dispatch) => {
+		const DISPATCHERS = {
+			...bindActionCreators({ ...ActionCreators }, dispatch),
+			...bindActionCreators({ ...ActionCreatorsForErrors }, dispatch)
+		}
+		return { DISPATCHERS }
+	}
+
+	loadProject() {
+		const { id } = this.props
+		this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({
+			id,
+			separeByTopic: true,
+			showProjectFilter: true,
+			showStudentFilter: true,
+			type: 'STUDENT'
+		})
+		this.props.DISPATCHERS.GET_PROJECT_REPORT({ id })
+	}
+
+	handleCloseFilterModal = ({ ok, value }) => {
+		if (ok) {
+			const { id } = this.props
+			const { from, to, topic: topics } = value
+			const topic = topics.map(t => t.name)
+			this.props.DISPATCHERS.SET_FILTER(true, { from, to, topic })
+			this.props.DISPATCHERS.GET_PROJECT_REPORT({ id })
+		}
+	}
+
+	componentDidMount() {
+		this.loadProject()
+	}
 
 	render() {
-		const { props } = this
-		const { project_id, report, showUserReport, mostSkilledStudents = [], mostDifficultTest = [] } = props
-		return (
-			<Flex vertical width="100%">
-				<Flex horizontal reverse><ReportFilterButton project_id={project_id} /></Flex>
-				{!!mostSkilledStudents.length && <Flex vertical width="100%"><MostSkilledStudentsByTopicCard project_id={project_id} data={mostSkilledStudents} /></Flex>}
-				{!!mostDifficultTest.length && <Flex vertical width="100%"><MostDifficultTestCard project_id={project_id} data={mostDifficultTest} /></Flex>}
-				{!!report.length && <Flex vertical width="100%"><ProjectReportTimelineCard project_id={project_id} /></Flex>}
-				<UserReportTabs project_id={project_id} showUserReport={showUserReport} />
+		const { props, handleCloseFilterModal } = this
+		const { report = [], mostSkilledStudents = [], mostDifficultTest = [] } = props
+		const reportProps = { report, mostSkilledStudents, mostDifficultTest, handleCloseFilterModal }
+		return <Report {...reportProps} />
 
-			</Flex>
-		)
 	}
+
 }
 
 const ReportStudentConnected = connect(
