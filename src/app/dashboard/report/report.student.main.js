@@ -7,6 +7,6 @@ export const Main = (props) => {
 	const showProjectReport = ({ _id }) => props.history.push(`${pathname_project_report}${_id ? _id : ''}`)
 	const openProject = ({ _id }) => props.history.push(`${pathname_project_create}${_id ? _id : ''}`)
 	const callbacks = { showProjectReport, openProject }
-	const propsToBePassed = { ...props, ...callbacks }
-	return <ReportStudent  {...propsToBePassed} />
+	const propsToBePassed = { ...props, ...callbacks, }
+	return <ReportStudent  {...propsToBePassed} id={props.match.params.id} />
 }

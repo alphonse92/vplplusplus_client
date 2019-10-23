@@ -66,19 +66,14 @@ class SkillMoreInfoNoStyled extends React.Component {
     return this.setState({ currentOpenTest: undefined })
   }
 
-  openProjectReport = project => () => {
-    this.props.onOpenProjectReport && this.props.onOpenProjectReport(project)
-  }
-
-  openReportt = project => () => {
-    this.props.onOpenProject && this.props.onOpenProject(project)
-  }
+  
 
   render() {
+
     const { currentOpenTest } = this.state
     const { skill, classes } = this.props
     const { tests = [] } = skill
-    const shouldShowTheActionsButton = this.props.onOpenProjectReport && this.props.onOpenProject
+
     return (
       <List >
         <ListSubheader>{`Test Cases`}</ListSubheader>
@@ -101,9 +96,9 @@ class SkillMoreInfoNoStyled extends React.Component {
                 <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
                   <Flex marginLeft="4em" vertical>
 
-                    {
-                      shouldShowTheActionsButton && <ActionButtonsComponent onOpenProjectReport={this.openProjectReport(project)} onOpenProject={this.openReportt(project)} />
-                    }
+
+                    <ActionButtonsComponent onOpenProjectReport={this.openProjectReport(project)} onOpenProject={this.openReportt(project)} />
+
 
                     <Flex vertical>
                       <List>

@@ -29,14 +29,10 @@ export class UserReportTab extends React.Component {
     this.setState({ isOpen: !this.state.isOpen })
   }
 
-  openUserReport = report =>
-    this.props.showUserReport
-      ? () => this.props.showUserReport(report)
-      : undefined
 
   render() {
 
-    const { report } = this.props
+    const { report, showUserReport } = this.props
     const { isOpen } = this.state
     const { firstname, lastname, email, id, skill = 0 } = report
     const fullname = startCase(`${firstname} ${lastname}`)
@@ -63,7 +59,7 @@ export class UserReportTab extends React.Component {
           {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
         <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
-          <UserReportTableCard  onOpenUserReport={this.openUserReport(report)} report={report} />
+          <UserReportTableCard showUserReport={showUserReport} report={report} />
         </Collapse>
       </ Paper>
     )

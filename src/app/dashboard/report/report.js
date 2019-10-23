@@ -8,14 +8,14 @@ import { UserReportTabs } from './report.user.tabs';
 
 
 export const Report = (props) => {
-  const { report, mostSkilledStudents = [], mostDifficultTest = [], handleCloseFilterModal } = props
+  const { report, mostSkilledStudents = [], mostDifficultTest = [], handleCloseFilterModal, showUserReport } = props
   return (
     <Flex vertical width="100%">
       <Flex horizontal reverse><ReportFilterButton onClose={handleCloseFilterModal} /></Flex>
       {!!mostSkilledStudents.length && <Flex vertical width="100%"><MostSkilledStudentsByTopicCard data={mostSkilledStudents} /></Flex>}
       {!!mostDifficultTest.length && <Flex vertical width="100%"><MostDifficultTestCard data={mostDifficultTest} /></Flex>}
       {!!report.length && <Flex vertical width="100%"><ProjectReportTimelineCard /></Flex>}
-      <UserReportTabs report={report} />
+      <UserReportTabs report={report} showUserReport={showUserReport} />
     </Flex>
   )
 
