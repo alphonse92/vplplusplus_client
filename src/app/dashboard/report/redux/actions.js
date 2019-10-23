@@ -188,33 +188,6 @@ Actions[GET_PROJECT_REPORT_NAME] = {
 	}),
 }
 
-const GET_PROJECTS_REPORT_NAME = 'GET_PROJECTS_REPORT'
-Actions[GET_PROJECTS_REPORT_NAME] = {
-	DISPATCHER: (opts) => (dispatcher) => {
-		const actions = Actions[GET_PROJECTS_REPORT_NAME].ACTIONS
-		const getRequest = () => ProjectService.getProjectsReport()
-		requestDispatcher(dispatcher, actions, getRequest, opts)
-	},
-	ACTIONS: createRequestActions(GET_PROJECTS_REPORT_NAME, {
-		fullfilled: (state, action) => {
-			const { payload: projectReportPayload } = action
-			const report = orderBy(projectReportPayload.report, ['skill'], ['desc'])
-			const { stadistics: statsFromPayload } = projectReportPayload
-			const { mostDifficultTest, mostSkilledStudents, avg } = statsFromPayload
-
-			state.project.report = report
-			state.project.stadistics.mostDifficultTest = mostDifficultTest
-			state.project.stadistics.mostSkilledStudents = mostSkilledStudents
-			state.project.stadistics.avg = avg
-
-			return state
-		},
-		rejected: (state, action) => {
-			return state
-		}
-	}),
-}
-
 const GET_STUDENT_REPORT = 'GET_STUDENT_REPORT'
 Actions[GET_STUDENT_REPORT] = {
 	DISPATCHER: (data, opts) => (dispatcher) => {
