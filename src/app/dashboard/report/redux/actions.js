@@ -125,7 +125,6 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 		const { from, type, each, steps, topic, projects, id, separeByTopic } = options
 		const actions = Actions[GET_PROJECT_TIMELINE_NAME].ACTIONS
 		const getRequest = TIMELINE_REQUESTS[report_type]
-		console.log(report_type, getRequest)
 		if (getRequest) requestDispatcher(dispatcher, actions, getRequest(report_type, id, from, type, each, steps, topic, projects, separeByTopic), opts)
 
 	},
