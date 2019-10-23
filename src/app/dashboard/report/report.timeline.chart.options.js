@@ -91,6 +91,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
   }
 
   clearData = () => {
+    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ separeByTopic: false })
     this.props.DISPATCHERS.CLEAR_PROJECT_TIMELINE_DATASETS()
   }
 
@@ -130,7 +131,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
       ? separeByTopic && isTopicSelected
       : isTopicSelected
     const { persistData: append } = this.state
-    
+
     this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ separeByTopic: shouldSepareByTopic })
     this.props.DISPATCHERS.GET_PROJECT_TIMELINE()
     if (!append) this.clearData()
