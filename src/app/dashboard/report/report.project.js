@@ -26,12 +26,12 @@ class ReportProject extends React.Component {
 
 	loadProject() {
 		const { id } = this.props
+		this.props.DISPATCHERS.SET_REPORT_TYPE('PROJECT')
 		this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({
 			id,
 			separeByTopic: true,
 			showProjectFilter: true,
 			showStudentFilter: false,
-			report_type: 'PROJECT'
 		})
 		this.props.DISPATCHERS.GET_PROJECT_REPORT({ id })
 	}
@@ -52,8 +52,8 @@ class ReportProject extends React.Component {
 
 	render() {
 		const { props, handleCloseFilterModal } = this
-		const { report = [], mostSkilledStudents = [], mostDifficultTest = [] } = props
-		const reportProps = { report, mostSkilledStudents, mostDifficultTest, handleCloseFilterModal }
+		const { report = [], mostSkilledStudents = [], mostDifficultTest = [], showUserReport } = props
+		const reportProps = { report, mostSkilledStudents, mostDifficultTest, handleCloseFilterModal, showUserReport }
 		return <Report {...reportProps} />
 
 	}

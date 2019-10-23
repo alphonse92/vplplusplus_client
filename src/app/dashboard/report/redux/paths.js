@@ -37,7 +37,6 @@ const PATHS = {
 		, id: undefined
 		, showProjectFilter: false
 		, showStudentFilter: false
-		, report_type: undefined
 	},
 	'student.filter': [],
 	'student.report': [],

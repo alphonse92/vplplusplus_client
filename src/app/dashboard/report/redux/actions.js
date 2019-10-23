@@ -29,6 +29,24 @@ Actions[SET_FILTER_NAME] = {
 	},
 }
 
+const SET_REPORT_TYPE_NAME = 'SET_REPORT_TYPE'
+Actions[SET_REPORT_TYPE_NAME] = {
+	DISPATCHER: (payload) => (dispatcher) => {
+		const name = Actions[SET_REPORT_TYPE_NAME].ACTIONS.default.name
+		const dispatcherData = { type: name, payload }
+		dispatcher(dispatcherData)
+	},
+	ACTIONS: {
+		default: {
+			name: SET_REPORT_TYPE_NAME,
+			reducer: (state, action) => {
+				state.project.type = action.payload
+				return state
+			}
+		}
+	},
+}
+
 const SET_PROJECT_TIMELINE_FILTER_NAME = 'SET_PROJECT_TIMELINE_FILTER'
 Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
 	DISPATCHER: (data) => (dispatcher, getStore) => {
@@ -49,10 +67,9 @@ Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
 			showProjectFilter = optionsFromStore.showProjectFilter,
 			showStudentFilter = optionsFromStore.showStudentFilter,
 			id = optionsFromStore.id,
-			report_type = optionsFromStore.report_type
 		} = data
 
-		const payload = { from, type, each, steps, topic, projects, id, showProjectFilter, showStudentFilter, separeByTopic, report_type }
+		const payload = { from, type, each, steps, topic, projects, id, showProjectFilter, showStudentFilter, separeByTopic }
 		const name = Actions[SET_PROJECT_TIMELINE_FILTER_NAME].ACTIONS.default.name
 		const dispatcherData = { type: name, payload }
 		dispatcher(dispatcherData)
@@ -93,10 +110,10 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 		const store = getStore()
 		const { report: root = {} } = store
 		const { project = {} } = root
-		const { stadistics = {} } = project
+		const { stadistics = {}, type: report_type } = project
 		const { timeline = {} } = stadistics
 		const { options = {} } = timeline
-		const { from, type, each, steps, topic, projects, report_type, id, separeByTopic } = options
+		const { from, type, each, steps, topic, projects, id, separeByTopic } = options
 		const actions = Actions[GET_PROJECT_TIMELINE_NAME].ACTIONS
 
 		const getRequest = TIMELINE_REQUESTS[report_type]
