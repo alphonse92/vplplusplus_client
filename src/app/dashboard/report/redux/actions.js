@@ -122,10 +122,9 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 		const { options = {} } = timeline
 		const { from, type, each, steps, topic, projects, id, separeByTopic } = options
 		const actions = Actions[GET_PROJECT_TIMELINE_NAME].ACTIONS
-
 		const getRequest = TIMELINE_REQUESTS[report_type]
 
-		if (getRequest) requestDispatcher(dispatcher, actions, getRequest(id, from, type, each, steps, topic, projects, separeByTopic), opts)
+		if (getRequest) requestDispatcher(dispatcher, actions, getRequest(report_type, id, from, type, each, steps, topic, projects, separeByTopic), opts)
 
 	},
 	ACTIONS: createRequestActions(GET_PROJECT_TIMELINE_NAME, {
@@ -194,7 +193,7 @@ Actions[GET_PROJECT_REPORT_NAME] = {
 			state.project.stadistics.avg = avg
 
 			return state
-			
+
 		},
 		rejected: (state, action) => {
 			return state

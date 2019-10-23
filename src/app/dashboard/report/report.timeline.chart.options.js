@@ -57,7 +57,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
   componentDidMount() {
 
     this.props.showProjectFilter && this.props.DISPATCHERS.LIST_PROJECTS()
-    this.props.showStudentFilter && this.props.DISPATCHERS.LIST_STUDENTS()
+    // this.props.showStudentFilter && this.props.DISPATCHERS.LIST_STUDENTS()
 
     const { report, from: fromFilter, id } = this.props
     const takeFromOfLoadedElement = report && report.length && id
