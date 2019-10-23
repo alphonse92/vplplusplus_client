@@ -89,20 +89,19 @@ Actions[CLEAR_PROJECT_TIMELINE_DATASETS_NAME] = {
 
 const GET_PROJECT_TIMELINE_NAME = 'GET_PROJECT_TIMELINE'
 Actions[GET_PROJECT_TIMELINE_NAME] = {
-	DISPATCHER: (opts = {}, reqOpts = {}) => (dispatcher, getStore) => {
+	DISPATCHER: (opts = {}) => (dispatcher, getStore) => {
 		const store = getStore()
 		const { report: root = {} } = store
 		const { project = {} } = root
 		const { stadistics = {} } = project
 		const { timeline = {} } = stadistics
 		const { options = {} } = timeline
-		const { override = {}, separeByTopic = false } = opts
-		// load the opts from the store
-		const { from, type, each, steps, topic, projects, callto, id } = { ...options, ...override }
+		const { from, type, each, steps, topic, projects, callto, id, separeByTopic } = options
 		const actions = Actions[GET_PROJECT_TIMELINE_NAME].ACTIONS
 
 		const getRequest = TIMELINE_REQUESTS[callto]
-		if (getRequest) requestDispatcher(dispatcher, actions, getRequest(id, from, type, each, steps, topic, projects, separeByTopic), reqOpts)
+		
+		if (getRequest) requestDispatcher(dispatcher, actions, getRequest(id, from, type, each, steps, topic, projects, separeByTopic), opts)
 
 	},
 	ACTIONS: createRequestActions(GET_PROJECT_TIMELINE_NAME, {

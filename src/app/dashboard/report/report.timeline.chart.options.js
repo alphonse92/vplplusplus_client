@@ -124,16 +124,16 @@ class ProjectReportTimelineChartOptions extends React.Component {
   loadProjectTimeline = () => {
 
 
-    const { from, type, each, steps, separeByTopic } = this.props
-    const shouldSepareByTopic = separeByTopic && this.selected && this.selected.topic && !!this.selected.topic.length
-    const customOpts = { separeByTopic: shouldSepareByTopic }
-    const { topic = [], projects = [] } = this.selected
+    const { separeByTopic } = this.props
+    const isTopicSelected = this.selected && this.selected.topic && !!this.selected.topic.length
+    const shouldSepareByTopic = separeByTopic
+      ? separeByTopic && isTopicSelected
+      : isTopicSelected
     const { persistData: append } = this.state
-    const eventData = { from, type, each, steps, topic, projects, append }
-    this.props.onLoad && this.props.onLoad(eventData)
-    this.props.DISPATCHERS.GET_PROJECT_TIMELINE(this.props.id, customOpts)
-
-    if (!this.state.persistData) this.clearData()
+    
+    this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({ separeByTopic: shouldSepareByTopic })
+    this.props.DISPATCHERS.GET_PROJECT_TIMELINE()
+    if (!append) this.clearData()
     this.clearTypeaheadOptions()
 
   }
