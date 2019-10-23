@@ -37,8 +37,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { stadistics, report } = project
     const { timeline, mostSkilledStudents } = stadistics
     const { options, loading } = timeline
-    const { type, each, steps, from, topic, projects, id, showProjectFilter, showStudentFilter } = options
-    return { loading, report, mostSkilledStudents, type, each, steps, from, topic, projects, projectList, id, showProjectFilter, showStudentFilter }
+    const { type, each, steps, from, topic, projects, id, showProjectFilter, showStudentFilter, separeByTopic } = options
+    return { loading, report, mostSkilledStudents, type, each, steps, from, topic, projects, projectList, id, showProjectFilter, showStudentFilter, separeByTopic }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -62,7 +62,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { report, from: fromFilter, id } = this.props
     const takeFromOfLoadedElement = report && report.length && id
     const takeFromFirstLoadElements = !report || (report.length && !id)
-    
+
     if (takeFromOfLoadedElement) {
 
       const [firstReport = {}] = report
@@ -107,9 +107,9 @@ class ProjectReportTimelineChartOptions extends React.Component {
   }
 
   handleChange = attribute => event => this.triggerChangeOptions({ [attribute]: event.target.value })
-  
+
   onSelectAllTypeahead = (attribute, options) => () => this.onChangeTypeahead(attribute)(options)
-  
+
   onChangeTypeahead = nameAttribute => selectedOptions => {
     const arrayOfSelectedOptions = selectedOptions ? selectedOptions : []
     const options = arrayOfSelectedOptions.map(({ value }) => value)
@@ -123,9 +123,11 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
   loadProjectTimeline = () => {
 
-    const customOpts = { separeByTopic: this.selected && this.selected.topic && !!this.selected.topic.length }
+
+    const { from, type, each, steps, separeByTopic } = this.props
+    const shouldSepareByTopic = separeByTopic && this.selected && this.selected.topic && !!this.selected.topic.length
+    const customOpts = { separeByTopic: shouldSepareByTopic }
     const { topic = [], projects = [] } = this.selected
-    const { from, type, each, steps } = this.props
     const { persistData: append } = this.state
     const eventData = { from, type, each, steps, topic, projects, append }
     this.props.onLoad && this.props.onLoad(eventData)
@@ -135,7 +137,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     this.clearTypeaheadOptions()
 
   }
- 
+
 
   render() {
 

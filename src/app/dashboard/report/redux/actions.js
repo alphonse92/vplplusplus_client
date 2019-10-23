@@ -2,6 +2,13 @@ import { orderBy, get } from 'lodash'
 import { extractActionCreators, requestDispatcher, createRequestActions } from '../../../../lib'
 import { ProjectService } from '../../../../services/project';
 
+const TIMELINE_REQUESTS = {
+	LOAD_PROJECT_TIMELINE: (...parameters) =>
+		() => ProjectService.getReportTimeline(...parameters),
+	LOAD_STUDENT_TIMELINE: (...parameters) =>
+		() => ProjectService.getReportTimeline(...parameters),
+}
+
 const Actions = {}
 
 const SET_FILTER_NAME = 'SET_FILTER'
@@ -38,12 +45,14 @@ Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
 			steps = optionsFromStore.steps,
 			topic = optionsFromStore.topic,
 			projects = optionsFromStore.projects,
+			separeByTopic = optionsFromStore.separeByTopic,
 			showProjectFilter = optionsFromStore.showProjectFilter,
 			showStudentFilter = optionsFromStore.showStudentFilter,
 			id = optionsFromStore.id,
+			callto = optionsFromStore.callto
 		} = data
 
-		const payload = { from, type, each, steps, topic, projects, id, showProjectFilter, showStudentFilter }
+		const payload = { from, type, each, steps, topic, projects, id, showProjectFilter, showStudentFilter, separeByTopic, callto }
 		const name = Actions[SET_PROJECT_TIMELINE_FILTER_NAME].ACTIONS.default.name
 		const dispatcherData = { type: name, payload }
 		dispatcher(dispatcherData)
@@ -80,7 +89,7 @@ Actions[CLEAR_PROJECT_TIMELINE_DATASETS_NAME] = {
 
 const GET_PROJECT_TIMELINE_NAME = 'GET_PROJECT_TIMELINE'
 Actions[GET_PROJECT_TIMELINE_NAME] = {
-	DISPATCHER: (project_id, opts = {}, reqOpts = {}) => (dispatcher, getStore) => {
+	DISPATCHER: (opts = {}, reqOpts = {}) => (dispatcher, getStore) => {
 		const store = getStore()
 		const { report: root = {} } = store
 		const { project = {} } = root
@@ -89,10 +98,12 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 		const { options = {} } = timeline
 		const { override = {}, separeByTopic = false } = opts
 		// load the opts from the store
-		const { from, type, each, steps, topic, projects } = { ...options, ...override }
+		const { from, type, each, steps, topic, projects, callto, id } = { ...options, ...override }
 		const actions = Actions[GET_PROJECT_TIMELINE_NAME].ACTIONS
-		const getRequest = () => ProjectService.getReportTimeline(project_id, from, type, each, steps, topic, projects, separeByTopic)
-		requestDispatcher(dispatcher, actions, getRequest, reqOpts)
+
+		const getRequest = TIMELINE_REQUESTS[callto]
+		if (getRequest) requestDispatcher(dispatcher, actions, getRequest(id, from, type, each, steps, topic, projects, separeByTopic), reqOpts)
+
 	},
 	ACTIONS: createRequestActions(GET_PROJECT_TIMELINE_NAME, {
 		init: (state, action) => {
