@@ -66,7 +66,7 @@ class SkillMoreInfoNoStyled extends React.Component {
     return this.setState({ currentOpenTest: undefined })
   }
 
-  
+
 
   render() {
 
@@ -190,7 +190,7 @@ class SkillsTableNoStyled extends React.Component {
               const showMoreInfo = !!this.state.showMoreInfoMap[name]
               return (
                 <React.Fragment key={name} >
-                  <TableRow onClick={this.showMoreInfo(name)} style={{ cursor: 'pointer' }}>
+                  <TableRow style={{ cursor: 'pointer' }}>
                     <TableCell >{name}</TableCell>
                     <TableCell >{description}</TableCell>
                     <TableCell ><SkillLevelTag skill={level} /></TableCell>
