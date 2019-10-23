@@ -76,7 +76,7 @@ Actions[CLEAR_PROJECT_TIMELINE_DATASETS_NAME] = {
 	ACTIONS: {
 		default: {
 			name: CLEAR_PROJECT_TIMELINE_DATASETS_NAME,
-			reducer: (state, action) => {
+			reducer: (state) => {
 				state.project.stadistics.timeline.datasets = []
 				state.project.stadistics.timeline.labels = []
 				state.project.stadistics.timeline.loading = false
@@ -100,7 +100,7 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 		const actions = Actions[GET_PROJECT_TIMELINE_NAME].ACTIONS
 
 		const getRequest = TIMELINE_REQUESTS[callto]
-		
+
 		if (getRequest) requestDispatcher(dispatcher, actions, getRequest(id, from, type, each, steps, topic, projects, separeByTopic), opts)
 
 	},
