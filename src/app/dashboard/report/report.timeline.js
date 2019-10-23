@@ -29,7 +29,7 @@ class ProjectReportTimelineCardNoStyled extends React.Component {
   render() {
 
     const { isOpen } = this.state
-
+    const { title = "Project timeline", subtitle = "You can see the project progress along the time" } = this.props
     return (
       <Paper style={{ marginBottom: '13px', borderTop: '7px solid', width: '100%' }} >
         <ListItem button onClick={this.toggle}>
@@ -38,13 +38,13 @@ class ProjectReportTimelineCardNoStyled extends React.Component {
           </ListItemIcon>
           <ListItemText
             inset
-            primary="Project timeline"
-            secondary="You can see the project progress along the time" />
+            primary={title}
+            secondary={subtitle} />
           {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
 
         <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
-          <ProjectReportTimelineChart  />
+          <ProjectReportTimelineChart />
         </Collapse>
       </ Paper>
     )

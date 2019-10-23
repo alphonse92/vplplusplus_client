@@ -1,5 +1,7 @@
 import React from 'react'
 import { ProjectTable } from './project/project.table';
+import { Flex } from '../../../lib/components/flex';
+import { ReportTopic } from '../report/report.topic';
 
 export const Main = (props) => {
 	const pathname = 'laboratory/project/create/'
@@ -11,5 +13,11 @@ export const Main = (props) => {
 		onCreateNewProjectFromJson,
 		onCreateReport
 	}
-	return <ProjectTable {...eventProps} />
+
+	return (
+		<Flex vertical>
+			<ReportTopic />
+			<ProjectTable {...eventProps} />
+		</Flex>
+	)
 }

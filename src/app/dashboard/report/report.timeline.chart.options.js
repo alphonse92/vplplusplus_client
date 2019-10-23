@@ -149,7 +149,9 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { topic: selectedTopics = [], projects: selectedProjects = [], selectedStudents = [] } = selected
     const { type, each, steps, from, projectList = [], studentList = [] } = props
 
-    const topics = this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
+    const topics = this.props.showTopicFilter
+      ? this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
+      : []
     const topicOptions = topics.map((data) => {
       const { name: value, description: label } = data
       return { value, label, data }
@@ -173,7 +175,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
     return (
       <Flex vertical>
         <Typography variant="h6" gutterBottom>Timeline Generator Options</Typography>
-        <Flex vertical marginBottom={marginRowBottom}>
+        {this.props.showTopicFilter && <Flex vertical marginBottom={marginRowBottom}>
           <Flex horizontal>
             <Typeahead
               id='topics'
@@ -187,7 +189,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
             />
             <Button color="primary" onClick={this.onSelectAllTypeahead('topic', topicOptions)} >Select all</Button>
           </Flex>
-        </Flex>
+        </Flex>}
         {this.props.showProjectFilter && <Flex vertical marginBottom={marginRowBottom}>
           <Flex horizontal>
             <Typeahead

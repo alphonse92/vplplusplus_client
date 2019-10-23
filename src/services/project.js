@@ -93,6 +93,7 @@ class ProjectServiceClass extends WebService {
   }
 
 
+
   getReportTimeline(report_type, id, from, type = 'months', each = 6, steps = 4, topic = [], project = [], separeByTopic) {
 
     const query = {
@@ -107,9 +108,14 @@ class ProjectServiceClass extends WebService {
 
     const options = { method: 'GET', qs: query }
 
-    return report_type === "STUDENT"
-      ? super.request(options, `/report/user/${id}/timeline/`)
-      : super.request(options, `/${id}/report/timeline/`)
+    if (report_type === 'STUDENT') {
+      return super.request(options, `/report/user/${id}/timeline/`)
+    } else if (report_type === "PROJECT") {
+      return super.request(options, `/${id}/report/timeline/`)
+    } else if (report_type === "TOPIC") {
+      return super.request(options, `/report/topic/timeline/`)
+    }
+
   }
 
 

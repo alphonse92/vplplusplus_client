@@ -17,8 +17,13 @@ export const ReportTimelineMeaningTable = (props) => {
         </TableHead>
         <TableBody>
           {data.map((def, idx) => {
-            const { label, topic, project = { name: 'All projects' }, color } = def
-            let TopicText = topic && topic.length ? topic.map(({ description }) => description).join(',') : "All"
+            const { label, topic = [], project = { name: 'All projects' }, color } = def
+            const topicArray = Array.isArray(topic) ? topic : [topic]
+            let TopicText = topicArray.length && topicArray.length > 1
+              ? topic.map(({ description }) => description).join(',')
+              : topicArray.length === 1
+                ? topicArray[0].description
+                : "All"
             return (
               <TableRow key={idx}>
                 <TableCell><span style={{ padding: '7px', backgroundColor: color }}>{label}</span></TableCell>
