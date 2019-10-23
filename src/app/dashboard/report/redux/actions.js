@@ -49,10 +49,10 @@ Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
 			showProjectFilter = optionsFromStore.showProjectFilter,
 			showStudentFilter = optionsFromStore.showStudentFilter,
 			id = optionsFromStore.id,
-			type = optionsFromStore.type
+			report_type = optionsFromStore.report_type
 		} = data
 
-		const payload = { from, type, each, steps, topic, projects, id, showProjectFilter, showStudentFilter, separeByTopic, type }
+		const payload = { from, type, each, steps, topic, projects, id, showProjectFilter, showStudentFilter, separeByTopic, report_type }
 		const name = Actions[SET_PROJECT_TIMELINE_FILTER_NAME].ACTIONS.default.name
 		const dispatcherData = { type: name, payload }
 		dispatcher(dispatcherData)
@@ -96,10 +96,10 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 		const { stadistics = {} } = project
 		const { timeline = {} } = stadistics
 		const { options = {} } = timeline
-		const { from, type, each, steps, topic, projects, type, id, separeByTopic } = options
+		const { from, type, each, steps, topic, projects, report_type, id, separeByTopic } = options
 		const actions = Actions[GET_PROJECT_TIMELINE_NAME].ACTIONS
 
-		const getRequest = TIMELINE_REQUESTS[type]
+		const getRequest = TIMELINE_REQUESTS[report_type]
 
 		if (getRequest) requestDispatcher(dispatcher, actions, getRequest(id, from, type, each, steps, topic, projects, separeByTopic), opts)
 

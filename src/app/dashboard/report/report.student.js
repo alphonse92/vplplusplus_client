@@ -31,7 +31,7 @@ class ReportStudent extends React.Component {
 			separeByTopic: true,
 			showProjectFilter: true,
 			showStudentFilter: true,
-			type: 'STUDENT'
+			report_type: 'STUDENT'
 		})
 		this.props.DISPATCHERS.GET_PROJECT_REPORT({ id })
 	}
