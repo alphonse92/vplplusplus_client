@@ -37,8 +37,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { stadistics, report } = project
     const { timeline, mostSkilledStudents } = stadistics
     const { options, loading } = timeline
-    const { type, each, steps, from, topic, projects, id, showProjectFilter, showStudentFilter, separeByTopic } = options
-    return { loading, report, mostSkilledStudents, type, each, steps, from, topic, projects, projectList, id, showProjectFilter, showStudentFilter, separeByTopic }
+    const { type, each, steps, from, topic, projects, id, showProjectFilter, showStudentFilter, showTopicFilter, separeByTopic } = options
+    return { loading, report, mostSkilledStudents, type, each, steps, from, topic, projects, projectList, id, showProjectFilter, showStudentFilter, showTopicFilter, separeByTopic }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -148,7 +148,6 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { persistData, clearInputs } = state
     const { topic: selectedTopics = [], projects: selectedProjects = [], selectedStudents = [] } = selected
     const { type, each, steps, from, projectList = [], studentList = [] } = props
-
     const topics = this.props.showTopicFilter
       ? this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
       : []

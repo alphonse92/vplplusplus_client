@@ -30,7 +30,7 @@ class ReportProject extends React.Component {
 		this.props.DISPATCHERS.SET_PROJECT_TIMELINE_FILTER({
 			id,
 			separeByTopic: true,
-			showTopicFilter:true,
+			showTopicFilter: true,
 			showProjectFilter: true,
 			showStudentFilter: false,
 		})
