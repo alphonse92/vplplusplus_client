@@ -56,6 +56,28 @@ Actions[SET_REPORT_TYPE_NAME] = {
 	},
 }
 
+const CLEAR_PROJECT_TIMELINE_FILTER_NAME = 'CLEAR_PROJECT_TIMELINE_FILTER'
+Actions[CLEAR_PROJECT_TIMELINE_FILTER_NAME] = {
+	DISPATCHER: (data) => (dispatcher, getStore) => {
+		const name = Actions[CLEAR_PROJECT_TIMELINE_FILTER_NAME].ACTIONS.default.name
+		const dispatcherData = { type: name }
+		dispatcher(dispatcherData)
+	},
+	ACTIONS: {
+		default: {
+			name: CLEAR_PROJECT_TIMELINE_FILTER_NAME,
+			reducer: (state) => {
+				state.project.stadistics.timeline.options = {
+					...state.project.stadistics.timeline.options,
+					topic: [],
+					projects: []
+				}
+				return state
+			}
+		}
+	},
+}
+
 const SET_PROJECT_TIMELINE_FILTER_NAME = 'SET_PROJECT_TIMELINE_FILTER'
 Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
 	DISPATCHER: (data) => (dispatcher, getStore) => {
