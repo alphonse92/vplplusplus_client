@@ -60,8 +60,6 @@ const OPTS_BASE = {
     }]
   },
   tooltips: {
-    intersect: false,
-    mode: 'index',
     callbacks: {
       label: function (tooltipItem, myData) {
         const index = tooltipItem.datasetIndex
@@ -69,7 +67,7 @@ const OPTS_BASE = {
         const { label } = myData.datasets[index]
         const text = isNaN(label)
           ? def
-          : `Index-${label}: ${parseFloat(tooltipItem.value).toFixed(2)}`
+          : `DATASET #${label} - VALUE:  ${parseFloat(tooltipItem.value).toFixed(2)}`
         return text
       }
     }
@@ -176,7 +174,7 @@ class ProjectReportTimelineChart extends React.Component {
     const NoDataComponent = (props) => {
       const def_error = 'Something happend please contact to the administrator'
       const no_data_label = 'No data to show'
-      const Wrapper = ({children}) => <Flex margin='13px' vertical alignItems='center' fontSize='13px' textAlign='center'>
+      const Wrapper = ({ children }) => <Flex margin='13px' vertical alignItems='center' fontSize='13px' textAlign='center'>
         <ErrorOutlineOutlined />{children}
       </Flex>
 

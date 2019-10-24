@@ -149,7 +149,6 @@ class ProjectReportTimelineChartOptions extends React.Component {
     const { persistData, clearInputs } = state
     const { topic: selectedTopics = [], projects: selectedProjects = [], selectedStudents = [] } = selected
     const { type, each, steps, from, projectList = [], studentList = [] } = props
-    console.log(this.props)
     const topics = this.props.showTopicFilter
       ? this.props.mostSkilledStudents.map(({ description, name, _id }) => ({ _id, description, name }))
       : []
