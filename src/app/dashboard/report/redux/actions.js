@@ -75,10 +75,11 @@ Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
 			separeByTopic = optionsFromStore.separeByTopic,
 			showProjectFilter = optionsFromStore.showProjectFilter,
 			showStudentFilter = optionsFromStore.showStudentFilter,
+			showTopicFilter = optionsFromStore.showTopicFilter,
 			id = optionsFromStore.id,
 		} = data
 
-		const payload = { from, type, each, steps, topic, projects, id, showProjectFilter, showStudentFilter, separeByTopic }
+		const payload = { from, type, each, steps, topic, projects, id, showProjectFilter, showStudentFilter, separeByTopic, showTopicFilter }
 		const name = Actions[SET_PROJECT_TIMELINE_FILTER_NAME].ACTIONS.default.name
 		const dispatcherData = { type: name, payload }
 		dispatcher(dispatcherData)
