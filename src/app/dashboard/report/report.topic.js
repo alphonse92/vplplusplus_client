@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals/actions';
 import { ActionCreators } from './redux/actions';
-import { Report } from './report';
+// import { Report } from './report';
 import { ProjectReportTimelineCard } from './report.timeline';
 
 
