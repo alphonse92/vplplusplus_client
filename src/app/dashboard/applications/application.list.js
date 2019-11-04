@@ -59,7 +59,8 @@ class ApplicationList extends React.Component {
 
   createApplication = () => {
     const { name, description } = this.state
-    this.props.DISPATCHERS.CREATE_APPLICATION(name, description, { onError: this.props.DISPATCHERS.SET_ERROR, })
+    const after = () => this.setState({ name: undefined, description: undefined })
+    this.props.DISPATCHERS.CREATE_APPLICATION(name, description, { onError: this.props.DISPATCHERS.SET_ERROR, after })
   }
 
   render() {
