@@ -42,9 +42,8 @@ export const DashboardContainer = (props) => {
 		<React.Fragment>
 			<DashboardNavbar openAtStart menu={userMenu} onSelect={onSelect} >
 				<Switch>
-					{
-						getRoutes(match, location).map((route, key) => ({ ...route, key }))
-					} </Switch>
+					{getRoutes(match, location).map((route, key) => ({ ...route, key }))}
+				</Switch>
 			</DashboardNavbar>
 
 		</React.Fragment>

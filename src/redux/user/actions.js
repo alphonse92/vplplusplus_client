@@ -9,9 +9,12 @@ const Actions = {}
 
 const SET_USER_LOGGED_NAME = 'SET_USER_LOGGED'
 Actions[SET_USER_LOGGED_NAME] = {
-	DISPATCHER: (payload) => (dispatch, getStore) => {
-		UserService.saveUserLogged(payload)
-		dispatch({ type: Actions[SET_USER_LOGGED_NAME].ACTIONS.default.name, payload })
+	DISPATCHER: (payload) => (dispatch) => {
+		const userLogged = { ...payload }
+		const { scopes = [] } = userLogged
+		userLogged.scopeMap = scopes.reduce((acc, scope) => ({ ...acc, [scope]: true }), {})
+		UserService.saveUserLogged(userLogged)
+		dispatch({ type: Actions[SET_USER_LOGGED_NAME].ACTIONS.default.name, payload: userLogged })
 	},
 	ACTIONS: {
 		default: {
