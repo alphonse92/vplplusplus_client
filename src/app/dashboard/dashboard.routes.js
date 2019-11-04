@@ -5,7 +5,7 @@ import { LaboratoryContainer } from './laboratory/laboratory.container'
 import { StudentContainer } from './student/student.container'
 import { ReportContainer } from './report/report.container'
 import { ConfigurationContainer } from './configuration'
-import { HelpContainer } from './help'
+import { ApplicationContainer } from './applications/application.container'
 import { scopeStatic } from '../common/scope'
 
 const COMPONENT_REDIRECT_TO_DEFAULT = () => {
@@ -18,7 +18,7 @@ export default (match) => {
 		{ show: scopeStatic('showLabPage'), path: match.url + '/laboratory', component: LaboratoryContainer },
 		{ show: scopeStatic('showStudentPage'), path: match.url + '/students', component: StudentContainer },
 		{ show: scopeStatic('showReportsPage'), path: match.url + '/report', component: ReportContainer },
-		{ show: scopeStatic('showApplicationsPage'), path: match.url + '/applications', component: HelpContainer },
+		{ show: scopeStatic('showApplicationsPage'), path: match.url + '/applications', component: ApplicationContainer },
 		{ show: scopeStatic('showTopicsPage'), path: match.url + '/topics', component: ConfigurationContainer },
 	].filter(({ show }) => show)
 
