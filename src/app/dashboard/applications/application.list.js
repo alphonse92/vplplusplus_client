@@ -67,7 +67,7 @@ class ApplicationList extends React.Component {
     const { name = "", description = "" } = this.state
 
     return (
-      <Flex vertical width="100%">
+      <Flex vertical width="100%" style={{ marginBottom: '13px' }}>
         <Card>
           <CardHeader
             title='Create new Application'
