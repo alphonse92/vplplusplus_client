@@ -8,19 +8,29 @@ import { ConfigurationContainer } from './configuration'
 import { HelpContainer } from './help'
 import { scopeStatic } from '../common/scope'
 
-
-
-const COMPONENT_REDIRECT_TO_DEFAULT = (props) => {
-
-	return <React.Fragment> </React.Fragment>
+const COMPONENT_REDIRECT_TO_DEFAULT = () => {
+	return <React.Fragment>Page not found</React.Fragment>
 }
 
-export default (match) => [
-	scopeStatic('showLabPage') &&  <Route path={match.url + '/laboratory'} render={LaboratoryContainer} />,
-	scopeStatic('showLabPage') && <Route path={match.url + '/students'} render={StudentContainer} />,
-	scopeStatic('showReportsPage') && <Route path={match.url + '/report'} render={ReportContainer} />,
-	scopeStatic('showTopicsPage') && <Route path={match.url + '/topics'} render={ConfigurationContainer} />,
-	scopeStatic('showApplicationsPage') && <Route path={match.url + '/applications'} render={ConfigurationContainer} />,
-	scopeStatic('showHelpPage') && <Route path={match.url + '/help'} render={HelpContainer} />,
-	<Route path={match.url + ':404'} render={COMPONENT_REDIRECT_TO_DEFAULT} />
-].filter(x => !!x)
+export default (match) => {
+
+	const pathsDef = [
+		{ show: scopeStatic('showLabPage'), path: match.url + '/laboratory', component: LaboratoryContainer },
+		{ show: scopeStatic('showStudentPage'), path: match.url + '/students', component: StudentContainer },
+		{ show: scopeStatic('showReportsPage'), path: match.url + '/report', component: ReportContainer },
+		{ show: scopeStatic('showApplicationsPage'), path: match.url + '/applications', component: HelpContainer },
+		{ show: scopeStatic('showTopicsPage'), path: match.url + '/topics', component: ConfigurationContainer },
+	].filter(({ show }) => show)
+
+	const firstPage = pathsDef[0] || {path:match.url , component:COMPONENT_REDIRECT_TO_DEFAULT}
+	const ArrayOfRoutes = pathsDef.map(({ path, component }) => <Route path={path} render={component} />)
+	const defaultRoute = <Route exact path={match.url} render={firstPage.component} /> 
+	
+	const paths = [defaultRoute]
+	.concat(ArrayOfRoutes)
+	.concat([< Route path={match.url + '/:404'} render={COMPONENT_REDIRECT_TO_DEFAULT} />])
+	
+
+	return paths
+
+}
