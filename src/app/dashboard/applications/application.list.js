@@ -1,7 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Card, CardContent, CardHeader, IconButton, TextField, Button, CardActions, FormControl, InputLabel, FormLabel } from '@material-ui/core'
+import { Card, CardContent, CardHeader, IconButton, TextField, Button, CardActions, FormControl, FormLabel } from '@material-ui/core'
 import {
   Delete as DeleteIcon,
 } from '@material-ui/icons';
@@ -33,8 +33,8 @@ class ApplicationList extends React.Component {
 
   static mapStateToProps = (state) => {
     const { applications = {} } = state
-    const { list = [] } = applications
-    return { applications: list }
+    const { list = [], error } = applications
+    return { applications: list, error }
   }
 
   static mapDispatchToProps = (dispatch) => {
@@ -59,12 +59,7 @@ class ApplicationList extends React.Component {
 
   createApplication = () => {
     const { name, description } = this.state
-    if (name && description) {
-      this.DISPATCHERS.createApplication({ name, description })
-      return this.setState({ error: undefined })
-    }
-
-    this.setState({ error: "Please fill the form" })
+    this.props.DISPATCHERS.CREATE_APPLICATION(name, description, { onError: this.props.DISPATCHERS.SET_ERROR, })
   }
 
   render() {
@@ -75,8 +70,8 @@ class ApplicationList extends React.Component {
       <Flex vertical width="100%">
         <Card>
           <CardHeader
-            title={'Create new Application'}
-            subheader={'An application allows to another system to connect to the VPL API. I.E. Vpl JLib'}
+            title='Create new Application'
+            subheader='An application allows to another system to connect to the VPL API. I.E. Vpl JLib'
           />
           <CardContent>
 
@@ -101,11 +96,6 @@ class ApplicationList extends React.Component {
                 margin="normal"
               />
             </FormControl>
-
-
-
-
-
 
           </CardContent>
           <CardActions>

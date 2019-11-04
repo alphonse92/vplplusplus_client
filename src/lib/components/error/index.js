@@ -1,7 +1,7 @@
 import React from 'react';
 import { Ok, Dialog } from "../material/modals/input";
 
-
+const MESSAGE_DEFAULT = 'Unknowed error. Please contact VPL plus plus support'
 const getErrorTextByType = {
   'resource not found': ({ error }) => error.message,
   'action-cant-perform': ({ error }) => error.message,
@@ -23,7 +23,7 @@ const getErrorTextByType = {
         return acc.concat([component])
       }, [])
   },
-  'default': () => 'Unknowed error. Please contact VPL plus plus support'
+  'default': ({ message }) => message || MESSAGE_DEFAULT
 }
 
 

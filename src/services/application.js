@@ -23,6 +23,14 @@ class ApplicationServiceClass extends WebService {
     return super.request(options, `/${id}/`)
   }
 
+  create(name, description) {
+    const options = {
+      method: 'POST',
+      body: { name, description }
+    }
+    return super.request(options)
+  }
+
 
 }
 

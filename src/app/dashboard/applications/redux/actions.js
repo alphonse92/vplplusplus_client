@@ -21,6 +21,27 @@ Actions[GET_APPLICATIONS_NAME] = {
 	}),
 }
 
+
+const CREATE_APPLICATION_NAME = 'CREATE_APPLICATION'
+Actions[CREATE_APPLICATION_NAME] = {
+	DISPATCHER: (name, description, opts) => (dispatcher) => {
+		const actions = Actions[CREATE_APPLICATION_NAME].ACTIONS
+		const getRequest = () => ApplicationService.create(name, description)
+		requestDispatcher(dispatcher, actions, getRequest, opts)
+	},
+	ACTIONS: createRequestActions(CREATE_APPLICATION_NAME, {
+		fullfilled: (state, action) => {
+			state.list = state.list.concat([action.payload])
+			return state
+		},
+		rejected: (state, action) => {
+			console.log(action)
+			return { ...state }
+		}
+	}),
+}
+
+
 const DELETE_APPLICATION_NAME = 'DELETE_APPLICATION'
 Actions[DELETE_APPLICATION_NAME] = {
 	DISPATCHER: (id) => (dispatcher) => {
