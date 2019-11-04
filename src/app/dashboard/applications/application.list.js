@@ -57,7 +57,15 @@ class ApplicationList extends React.Component {
 
   handleChange = attribute => (event) => this.setState({ ...this.state, [attribute]: event.target.value })
 
-  createApplication = () => console.log("asdasd")
+  createApplication = () => {
+    const { name, description } = this.state
+    if (name && description) {
+      this.DISPATCHERS.createApplication({ name, description })
+      return this.setState({ error: undefined })
+    }
+
+    this.setState({ error: "Please fill the form" })
+  }
 
   render() {
 
@@ -71,6 +79,8 @@ class ApplicationList extends React.Component {
             subheader={'An application allows to another system to connect to the VPL API. I.E. Vpl JLib'}
           />
           <CardContent>
+
+            {this.state.error && <div>{this.state.error}</div>}
 
             <FormControl component="fieldset" fullWidth >
               <FormLabel component="legend">name</FormLabel>
