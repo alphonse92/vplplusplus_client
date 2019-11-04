@@ -55,14 +55,23 @@ export const ITEM_MENU_BY_SCOPE = {
 		className: '',
 		redirect: '/dashboard/students'
 	},
-	showConfigurationPage: {
+	showApplicationsPage: {
 		order: 3,
 		group: GROUPS.Configuration,
-		name: 'configuration',
-		text: 'Configuration',
-		icon: <Icon className='fas fa-cog' />,
+		name: 'applications',
+		text: 'Applications',
+		icon: <Icon className='fas fa-key' />,
 		className: '',
-		redirect: '/dashboard/configuration'
+		redirect: '/dashboard/applications'
+	},
+	showTopicsPage: {
+		order: 4,
+		group: GROUPS.Configuration,
+		name: 'topics',
+		text: 'Topics',
+		icon: <Icon className='fas fa-book' />,
+		className: '',
+		redirect: '/dashboard/topics'
 	},
 	showHelpPage: {
 		order: 6,
