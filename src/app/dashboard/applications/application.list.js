@@ -67,8 +67,8 @@ class ApplicationList extends React.Component {
     const { name = "", description = "" } = this.state
 
     return (
-      <Flex vertical width="100%" style={{ marginBottom: '13px' }}>
-        <Card>
+      <Flex vertical width="100%">
+        <Card style={{ marginBottom: '13px' }}>
           <CardHeader
             title='Create new Application'
             subheader='An application allows to another system to connect to the VPL API. I.E. Vpl JLib'
