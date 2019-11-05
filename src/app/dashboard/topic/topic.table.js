@@ -101,7 +101,7 @@ class TopicTable extends React.Component {
 
 		const emptyComponent = (
 			<div style={{ textAlign: 'center', width: '100%' }}>
-				<p>You dont have students. Contact with the moodle administrator to be enrolled into a course</p>
+				<p>No topics registered</p>
 			</div>
 		)
 
@@ -121,7 +121,7 @@ class TopicTable extends React.Component {
 			getButtons
 		}
 
-		return <MaterialTable {...propsTable} title="Your Students" />
+		return <MaterialTable {...propsTable} title="Topics registered" />
 
 	}
 }
