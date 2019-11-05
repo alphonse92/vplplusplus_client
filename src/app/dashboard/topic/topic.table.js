@@ -147,7 +147,12 @@ class TopicTable extends React.Component {
 				<Dialog
 					open={!!this.state.openDialog}
 					title="Warning"
-					text="The topic that you are trying to delete has summaries. The topic will not be hard deleted, but the teachers cant see it anymore and them cant to make report by this topic"
+					text={ <p>
+						The topic that you are trying to delete has summaries. 
+						The topic will not be hard deleted, but the teachers cant see it anymore and them cant to make report by this topic
+						 <strong>Are you sure to continue?</strong>
+						</p>
+						}
 					handleClose={this.handleCloseDialog}
 					component={ConfirmationDialog}></Dialog>
 				<MaterialTable {...propsTable} title="Topics registered" />
