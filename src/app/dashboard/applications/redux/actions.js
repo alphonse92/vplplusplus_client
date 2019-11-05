@@ -35,7 +35,6 @@ Actions[CREATE_APPLICATION_NAME] = {
 			return state
 		},
 		rejected: (state, action) => {
-			console.log(action)
 			return { ...state }
 		}
 	}),

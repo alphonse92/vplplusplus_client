@@ -27,7 +27,10 @@ class CreateTopicCard extends React.Component {
 
   createTopic = () => {
     const { name, description } = this.state
-    const after = () => this.setState({ name: undefined, description: undefined })
+    const after = () => {
+      this.setState({ name: undefined, description: undefined })
+      this.props.GET_TOPICS()
+    }
     this.props.DISPATCHERS.CREATE_TOPIC(name, description, { onError: this.props.DISPATCHERS.SET_ERROR, after })
   }
 

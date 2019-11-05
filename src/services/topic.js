@@ -12,11 +12,18 @@ export class TopicService extends WebService {
     }
     super('topic', getToken)
   }
+  create(name, description) {
+    const options = {
+      method: 'POST',
+      body: { name, description }
+    }
+    return super.request(options)
+  }
 
   list(page, limit, sort) {
     const query = { page, limit, sort }
     const options = { method: 'GET', qs: query }
-    return super.request(options,'/list/')
+    return super.request(options, '/list/')
   }
 
   find(query) {

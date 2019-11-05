@@ -3,6 +3,19 @@ import { TopicService as TopicServiceClass } from '../../../../services/topic';
 const TopicService = new TopicServiceClass()
 const Actions = {}
 
+const CREATE_TOPIC_NAME = 'CREATE_TOPIC'
+Actions[CREATE_TOPIC_NAME] = {
+	DISPATCHER: (name, description, opts) => (dispatcher) => {
+		const actions = Actions[CREATE_TOPIC_NAME].ACTIONS
+		const getRequest = () => TopicService.create(name, description)
+		requestDispatcher(dispatcher, actions, getRequest, opts)
+	},
+	ACTIONS: createRequestActions(CREATE_TOPIC_NAME, {
+		fullfilled: (state, action) => state,
+		rejected: (state, action) => state
+	}),
+}
+
 const GET_TOPICS_NAME = 'GET_TOPICS'
 Actions[GET_TOPICS_NAME] = {
 	DISPATCHER: () => (dispatcher, getStore) => {
@@ -10,7 +23,7 @@ Actions[GET_TOPICS_NAME] = {
 		const { topic } = store
 		const { list } = topic
 		const { pagination } = list
-		const { page, limit, sort: _sort = '', direction} = pagination
+		const { page, limit, sort: _sort = '', direction } = pagination
 		const sortByCol = !_sort.length ? 'createdAt' : _sort
 		const sortPrefix = direction ? "" : '-'
 		const sort = sortPrefix + sortByCol
