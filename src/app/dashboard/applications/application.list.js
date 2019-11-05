@@ -103,10 +103,7 @@ class ApplicationList extends React.Component {
             <Button onClick={this.createApplication} > Create Application</Button>
           </CardActions>
         </Card>
-        <Flex vertical>
-
-
-        </Flex>
+        
         {this.props.applications.map(Application(this.handleDeleteApp))}
       </Flex>
     )

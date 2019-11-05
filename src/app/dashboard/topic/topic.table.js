@@ -70,6 +70,10 @@ class TopicTable extends React.Component {
 
 	}
 
+	deleteTopic = () => {
+		console.log(this.selected_student)
+	}
+
 	render() {
 
 		const showFilterComponent = false
@@ -88,10 +92,16 @@ class TopicTable extends React.Component {
 		const { pagination } = props
 
 		const studentButtons = [
-			{ key: 'delete-topic', label: 'Delete Topic', icon: <DeleteIcon />, onClick: console.log },
+			{ key: 'delete-topic', label: 'Delete Topic', icon: <DeleteIcon />, onClick: this.deleteTopic },
 		]
 
-		const getButtons = () => studentButtons
+		const getButtons = (student_ids_selected = []) => {
+			const [studentId] = student_ids_selected
+			const { docs: students = [] } = pagination
+			const studentSelected = students.find(({ _id }) => studentId === _id)
+			if (studentSelected) return studentButtons
+			return []
+		}
 
 		const emptyComponent = (
 			<div style={{ textAlign: 'center', width: '100%' }}>
