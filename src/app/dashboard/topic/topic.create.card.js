@@ -35,7 +35,9 @@ class CreateTopicCard extends React.Component {
   }
 
   render() {
-    const { name, description } = this.state
+
+    const { name = "", description = "" } = this.state
+
     return (
       <Card style={{ marginBottom: '13px' }}>
         <CardHeader

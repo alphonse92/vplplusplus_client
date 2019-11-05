@@ -6,6 +6,7 @@ import DeleteIcon from '@material-ui/icons/DeleteOutline';
 import { MaterialTable } from '../../../lib/components/material/tables/material.table';
 import { ActionCreators } from './redux/actions';
 import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals/actions';
+import { ConfirmationDialog, Dialog } from '../../../lib/components/material/modals/input';
 
 class TopicTable extends React.Component {
 
@@ -13,6 +14,7 @@ class TopicTable extends React.Component {
 		{ attribute: '_id', key: '_id', orderable: true, numeric: false, disablePadding: true, label: 'Id' },
 		{ attribute: 'name', key: 'username', orderable: true, numeric: false, disablePadding: true, label: 'Name' },
 		{ attribute: 'description', key: 'lastname', orderable: true, numeric: false, disablePadding: true, label: 'Description' },
+		{ attribute: 'hasSummaries', key: 'blocked', orderable: false, numeric: false, disablePadding: true, label: 'Has submissions' },
 	]
 
 	static mapStateToProps = (state) => {
@@ -28,6 +30,8 @@ class TopicTable extends React.Component {
 		}
 		return { DISPATCHERS }
 	}
+
+	state = {}
 
 	componentDidMount() {
 		this.props.DISPATCHERS.SET_ORDER('name')
@@ -70,8 +74,21 @@ class TopicTable extends React.Component {
 
 	}
 
-	deleteTopic = () => {
-		console.log(this.selected_student)
+	deleteTopic = console.log
+	toggleDialog = () => this.setState({ openDialog: !this.state.openDialog })
+	handleCloseDialog = (data) => {
+
+		if (data.ok) {
+			this.deleteTopic(this.selected_student)
+		}
+		this.toggleDialog()
+	}
+	onDeleteTopic = () => {
+
+		if (this.selected_student.hasSummaries) {
+			return this.toggleDialog()
+		}
+		this.deleteTopic(this.selected_student)
 	}
 
 	render() {
@@ -92,7 +109,7 @@ class TopicTable extends React.Component {
 		const { pagination } = props
 
 		const studentButtons = [
-			{ key: 'delete-topic', label: 'Delete Topic', icon: <DeleteIcon />, onClick: this.deleteTopic },
+			{ key: 'delete-topic', label: 'Delete Topic', icon: <DeleteIcon />, onClick: this.onDeleteTopic },
 		]
 
 		const getButtons = (student_ids_selected = []) => {
@@ -125,7 +142,17 @@ class TopicTable extends React.Component {
 			getButtons
 		}
 
-		return <MaterialTable {...propsTable} title="Topics registered" />
+		return (
+			<React.Fragment>
+				<Dialog
+					open={!!this.state.openDialog}
+					title="Warning"
+					text="The topic that you are trying to delete has summaries. The topic will not be hard deleted, but the teachers cant see it anymore and them cant to make report by this topic"
+					handleClose={this.handleCloseDialog}
+					component={ConfirmationDialog}></Dialog>
+				<MaterialTable {...propsTable} title="Topics registered" />
+			</React.Fragment>
+		)
 
 	}
 }

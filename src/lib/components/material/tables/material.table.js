@@ -48,7 +48,7 @@ class EnhancedTable extends React.PureComponent {
 					const key = `${colDef.attribute}-${index}`
 					const props = { align, key }
 					const value = typeof rowValue !== undefined
-						? rowValue
+						? rowValue.toString()
 						: numeric
 							? 0
 							: ''
