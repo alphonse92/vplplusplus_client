@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import ReportIcon from '@material-ui/icons/AssignmentOutlined';
+import DeleteIcon from '@material-ui/icons/DeleteOutline';
 
 import { MaterialTable } from '../../../lib/components/material/tables/material.table';
 import { ActionCreators } from './redux/actions';
@@ -88,16 +88,10 @@ class TopicTable extends React.Component {
 		const { pagination } = props
 
 		const studentButtons = [
-			{ key: 'student-selected-show-report', label: 'Show Report', icon: <ReportIcon />, onClick: this.showReport },
+			{ key: 'delete-topic', label: 'Delete Topic', icon: <DeleteIcon />, onClick: console.log },
 		]
 
-		const getButtons = (student_ids_selected = []) => {
-			const [studentId] = student_ids_selected
-			const { docs: students = [] } = pagination
-			const studentSelected = students.find(({ _id }) => studentId === _id)
-			if (studentSelected) return studentButtons
-			return []
-		}
+		const getButtons = () => studentButtons
 
 		const emptyComponent = (
 			<div style={{ textAlign: 'center', width: '100%' }}>
