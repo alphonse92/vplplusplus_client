@@ -16,6 +16,19 @@ Actions[CREATE_TOPIC_NAME] = {
 	}),
 }
 
+const DELETE_TOPIC_NAME = 'DELETE_TOPIC'
+Actions[DELETE_TOPIC_NAME] = {
+	DISPATCHER: (id, opts) => (dispatcher) => {
+		const actions = Actions[DELETE_TOPIC_NAME].ACTIONS
+		const getRequest = () => TopicService.delete(id)
+		requestDispatcher(dispatcher, actions, getRequest, opts)
+	},
+	ACTIONS: createRequestActions(DELETE_TOPIC_NAME, {
+		fullfilled: (state, action) => state,
+		rejected: (state, action) => state
+	}),
+}
+
 const GET_TOPICS_NAME = 'GET_TOPICS'
 Actions[GET_TOPICS_NAME] = {
 	DISPATCHER: () => (dispatcher, getStore) => {

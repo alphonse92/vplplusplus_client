@@ -20,6 +20,11 @@ export class TopicService extends WebService {
     return super.request(options)
   }
 
+  delete(id) {
+    const options = { method: "DELETE" }
+    return super.request(options, '/' + id + "/")
+  }
+
   list(page, limit, sort) {
     const query = { page, limit, sort }
     const options = { method: 'GET', qs: query }

@@ -74,7 +74,15 @@ class TopicTable extends React.Component {
 
 	}
 
-	deleteTopic = console.log
+	deleteTopic = () => {
+		const after = () => {
+			this.selected_student = undefined
+			this.props.DISPATCHERS.GET_TOPICS()
+		}
+		const onError = this.props.DISPATCHERS.SET_ERROR
+		const opts = { after, onError }
+		this.props.DISPATCHERS.DELETE_TOPIC(this.selected_student._id, opts)
+	}
 	toggleDialog = () => this.setState({ openDialog: !this.state.openDialog })
 	handleCloseDialog = (data) => {
 
@@ -147,12 +155,12 @@ class TopicTable extends React.Component {
 				<Dialog
 					open={!!this.state.openDialog}
 					title="Warning"
-					text={ <p>
-						The topic that you are trying to delete has summaries. 
+					text={<p>
+						The topic that you are trying to delete has summaries.
 						The topic will not be hard deleted, but the teachers cant see it anymore and them cant to make report by this topic
-						 <strong>Are you sure to continue?</strong>
-						</p>
-						}
+						 <strong>Are you sure to continue? ¡ This action is not reversible !</strong>
+					</p>
+					}
 					handleClose={this.handleCloseDialog}
 					component={ConfirmationDialog}></Dialog>
 				<MaterialTable {...propsTable} title="Topics registered" />
