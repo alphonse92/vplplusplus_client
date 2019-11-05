@@ -13,6 +13,12 @@ export class TopicService extends WebService {
     super('topic', getToken)
   }
 
+  list(page, limit, sort) {
+    const query = { page, limit, sort }
+    const options = { method: 'GET', qs: query }
+    return super.request(options,'/list/')
+  }
+
   find(query) {
     const options = {
       method: 'GET',

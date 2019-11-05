@@ -4,7 +4,7 @@ import { Route } from 'react-router'
 import { LaboratoryContainer } from './laboratory/laboratory.container'
 import { StudentContainer } from './student/student.container'
 import { ReportContainer } from './report/report.container'
-import { ConfigurationContainer } from './configuration'
+import { TopicContainer } from './topic/topic.container'
 import { ApplicationContainer } from './applications/application.container'
 import { scopeStatic } from '../common/scope'
 
@@ -19,7 +19,7 @@ export default (match) => {
 		{ show: scopeStatic('showStudentPage'), path: match.url + '/students', component: StudentContainer },
 		{ show: scopeStatic('showReportsPage'), path: match.url + '/report', component: ReportContainer },
 		{ show: scopeStatic('showApplicationsPage'), path: match.url + '/applications', component: ApplicationContainer },
-		{ show: scopeStatic('showTopicsPage'), path: match.url + '/topics', component: ConfigurationContainer },
+		{ show: scopeStatic('showTopicsPage'), path: match.url + '/topics', component: TopicContainer },
 	].filter(({ show }) => show)
 
 	const firstPage = pathsDef[0] || {path:match.url , component:COMPONENT_REDIRECT_TO_DEFAULT}
