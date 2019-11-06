@@ -112,7 +112,7 @@ class ProjectCreateComponent extends React.Component {
 
 	componentDidMount() {
 		const { id } = this.props.match.params
-		const { state: locationState={} } = this.props.location
+		const { state: locationState = {} } = this.props.location
 		const { tests = [], ...project } = locationState
 		id
 			? this.props.DISPATCHERS.LOAD_PROJECT(id)
@@ -322,7 +322,7 @@ class ProjectCreateComponent extends React.Component {
 
 	createTestCaseToTheStore = (index, test) => {
 		const { project, tests } = this.props
-		tests[index].test_cases.push({ ...TEST_CASE, topic: [this.props.topics[0]] })
+		tests[index].test_cases.push({ ...TEST_CASE, topic: this.props.topics[0] ? [this.props.topics[0]] : [] })
 		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
 	}
 
