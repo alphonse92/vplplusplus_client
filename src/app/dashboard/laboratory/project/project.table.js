@@ -19,6 +19,7 @@ import { ProjectService } from '../../../../services/project';
 import { cutStringAndAddDots } from '../../../../lib';
 import { ActionCreators } from './redux/actions';
 import { ActionCreators as ReportRedux } from './../../report/redux/actions';
+import { InputDialog, Dialog, ConfirmationDialog } from '../../../../lib/components/material/modals/input';
 
 class ProjectTable extends React.Component {
 
@@ -47,6 +48,8 @@ class ProjectTable extends React.Component {
 
 		return { DISPATCHERS }
 	}
+
+	state = { modals: { delete: false } }
 
 	componentDidMount() {
 		this.props.DISPATCHERS.SET_ORDER('name')
@@ -85,7 +88,7 @@ class ProjectTable extends React.Component {
 		this.props.onCreateNewProject(_id)
 	}
 
-	onDelete = () => {
+	deleteProject() {
 		const { _id } = this.selected_project
 		this.props.DISPATCHERS.DELETE_PROJECT(_id, {
 			after: () => {
@@ -94,7 +97,27 @@ class ProjectTable extends React.Component {
 			},
 			onError: this.props.DISPATCHERS.SET_ERROR
 		})
+	}
 
+	handleDeleteClose = ({ok}) => {
+		if(ok) this.deleteProject()
+		this.toggleDialog('delete')
+	}
+
+	toggleDialog(name) {
+		const newState = { ...this.state };
+		newState.modals[name] = !newState.modals[name]
+		this.setState(newState)
+	}
+
+	onDelete = () => {
+		const project = this.selected_project
+		const isBlocked = ProjectService.isBlocked(project)
+		console.log({ project, isBlocked })
+		if (isBlocked) {
+			return this.toggleDialog('delete')
+		}
+		this.deleteProject()
 	}
 
 	getCurrentSort = () => this.props.pagination.sort
@@ -134,6 +157,7 @@ class ProjectTable extends React.Component {
 		this.selected_project = project
 		return [project._id]
 	}
+
 	handleSelectAllItems = async (selectedItems, projects) => {
 		if (selectedItems.length) return []
 		return projects.map(p => p._id)
@@ -189,6 +213,7 @@ class ProjectTable extends React.Component {
 
 		const buttonsWhenSelectedAProjectBlocked = [
 			{ key: 'project-blocked-show', label: 'See', icon: <EyeIcon />, onClick: this.onEdit },
+			{ key: 'project-unblocked-delete', label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
 			{ key: 'project-blocked-report', label: 'Get report', icon: <ReportIcon />, onClick: this.redirectToReportProject },
 			{ key: 'project-blocked-export', label: 'Export', icon: <DownloadIcon />, onClick: this.exportAsJson },
 			{ key: 'project-blocked-export-as-moodle', label: 'Download Moodle', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
@@ -243,13 +268,34 @@ class ProjectTable extends React.Component {
 
 		return (
 			<React.Fragment>
-
 				<input
 					type='file'
 					id={ProjectTable.fileLoaderId}
 					style={{ display: 'none', width: '0px' }}
 					accept='.json'
 					onChange={this.onProjectExportedFileSelected} />
+				<Dialog
+					open={this.state.modals.delete}
+					title="Are you sure?"
+					handleClose={this.handleDeleteClose}
+					text={
+						<div>
+							<p>
+								The project that are you trying to delete has summaries. It means
+							there are several evaluated student unit tests.
+							</p>
+
+							<ul>
+								<li>The project will be deleted with all data, cases and test cases.</li>
+								<li>The student progress related to this project will be <strong>lost</strong></li>
+								<li>This action <strong>is not reversible</strong></li>
+								<li>The users reports will be affected to users.</li>
+							</ul>
+
+						</div>
+					}
+					component={ConfirmationDialog}
+				/>
 				<MaterialTable {...propsTable} title="Projects" />
 			</React.Fragment>
 		)

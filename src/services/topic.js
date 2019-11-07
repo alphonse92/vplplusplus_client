@@ -21,7 +21,7 @@ export class TopicService extends WebService {
   }
 
   delete(id) {
-    const options = { method: "DELETE" }
+    const options = { method: "DELETE", }
     return super.request(options, '/' + id + "/")
   }
 

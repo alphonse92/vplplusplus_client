@@ -6,7 +6,7 @@ import DeleteIcon from '@material-ui/icons/DeleteOutline';
 import { MaterialTable } from '../../../lib/components/material/tables/material.table';
 import { ActionCreators } from './redux/actions';
 import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals/actions';
-import { ConfirmationDialog, Dialog } from '../../../lib/components/material/modals/input';
+
 
 class TopicTable extends React.Component {
 
@@ -66,37 +66,26 @@ class TopicTable extends React.Component {
 
 	handleSelectItem = async (isSelected, student) => {
 		if (isSelected) {
-			delete this.selected_student
+			delete this.selected_topic
 			return []
 		}
-		this.selected_student = student
+		this.selected_topic = student
 		return [student._id]
 
 	}
 
 	deleteTopic = () => {
 		const after = () => {
-			this.selected_student = undefined
+			this.selected_topic = undefined
 			this.props.DISPATCHERS.GET_TOPICS()
 		}
 		const onError = this.props.DISPATCHERS.SET_ERROR
 		const opts = { after, onError }
-		this.props.DISPATCHERS.DELETE_TOPIC(this.selected_student._id, opts)
+		this.props.DISPATCHERS.DELETE_TOPIC(this.selected_topic._id, opts)
 	}
-	toggleDialog = () => this.setState({ openDialog: !this.state.openDialog })
-	handleCloseDialog = (data) => {
 
-		if (data.ok) {
-			this.deleteTopic(this.selected_student)
-		}
-		this.toggleDialog()
-	}
 	onDeleteTopic = () => {
-
-		if (this.selected_student.hasSummaries) {
-			return this.toggleDialog()
-		}
-		this.deleteTopic(this.selected_student)
+		this.deleteTopic(this.selected_topic)
 	}
 
 	render() {
@@ -152,17 +141,6 @@ class TopicTable extends React.Component {
 
 		return (
 			<React.Fragment>
-				<Dialog
-					open={!!this.state.openDialog}
-					title="Warning"
-					text={<p>
-						The topic that you are trying to delete has summaries.
-						The topic will not be hard deleted, but the teachers cant see it anymore and them cant to make report by this topic
-						 <strong>Are you sure to continue? ¡ This action is not reversible !</strong>
-					</p>
-					}
-					handleClose={this.handleCloseDialog}
-					component={ConfirmationDialog}></Dialog>
 				<MaterialTable {...propsTable} title="Topics registered" />
 			</React.Fragment>
 		)

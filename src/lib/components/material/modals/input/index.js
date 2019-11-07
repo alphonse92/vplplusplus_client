@@ -81,9 +81,8 @@ export const InputDialog = (props) => {
     label
   } = props
 
-  const closeDialog = isOk => () => {
+  const closeDialog = ok => () => {
     const value = document.getElementById(id).value
-    const ok = !!value && value.length && isOk
     handleClose({ ok, value })
   }
 
