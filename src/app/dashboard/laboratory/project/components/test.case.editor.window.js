@@ -135,6 +135,7 @@ public void ${capitalize(camelCase(test.name))}() {
     if (readOnly) return
     this.saved = false
     this.selectedTopics = selectedTopics
+    this.setState({ selectedTopics: this.selectedTopics })
   }
 
   extractOptionsFromTopics = ({ _id: value, name, description: label }) => {
@@ -150,6 +151,8 @@ public void ${capitalize(camelCase(test.name))}() {
     }
     const TopicList = this.props.window.data.topics || []
     const topicOptions = TopicList.map(this.extractOptionsFromTopics)
+
+    console.log(this.selectedTopics)
 
     return (
       <React.Fragment>

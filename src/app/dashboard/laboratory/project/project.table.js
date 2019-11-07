@@ -19,7 +19,7 @@ import { ProjectService } from '../../../../services/project';
 import { cutStringAndAddDots } from '../../../../lib';
 import { ActionCreators } from './redux/actions';
 import { ActionCreators as ReportRedux } from './../../report/redux/actions';
-import { InputDialog, Dialog, ConfirmationDialog } from '../../../../lib/components/material/modals/input';
+import { Dialog, ConfirmationDialog } from '../../../../lib/components/material/modals/input';
 
 class ProjectTable extends React.Component {
 
@@ -99,8 +99,8 @@ class ProjectTable extends React.Component {
 		})
 	}
 
-	handleDeleteClose = ({ok}) => {
-		if(ok) this.deleteProject()
+	handleDeleteClose = ({ ok }) => {
+		if (ok) this.deleteProject()
 		this.toggleDialog('delete')
 	}
 
