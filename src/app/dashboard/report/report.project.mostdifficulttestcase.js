@@ -30,11 +30,6 @@ class MostDifficultTestCardNoStyled extends React.Component {
     this.setState({ isOpen: !this.state.isOpen })
   }
 
-  // shouldComponentUpdate(prevprops, prevstate) {
-  //   return this.state.isOpen !== prevstate.isOpen
-  // }
-
-
   render() {
     const { data, classes } = this.props
     const { isOpen } = this.state
