@@ -5,9 +5,6 @@ import ReduxThunk from 'redux-thunk'
 
 import { getReducer } from './rootReducer'
 import { UserService } from '../services/user';
-// import { logoutByExpiration } from './middlewares'
-
-
 
 const history = createBrowserHistory({
 	basename: process.env.PUBLIC_URL,
