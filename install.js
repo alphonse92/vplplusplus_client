@@ -23,7 +23,7 @@ const REQUIRED_PARAMS = `
 
 `
 
-if (!API_BASEURL || !CLIENT_ID || !PUBLIC_URL || !URL_REGISTRY) {
+if (!API_BASEURL || !CLIENT_ID || !PUBLIC_URL) {
   console.log(REQUIRED_PARAMS)
   process.exit(1)
 }
