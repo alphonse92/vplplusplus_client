@@ -2,12 +2,14 @@
 
 Vwc is a client to allow to moodle teachers to get all VPL ++ information related to the students summaries. 
 
+# Building
+
 ## Requeriments
 
-You can get the next packages using npm.
+The client requires Node v12 to build. Node v8  was tested too.
 
-1. node
-2. 
-3. npx
-4. serve
-5. 
+
+
+## Installation
+
+1. npm install
