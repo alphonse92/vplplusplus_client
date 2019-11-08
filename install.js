@@ -1,10 +1,10 @@
 console.clear()
 
 const chalk = require('chalk')
-const build = require('./scripts/build')
+
 
 const {
-  PUBLIC_URL = "/",
+  PUBLIC_URL,
   API_BASEURL,
   CLIENT_ID
 } = process.env
@@ -23,9 +23,9 @@ const REQUIRED_PARAMS = `
 
 `
 
-if (!API_BASEURL || !CLIENT_ID) {
+if (!API_BASEURL || !CLIENT_ID || !PUBLIC_URL) {
   console.log(REQUIRED_PARAMS)
   process.exit(1)
 }
 
-build()
+require('./scripts/build')
