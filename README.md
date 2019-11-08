@@ -34,14 +34,13 @@ You need pass down the next variables as enviroment variables when you run `npm 
 
 2. API_BASEURL: the URL where is the VPL ++ api
 3. CLIENT_ID: the client id for your application in your google projects. More information: https://developers.google.com/identity/sign-in/web/sign-in
-4. URL_REGISTRY: Url where the users can register
 
 All variables are a mandatory
 
 For example :
 
 ```
-URL_REGISTRY="http://www.google.com" PUBLIC_URL="/" API_BASEURL="http://localhost:1337/api/v1" CLIENT_ID="126760867544-k1es3tqiho46b0g831cmsvgokvl0npqu.apps.googleusercontent.com" npm run build
+PUBLIC_URL="/" API_BASEURL="http://localhost:1337/api/v1" CLIENT_ID="126760867544-k1es3tqiho46b0g831cmsvgokvl0npqu.apps.googleusercontent.com" npm run build
 ```
 
 The installation process will create a folder called "build" with all files of the webclient. Its ready to be deployed using apache, nginx  or other web server that you prefer.

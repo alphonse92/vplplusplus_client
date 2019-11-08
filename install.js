@@ -7,7 +7,6 @@ const {
   PUBLIC_URL,
   API_BASEURL,
   CLIENT_ID,
-  URL_REGISTRY
 } = process.env
 
 const REQUIRED_PARAMS = `
