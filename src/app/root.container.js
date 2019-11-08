@@ -6,7 +6,6 @@ import red from '@material-ui/core/colors/red';
 import lightBlue from '@material-ui/core/colors/lightBlue';
 import { App } from './app.container'
 import './styles.sass'
-import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
 
 // const PRIMARY = '#f62a2c'

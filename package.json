@@ -7,7 +7,7 @@
   "proxy": "http://localhost:3000",
   "scripts": {
     "start": "NODE_OPTIONS=--max_old_space_size=4096 node scripts/start.js ",
-    "build": "node scripts/build.js",
+    "build": "node install",
     "test": "node scripts/test.js",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
