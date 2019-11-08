@@ -1,4 +1,6 @@
-import 'core-js'
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 import React from 'react'
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -8,10 +10,6 @@ import { App } from './app.container'
 import './styles.sass'
 
 
-// const PRIMARY = '#f62a2c'
-// const SECONDARY = '#f75a3f'
-// const HoverAndSelected = 'rgba(247, 83,	 61, 0.17) !important'
-// const PRIMARY_DEGRADEE = 'linear-gradient(45deg, #f62a2c 30%, #f88852 150%)'
 const theme = createMuiTheme({
 	typography: {
 		useNextVariants: true,
@@ -21,30 +19,6 @@ const theme = createMuiTheme({
 		secondary: lightBlue,
 	},
 	overrides: {
-		// MuiListItem: {
-		// 	root: {
-		// 		"&$selected": {
-		// 			background: HoverAndSelected
-		// 		},
-		// 		'&:hover': {
-		// 			background: HoverAndSelected
-		// 		},
-		// 		'&:focus': {
-		// 			background: HoverAndSelected
-		// 		}
-		// 	},
-		// },
-		// MuiTableRow: {
-		// 	root: {
-		// 		"&$selected": {
-		// 			background: HoverAndSelected
-		// 		},
-		// 		'&:hover': {
-		// 			background: HoverAndSelected,
-		// 		}
-		// 	},
-
-		// },
 		MuiIcon: {
 			root: {
 				'&.fas': {
@@ -55,7 +29,6 @@ const theme = createMuiTheme({
 		},
 	},
 });
-// style={{ width: 'auto', height: 'auto'}} 
 
 export const Root = () => (
 	<MuiThemeProvider theme={theme}>
