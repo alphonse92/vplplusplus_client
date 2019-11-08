@@ -9,8 +9,11 @@ RUN echo environment variables PUBLIC_URL=${PUBLIC_URL} CLIENT_ID=${CLIENT_ID} P
   && node -v \
   && npm -v
 
-WORKDIR /usr/app/
-COPY . /usr/app/
+WORKDIR /tmp/
+COPY package.json package.json
 RUN npm install 
-RUN PUBLIC_URL=${PUBLIC_URL} CLIENT_ID=${CLIENT_ID} PUBLIC_URL=${API_BASEURL} npm run build
-RUN mv ./build /usr/share/nginx/html
+WORKDIR /usr/app/
+COPY . .
+RUN mv /tmp/node_modules ./node_modules \
+  &&  PUBLIC_URL=${PUBLIC_URL} API_BASEURL=${API_BASEURL} CLIENT_ID=${CLIENT_ID}  npm run build
+RUN rm -rf /usr/share/nginx/html && mkdir /usr/share/nginx/html && mv ./build/* /usr/share/nginx/html
