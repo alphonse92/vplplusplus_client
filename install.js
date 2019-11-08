@@ -6,7 +6,8 @@ const chalk = require('chalk')
 const {
   PUBLIC_URL,
   API_BASEURL,
-  CLIENT_ID
+  CLIENT_ID,
+  URL_REGISTRY
 } = process.env
 
 const REQUIRED_PARAMS = `
@@ -23,7 +24,7 @@ const REQUIRED_PARAMS = `
 
 `
 
-if (!API_BASEURL || !CLIENT_ID || !PUBLIC_URL) {
+if (!API_BASEURL || !CLIENT_ID || !PUBLIC_URL || !URL_REGISTRY) {
   console.log(REQUIRED_PARAMS)
   process.exit(1)
 }

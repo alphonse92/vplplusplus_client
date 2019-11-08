@@ -4,20 +4,16 @@ import { MvAuthLogin } from "../../lib/components/auth";
 export const LoginComponent = (props) => {
 	const singleProps = { url: '' }
 	const gcloudProps = true
+
 	const signup = {
 		label: 'Do you haven\'t an account?',
-		onClick: () => console.log("signup")
+		url: process.env.URL_REGISTRY
 	}
-	const help = {
-		label: 'Need help?',
-		onClick: () => console.log("help")
-	}
-	
+
 	return (
 		<MvAuthLogin
 			onLogin={props.onLogin}
 			signup={signup}
-			help={help}
 			gcloud={gcloudProps}
 			single={singleProps} />)
 }

@@ -2,7 +2,6 @@ import React from 'react'
 import { MvGoogleAuth } from './google/auth.google.component'
 import { MvSingleAuth } from './single/auth.single.component'
 import './styles.sass'
-import { MvAuthHelp } from './help';
 import { MvSignUp } from './signup';
 
 const MvAuthFrame = (props) => {
@@ -28,13 +27,12 @@ const MvAuth = (props) => {
 }
 
 const MvAuthLogin = (props) => {
-	const { gcloud, single, onLogin, signup, help } = props
+	const { gcloud, single, onLogin, signup } = props
 	return (
 		<MvAuth>
 			{single && <MvAuthItem><MvSingleAuth onLogin={onLogin} {...single} /> </MvAuthItem>}
 			{gcloud && <MvAuthItem> <MvGoogleAuth onLogin={onLogin} /> </MvAuthItem>}
-			{signup && <MvAuthItem><MvSignUp {...signup} /></MvAuthItem>}
-			{help && <MvAuthItem><MvAuthHelp  {...help} /></MvAuthItem>}
+			{(signup && signup.url )&& <MvAuthItem><MvSignUp {...signup} /></MvAuthItem>}
 		</MvAuth>
 	)
 }
