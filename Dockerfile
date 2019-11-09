@@ -18,4 +18,4 @@ RUN mv /tmp/node_modules ./node_modules \
   &&  PUBLIC_URL=${PUBLIC_URL} API_BASEURL=${API_BASEURL} CLIENT_ID=${CLIENT_ID} npm run build \
   && echo PUBLIC_URL=${PUBLIC_URL} API_BASEURL=${API_BASEURL} CLIENT_ID=${CLIENT_ID}
 RUN rm -rf /usr/share/nginx/html && mkdir /usr/share/nginx/html && mv ./build/* /usr/share/nginx/html
-COPY ./.nginx/. :/etc/nginx/conf.d/
+COPY ./.nginx/default.conf /etc/nginx/conf.d/
