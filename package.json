@@ -7,7 +7,7 @@
   "proxy": "http://localhost:3000",
   "scripts": {
     "start": "./generate_template.sh && NODE_OPTIONS=--max_old_space_size=4096 node scripts/start.js ",
-    "build": "./generate_template.sh &&GENERATE_SOURCEMAP=false node scripts/build.js",
+    "build": "./generate_template.sh && GENERATE_SOURCEMAP=false node scripts/build.js",
     "build:serve": "./generate_template && GENERATE_SOURCEMAP=false node scripts/build && serve -s build",
     "test": "node scripts/test.js",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
