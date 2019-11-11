@@ -6,7 +6,7 @@ export const LoginComponent = (props) => {
 	const gcloudProps = true
 	const signup = {
 		label: 'Do you haven\'t an account?',
-		url: process.env.REACT_APP_URL_REGISTRY
+		url: window.__env__.URL_REGISTRY
 	}
 	
 	return (

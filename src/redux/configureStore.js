@@ -7,7 +7,7 @@ import { getReducer } from './rootReducer'
 import { UserService } from '../services/user';
 
 const history = createBrowserHistory({
-	basename: process.env.PUBLIC_URL,
+	basename: window.__env__.PUBLIC_URL,
 })
 
 const rootReducer = getReducer(history)
@@ -21,7 +21,7 @@ const middleware = [
 ]
 
 let composeEnhancers = compose
-if (process.env.NODE_ENV === 'development') {
+if (window.__env__.NODE_ENV === 'development') {
 	composeEnhancers =
 		typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 			? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})

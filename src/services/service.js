@@ -1,7 +1,8 @@
 import qs from 'qs'
 export class WebService {
 	constructor(url, token) {
-		this.API = process.env.REACT_APP_API_BASEURL
+
+		this.API = window.__env__.API_BASEURL
 		this.url = `${this.API}/${url}`
 		this.token = token
 	}
