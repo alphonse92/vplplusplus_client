@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta name="google-signin-client_id" content="126760867544-k1es3tqiho46b0g831cmsvgokvl0npqu.apps.googleusercontent.com">
+  <meta name="google-signin-client_id" content="%REACT_APP_CLIENT_ID%">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link rel="manifest" href="/manifest.json" />
@@ -15,9 +15,9 @@
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <script>
     window.__env__ = {}
-    window.__env__.NODE_ENV = "development"
-    window.__env__.PUBLIC_URL = "/"
-    window.__env__.API_BASEURL = "http://localhost:1337/api/v1/"
+    window.__env__.NODE_ENV="%REACT_APP_ENV%";
+    window.__env__.PUBLIC_URL="%REACT_APP_PUBLIC_URL%";
+    window.__env__.API_BASEURL="%REACT_APP_API_BASEURL%";
   </script>
   <script>
     function init() {
