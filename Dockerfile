@@ -23,5 +23,6 @@ RUN mv /tmp/node_modules ./node_modules  \
 # Move the app to the ngingx public folder
 && mv ./build/* /usr/share/nginx/html 
 
-COPY ./.docker/entrypoint ./entrypoint.sh
+COPY ./.docker/entrypoint.sh ./entrypoint.sh
+ENTRYPOINT [ "./entrypoint.sh" ]
 
