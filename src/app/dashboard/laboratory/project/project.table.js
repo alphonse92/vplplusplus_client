@@ -164,8 +164,8 @@ class ProjectTable extends React.Component {
 	};
 
 	exportAsMoodle = () => {
-		const { _id } = this.selected_projectshowReportModal
-
+		const { _id } = this.selected_project
+		console.log(_id)
 		ProjectService.exportMoodleActivity(_id)
 	}
 
