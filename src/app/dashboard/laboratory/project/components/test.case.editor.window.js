@@ -152,8 +152,6 @@ public void ${capitalize(camelCase(test.name))}() {
     const TopicList = this.props.window.data.topics || []
     const topicOptions = TopicList.map(this.extractOptionsFromTopics)
 
-    console.log(this.selectedTopics)
-
     return (
       <React.Fragment>
 

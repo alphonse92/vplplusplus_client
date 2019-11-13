@@ -113,7 +113,6 @@ class ProjectTable extends React.Component {
 	onDelete = () => {
 		const project = this.selected_project
 		const isBlocked = ProjectService.isBlocked(project)
-		console.log({ project, isBlocked })
 		if (isBlocked) {
 			return this.toggleDialog('delete')
 		}
@@ -165,7 +164,6 @@ class ProjectTable extends React.Component {
 
 	exportAsMoodle = () => {
 		const { _id } = this.selected_project
-		console.log(_id)
 		ProjectService.exportMoodleActivity(_id)
 	}
 
