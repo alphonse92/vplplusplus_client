@@ -383,6 +383,7 @@ class ProjectCreateComponent extends React.Component {
 		const { props, state } = this
 		let { modal, window } = state
 		const { tests = [], project } = props
+		const { exported = false } = project
 		const showModal = !!modal
 		const activities = this.props.activities || []
 		const { activity: activity_id } = project
@@ -396,47 +397,51 @@ class ProjectCreateComponent extends React.Component {
 		const onCloseModalDef = ({ ok, value }) => { ok ? this.setValueFromModal(value) : this.closeModal() }
 		const onCloseModal = get(modal, 'onClose', onCloseModalDef)
 
+		const NameAndDescription = () => <Flex vertical width="100%" margin="7px">
+			<Card>
+				<CardHeader
+					action={
+						<small>{this.isProjectBlocked() ? "No editable project" : "Editing On"}: {this.props.project._id || "new project"} </small>
+					}
+					title={
+						<React.Fragment>
+							{get(this.props, 'project.name', ProjectCreateComponent.DEFAULTS.project.name)}
+							{!isBlocked && <EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.name)} />}
+						</React.Fragment>
+					}
+					subheader={
+						<React.Fragment>
+							{get(this.props, 'project.description', ProjectCreateComponent.DEFAULTS.project.description)}
+							{!isBlocked && <EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.description)} />}
+						</React.Fragment>
+					}
+				/>
+				<CardActions>
+					{
+						!this.props.project._id && <Button onClick={this.handleCreateProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
+					}
+				</CardActions>
+			</Card>
+		</Flex>
+
+		const ProjectActivity = () => <Flex vertical width="100%" margin="7px">
+			<Card>
+				<CardHeader
+					title="Moodle Activity"
+					subheader={
+						<React.Fragment>
+							{moodle_activity_label}
+							{!isBlocked && <EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.activity)} />}
+						</React.Fragment>
+					}
+				/>
+			</Card>
+		</Flex>
+
 		const ProjectInfoHeader = () => (
 			<Flex vertical width="100%">
-				<Flex vertical width="100%" margin="7px">
-					<Card>
-						<CardHeader
-							action={
-								<small>{this.isProjectBlocked() ? "No editable project" : "Editing On"}: {this.props.project._id || "new project"} </small>
-							}
-							title={
-								<React.Fragment>
-									{get(this.props, 'project.name', ProjectCreateComponent.DEFAULTS.project.name)}
-									{!isBlocked && <EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.name)} />}
-								</React.Fragment>
-							}
-							subheader={
-								<React.Fragment>
-									{get(this.props, 'project.description', ProjectCreateComponent.DEFAULTS.project.description)}
-									{!isBlocked && <EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.description)} />}
-								</React.Fragment>
-							}
-						/>
-						<CardActions>
-							{
-								!this.props.project._id && <Button onClick={this.handleCreateProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
-							}
-						</CardActions>
-					</Card>
-				</Flex>
-				<Flex vertical width="100%" margin="7px">
-					<Card>
-						<CardHeader
-							title="Moodle Activity"
-							subheader={
-								<React.Fragment>
-									{moodle_activity_label}
-									{!isBlocked && <EditIcon onClick={() => this.setModalOpen(ProjectCreateComponent.DEFAULTS.modals.project.activity)} />}
-								</React.Fragment>
-							}
-						/>
-					</Card>
-				</Flex>
+				<NameAndDescription />
+				{exported && <ProjectActivity />}
 			</Flex>
 		)
 
@@ -466,7 +471,7 @@ class ProjectCreateComponent extends React.Component {
 
 				<Flex horizontal width="100%">
 					<Flex vertical width="25%" margin="7px" >
-						<ProjectPreview
+						{project._id && <ProjectPreview
 							editable={!isBlocked}
 							tests={tests}
 							onCreateTest={this.handleCreateTest}
@@ -481,7 +486,7 @@ class ProjectCreateComponent extends React.Component {
 							}}
 							onCreateTestCase={this.handleCreateTestCase}
 							onDeleteTestCase={this.handleTestCaseDelete}
-						/>
+						/>}
 					</Flex>
 					<Flex vertical width="75%" margin="7px" >
 
