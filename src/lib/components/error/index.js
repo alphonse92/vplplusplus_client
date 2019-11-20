@@ -29,13 +29,18 @@ const getErrorTextByType = {
 }
 
 
-export const DialogBroker = ({ error, handleClose }) => {
+export const DialogBroker = ({ error, handleClose, info }) => {
   if (error) return <Dialog
     component={Ok}
-    open={!!error}
+    open
     handleClose={handleClose}
     title={'Something Happened'}
     text={(getErrorTextByType[error.type] || getErrorTextByType.default)(error)} />
-
+  if (info) return <Dialog
+    title={info.title || "Atention"}
+    text={info.text}
+    handleClose={handleClose}
+    open
+  />
   return <></>
 }

@@ -145,6 +145,12 @@ class ProjectCreateComponent extends React.Component {
 		const { data } = payload
 		const { indexTest, indexTestCase, test: test_case } = data
 
+		if (test_case.grade === 0) this.props.DISPATCHERS.SET_MODAL({
+			type: 'info',
+			title: 'Test case grade is zero',
+			text: "The text case grade is zero. This test will be graded using averaged. To grade by your self, please set grade."
+		})
+
 		tests[indexTest].test_cases[indexTestCase] = test_case
 		this.updateProjectData({ project, tests })
 	}
@@ -256,13 +262,14 @@ class ProjectCreateComponent extends React.Component {
 
 		// handle the data without window intervention 
 		const onNext = () => {
-			// if the closed window was the test window, then trigger the save test event
-			if (prevWindow.name === ProjectCreateComponent.DEFAULTS.windows.test.name)
-				this.onWindowEmit(ProjectCreateComponent.DEFAULTS.windows.test.component.Events.save, payload)
-			// if the closed window was the test case window, then trigger the save test case event
-			else if (prevWindow.name === ProjectCreateComponent.DEFAULTS.windows.testCase.name)
-				this.onWindowEmit(ProjectCreateComponent.DEFAULTS.windows.testCase.component.Events.save, payload)
 
+			// if the closed window was the test window, then trigger the save test event
+			if (prevWindow.name === ProjectCreateComponent.DEFAULTS.windows.test.name) {
+				this.onWindowEmit(ProjectCreateComponent.DEFAULTS.windows.test.component.Events.save, payload)
+			}			// if the closed window was the test case window, then trigger the save test case event
+			else if (prevWindow.name === ProjectCreateComponent.DEFAULTS.windows.testCase.name) {
+				this.onWindowEmit(ProjectCreateComponent.DEFAULTS.windows.testCase.component.Events.save, payload)
+			}
 			// close the modal
 			this.closeModal({ window: nextWindow, nextWindow: undefined, waitingForConfirmation: false })
 		}

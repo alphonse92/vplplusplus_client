@@ -226,10 +226,7 @@ public void ${capitalize(camelCase(test.name))}() {
 
               <CardContent>
                 <Typography variant="subtitle2" gutterBottom>
-                  Topics are the most important field in the test case. Those are granular, especific and a mandatory.
-                  That represents a student knowledge. Are usefull to quantify the student skill.
-                  You need to add at least 1. If you need to add more than 3 topics, then consider to create another test case.
-                  An example of topic could be the name of the assignature that will be evaluated.
+                  Add at least a topic, maximum three
                 </Typography>
 
 

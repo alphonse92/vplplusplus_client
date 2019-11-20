@@ -30,7 +30,10 @@ class AppContainer extends Component {
 		return (
 			<React.Fragment>
 				{this.props.lib.loading && <AppLoading />}
-				<DialogBroker handleClose={this.props.DISPATCHERS.CLEAR_ERROR} error={this.props.modals.error} />
+				<DialogBroker
+					handleClose={this.props.DISPATCHERS.CLEAR}
+					error={this.props.modals.error}
+					info={this.props.modals.info} />
 				<Switch> {routes} </Switch>
 			</React.Fragment>
 		)
