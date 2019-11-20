@@ -37,6 +37,7 @@ export const DialogBroker = ({ error, handleClose, info }) => {
     title={'Something Happened'}
     text={(getErrorTextByType[error.type] || getErrorTextByType.default)(error)} />
   if (info) return <Dialog
+    component={Ok}
     title={info.title || "Atention"}
     text={info.text}
     handleClose={handleClose}

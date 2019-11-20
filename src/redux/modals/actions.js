@@ -11,7 +11,8 @@ Actions[SET_MODAL_NAME] = {
 	ACTIONS: {
 		default: {
 			name: SET_MODAL_NAME,
-			reducer: (state, { type, text, title }) => {
+			reducer: (state, { payload }) => {
+				const { type, text, title } = payload
 				return { ...state, [type]: { title, text } }
 			}
 		}

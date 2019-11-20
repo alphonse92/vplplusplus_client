@@ -145,11 +145,13 @@ class ProjectCreateComponent extends React.Component {
 		const { data } = payload
 		const { indexTest, indexTestCase, test: test_case } = data
 
-		if (test_case.grade === 0) this.props.DISPATCHERS.SET_MODAL({
+		if (test_case.grade === 0){
+			console.log("Asdasd")
+			 this.props.DISPATCHERS.SET_MODAL({
 			type: 'info',
 			title: 'Test case grade is zero',
 			text: "The text case grade is zero. This test will be graded using averaged. To grade by your self, please set grade."
-		})
+		})}
 
 		tests[indexTest].test_cases[indexTestCase] = test_case
 		this.updateProjectData({ project, tests })
