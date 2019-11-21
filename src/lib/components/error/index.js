@@ -11,7 +11,7 @@ const getErrorTextByType = {
       .keys(error)
       .reduce((acc, validationType) => {
         const list = error[validationType].map(({ field, message }) => {
-          return <li key={field}>{`${field} ${message}`}</li>
+          return <li key={field}>{`${message}`}</li>
         })
         const ulWrapper = <ul>{list}</ul>
         const component = (
