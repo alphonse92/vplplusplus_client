@@ -17,7 +17,6 @@ const getErrorTextByType = {
         const component = (
           <div key={validationType}>
             <p><strong>Related to: </strong> {model}</p>
-            <p><strong>{validationType}</strong></p>
             {ulWrapper}
           </div>
 
