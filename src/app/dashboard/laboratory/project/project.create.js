@@ -16,6 +16,8 @@ import { WindowComponent } from '../../../../lib/components/window-manager';
 import { TEST_CASE } from '../../../../constants';
 import { Save } from '@material-ui/icons';
 import { ProjectService } from '../../../../services/project';
+import { WarningCard } from '../../../../lib/components/material/warningCard';
+
 
 class ProjectCreateComponent extends React.Component {
 
@@ -145,13 +147,13 @@ class ProjectCreateComponent extends React.Component {
 		const { data } = payload
 		const { indexTest, indexTestCase, test: test_case } = data
 
-		if (test_case.grade === 0){
-			console.log("Asdasd")
-			 this.props.DISPATCHERS.SET_MODAL({
-			type: 'info',
-			title: 'Test case grade is zero',
-			text: "The text case grade is zero. This test will be graded using averaged. To grade by your self, please set grade."
-		})}
+		if (!Number(test_case.grade)) {
+			this.props.DISPATCHERS.SET_MODAL({
+				type: 'info',
+				title: 'Test case grade is zero',
+				text: "The text case grade is zero. This test will be graded using averaged. To grade by your self, please set grade."
+			})
+		}
 
 		tests[indexTest].test_cases[indexTestCase] = test_case
 		this.updateProjectData({ project, tests })
@@ -385,6 +387,19 @@ class ProjectCreateComponent extends React.Component {
 		if (windowEvent === EditTestCaseWindow.Events.save) return this.saveTestCase(payload)
 	}
 
+
+	areThereTestCasesWithZeroGrade = () => {
+		const { tests } = this.props
+		for (let idxTest in tests) {
+			const test = tests[idxTest]
+			const { test_cases } = test
+			for (let idxTestCase in test_cases) {
+				const testCase = test_cases[idxTestCase]
+				if (testCase.grade === 0) return true;
+			}
+
+		}
+	}
 	forceCloseWindow = extraState => this.setState({ window: undefined, forceCloseWindow: true, ...extraState })
 	isProjectBlocked = () => ProjectService.isBlocked(this.props.project)
 	isProjectSavedAndIsBeingEdited = () => !!this.props.project._id
@@ -396,8 +411,9 @@ class ProjectCreateComponent extends React.Component {
 		const showModal = !!modal
 		const activities = this.props.activities || []
 		const { activity: activity_id } = project
-		const isActivitySelecteed = !!activity_id
-		const activity = isActivitySelecteed
+		const isActivitySelected = !!activity_id
+		const showZeroGradeMessage = this.areThereTestCasesWithZeroGrade()
+		const activity = isActivitySelected
 			? activities.find(({ course_module_id }) => course_module_id === activity_id)
 			: ProjectCreateComponent.DEFAULTS.project.activity
 		const moodle_activity_label = activity ? activity.name : ''
@@ -477,7 +493,7 @@ class ProjectCreateComponent extends React.Component {
 				}
 
 				<ProjectInfoHeader />
-
+				<WarningCard show={showZeroGradeMessage} title='Warning' message="There are test cases with zero grade. Those tests that belongs these test cases will be grade by average" />
 				<Flex horizontal width="100%">
 					<Flex vertical width="25%" margin="7px" >
 						{project._id && <ProjectPreview
@@ -498,7 +514,6 @@ class ProjectCreateComponent extends React.Component {
 						/>}
 					</Flex>
 					<Flex vertical width="75%" margin="7px" >
-
 						<Flex vertical width="100%" >
 							<WindowComponent window={window} onClose={this.closeWindow} onEmit={this.onWindowEmit} />
 						</Flex>
