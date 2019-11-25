@@ -311,10 +311,6 @@ class ProjectCreateComponent extends React.Component {
 		this.setState({ window: undefined, nextWindow })
 	}
 
-
-
-
-
 	saveTest = (index, test) => {
 		const { project, tests } = this.props
 		tests[index] = test
