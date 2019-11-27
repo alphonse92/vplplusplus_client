@@ -21,7 +21,7 @@ RUN mkdir -p ./build  &&  mv /tmp/node_modules ./node_modules  \
   && echo REACT_APP_API_BASEURL={{REACT_APP_API_BASEURL}} >> .env \
   && echo REACT_APP_CLIENT_ID={{REACT_APP_CLIENT_ID}} >> .env \
   # Run build script
-  && npm run build \
+  && NODE_ENV=production  npm run build \
   # Remove the nginx html folder
   && rm -rf /usr/share/nginx/html \
   # Create a new html folder 
