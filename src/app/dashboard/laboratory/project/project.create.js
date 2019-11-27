@@ -314,8 +314,7 @@ class ProjectCreateComponent extends React.Component {
 	saveTest = (index, test) => {
 		const { project, tests } = this.props
 		tests[index] = test
-		this.props.DISPATCHERS.EDIT_PROJECT_DATA({ project, tests })
-
+		this.updateProjectData({ project, tests })
 	}
 
 	saveTestCode = ({ window: payload }) => {
