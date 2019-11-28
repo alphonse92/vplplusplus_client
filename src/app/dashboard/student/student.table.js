@@ -90,7 +90,7 @@ class StudentTable extends React.Component {
 		const { pagination } = props
 
 		const studentButtons = [
-			{ key: 'student-selected-show-report', label: 'Show Report', icon: <ReportIcon />, onClick: this.showReport },
+			{ key: 'student-selected-show-report', label: 'Show Report', icon: <ReportIcon />, onClick: ()=>this.props.showUserReport(this.selected_student) },
 		]
 
 		const getButtons = (student_ids_selected = []) => {
