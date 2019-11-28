@@ -40,7 +40,7 @@ export const Ok = (props) => {
         {
           typeof textOrComponent === 'string'
             ? <DialogContentText>{textOrComponent}</DialogContentText>
-            : textOrComponent 
+            : textOrComponent
         }
       </DialogContent>
       <DialogActions>
@@ -52,12 +52,13 @@ export const Ok = (props) => {
 
 export const ConfirmationDialog = (props) => {
   const { handleClose, title = "Please add the value", text = "" } = props
+
   const closeDialog = ok => () => { handleClose({ ok }) }
   return (
     <React.Fragment>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText>{text}</DialogContentText>
+        {typeof text === "string" ? <DialogContentText>{text}</DialogContentText> : text}
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog(false)} color="primary">
