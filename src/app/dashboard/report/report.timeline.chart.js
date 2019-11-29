@@ -10,6 +10,7 @@ import { ProjectReportTimelineChartOptions } from './report.timeline.chart.optio
 import { MATERIAL_COLORS } from '../../../constants';
 import { Switch, FormControlLabel } from '@material-ui/core';
 import { ReportTimelineMeaningTable } from './report.timeline.meaning.table';
+import { VplLang } from '../../../redux/lang';
 
 const DATASET_BASE = {
 
@@ -168,12 +169,12 @@ class ProjectReportTimelineChart extends React.Component {
           color="primary"
         />
       }
-      label="Hidde empty datat"
+      label={<VplLang string="REPORT_TIMELINE_GENERATOR_OPTIONS_HIDE_EMPTY_DATA" />}
     />
 
     const NoDataComponent = (props) => {
       const def_error = 'Something happend please contact to the administrator'
-      const no_data_label = 'No data to show'
+      const no_data_label = <VplLang string="REPORT_TIMELINE_GENERATOR_OPTIONS_NO_DATA_TO_SHOWN" />
       const Wrapper = ({ children }) => <Flex margin='13px' vertical alignItems='center' fontSize='13px' textAlign='center'>
         <ErrorOutlineOutlined />{children}
       </Flex>

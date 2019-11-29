@@ -8,6 +8,7 @@ import Dialog from '@material-ui/core/Dialog';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { VplLang } from '../../../../../redux/lang';
 
 export class SelectDialog extends React.Component {
 
@@ -64,11 +65,11 @@ export class SelectDialog extends React.Component {
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleCancel} color="primary">
-            Cancel
-        </Button>
+            <VplLang string="CANCEL" />
+          </Button>
           <Button onClick={this.handleOk} color="primary">
-            Ok
-        </Button>
+            <VplLang string="OK" />
+          </Button>
         </DialogActions>
       </Dialog>
     );

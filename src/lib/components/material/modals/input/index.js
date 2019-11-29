@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle'
+import { VplLang } from '../../../../../redux/lang';
 
 export class Dialog extends React.Component {
 
@@ -62,10 +63,10 @@ export const ConfirmationDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog(false)} color="primary">
-          Cancel
+          <VplLang string="CANCEL" />
         </Button>
         <Button onClick={closeDialog(true)} color="primary">
-          Ok
+          <VplLang string="OK" />
         </Button>
       </DialogActions>
     </React.Fragment>
@@ -102,10 +103,10 @@ export const InputDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog(false)} color="primary">
-          Cancel
+          <VplLang string="CANCEL" />
         </Button>
         <Button onClick={closeDialog(true)} color="primary">
-          Ok
+          <VplLang string="OK" />
         </Button>
       </DialogActions>
     </React.Fragment>

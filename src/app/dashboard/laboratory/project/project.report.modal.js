@@ -11,6 +11,7 @@ import { TextField, Select, MenuItem, FormControlLabel, Switch } from '@material
 import { Flex } from "../../../../lib/components/flex";
 import { ActionCreators } from './redux/actions';
 import { Typeahead } from '../../../../lib/components/material/form/typeahead';
+import { VplLang } from '../../../../redux/lang';
 
 export class ProjectReportModalClass extends React.Component {
 
@@ -231,10 +232,10 @@ export class ProjectReportModalClass extends React.Component {
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleModalResponse(false)} color="primary">
-            Cancel
+            <VplLang string="CANCEL"/>
         </Button>
           <Button onClick={this.handleModalResponse(true)} color="primary">
-            Ok
+          <VplLang string="OK"/>
         </Button>
         </DialogActions>
       </Dialog>

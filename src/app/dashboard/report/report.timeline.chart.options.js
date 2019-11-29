@@ -8,6 +8,7 @@ import { ActionCreators } from './redux/actions';
 import { Flex } from '../../../lib/components/flex';
 import { Select, MenuItem, FormControl, InputLabel, TextField, Button, Typography, FormControlLabel, Switch } from '@material-ui/core';
 import { Typeahead } from '../../../lib/components/material/form/typeahead';
+import { VplLang } from '../../../redux/lang';
 const LineChartTypeOptions = [
   'years',
   'quarters',
@@ -174,7 +175,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
 
     return (
       <Flex vertical>
-        <Typography variant="h6" gutterBottom>Timeline Generator Options</Typography>
+        <Typography variant="h6" gutterBottom> <VplLang string="REPORT_TIMELINE_GENERATOR_OPTIONS_TITLE"/> </Typography>
         {this.props.showTopicFilter && <Flex vertical marginBottom={marginRowBottom}>
           <Flex horizontal>
             <Typeahead
@@ -224,7 +225,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
           <Flex vertical width={width}>
             <FormControl >
               <TextField
-                label="Start at"
+                label={<VplLang string="REPORT_TIMELINE_GENERATOR_OPTIONS_START_AT"/>}
                 type="date"
                 defaultValue={moment(from).format('YYYY-MM-DD')}
                 InputLabelProps={{
@@ -236,7 +237,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
           </Flex>
           <Flex vertical width={width}>
             <FormControl >
-              <InputLabel shrink htmlFor="type-label-placeholder">Time range</InputLabel>
+              <InputLabel shrink htmlFor="type-label-placeholder"><VplLang string="REPORT_TIMELINE_GENERATOR_OPTIONS_TIME_RANGE"/></InputLabel>
               <Select
                 disabled={persistData}
                 value={type}
@@ -247,7 +248,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
           </Flex>
           <Flex vertical width={width}>
             <FormControl >
-              <InputLabel shrink htmlFor="each-label-placeholder">Period</InputLabel>
+              <InputLabel shrink htmlFor="each-label-placeholder"><VplLang string="REPORT_TIMELINE_GENERATOR_OPTIONS_PERIOD"/></InputLabel>
               <Select
                 disabled={persistData}
                 value={each}
@@ -258,7 +259,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
           </Flex>
           <Flex vertical width={width}>
             <FormControl >
-              <InputLabel shrink htmlFor="steps-label-placeholder">Frequency</InputLabel>
+              <InputLabel shrink htmlFor="steps-label-placeholder"><VplLang string="REPORT_TIMELINE_GENERATOR_OPTIONS_FREQUENCY"/></InputLabel>
               <Select
                 disabled={persistData}
                 value={steps}
@@ -269,8 +270,8 @@ class ProjectReportTimelineChartOptions extends React.Component {
           </Flex>
         </Flex>
         <Flex horizontal reverse marginBottom={marginRowBottom}>
-          <Button color="primary" onClick={this.loadProjectTimeline}>Load</Button>
-          <Button color="primary" onClick={this.clearData}>Reset</Button>
+          <Button color="primary" onClick={this.loadProjectTimeline}><VplLang string="REPORT_TIMELINE_GENERATOR_OPTIONS_ADD_TO_LOAD"/></Button>
+          <Button color="primary" onClick={this.clearData}><VplLang string="REPORT_TIMELINE_GENERATOR_OPTIONS_ADD_TO_RESET"/></Button>
           <FormControlLabel
             control={
               <Switch
@@ -279,7 +280,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
                 color="primary"
               />
             }
-            label="Add to the current chart"
+            label={<VplLang string="REPORT_TIMELINE_GENERATOR_OPTIONS_ADD_TO_CHART"/>}
           />
           <FormControlLabel
             control={
@@ -289,7 +290,7 @@ class ProjectReportTimelineChartOptions extends React.Component {
                 color="primary"
               />
             }
-            label="Clear inputs"
+            label={<VplLang string="REPORT_TIMELINE_GENERATOR_OPTIONS_CLEAR_INPUTS"/>}
           />
 
         </Flex>

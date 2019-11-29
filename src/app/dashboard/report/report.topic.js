@@ -3,9 +3,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals/actions';
 import { ActionCreators } from './redux/actions';
-// import { Report } from './report';
 import { ProjectReportTimelineCard } from './report.timeline';
-
+import { VplLang } from '../../../redux/lang'
 
 class ReportTopic extends React.Component {
 
@@ -36,8 +35,8 @@ class ReportTopic extends React.Component {
 	}
 
 	render() {
-		const title = "Topic report timeline"
-		const subtitle = "See the topic progress along the time"
+		const title = <VplLang string="LABORATORY_TOPIC_TIMELINE_CARD_TITLE" />
+		const subtitle =  <VplLang string="LABORATORY_TOPIC_TIMELINE_CARD_TITLE" />
 		const timelineProps = { title, subtitle }
 
 		return <ProjectReportTimelineCard {...timelineProps} />

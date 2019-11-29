@@ -20,17 +20,17 @@ import { cutStringAndAddDots } from '../../../../lib';
 import { ActionCreators } from './redux/actions';
 import { ActionCreators as ReportRedux } from './../../report/redux/actions';
 import { Dialog, ConfirmationDialog } from '../../../../lib/components/material/modals/input';
-
+import { VplLang } from '../../../../redux/lang'
 class ProjectTable extends React.Component {
 
 	static columns = [
-		{ attribute: 'name', key: 'name', orderable: true, numeric: false, disablePadding: true, label: 'Name' },
-		{ attribute: 'description', key: 'description', orderable: true, numeric: false, disablePadding: false, label: 'Description' },
-		{ attribute: 'is_modificable', key: 'is_modificable', numeric: false, disablePadding: false, label: 'Modificable' },
-		{ attribute: 'activity', key: 'activity', orderable: true, numeric: true, disablePadding: false, label: 'Course Module Id' },
-		{ attribute: 'metadata.tests', key: 'tests', numeric: true, disablePadding: false, label: 'Tests' },
-		{ attribute: 'metadata.cases', key: 'cases', numeric: true, disablePadding: false, label: 'Cases' },
-		{ attribute: 'metadata.submissions', key: 'submissions', numeric: true, disablePadding: false, label: 'Submisions' },
+		{ attribute: 'name', key: 'name', orderable: true, numeric: false, disablePadding: true, label: <VplLang string="PROJECTS_TABLE_COL_NAME" /> },
+		{ attribute: 'description', key: 'description', orderable: true, numeric: false, disablePadding: false, label: <VplLang string="PROJECTS_TABLE_COL_DESCRIPTION" /> },
+		{ attribute: 'is_modificable', key: 'is_modificable', numeric: false, disablePadding: false, label: <VplLang string="PROJECTS_TABLE_COL_MODIFICABLE" /> },
+		{ attribute: 'activity', key: 'activity', orderable: true, numeric: true, disablePadding: false, label: <VplLang string="PROJECTS_TABLE_COL_COURSE_MODULE_ID" /> },
+		{ attribute: 'metadata.tests', key: 'tests', numeric: true, disablePadding: false, label: <VplLang string="PROJECTS_TABLE_COL_TESTS" /> },
+		{ attribute: 'metadata.cases', key: 'cases', numeric: true, disablePadding: false, label: <VplLang string="PROJECTS_TABLE_COL_CASES" /> },
+		{ attribute: 'metadata.submissions', key: 'submissions', numeric: true, disablePadding: false, label: <VplLang string="PROJECTS_TABLE_COL_SUBMISSIONS" /> },
 	]
 	static fileLoaderId = 'newProjectFileLoader' + Date.now()
 	static mapStateToProps = (state) => {
@@ -200,7 +200,7 @@ class ProjectTable extends React.Component {
 			const { tests } = doc
 			const metadata = { tests: 0, cases: 0, submissions: doc.summaries.length }
 			const description = cutStringAndAddDots(doc.description, 64)
-			const is_modificable = ProjectService.isBlocked(doc) ? "No" : "Yes"
+			const is_modificable = ProjectService.isBlocked(doc) ? <VplLang string="NO" /> : <VplLang string="YES" />
 			tests.forEach(test => {
 				metadata.tests++
 				metadata.cases += test.test_cases.length
@@ -210,24 +210,24 @@ class ProjectTable extends React.Component {
 		}, [])
 
 		const buttonsWhenSelectedAProjectBlocked = [
-			{ key: 'project-blocked-show', label: 'See', icon: <EyeIcon />, onClick: this.onEdit },
-			{ key: 'project-unblocked-delete', label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
-			{ key: 'project-blocked-report', label: 'Get report', icon: <ReportIcon />, onClick: this.redirectToReportProject },
-			{ key: 'project-blocked-export', label: 'Export', icon: <DownloadIcon />, onClick: this.exportAsJson },
-			{ key: 'project-blocked-export-as-moodle', label: 'Download Moodle', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
+			{ key: 'project-blocked-show', label: <VplLang string="PROJECTS_TABLE_ACTIONS_SEE" />, icon: <EyeIcon />, onClick: this.onEdit },
+			{ key: 'project-unblocked-delete', label: <VplLang string="PROJECTS_TABLE_ACTIONS_DELETE" />, icon: <DeleteIcon />, onClick: this.onDelete },
+			{ key: 'project-blocked-report', label: <VplLang string="PROJECTS_TABLE_ACTIONS_GET_REPORT" />, icon: <ReportIcon />, onClick: this.redirectToReportProject },
+			{ key: 'project-blocked-export', label: <VplLang string="PROJECTS_TABLE_ACTIONS_EXPORT" />, icon: <DownloadIcon />, onClick: this.exportAsJson },
+			{ key: 'project-blocked-export-as-moodle', label: <VplLang string="PROJECTS_TABLE_ACTIONS_DOWNLOAD_MOODLE" />, icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
 		]
 
 		const buttonsWhenSelectedAProjectIsNotBlocked = [
-			{ key: 'project-unblocked-edit', label: 'Edit', icon: <EditIcon />, onClick: this.onEdit },
-			{ key: 'project-unblocked-delete', label: 'Delete', icon: <DeleteIcon />, onClick: this.onDelete },
-			{ key: 'project-unblocked-export', label: 'Export', icon: <DownloadIcon />, onClick: this.exportAsJson },
-			{ key: 'project-unblocked-export-as-moodle', label: 'Download Moodle', icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
+			{ key: 'project-unblocked-edit', label: <VplLang string="PROJECTS_TABLE_ACTIONS_EDIT" />, icon: <EditIcon />, onClick: this.onEdit },
+			{ key: 'project-unblocked-delete', label: <VplLang string="PROJECTS_TABLE_ACTIONS_DELETE" />, icon: <DeleteIcon />, onClick: this.onDelete },
+			{ key: 'project-unblocked-export', label: <VplLang string="PROJECTS_TABLE_ACTIONS_EXPORT" />, icon: <DownloadIcon />, onClick: this.exportAsJson },
+			{ key: 'project-unblocked-export-as-moodle', label: <VplLang string="PROJECTS_TABLE_ACTIONS_DOWNLOAD_MOODLE" />, icon: <Icon className={'fas fa-laptop-code'} />, onClick: this.exportAsMoodle },
 		]
 
 		const buttonsWhenNotSelected = [
-			{ key: 'no-selected-project-filter', label: 'Filter Data', icon: <FilterListIcon />, onClick: this.handleChangeFilter },
-			{ key: 'no-selected-project-new-project', label: 'Create new Project', icon: <AddIcon />, onClick: this.onCreateNewProject },
-			{ key: 'no-selected-project-import-from-json', label: 'Create from file', icon: <UploadIcon />, onClick: this.onCreateNewProjectFromFile },
+			{ key: 'no-selected-project-filter', label: <VplLang string="PROJECTS_TABLE_ACTIONS_FILTER" />, icon: <FilterListIcon />, onClick: this.handleChangeFilter },
+			{ key: 'no-selected-project-new-project', label: <VplLang string="PROJECTS_TABLE_ACTIONS_CREATE_NEW_PROJECT" />, icon: <AddIcon />, onClick: this.onCreateNewProject },
+			{ key: 'no-selected-project-import-from-json', label: <VplLang string="PROJECTS_TABLE_ACTIONS_CREATE_FROM_FILE" />, icon: <UploadIcon />, onClick: this.onCreateNewProjectFromFile },
 		]
 
 		const getButtons = (project_ids_selected = []) => {
@@ -242,9 +242,9 @@ class ProjectTable extends React.Component {
 		const emptyComponent = (
 			<div style={{ textAlign: 'center', width: '100%' }}>
 				<p>No projects to shown</p>
-				<Button color="primary" onClick={this.onCreateNewProject}><AddIcon /> Start a New Project</Button>
-				or
-				<Button color="primary" onClick={this.onCreateNewProjectFromFile}><UploadIcon /> Import one</Button>
+				<Button color="primary" onClick={this.onCreateNewProject}><AddIcon /> <VplLang string="PROJECTS_TABLE_EMPTY_START_PROJECT" /> </Button>
+				<VplLang string="OR" />
+				<Button color="primary" onClick={this.onCreateNewProjectFromFile}><UploadIcon /> <VplLang string="PROJECTS_TABLE_EMPTY_START_IMPORT" /> </Button>
 			</div>
 		)
 
@@ -274,20 +274,20 @@ class ProjectTable extends React.Component {
 					onChange={this.onProjectExportedFileSelected} />
 				<Dialog
 					open={this.state.modals.delete}
-					title="Are you sure?"
+					title={<VplLang string="ARE_YOU_SURE" />}
 					handleClose={this.handleDeleteClose}
 					text={
 						<div>
-							<p>
-								The project that are you trying to delete has summaries. It means
-							there are several evaluated student unit tests.
-							</p>
+							<p><VplLang string="PROJECTS_DELETE_WARNING_TITLE" /></p>
 
 							<ul>
-								<li>The project will be deleted with all data, cases and test cases.</li>
-								<li>The student progress related to this project will be <strong>lost</strong></li>
-								<li>This action <strong>is not reversible</strong></li>
-								<li>The users reports will be affected to users.</li>
+								<li><VplLang string="PROJECTS_DELETE_WARNING_TITLE" /></li>
+								<li><VplLang string="PROJECTS_DELETE_WARNING_1" /></li>
+								<li><VplLang string="PROJECTS_DELETE_WARNING_2" /></li>
+								<li><VplLang string="PROJECTS_DELETE_WARNING_3" /></li>
+								<li><VplLang string="PROJECTS_DELETE_WARNING_4" /></li>
+
+
 							</ul>
 
 						</div>
