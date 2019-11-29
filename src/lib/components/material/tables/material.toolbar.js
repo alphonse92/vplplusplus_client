@@ -9,6 +9,7 @@ import { lighten } from '@material-ui/core/styles/colorManipulator';
 import {
 	Close as CloseIcon
 } from '@material-ui/icons';
+import { VplLang } from '../../../../redux/lang'
 const TableToolbar = (props) => {
 
 	const {
@@ -26,7 +27,7 @@ const TableToolbar = (props) => {
 	const showButtonSelected = numSelected > 0
 
 	const buttons = showButtonSelected
-		? buttonsWhenSelected.concat({ key: Date.now(), label: 'Close', icon: <CloseIcon />, onClick: onClose})
+		? buttonsWhenSelected.concat({ key: Date.now(), label: <VplLang string="CLOSE" />, icon: <CloseIcon />, onClick: onClose })
 		: buttonsWhenNotSelected
 
 	const buttonsComponent = buttons.map(btn => (

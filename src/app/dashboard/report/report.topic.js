@@ -36,7 +36,7 @@ class ReportTopic extends React.Component {
 
 	render() {
 		const title = <VplLang string="LABORATORY_TOPIC_TIMELINE_CARD_TITLE" />
-		const subtitle =  <VplLang string="LABORATORY_TOPIC_TIMELINE_CARD_TITLE" />
+		const subtitle =  <VplLang string="LABORATORY_TOPIC_TIMELINE_CARD_DESCRIPTION" />
 		const timelineProps = { title, subtitle }
 
 		return <ProjectReportTimelineCard {...timelineProps} />

@@ -7,14 +7,16 @@ import { MaterialTable } from '../../../lib/components/material/tables/material.
 import { ActionCreators } from './redux/actions';
 import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals/actions';
 
+import { VplLang } from '../../../redux/lang'
+
 class StudentTable extends React.Component {
 
 	static columns = [
-		{ attribute: 'username', key: 'username', orderable: true, numeric: false, disablePadding: true, label: 'Username' },
-		{ attribute: 'lastname', key: 'lastname', orderable: true, numeric: false, disablePadding: true, label: 'Lastname' },
-		{ attribute: 'firstname', key: 'firstname', orderable: true, numeric: false, disablePadding: true, label: 'Firstame' },
-		{ attribute: 'email', key: 'is_modificable', orderable: true, numeric: false, disablePadding: false, label: 'Email' },
-		{ attribute: 'id', key: 'id', numeric: true, orderable: true, disablePadding: true, label: 'Moodle id' },
+		{ attribute: 'username', key: 'username', orderable: true, numeric: false, disablePadding: true, label: <VplLang string="STUDENT_TABLE_COL_USERNAME" /> },
+		{ attribute: 'lastname', key: 'lastname', orderable: true, numeric: false, disablePadding: true, label: <VplLang string="STUDENT_TABLE_COL_LASTNAME" /> },
+		{ attribute: 'firstname', key: 'firstname', orderable: true, numeric: false, disablePadding: true, label: <VplLang string="STUDENT_TABLE_COL_FIRST_NAME" /> },
+		{ attribute: 'email', key: 'is_modificable', orderable: true, numeric: false, disablePadding: false, label: <VplLang string="STUDENT_TABLE_COL_EMAIL" /> },
+		{ attribute: 'id', key: 'id', numeric: true, orderable: true, disablePadding: true, label: <VplLang string="STUDENT_TABLE_COL_MOODLE_ID" /> },
 	]
 
 	static mapStateToProps = (state) => {
@@ -90,7 +92,7 @@ class StudentTable extends React.Component {
 		const { pagination } = props
 
 		const studentButtons = [
-			{ key: 'student-selected-show-report', label: 'Show Report', icon: <ReportIcon />, onClick: ()=>this.props.showUserReport(this.selected_student) },
+			{ key: 'student-selected-show-report', label: <VplLang string="STUDENT_TABLE_ACTIONS_SEE_REPORT" />, icon: <ReportIcon />, onClick: () => this.props.showUserReport(this.selected_student) },
 		]
 
 		const getButtons = (student_ids_selected = []) => {
@@ -123,7 +125,7 @@ class StudentTable extends React.Component {
 			getButtons
 		}
 
-		return <MaterialTable {...propsTable} title="Your Students" />
+		return <MaterialTable {...propsTable} title={<VplLang string="STUDENT_TABLE_TITLE" />} />
 
 	}
 }

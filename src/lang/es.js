@@ -1,9 +1,11 @@
-export const YES="Si"
-export const NO="No"
+export const YES = "Si"
+export const NO = "No"
 export const OR = "o"
 export const CANCEL = "Cancelar"
 export const OK = "Ok"
-export const ARE_YOU_SURE="¿Estás seguro?"
+export const CLOSE = "Cerrar"
+export const LOADING = "Cargando"
+export const ARE_YOU_SURE = "¿Estás seguro?"
 
 export const VPLPP_INTRO_1 = "Vpl es una extensión de moodle creado por Juan Carlos Rodríguez-del-Pino. Este software no modifica el plugin"
 export const VPLPP_INTRO_2 = "solo extiende su funcionaidad en un ecosistema de microservicios"
@@ -95,6 +97,17 @@ export const PROJECTS_DELETE_WARNING_1 = "El proyecto será eliminado con toda s
 export const PROJECTS_DELETE_WARNING_2 = "Los estudiantes que hayan participado en este proyecto perderán su progreso"
 export const PROJECTS_DELETE_WARNING_3 = "Esta acción es irreversible"
 export const PROJECTS_DELETE_WARNING_4 = "Afectará los reportes de usuario en un futuro"
+
+
+
+
+export const STUDENT_TABLE_TITLE = "Tus Estudiantes"
+export const STUDENT_TABLE_COL_USERNAME = "Nombre de usuario"
+export const STUDENT_TABLE_COL_LASTNAME = "Apellidos"
+export const STUDENT_TABLE_COL_FIRST_NAME = "Nombres"
+export const STUDENT_TABLE_COL_EMAIL = "Correo electrónico"
+export const STUDENT_TABLE_COL_MOODLE_ID = "Id moodle"
+export const STUDENT_TABLE_ACTIONS_SEE_REPORT = "Ver reporte"
 
 
 

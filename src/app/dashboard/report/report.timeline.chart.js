@@ -200,7 +200,7 @@ class ProjectReportTimelineChart extends React.Component {
         {!!shouldShow.line && <ReportTimelineMeaningTable data={labelDefinitions} />}
         {!!shouldShow.line && <Line {...lineProps} />}
         {!!shouldShow.nodata && <NoDataComponent error={error} />}
-        {!!shouldShow.loading && <p>Loading timeline</p>}
+        {!!shouldShow.loading && <p><VplLang string="LOADING" /></p>}
       </Flex >
     )
 
