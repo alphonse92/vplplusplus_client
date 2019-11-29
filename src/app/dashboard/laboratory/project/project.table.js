@@ -225,7 +225,6 @@ class ProjectTable extends React.Component {
 		]
 
 		const buttonsWhenNotSelected = [
-			{ key: 'no-selected-project-filter', label: <VplLang string="PROJECTS_TABLE_ACTIONS_FILTER" />, icon: <FilterListIcon />, onClick: this.handleChangeFilter },
 			{ key: 'no-selected-project-new-project', label: <VplLang string="PROJECTS_TABLE_ACTIONS_CREATE_NEW_PROJECT" />, icon: <AddIcon />, onClick: this.onCreateNewProject },
 			{ key: 'no-selected-project-import-from-json', label: <VplLang string="PROJECTS_TABLE_ACTIONS_CREATE_FROM_FILE" />, icon: <UploadIcon />, onClick: this.onCreateNewProjectFromFile },
 		]
@@ -241,7 +240,7 @@ class ProjectTable extends React.Component {
 
 		const emptyComponent = (
 			<div style={{ textAlign: 'center', width: '100%' }}>
-				<p>No projects to shown</p>
+				<p>	<VplLang string="PROJECTS_TABLE_EMPTY_START_INFO" /></p>
 				<Button color="primary" onClick={this.onCreateNewProject}><AddIcon /> <VplLang string="PROJECTS_TABLE_EMPTY_START_PROJECT" /> </Button>
 				<VplLang string="OR" />
 				<Button color="primary" onClick={this.onCreateNewProjectFromFile}><UploadIcon /> <VplLang string="PROJECTS_TABLE_EMPTY_START_IMPORT" /> </Button>

@@ -12,6 +12,6 @@ for (let path in PATHS) {
 }
 
 export {
-	LANG as LANG,
+	LANG ,
 	DEFAULTS
 }

@@ -48,11 +48,11 @@ class EnhancedTable extends React.PureComponent {
 					const key = `${colDef.attribute}-${index}`
 					const props = { align, key }
 					const value = typeof rowValue !== "undefined" && rowValue !== null
-						? rowValue.toString()
+						? rowValue
 						: numeric
 							? 0
 							: ''
-					return <TableCell  {...props}>{value}</TableCell>
+					return <TableCell  {...props}>{typeof value === 'boolean' ? value.toString() : value}</TableCell>
 				}
 
 	getRowComponents = columns => keyProp => row => {
