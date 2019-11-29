@@ -9,7 +9,6 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import EyeIcon from '@material-ui/icons/RemoveRedEyeOutlined';
 import Icon from '@material-ui/core/Icon';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import ReportIcon from '@material-ui/icons/AssignmentOutlined';
 
 import { ActionCreators as ActionCreatorsForErrors } from '../../../../redux/modals/actions';
