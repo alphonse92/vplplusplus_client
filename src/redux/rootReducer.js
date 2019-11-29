@@ -9,6 +9,7 @@ import { ReportRedux } from '../app/dashboard/report/redux';
 import { ApplicationRedux } from '../app/dashboard/applications/redux';
 import { TopicRedux } from '../app/dashboard/topic/redux';
 import { ModalRedux } from './modals'
+import { LangRedux } from './lang/redux';
 
 export const getReducer = history => combineReducers({
 	router: connectRouter(history),
@@ -20,4 +21,5 @@ export const getReducer = history => combineReducers({
 	applications: ApplicationRedux.REDUCER.applications,
 	topic: TopicRedux.REDUCER.topic,
 	modals: ModalRedux.REDUCER.modals,
+	lang: LangRedux.REDUCER.lang,
 })

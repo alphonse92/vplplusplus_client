@@ -6,15 +6,16 @@ import DeleteIcon from '@material-ui/icons/DeleteOutline';
 import { MaterialTable } from '../../../lib/components/material/tables/material.table';
 import { ActionCreators } from './redux/actions';
 import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals/actions';
+import { VplLang } from '../../../redux/lang';
 
 
 class TopicTable extends React.Component {
 
 	static columns = [
-		{ attribute: '_id', key: '_id', orderable: true, numeric: false, disablePadding: true, label: 'Id' },
-		{ attribute: 'name', key: 'username', orderable: true, numeric: false, disablePadding: true, label: 'Name' },
-		{ attribute: 'description', key: 'lastname', orderable: true, numeric: false, disablePadding: true, label: 'Description' },
-		{ attribute: 'hasSummaries', key: 'blocked', orderable: false, numeric: false, disablePadding: true, label: 'Has submissions' },
+		{ attribute: '_id', key: '_id', orderable: true, numeric: false, disablePadding: true, label: <VplLang string="TOPICS_ATTRIBUTE_ID" /> },
+		{ attribute: 'name', key: 'username', orderable: true, numeric: false, disablePadding: true, label: <VplLang string="TOPICS_ATTRIBUTE_NAME" /> },
+		{ attribute: 'description', key: 'lastname', orderable: true, numeric: false, disablePadding: true, label: <VplLang string="TOPICS_ATTRIBUTE_DESCRIPTION" /> },
+		{ attribute: 'hasSummaries', key: 'blocked', orderable: false, numeric: false, disablePadding: true, label: <VplLang string="TOPICS_ATTRIBUTE_HAS_SUBMISSIONS" /> },
 	]
 
 	static mapStateToProps = (state) => {
@@ -106,7 +107,7 @@ class TopicTable extends React.Component {
 		const { pagination } = props
 
 		const studentButtons = [
-			{ key: 'delete-topic', label: 'Delete Topic', icon: <DeleteIcon />, onClick: this.onDeleteTopic },
+			{ key: 'delete-topic', label: <VplLang string="TOPICS_ACTION_TABLE_DELETE"/>, icon: <DeleteIcon />, onClick: this.onDeleteTopic },
 		]
 
 		const getButtons = (student_ids_selected = []) => {
@@ -119,7 +120,7 @@ class TopicTable extends React.Component {
 
 		const emptyComponent = (
 			<div style={{ textAlign: 'center', width: '100%' }}>
-				<p>No topics registered</p>
+				<p><VplLang string="TOPICS_NO_TOPICS_LABEL" /></p>
 			</div>
 		)
 
@@ -141,7 +142,7 @@ class TopicTable extends React.Component {
 
 		return (
 			<React.Fragment>
-				<MaterialTable {...propsTable} title="Topics registered" />
+				<MaterialTable {...propsTable} title={<VplLang string="TOPICS_TABLE_TITLE" />} />
 			</React.Fragment>
 		)
 

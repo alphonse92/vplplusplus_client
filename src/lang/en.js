@@ -1,0 +1,1 @@
+export const EN = "Language definition for english"

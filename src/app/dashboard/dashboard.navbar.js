@@ -17,6 +17,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { ListSubheader } from '@material-ui/core';
+import { VplLang } from '../../redux/lang';
 
 const drawerWidth = 240;
 
@@ -99,7 +100,7 @@ class MiniDrawer extends React.Component {
   };
 
   render() {
-    const { classes, theme, menu ,onSelect} = this.props;
+    const { classes, theme, menu, onSelect } = this.props;
     const DrawerClassName = classNames(classes.drawer, {
       [classes.drawerOpen]: this.state.open,
       [classes.drawerClose]: !this.state.open,
@@ -142,7 +143,7 @@ class MiniDrawer extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" noWrap>
-              Mini variant drawer
+              Virtual Programming Lab ++
             </Typography>
           </Toolbar>
         </AppBar>
@@ -154,7 +155,7 @@ class MiniDrawer extends React.Component {
             menu.map((group) => {
               const { name } = group
               const SubHeader = isOpen
-                ? <ListSubheader component="div">{name}</ListSubheader>
+                ? <ListSubheader component="div"><VplLang string={name} /></ListSubheader>
                 : <React.Fragment></React.Fragment>
               return (
                 <List key={name} subheader={SubHeader}>
@@ -162,9 +163,9 @@ class MiniDrawer extends React.Component {
                     group.items.map(item => {
                       const { icon, text } = item
                       return (
-                        <ListItem button key={text} onClick={()=>onSelect(item)}>
+                        <ListItem button key={text} onClick={() => onSelect(item)}>
                           <ListItemIcon>{icon}</ListItemIcon>
-                          {isOpen && <ListItemText primary={text} />}
+                          {isOpen && <ListItemText primary={<VplLang string={text} />} />}
                         </ListItem>)
                     })
                   }

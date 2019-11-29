@@ -10,19 +10,19 @@ export const SCHEMA_DEFAULT = {
 export const GROUPS = {
 	Dashboard: {
 		order: 0,
-		name: 'Dashboard'
+		name: 'MENU_GROUP_DASHBOARD_LABEL'
 	},
 	Projects: {
 		order: 1,
-		name: 'Projects'
+		name: 'MENU_GROUP_PROJECTS_LABEL'
 	},
 	Students: {
 		order: 2,
-		name: 'Students'
+		name: 'MENU_GROUP_STUDENTS_LABEL'
 	},
 	Configuration: {
 		order: 3,
-		name: 'Configuration'
+		name: 'MENU_GROUP_CONFIGURATION_LABEL'
 	}
 
 }
@@ -41,7 +41,7 @@ export const ITEM_MENU_BY_SCOPE = {
 		order: 1,
 		group: GROUPS.Projects,
 		name: 'lab',
-		text: 'Laboratory',
+		text: 'MENU_LABORATORY_BUTTON_LABEL',
 		icon: <Icon className='fas fa-laptop-code' />,
 		className: '',
 		redirect: '/dashboard/laboratory'
@@ -50,7 +50,7 @@ export const ITEM_MENU_BY_SCOPE = {
 		order: 2,
 		group: GROUPS.Students,
 		name: 'students',
-		text: 'Students',
+		text: 'MENU_STUDENTS_BUTTON_LABEL',
 		icon: <Icon className='fas fa-user-graduate' />,
 		className: '',
 		redirect: '/dashboard/students'
@@ -59,7 +59,7 @@ export const ITEM_MENU_BY_SCOPE = {
 		order: 3,
 		group: GROUPS.Configuration,
 		name: 'applications',
-		text: 'Applications',
+		text: 'MENU_APPLICATIONS_BUTTON_LABEL',
 		icon: <Icon className='fas fa-key' />,
 		className: '',
 		redirect: '/dashboard/applications'
@@ -68,7 +68,7 @@ export const ITEM_MENU_BY_SCOPE = {
 		order: 4,
 		group: GROUPS.Configuration,
 		name: 'topics',
-		text: 'Topics',
+		text: 'MENU_TOPICS_BUTTON_LABEL',
 		icon: <Icon className='fas fa-book' />,
 		className: '',
 		redirect: '/dashboard/topics'
@@ -86,7 +86,7 @@ export const ITEM_MENU_BY_SCOPE = {
 		order: 7,
 		group: GROUPS.Configuration,
 		name: 'logout',
-		text: 'Logout',
+		text: 'MENU_LOGOUT_BUTTON_LABEL',
 		icon: <Icon className='fas fa-power-off' />,
 		className: '',
 		action: 'LOGOUT'

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Card, CardContent, CardHeader, TextField, Button, CardActions, FormControl, FormLabel } from '@material-ui/core'
 import { ActionCreators } from './redux/actions';
 import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals/actions';
+import { VplLang } from '../../../redux/lang';
 
 
 
@@ -41,13 +42,13 @@ class CreateTopicCard extends React.Component {
     return (
       <Card style={{ marginBottom: '13px' }}>
         <CardHeader
-          title='Create Topic'
-          subheader='The topic will be related to a test case. It will be used to track the academic topics along the courses'
+          title={<VplLang string="TOPICS_CREATE_TITLE" />}
+          subheader={<VplLang string="TOPICS_CREATE_DESCRIPTION" />}
         />
         <CardContent>
 
           <FormControl component="fieldset" fullWidth >
-            <FormLabel component="legend">name</FormLabel>
+            <FormLabel component="legend"><VplLang string="TOPICS_CREATE_INPUT_NAME_PLACEHOLDER" /></FormLabel>
             <TextField
               fullWidth
               value={name}
@@ -57,7 +58,7 @@ class CreateTopicCard extends React.Component {
           </FormControl>
 
           <FormControl component="fieldset" fullWidth>
-            <FormLabel component="legend">Description</FormLabel>
+            <FormLabel component="legend"><VplLang string="TOPICS_CREATE_INPUT_DESCRIPTION_PLACEHOLDER" /></FormLabel>
             <TextField
               fullWidth
               value={description}
@@ -68,7 +69,7 @@ class CreateTopicCard extends React.Component {
 
         </CardContent>
         <CardActions>
-          <Button onClick={this.createTopic} > Create Topic</Button>
+          <Button onClick={this.createTopic} ><VplLang string="TOPICS_CREATE_BUTTON" /></Button>
         </CardActions>
       </Card>
     )

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Flex } from '../../lib/components/flex';
 import { BusinessNameFooter } from '../common/business-name.footer';
 import './styles.sass'
+import { VplLang } from '../../redux/lang';
 
 export const MainPage = (props) => {
 	return (
@@ -11,18 +12,13 @@ export const MainPage = (props) => {
 			<Flex vertical width='100%' alignItems='center' overflowY={'scroll'}>
 				<div className="w100">
 					<h1 className="center">Virtual Programming Lab ++</h1>
-					<p className='center'>
-						Vpl++ is an extension of VPL moodle plugin created by Juan Carlos Rodríguez-del-Pino. This software does not modify the code of <a href="https://github.com/jcrodriguez-dis/moodle-mod_vpl" target='_blank' rel="noopener noreferrer">VPL</a> just 	extend it functionality.
-							</p>
-					<h2 className='center'>¿How it Works?</h2>
-					<p className='center'>
-						It works because VPL++ provides a Java JUnit Runner on the VPL execution jail. This runner build and test the student activities. After it, sends the activity result to the VPL++ API.
-							</p>
-					<h2 className='center'>¿What can i do with this?</h2>
-					<p className='center'>
-						This client provides a set the features to visualize students ant teachers activities. Ie. the teacher can create the VPL activities on the fly and import it from VPL Moodle plugin
-							</p>
-					<p className='center'><Link className="ui button" to="/login">¡ Go to the App !</Link></p>
+					<p className='center'><VplLang string="VPLPP_INTRO_1" /> <a href="https://github.com/jcrodriguez-dis/moodle-mod_vpl" target='_blank' rel="noopener noreferrer">VPL</a> <VplLang string="VPLPP_INTRO_2" />
+					</p>
+					<h2 className='center'><VplLang string="VPLPP_INTRO_QUESTION_2" /></h2>
+					<p className='center'><VplLang string="VPLPP_INTRO__ANSWER_2" /></p>
+					<h2 className='center'><VplLang string="VPLPP_INTRO_QUESTION_3" /></h2>
+					<p className='center'><VplLang string="VPLPP_INTRO__ANSWER_3" /></p>
+					<p className='center'><Link className="ui button" to="/login"><VplLang string="VPLPP_INTRO_BUTTON_LABEL" /></Link></p>
 					<BusinessNameFooter />
 				</div>
 			</Flex>

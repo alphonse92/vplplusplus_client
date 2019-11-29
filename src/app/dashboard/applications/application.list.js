@@ -8,6 +8,7 @@ import {
 import { ActionCreators } from './redux/actions';
 import { Flex } from '../../../lib/components/flex'
 import { ActionCreators as ActionCreatorsForErrors } from '../../../redux/modals/actions';
+import { VplLang } from '../../../redux/lang';
 
 
 
@@ -71,15 +72,17 @@ class ApplicationList extends React.Component {
       <Flex vertical width="100%">
         <Card style={{ marginBottom: '13px' }}>
           <CardHeader
-            title='Create new Application'
-            subheader='An application allows to another system to connect to the VPL API. I.E. Vpl JLib'
+            title={<VplLang string="APPLICATIONS_CREATE_APP_TITLE" />}
+            subheader={<VplLang string="APPLICATIONS_CREATE_APP_DESCRIPTION" />}
           />
           <CardContent>
 
             {this.state.error && <div>{this.state.error}</div>}
 
             <FormControl component="fieldset" fullWidth >
-              <FormLabel component="legend">name</FormLabel>
+              <FormLabel component="legend">
+                <VplLang string="APPLICATIONS_CREATE_APP_INPUT_NAME_PLACEHOLDER" />
+              </FormLabel>
               <TextField
                 fullWidth
                 value={name}
@@ -89,7 +92,7 @@ class ApplicationList extends React.Component {
             </FormControl>
 
             <FormControl component="fieldset" fullWidth>
-              <FormLabel component="legend">Description</FormLabel>
+              <FormLabel component="legend"><VplLang string="APPLICATIONS_CREATE_APP_INPUT_DESCRIPTION_PLACEHOLDER" /></FormLabel>
               <TextField
                 fullWidth
                 value={description}
@@ -100,10 +103,10 @@ class ApplicationList extends React.Component {
 
           </CardContent>
           <CardActions>
-            <Button onClick={this.createApplication} > Create Application</Button>
+            <Button onClick={this.createApplication} > <VplLang string="APPLICATIONS_CREATE_APP_BUTTON" /></Button>
           </CardActions>
         </Card>
-        
+
         {this.props.applications.map(Application(this.handleDeleteApp))}
       </Flex>
     )
