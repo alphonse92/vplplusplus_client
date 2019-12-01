@@ -20,6 +20,7 @@ export const TEST = "Prueba"
 export const TESTS = "Pruebas"
 export const TEST_CASE = "Caso de prueba"
 export const TEST_CASES = "Casos de prueba"
+export const PROJECT = "Project"
 
 export const PROJECT_TIMELINE = "Progreso de los tópicos"
 export const PROJECT_TIMELINE_DESCRIPTION = "Ver el progreso del proyecto a través del tiempo"
