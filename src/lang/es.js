@@ -14,6 +14,8 @@ export const TEST_CASE = "Caso de prueba"
 export const TEST_CASES = "Casos de prueba"
 
 export const ARE_YOU_SURE = "¿Estás seguro?"
+export const SHOW_PREVIEW = "Previsualizar"
+export const CONTINUE_EDITING = "Continuar editando"
 
 
 

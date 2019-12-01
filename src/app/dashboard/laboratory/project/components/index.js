@@ -10,6 +10,7 @@ import ToggleOnIcon from '@material-ui/icons/ToggleOn';
 import AddIcon from '@material-ui/icons/Add';
 import { Flex, Item } from '../../../../../lib/components/flex'
 import { CodeEditor } from '../../../../../lib/components/code';
+import { VplLang } from '../../../../../redux/lang';
 
 export const NewProjectToolbarComponent = ({ goTo }) => (
 	<Toolbar disableGutters>
@@ -32,7 +33,7 @@ export const CodeEditorWithPreview = ({ title, previewCode, description, editor,
 	}
 
 	const ButtonHandlePreviewVisibility = ({ open, onShow, onClose }) => {
-		const label = !open ? "Show preview" : "Continue editing"
+		const label = !open ? <VplLang string="SHOW_PREVIEW" /> : <VplLang string="CONTINUE_EDITING" />
 		const onClick = !open ? onShow : onClose
 		const button = !open
 			? (<IconButton aria-label="Show preview" style={toggleStyle}> <ToggleOnIcon /> </IconButton>)
@@ -52,7 +53,7 @@ export const CodeEditorWithPreview = ({ title, previewCode, description, editor,
 				key={Date.now().toString()}
 				onChange={onChange}
 				code={code}
-				options={{ readOnly: (!readOnly && !!previewCode) || readOnly }}
+				options={{ readOnly: (!readOnly && !!previewCode) || readOnly }}
 				editorDidMount={editorDidMount}
 				monacoProperties={{ height: '250px' }}
 				language="java"

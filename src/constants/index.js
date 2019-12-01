@@ -26,23 +26,29 @@ export const TEST_CASE = {
   name: 'Test case name',
   code: `
   /**
-   * You can set the body of your JUnit @Test methods.
+   * Puedes colocar el cuerpo del método de tu caso de prueba.
+   * Un caso de prueba es un método que será ejecutado para probar la funcionalidad de una pieza de software.
    * 
-   * Use it to test the student class. For example, 
-   * in this case we are using JUnit assert to verify
-   * the student class returns the expected value.
+   * Por ejemplo, si el estudiante tiene una clase llamada calculadora; un caso de prueba evaluaría el método
+   * 'evaluar' de la clase calculadora. 
+   * 
+   * Para esto puedes usar los decoradores que JUnit provee.
+   * 
+   * El siguiente código por ejemplo, usará el método estático assertEquals. Éste método es provisto por
+   * JUnit. El primer parámetro es el valor esperado y el segundo parámetro el obtenido
    */
 
-   // assertEquals(3,studentClassToBeTested.returnThree());
+   assertEquals(2,studentCalculator.sumar(1,1));
 
    /**
     * 
-    * The good practices says: the max number of lines to a test body 
-    * should be one. If you need to test more functionalities on 
-    * studentClassToBeTested, you need create more test cases in the 
-    * left panel
+    * Si el método sumar, no retorna dos, entonces fallará el test.
+    * sin embargo puedes añadir mas asserts para validar por ejemplo que sume negativos
     * 
     */ 
+
+    assertEquals(-2,studentCalculator.sumar(-1,-1))
+
 `,
   grade: 0,
   objective: 'Description not provided',

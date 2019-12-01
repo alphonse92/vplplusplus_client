@@ -101,9 +101,7 @@ export class EditTestCaseWindow extends React.Component {
     return `
 @Test()
 public void ${capitalize(camelCase(test.name))}() {
-  // Begin of your Code section
   ${codeBase}
-  // End of your  code section
 }
 `}
 
@@ -241,11 +239,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   placeholder="Select topic"
                 />
 
-                <Typography variant="subtitle2" gutterBottom>
-                  <VplLang string="TEST_CASE_TAB_GRADE_AND_TOPICS_GRADE_PLACEHOLDER" />
-                </Typography>
-
-                <TextField
+               <TextField
                   id="standard-name"
                   label={<VplLang string="TEST_CASE_TAB_GRADE_AND_TOPICS_GRADE_PLACEHOLDER" />}
                   style={{ width: '100%' }}
