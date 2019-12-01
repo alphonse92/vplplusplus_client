@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import { SkillsTable } from './report.user.tab.skilltable';
 import ReportIcon from '@material-ui/icons/AssignmentOutlined';
+import { VplLang } from '../../../redux/lang';
 export const UserReportTableCard = (props) => {
   const { report, showUserReport, openProject } = props
   const { skills, projects } = report
@@ -16,9 +17,9 @@ export const UserReportTableCard = (props) => {
   })
   return (
     <Paper elevation={0}>
-      {props.showUserReport && <Button onClick={() => showUserReport(report)}><ReportIcon />Open User Report </Button>}
+      {props.showUserReport && <Button onClick={() => showUserReport(report)}><ReportIcon /><VplLang string="REPORT_OPEN_STUDENT_REPORT_BTN_LABEL" /> </Button>}
       <SkillsTable skills={skillsWithProject} onOpenProject={openProject} />
-      <p style={{ textAlign: 'center' }}><small>* Means there a usefull tooltip in table header</small></p>
+      <p style={{ textAlign: 'center' }}><small><VplLang string="REPORT_STUDENT_TABLE_HELP_INFO" /></small></p>
     </Paper >
   )
 } 

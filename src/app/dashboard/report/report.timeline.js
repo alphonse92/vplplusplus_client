@@ -15,6 +15,7 @@ import {
 
 import { withStyles } from '@material-ui/core/styles';
 import { ProjectReportTimelineChart } from './report.timeline.chart';
+import { VplLang } from '../../../redux/lang'
 
 class ProjectReportTimelineCardNoStyled extends React.Component {
 
@@ -29,7 +30,10 @@ class ProjectReportTimelineCardNoStyled extends React.Component {
   render() {
 
     const { isOpen } = this.state
-    const { title = "Project timeline", subtitle = "You can see the project progress along the time" } = this.props
+    const {
+      title = <VplLang string="PROJECT_TIMELINE" />,
+      subtitle = <VplLang string="PROJECT_TIMELINE_DESCRIPTION" />
+    } = this.props
     return (
       <Paper style={{ marginBottom: '13px', borderTop: '7px solid', width: '100%' }} >
         <ListItem button onClick={this.toggle}>

@@ -19,6 +19,9 @@ export const TESTS = "Pruebas"
 export const TEST_CASE = "Caso de prueba"
 export const TEST_CASES = "Casos de prueba"
 
+export const PROJECT_TIMELINE = "Progreso de los tópicos"
+export const PROJECT_TIMELINE_DESCRIPTION = "Ver el progreso del proyecto a través del tiempo"
+
 export const ARE_YOU_SURE = "¿Estás seguro?"
 export const SHOW_PREVIEW = "Previsualizar"
 export const CONTINUE_EDITING = "Continuar editando"
@@ -36,8 +39,6 @@ export const VPLPP_INTRO__ANSWER_3 = "Este cliente provee funcionalidades para v
 
 export const VPLPP_INTRO_BUTTON_LABEL = "¡ Llévame a la APP !"
 
-
-
 export const MENU_APPLICATIONS_BUTTON_LABEL = "Applicaciones"
 export const MENU_TOPICS_BUTTON_LABEL = "Tópicos"
 export const MENU_LABORATORY_BUTTON_LABEL = "Laboratorio"
@@ -48,7 +49,6 @@ export const MENU_GROUP_DASHBOARD_LABEL = "Panel de control"
 export const MENU_GROUP_PROJECTS_LABEL = "Proyectos"
 export const MENU_GROUP_STUDENTS_LABEL = "Estudiantes"
 export const MENU_GROUP_CONFIGURATION_LABEL = "Configuración"
-
 
 export const APPLICATIONS_CREATE_APP_TITLE = "Crear applicación"
 export const APPLICATIONS_CREATE_APP_DESCRIPTION = "Una aplicacion permite a otro sistema conectarse a él. Por ejemplo, el runner de JUnit podrá enviar los resultados al API."
@@ -69,7 +69,7 @@ export const TOPICS_ATTRIBUTE_DESCRIPTION = "Descripción"
 export const TOPICS_ATTRIBUTE_HAS_SUBMISSIONS = "Tiene entregas"
 export const TOPICS_ACTION_TABLE_DELETE = "Eliminar tópico"
 
-export const LABORATORY_TOPIC_TIMELINE_CARD_TITLE = "Progreso de los tópicos"
+export const LABORATORY_TOPIC_TIMELINE_CARD_TITLE = PROJECT_TIMELINE
 export const LABORATORY_TOPIC_TIMELINE_CARD_DESCRIPTION = "Ver el progreso de los tópicos a través del tiempo"
 export const REPORT_TIMELINE_GENERATOR_OPTIONS_TITLE = "Opciones de generación de la linea de tiempo"
 export const REPORT_TIMELINE_GENERATOR_OPTIONS_START_AT = "Desde"
@@ -115,8 +115,6 @@ export const PROJECTS_DELETE_WARNING_1 = "El proyecto será eliminado con toda s
 export const PROJECTS_DELETE_WARNING_2 = "Los estudiantes que hayan participado en este proyecto perderán su progreso"
 export const PROJECTS_DELETE_WARNING_3 = "Esta acción es irreversible"
 export const PROJECTS_DELETE_WARNING_4 = "Afectará los reportes de usuario en un futuro"
-
-
 
 export const PROJECT_CREATE_NAME = "Nuevo Proyecto"
 export const PROJECT_CREATE_DESCRIPTION = "Descripción del nuevo proyecto"
@@ -183,6 +181,25 @@ export const REPORT_TEST_CASE_DIFFICULT_DESCRIPTION = "Casos de prueba que neces
 export const REPORT_TEST_CASE_DIFFICULT_TABLE_TEST = TEST_CASE
 export const REPORT_TEST_CASE_DIFFICULT_TABLE_OBJECTIVE = OBJECTIVE
 export const REPORT_TEST_CASE_DIFFICULT_TABLE_ATTEMPS = 'Intentos fallidos'
+export const REPORT_NO_PROJECTS_TO_SHOWN = "El proyecto no tiene reportes. Es posible que ningún estudiante haya enviado entregas a éste aún para ese periodo de tiempo. Si los estudiantes ya han enviado entregas, entonces ajusta el periodo de consulta para el proyecto"
+export const REPORT_STUDENT_REPORTS_TITLE = "Reportes de estudiantes"
+export const REPORT_OPEN_STUDENT_REPORT_BTN_LABEL = "Ver reporte de estudiante"
+export const REPORT_STUDENT_TABLE_HELP_INFO = "El asterisco quiere decir que si pones encima el mouse, podrás ver una ayuda útil"
+
+export const REPORT_STUDENT_TABLE_COL_TOPIC = TOPIC
+export const REPORT_STUDENT_TABLE_COL_STUDENT_KNOWS = "El estudiante conoce"
+export const REPORT_STUDENT_TABLE_COL_SKILL = "(%) Habilidad"
+export const REPORT_STUDENT_TABLE_COL_SKILL_TOOLTIP = "(%) el nivel de habilidad muestra cuanto conoce el estudiante un tema."
+export const REPORT_STUDENT_TABLE_COL_EFFORT = "Esfuerzo"
+export const REPORT_STUDENT_TABLE_COL_EFFORT_TOOLTIP = "El esfuerzo es el número de intentos que el estudiante necesitó para resolver un caso de prueba"
+export const REPORT_STUDENT_TABLE_COL_APPROVED = "Casos approbados"
+export const REPORT_STUDENT_TABLE_COL_APPROVED_TOOLTIP = "Cantidad de casos aprobados asignados a ese tópico"
+export const REPORT_STUDENT_TABLE_COL_NOT_APPROVED = "Casos No aprovados"
+export const REPORT_STUDENT_TABLE_COL_NOT_APPROVED_TOOLTIP = "Cantidad de casos no aprobados asignados a ese tópico"
+export const REPORT_STUDENT_TABLE_COL_TOTAL_CASES = "Total"
+export const REPORT_STUDENT_TABLE_COL_PENALIZATION = "Penalización"
+export const REPORT_STUDENT_TABLE_COL_PENALIZATION_TOOLTIP = "La penalización es un coeficiente que se multiplica al nivel de habilidad. Este coeficiente 'castiga' al nivel del estudiante que dejó sin resolver algún caso de prueba en relación con el tópico"
+
 
 
 export const DELETE_TEST_CASE = "Eliminar caso de prueba"

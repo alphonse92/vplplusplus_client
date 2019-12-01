@@ -149,7 +149,6 @@ class ProjectReportTimelineChart extends React.Component {
       },
       title: {
         display: true,
-        text: 'Project Timeline'
       }
     }
 

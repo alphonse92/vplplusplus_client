@@ -28,6 +28,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { orderBy } from 'lodash'
 import { SkillMapColors } from '../../../constants';
 import { Flex } from '../../../lib/components/flex';
+import { VplLang } from '../../../redux/lang';
 
 
 export const ActionButtonsComponent = ({ onOpenProjectReport, onOpenProject }) => {
@@ -154,32 +155,34 @@ class SkillsTableNoStyled extends React.Component {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Topic</TableCell>
-              <TableCell >The student knows</TableCell>
+              <TableCell><VplLang string="REPORT_STUDENT_TABLE_COL_TOPIC" /></TableCell>
+              <TableCell ><VplLang string="REPORT_STUDENT_TABLE_COL_STUDENT_KNOWS" /></TableCell>
               <TableCell>
-                <Tooltip title=" (%) The level shows the student hability of a topic." placement='bottom'>
-                  <div>Level*</div>
+                <Tooltip title={<VplLang string="REPORT_STUDENT_TABLE_COL_SKILL_TOOLTIP" />} placement='bottom'>
+                  <VplLang string="REPORT_STUDENT_TABLE_COL_SKILL" />
                 </Tooltip>
               </TableCell>
               <TableCell >
-                <Tooltip title="Shows the number of attempts to resolve a test case (unit test)" placement='bottom'>
-                  <div>Effort*</div>
+                <Tooltip title={<VplLang string="REPORT_STUDENT_TABLE_COL_EFFORT_TOOLTIP" />} placement='bottom'>
+                  <VplLang string="REPORT_STUDENT_TABLE_COL_EFFORT" />
                 </Tooltip>
               </TableCell>
               <TableCell >
-                <Tooltip title="Test cases approved" placement='bottom'>
-                  <div>Approved*</div>
+                <Tooltip title={<VplLang string="REPORT_STUDENT_TABLE_COL_APPROVED_TOOLTIP" />} placement='bottom'>
+                  <VplLang string="REPORT_STUDENT_TABLE_COL_APPROVED" />
                 </Tooltip>
               </TableCell>
               <TableCell >
-                <Tooltip title="Test cases not approved" placement='bottom'>
-                  <div>Not Approved*</div>
+                <Tooltip title={<VplLang string="REPORT_STUDENT_TABLE_COL_NOT_APPROVED_TOOLTIP" />} placement='bottom'>
+                  <VplLang string="REPORT_STUDENT_TABLE_COL_NOT_APPROVED" />
                 </Tooltip>
               </TableCell>
-              <TableCell ><div>Cases</div></TableCell>
               <TableCell >
-                <Tooltip title="This coefficient has been multiplied to the level to punish a student that never resolved a test case" placement='bottom'>
-                  <div>Penalization*</div>
+                <VplLang string="REPORT_STUDENT_TABLE_COL_TOTAL_CASES" />
+              </TableCell>
+              <TableCell >
+                <Tooltip title={<VplLang string="REPORT_STUDENT_TABLE_COL_PENALIZATION_TOOLTIP" />} placement='bottom'>
+                  <VplLang string="REPORT_STUDENT_TABLE_COL_PENALIZATION" />
                 </Tooltip>
               </TableCell>
             </TableRow>
