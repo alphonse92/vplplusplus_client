@@ -2,11 +2,12 @@ class LanguageServiceClass {
 
   static localStorageLangKey = "vpl.lang"
 
-  static getCurrentLanguage() {
-    localStorage.getItem(LanguageServiceClass.localStorageLangKey)
+  getCurrentLanguage() {
+    const lang = localStorage.getItem(LanguageServiceClass.localStorageLangKey)
+    return lang || 'ES'
   }
 
-  static setCurrentLanguage(lang) {
+  setCurrentLanguage(lang) {
     localStorage.setItem(LanguageServiceClass.localStorageLangKey, lang)
     return lang
   }
