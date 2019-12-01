@@ -5,6 +5,7 @@ import ReduxThunk from 'redux-thunk'
 
 import { getReducer } from './rootReducer'
 import { UserService } from '../services/user';
+import { LanguageService } from '../services/language.js';
 
 const history = createBrowserHistory({
 	basename: window.__env__.PUBLIC_URL,
@@ -12,7 +13,8 @@ const history = createBrowserHistory({
 
 const rootReducer = getReducer(history)
 const initialState = {
-	user: UserService.getUserLogged()
+	user: UserService.getUserLogged(),
+	lang: { lang: LanguageService.getCurrentLanguage() }
 }
 const enhancers = []
 const middleware = [
