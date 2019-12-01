@@ -35,14 +35,14 @@ import Typography from '@material-ui/core/Typography';
 import { Flex } from '../../../../../../lib/components/flex';
 import { CodeEditor } from '../../../../../../lib/components/code';
 import { EditIcon as EditIconMaterial } from '../../../../../../lib/components/material/EditIcon';
-
+import { VplLang } from '../../../../../../redux/lang'
 import './styles.sass'
 import { cutStringAndAddDots } from '../../../../../../lib';
 
 const SubHeader = ({ text }) => <ListSubheader component="div">{text}</ListSubheader>
 const PreviewWrapper = props => <div className="previewProjects">{props.children}</div>
 const ProjectsWrapper = props => <div className="projects">{props.children}</div>
-const TestsWrapper = props => <List component="nav" className="tests" subheader={<SubHeader text="Test cases" />}>{props.children}</List>
+const TestsWrapper = props => <List component="nav" className="tests" subheader={<SubHeader text={<VplLang string="TEST_CASES" />} />}>{props.children}</List>
 
 
 const wrapInItalic = (shouldWrap, txt) => !!shouldWrap ? <i>{txt}</i> : <>{txt}</>
@@ -65,7 +65,7 @@ const ProjectPreviewTestItem = ({ editable, onSelectTestCase, onDeleteTestCase, 
 				}
 			/>
 			<ListItemSecondaryAction onClick={() => onDeleteTestCase(project_index, index, test)}>
-				{editable && <IconButton aria-label="Remove Case"> <DeleteIcon /> </IconButton>}
+				{editable && <IconButton aria-label={<VplLang string="DELETE_TEST_CASE" />}> <DeleteIcon /> </IconButton>}
 			</ListItemSecondaryAction>
 		</ListItem >
 	)
@@ -230,7 +230,7 @@ const PreviewContent = props => {
 export const PreviewButtons = ({ onCreateProject }) => (
 	<Flex horizontal reverse width='100%' >
 		<IconButton onClick={onCreateProject} >
-			<CreateNewFolderIcon aria-label="Create Project" />
+			<CreateNewFolderIcon aria-label="Preview Code" />
 		</IconButton>
 	</Flex>
 )

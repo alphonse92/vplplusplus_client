@@ -25,6 +25,7 @@ import {
 } from '@material-ui/icons';
 import { TEST_CASE as TEST_CASE_DEFAULT_VALUES } from '../../../../../constants';
 import { Typeahead } from '../../../../../lib/components/material/form/typeahead';
+import { VplLang } from '../../../../../redux/lang';
 
 export class EditTestCaseWindow extends React.Component {
 
@@ -160,7 +161,7 @@ public void ${capitalize(camelCase(test.name))}() {
             <ListItemIcon>
               <EditIcon />
             </ListItemIcon>
-            <ListItemText inset primary='Test Case Editor' secondary="Set up your test case information. It will be used to track and analize the students submissions." />
+            <ListItemText inset primary={<VplLang string="TEST_CASE_TAB_EDIT_BASIC_INFO_TITLE" />} secondary={<VplLang string="TEST_CASE_TAB_EDIT_BASIC_INFO_DESCRIPTION" />} />
             {windowOpen === 'editorIsOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
           <Collapse in={windowOpen === 'editorIsOpen'} timeout="auto" unmountOnExit>
@@ -170,14 +171,14 @@ public void ${capitalize(camelCase(test.name))}() {
                 <TextField
                   id="standard-name"
                   style={{ width: '100%' }}
-                  label="Name"
+                  label={<VplLang string="TEST_CASE_TAB_EDIT_BASIC_INFO_NAME_PLACEHOLDER" />}
                   value={TestData.name}
                   onChange={this.handleChange('name')}
                   margin="normal"
                 />
                 <TextField
                   id="standard-name"
-                  label="Objective"
+                  label={<VplLang string="TEST_CASE_TAB_EDIT_BASIC_INFO_DESCRIPTION_PLACEHOLDER" />}
                   style={{ width: '100%' }}
                   value={TestData.objective}
                   onChange={this.handleChange('objective')}
@@ -195,7 +196,7 @@ public void ${capitalize(camelCase(test.name))}() {
             <ListItemIcon>
               <CodeIcon />
             </ListItemIcon>
-            <ListItemText inset primary='Code Editor' secondary="Please set the Junit test method body. That code will be wraped into the JUnit test method." />
+            <ListItemText inset primary={<VplLang string="TEST_CASE_TAB_CODE_TITLE" />} secondary={<VplLang string="TEST_CASE_TAB_CODE_DESCRIPTION" />} />
             {windowOpen === 'codeIsOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
           <Collapse style={{ root: { padding: '0px' } }} in={windowOpen === 'codeIsOpen'} timeout="auto" unmountOnExit>
@@ -218,7 +219,7 @@ public void ${capitalize(camelCase(test.name))}() {
             <ListItemIcon>
               <GradeIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Grades And Topics" secondary="Topics allow to track the student progress along the time. The grade allow to quantify the final test result value" />
+            <ListItemText inset primary={<VplLang string="TEST_CASE_TAB_GRADE_AND_TOPICS_TITLE" />} secondary={<VplLang string="TEST_CASE_TAB_GRADE_AND_TOPICS_DESCRIPTION" />} />
             {windowOpen === 'topicTabOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
           <Collapse in={windowOpen === 'topicTabOpen'} timeout="auto" unmountOnExit>
@@ -226,7 +227,7 @@ public void ${capitalize(camelCase(test.name))}() {
 
               <CardContent>
                 <Typography variant="subtitle2" gutterBottom>
-                  Add at least a topic, maximum three
+                  <VplLang string="TEST_CASE_TAB_GRADE_AND_TOPICS_TOPIC_PLACEHOLDER" />
                 </Typography>
 
 
@@ -240,9 +241,13 @@ public void ${capitalize(camelCase(test.name))}() {
                   placeholder="Select topic"
                 />
 
+                <Typography variant="subtitle2" gutterBottom>
+                  <VplLang string="TEST_CASE_TAB_GRADE_AND_TOPICS_GRADE_PLACEHOLDER" />
+                </Typography>
+
                 <TextField
                   id="standard-name"
-                  label="Grade"
+                  label={<VplLang string="TEST_CASE_TAB_GRADE_AND_TOPICS_GRADE_PLACEHOLDER" />}
                   style={{ width: '100%' }}
                   value={TestData.grade}
                   onChange={this.handleChange('grade')}
@@ -259,7 +264,7 @@ public void ${capitalize(camelCase(test.name))}() {
             <ListItemIcon>
               <PositiveIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Positive retrospective" secondary="Setup the dialogs when a student resolve the test." />
+            <ListItemText inset primary={<VplLang string="TEST_CASE_TAB_POSITIVE_TITLE" />} secondary={<VplLang string="TEST_CASE_TAB_POSITIVE_DESCRIPTION" />} />
             {windowOpen === 'positiveTabIsOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
           <Collapse in={windowOpen === 'positiveTabIsOpen'} timeout="auto" unmountOnExit>
@@ -268,14 +273,14 @@ public void ${capitalize(camelCase(test.name))}() {
                 <TextField
                   id="standard-name"
                   style={{ width: '100%' }}
-                  label="Success Message"
+                  label={<VplLang string="TEST_CASE_TAB_POSITIVE_MESSAGE" />}
                   value={TestData.successMessage}
                   onChange={this.handleChange('successMessage')}
                   margin="normal"
                 />
                 <TextField
                   id="standard-name"
-                  label="Success reference link"
+                  label={<VplLang string="TEST_CASE_TAB_POSITIVE_LINK" />}
                   style={{ width: '100%' }}
                   value={TestData.successMessageLink}
                   onChange={this.handleChange('successMessageLink')}
@@ -294,7 +299,7 @@ public void ${capitalize(camelCase(test.name))}() {
             <ListItemIcon>
               <NegativeIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Negative retrospective" secondary="Setup the dialogs when a student fail the test." />
+            <ListItemText inset primary={<VplLang string="TEST_CASE_TAB_NEGATIVE_TITLE" />} secondary={<VplLang string="TEST_CASE_TAB_NEGATIVE_DESCRIPTION" />} />
             {windowOpen === 'negativeTabIsOpen' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
           <Collapse in={windowOpen === 'negativeTabIsOpen'} timeout="auto" unmountOnExit>
@@ -303,14 +308,14 @@ public void ${capitalize(camelCase(test.name))}() {
                 <TextField
                   id="standard-name"
                   style={{ width: '100%' }}
-                  label="Failure message"
+                  label={<VplLang string="TEST_CASE_TAB_NEGATIVE_MESSAGE" />}
                   value={TestData.failureMessage}
                   onChange={this.handleChange('failureMessage')}
                   margin="normal"
                 />
                 <TextField
                   id="standard-name"
-                  label="Failure reference link"
+                  label={<VplLang string="TEST_CASE_TAB_NEGATIVE_LINK" />}
                   style={{ width: '100%' }}
                   value={TestData.failureMessageLink}
                   onChange={this.handleChange('failureMessageLink')}
@@ -322,7 +327,7 @@ public void ${capitalize(camelCase(test.name))}() {
         </Paper>
 
 
-        {!readOnly && <Button onClick={this.onSave} aria-label="Save" variant="contained" color="primary">Save</Button>}
+        {!readOnly && <Button onClick={this.onSave} aria-label="Save" variant="contained" color="primary">{<VplLang string="SAVE" />}</Button>}
       </React.Fragment >
     )
   }

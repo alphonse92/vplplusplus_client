@@ -17,7 +17,7 @@ import { TEST_CASE } from '../../../../constants';
 import { Save } from '@material-ui/icons';
 import { ProjectService } from '../../../../services/project';
 import { WarningCard } from '../../../../lib/components/material/warningCard';
-
+import { VplLang } from '../../../../redux/lang';
 
 class ProjectCreateComponent extends React.Component {
 
@@ -25,57 +25,57 @@ class ProjectCreateComponent extends React.Component {
 
 	static DEFAULTS = {
 		project: {
-			name: "New Project",
-			description: "Description of the new project",
-			activity: 'No Vpl activity selected'
+			name: <VplLang string="PROJECT_CREATE_NAME" />,
+			description: <VplLang string="PROJECT_CREATE_DESCRIPTION" />,
+			activity: <VplLang string="PROJECT_CREATE_NO_ACTIVITY_SELECTED" />,
 		},
 		modals: {
 			unsavedChanges: {
 				name: "modal-unsave-change",
-				title: "Unsaved changes detected",
-				text: "You are closing the edition panel without save changes. Do you wanna save the changes before?",
+				title: <VplLang string="PROJECT_NO_SAVED_CHANGES_TITLE" />,
+				text: <VplLang string="PROJECT_NO_SAVED_CHANGES_DESCRIPTION" />,
 				component: ConfirmationDialog
 			},
 			project: {
 				name: {
 					name: "project.name",
 					path: 'project.name',
-					title: "Project Title",
-					text: "Please set the project title. A project contains a set of tests to be executed",
+					title: <VplLang string="PROJECT_NAME_MODAL_TITLE" />,
+					text: <VplLang string="PROJECT_NAME_MODAL_DESCRIPTION" />,
 					component: InputDialog
 				},
 				description: {
 					name: "project.description",
 					path: 'project.description',
-					title: "Project Description",
-					text: "The project description define the goal of this set of Tests.",
+					title: <VplLang string="PROJECT_DESCRIPTION_MODAL_TITLE" />,
+					text: <VplLang string="PROJECT_DESCRIPTION_MODAL_DESCRIPTION" />,
 					component: InputDialog
 				},
 				activity: {
 					name: "project.activity",
 					path: 'project.activity',
-					title: "Select Vpl Activity",
-					text: "Select Vpl Activity",
+					title: <VplLang string="PROJECT_ACTIVITY_MODAL_TITLE" />,
+					text: <VplLang string="PROJECT_ACTIVITY_MODAL_DESCRIPTION" />,
 					component: InputDialog
 				}
 			},
 			test: {
 				name: {
 					name: "test.name",
-					title: 'Set the Test Name',
-					text: 'Please set the test name. A test will be converted to a JUnit Vpl ++ Class that will be executed be JUnit Runner VPL ++',
+					title: <VplLang string="PROJECT_TEST_NAME_MODAL_TITLE" />,
+					text: <VplLang string="PROJECT_TEST_NAME_MODAL_DESCRIPTION" />,
 					component: InputDialog
 				},
 				description: {
 					name: "test.description",
-					title: 'Set the Test Description',
-					text: 'The test description describe a general goal of a set of test cases.',
+					title: <VplLang string="PROJECT_TEST_DESCRIPTION_MODAL_TITLE" />,
+					text: <VplLang string="PROJECT_TEST_DESCRIPTION_MODAL_DESCRIPTION" />,
 					component: InputDialog
 				},
 				objective: {
 					name: "test.objective",
-					title: 'Set the Test Description',
-					text: 'The test objective define the general goal of a set of test cases.',
+					title: <VplLang string="PROJECT_TEST_OBJECTIVE_MODAL_TITLE" />,
+					text: <VplLang string="PROJECT_TEST_OBJECTIVE_MODAL_DESCRIPTION" />,
 					component: InputDialog
 				},
 			}
@@ -150,8 +150,8 @@ class ProjectCreateComponent extends React.Component {
 		if (!Number(test_case.grade)) {
 			this.props.DISPATCHERS.SET_MODAL({
 				type: 'info',
-				title: 'Test case grade is zero',
-				text: "The text case grade is zero. This test will be graded using averaged. To grade by your self, please set grade."
+				title: <VplLang string="PROJECT_INFO_MODAL_TEST_CASE_GRADE_IS_ZERO_TITLE" />,
+				text: <VplLang string="PROJECT_INFO_MODAL_TEST_CASE_GRADE_IS_ZERO_DESCRIPTION" />,
 			})
 		}
 
@@ -168,34 +168,29 @@ class ProjectCreateComponent extends React.Component {
 		const mock = () => ({
 			name: 'My test ' + (this.props.tests.length + 1),
 			tags: ['java', 'types'],
-			description: 'Describe your test',
-			objective: 'Set the Objective of this test',
+			description: 'Describe tu test',
+			objective: 'Coloca el objetivo de tu test',
 			maxGrade: 5,
-			code: `
-	/**
-	 * 
-	 * This is the body of a JUnit test class.
-	 * You can do:
-	 * 
-	 *  1. Declare variables
-	 *  2. Set the Before, BeforeAll, After and after all methods
-	 *  3. Set custom methods to be used in @Test methods
-	 *  4. Create custom instances
-	 * 
-	 * For example, below im declaring a variable of StudentClass type.
-	 * After, im instantiate the studentClassToBeTested with the StudentClass constructor.
-	 * 
-	 * Please go to the FAQ section to know how improve your VPL++ Tests!
-	 * 
-	 *
-	 * private StudentClass studentClassToBeTested;
-   * @Before
-	 * public void doSomeTestOnAMethod() {
-	 *	 studentClassToBeTested = new StudentClass();
-	 * } 
-	 *
-	 */
-	`,
+			code: `/**
+ * 
+ * Este es el cuerpo de una prueba unitaria de JUnit
+ * Tu podrías acá:
+ *  1. Declarar variables
+ *  2. Declarar metodos del ciclo de vida de JUnit como BeforeAll
+ *  3. Crear métodos privados
+ *  4. Declarar instancias privadas, por ejemplo las clases que los estudiantes crearon
+ * 
+ * Por ejemplo, abajo estoy declarando la clase StudentClass y la llamé studentClassToBeTested
+ */
+private StudentClass studentClassToBeTested;	
+/* 
+ * Finalmente acá la estoy declarando
+ */
+
+ @Before
+ public void doSomeTestOnAMethod() {
+	 studentClassToBeTested = new StudentClass();
+}`,
 			test_cases: []
 		})
 		const { project, tests } = this.props
@@ -421,7 +416,7 @@ class ProjectCreateComponent extends React.Component {
 			<Card>
 				<CardHeader
 					action={
-						<small>{this.isProjectBlocked() ? "No editable project" : "Editing On"}: {this.props.project._id || "new project"} </small>
+						<small>{this.isProjectBlocked() ? <VplLang string="PROJECT_NOT_EDITABLE" /> : <VplLang string="PROJECT_CREATE_EDITING_ON" />}: {this.props.project._id || <VplLang string="PROJECT_CREATE_NAME" />} </small>
 					}
 					title={
 						<React.Fragment>
@@ -438,7 +433,7 @@ class ProjectCreateComponent extends React.Component {
 				/>
 				<CardActions>
 					{
-						!this.props.project._id && <Button onClick={this.handleCreateProject} color="primary">{this.props.project._id ? "Save" : "Create"} Project <Save /></Button>
+						!this.props.project._id && <Button onClick={this.handleCreateProject} color="primary">{this.props.project._id ? <VplLang string="SAVE" /> : <VplLang string="CREATE" />} Project <Save /></Button>
 					}
 				</CardActions>
 			</Card>
@@ -447,7 +442,7 @@ class ProjectCreateComponent extends React.Component {
 		const ProjectActivity = () => <Flex vertical width="100%" margin="7px">
 			<Card>
 				<CardHeader
-					title="Moodle Activity"
+					title={<VplLang string="PROJECT_ACTIVITY_MODAL_TITLE" />}
 					subheader={
 						<React.Fragment>
 							{moodle_activity_label}
@@ -488,7 +483,7 @@ class ProjectCreateComponent extends React.Component {
 				}
 
 				<ProjectInfoHeader />
-				<WarningCard show={showZeroGradeMessage} title='Warning' message="There are test cases with zero grade. Those tests that belongs these test cases will be grade by average" />
+				<WarningCard show={showZeroGradeMessage} title={<VplLang string="PROJECT_INFO_MODAL_TEST_CASE_GRADE_IS_ZERO_TITLE" />} message={<VplLang string="PROJECT_INFO_MODAL_TEST_CASE_GRADE_IS_ZERO_DESCRIPTION" />} />
 				<Flex horizontal width="100%">
 					<Flex vertical width="25%" margin="7px" >
 						{project._id && <ProjectPreview

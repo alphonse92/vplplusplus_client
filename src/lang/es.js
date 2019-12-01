@@ -5,7 +5,17 @@ export const CANCEL = "Cancelar"
 export const OK = "Ok"
 export const CLOSE = "Cerrar"
 export const LOADING = "Cargando"
+export const SAVE = "Guardar"
+export const CREATE = "Crear"
+
+export const TEST = "Prueba"
+export const TESTS = "Pruebas"
+export const TEST_CASE = "Caso de prueba"
+export const TEST_CASES = "Casos de prueba"
+
 export const ARE_YOU_SURE = "¿Estás seguro?"
+
+
 
 export const VPLPP_INTRO_1 = "Vpl es una extensión de moodle creado por Juan Carlos Rodríguez-del-Pino. Este software no modifica el plugin"
 export const VPLPP_INTRO_2 = "solo extiende su funcionaidad en un ecosistema de microservicios"
@@ -100,6 +110,67 @@ export const PROJECTS_DELETE_WARNING_4 = "Afectará los reportes de usuario en u
 
 
 
+export const PROJECT_CREATE_NAME = "Nuevo Proyecto"
+export const PROJECT_CREATE_DESCRIPTION = "Descripción del nuevo proyecto"
+export const PROJECT_CREATE_NO_ACTIVITY_SELECTED = "Actividad no seleccionada"
+export const PROJECT_CREATE_BUTTON_LABEL = "Crear proyecto"
+export const PROJECT_NO_SAVED_CHANGES_TITLE = "Cambios no guardados detectados"
+export const PROJECT_NO_SAVED_CHANGES_DESCRIPTION = "Estas cerrando la ventana de edición sin guardar cambios. Deseas guardar los cambios antes de salir?"
+export const PROJECT_NAME_MODAL_TITLE = "Nombre del proyecto"
+export const PROJECT_NAME_MODAL_DESCRIPTION = "Escriba el nombre del proyecto"
+export const PROJECT_DESCRIPTION_MODAL_TITLE = "Descripción del proyecto"
+export const PROJECT_DESCRIPTION_MODAL_DESCRIPTION = "Escriba la descripción del proyecto"
+export const PROJECT_ACTIVITY_MODAL_TITLE = "Actividad del proyecto"
+export const PROJECT_ACTIVITY_MODAL_DESCRIPTION = "Seleccione la actividad de moodle relacionada a este proyecto"
+
+export const PROJECT_TEST_NAME_MODAL_TITLE = "Nombre de la prueba"
+export const PROJECT_TEST_NAME_MODAL_DESCRIPTION = "Escriba el nombre  de la prueba. Cada prueba será convertida a una clase JUnit de Vpl++ y será ejecutada por el Runner de Vpl++"
+export const PROJECT_TEST_DESCRIPTION_MODAL_TITLE = "Descripción de la prueba"
+export const PROJECT_TEST_DESCRIPTION_MODAL_DESCRIPTION = "Describa lo que el estudiante deberá hacer con la prueba"
+export const PROJECT_TEST_OBJECTIVE_MODAL_TITLE = "Objetivo de la prueba"
+export const PROJECT_TEST_OBJECTIVE_MODAL_DESCRIPTION = "Escriba un objetivo general de la prueba"
+
+export const PROJECT_CREATE_EDITING_ON = "Editando en "
+export const PROJECT_NOT_EDITABLE = "Proyecto no editable"
+
+export const PROJECT_INFO_MODAL_TEST_CASE_GRADE_IS_ZERO_TITLE = "Calificación del caso de prueba es zero"
+export const PROJECT_INFO_MODAL_TEST_CASE_GRADE_IS_ZERO_DESCRIPTION = "Esta prueba se calificará usando el promedio. Si quieres ponderar por ti mismo, por favor elija una calificación para el caso de prueba."
+
+export const PROJECT_CODE_PREVIEW_LABEL = "Previsualizar"
+
+export const TEST_TAB_CODE_TITLE = "Escribe el código de la prueba"
+export const TEST_TAB_CODE_DESCRIPTION = "Escribe el cuerpo de la clase."
+
+export const TEST_CASE_TAB_EDIT_BASIC_INFO_TITLE = "Editar información básica"
+export const TEST_CASE_TAB_EDIT_BASIC_INFO_DESCRIPTION = "Configura tu caso de prueba, por favor se descriptivo"
+export const TEST_CASE_TAB_EDIT_BASIC_INFO_NAME_PLACEHOLDER = "Nombre"
+export const TEST_CASE_TAB_EDIT_BASIC_INFO_DESCRIPTION_PLACEHOLDER = "Objetivo"
+
+export const TEST_CASE_TAB_CODE_TITLE = "Escribe el código del caso de prueba"
+export const TEST_CASE_TAB_CODE_DESCRIPTION = "Escribe el cuerpo del método de la prueba unitaria."
+
+export const TEST_CASE_TAB_GRADE_AND_TOPICS_TITLE = "Configurar la calificación y tópicos"
+export const TEST_CASE_TAB_GRADE_AND_TOPICS_DESCRIPTION = "Los tópicos permiten hacer un seguimiento a un estudiante a lo largo del tiempo. La calificación será usada para calificar en moodle."
+export const TEST_CASE_TAB_GRADE_AND_TOPICS_TOPIC_PLACEHOLDER = "Elija por favor al menos un tópico, máximo tres"
+export const TEST_CASE_TAB_GRADE_AND_TOPICS_GRADE_PLACEHOLDER = "Pondere el grado con el cual se evaluará este caso de prueba, si elije cero, la prueba usará un promedio para calificar."
+
+export const TEST_CASE_TAB_POSITIVE_TITLE = "Establecer la retroalimentación positiva"
+export const TEST_CASE_TAB_POSITIVE_DESCRIPTION = "Escriba un mensaje para el estudiante en caso de éxito"
+export const TEST_CASE_TAB_POSITIVE_MESSAGE = "Mensaje de éxito"
+export const TEST_CASE_TAB_POSITIVE_LINK = "Link de referencia"
+
+export const TEST_CASE_TAB_NEGATIVE_TITLE = "Establecer la retroalimentación negativa"
+export const TEST_CASE_TAB_NEGATIVE_DESCRIPTION = "Escriba un mensaje para el estudiante en caso de falla"
+export const TEST_CASE_TAB_NEGATIVE_MESSAGE = "Mensaje en caso de falla"
+export const TEST_CASE_TAB_NEGATIVE_LINK = "Link de referencia"
+
+
+
+
+
+
+
+export const DELETE_TEST_CASE = "Eliminar caso de prueba"
 
 export const STUDENT_TABLE_TITLE = "Tus Estudiantes"
 export const STUDENT_TABLE_COL_USERNAME = "Nombre de usuario"
