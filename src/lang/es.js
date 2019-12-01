@@ -139,7 +139,7 @@ export const PROJECT_INFO_MODAL_TEST_CASE_GRADE_IS_ZERO_DESCRIPTION = "Esta prue
 export const PROJECT_CODE_PREVIEW_LABEL = "Previsualizar"
 
 export const TEST_TAB_CODE_TITLE = "Escribe el código de la prueba"
-export const TEST_TAB_CODE_DESCRIPTION = "Escribe el cuerpo de la clase."
+export const TEST_TAB_CODE_DESCRIPTION = "Por favor configura el codigo de tu prueba. Éste código será colocado antess de los métodos de todos los casos de prueba. Podría serte util si deseas crear la instancia de la clase del estudiante, o sobre escribir los métodos del ciclo de vida de los métodos de JUnit. Por ejemplo @beforeAll"
 
 export const TEST_CASE_TAB_EDIT_BASIC_INFO_TITLE = "Editar información básica"
 export const TEST_CASE_TAB_EDIT_BASIC_INFO_DESCRIPTION = "Configura tu caso de prueba, por favor se descriptivo"

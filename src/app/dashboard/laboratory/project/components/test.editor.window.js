@@ -12,6 +12,7 @@ import {
 import {
   Code as CodeIcon
 } from '@material-ui/icons';
+import { VplLang } from '../../../../../redux/lang';
 
 
 export class EditTestWindow extends React.Component {
@@ -106,7 +107,7 @@ public class ${capitalize(camelCase(test.name))} {
             <ListItemIcon>
               <CodeIcon />
             </ListItemIcon>
-            <ListItemText inset primary='Code Editor' secondary={description} />
+            <ListItemText inset primary={<VplLang string="TEST_TAB_CODE_TITLE" />} secondary={<VplLang string="TEST_TAB_CODE_DESCRIPTION" />} />
           </ListItem>
           <Collapse style={{ root: { padding: '0px' } }} in={codeIsOpen} timeout="auto">
             <CodeEditorWithPreview
