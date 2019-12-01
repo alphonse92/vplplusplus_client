@@ -23,7 +23,7 @@ export class WebService {
 		const headers = new Headers()
 		const token = this.getToken()
 		headers.append('content-type', 'application/json')
-		headers.append('Content-Language:', LanguageService.getCurrengLanguage())
+		headers.append('Content-Language:', LanguageService.getCurrentLanguage())
 		if (token) headers.append('Authorization', `Bearer ${token}`)
 		return headers
 	}
