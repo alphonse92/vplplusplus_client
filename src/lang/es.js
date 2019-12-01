@@ -1,4 +1,5 @@
 export const __NAME__ = "Español"
+export const LANGUAGE = "Idioma"
 export const YES = "Si"
 export const NO = "No"
 export const OR = "o"

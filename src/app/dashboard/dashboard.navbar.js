@@ -174,7 +174,7 @@ class MiniDrawer extends React.Component {
           <Divider />
 
           <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="age-simple">Age</InputLabel>
+            <InputLabel htmlFor="age-simple"><VplLang string="LANGUAGE" /></InputLabel>
             <Select
               onChange={this.setLang}
               value={this.props.lang}
