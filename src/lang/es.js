@@ -8,6 +8,13 @@ export const LOADING = "Cargando"
 export const SAVE = "Guardar"
 export const CREATE = "Crear"
 
+export const OBJECTIVE = "Objetivo"
+export const STUDENT = "Estudiante"
+export const STUDENTS = "Estudiantes"
+export const SKILL = "Habilidad"
+export const TOPIC = "Tópico"
+export const TOPICS = "Tópicos"
+export const TOPIC = "Tópico"
 export const TEST = "Prueba"
 export const TESTS = "Pruebas"
 export const TEST_CASE = "Caso de prueba"
@@ -166,10 +173,17 @@ export const TEST_CASE_TAB_NEGATIVE_DESCRIPTION = "Escriba un mensaje para el es
 export const TEST_CASE_TAB_NEGATIVE_MESSAGE = "Mensaje en caso de falla"
 export const TEST_CASE_TAB_NEGATIVE_LINK = "Link de referencia"
 
+export const REPORT_MOST_SKILLED_STUDENTS_TITLE = "Estudiantes más habilidosos"
+export const REPORT_MOST_SKILLED_STUDENTS_DESCRIPTION = "Estudiantes que obtuvieron un mejor desempeño, separados por tópicos"
+export const REPORT_MOST_SKILLED_STUDENTS_TABLE_TOPIC = TOPIC
+export const REPORT_MOST_SKILLED_STUDENTS_TABLE_STUDENT = STUDENT
+export const REPORT_MOST_SKILLED_STUDENTS_TABLE_SKILL = SKILL
 
-
-
-
+export const REPORT_TEST_CASE_DIFFICULT_TITLE = "Casos de prueba mas díficiles"
+export const REPORT_TEST_CASE_DIFFICULT_DESCRIPTION = "Casos de prueba que necesitaron más esfuerzo para ser resueltos"
+export const REPORT_TEST_CASE_DIFFICULT_TABLE_TEST = TEST_CASE
+export const REPORT_TEST_CASE_DIFFICULT_TABLE_OBJECTIVE = OBJECTIVE
+export const REPORT_TEST_CASE_DIFFICULT_TABLE_ATTEMPS = 'Intentos fallidos'
 
 
 export const DELETE_TEST_CASE = "Eliminar caso de prueba"

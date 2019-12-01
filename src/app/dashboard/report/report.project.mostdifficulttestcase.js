@@ -19,6 +19,7 @@ import {
 } from '@material-ui/icons';
 
 import { withStyles } from '@material-ui/core/styles';
+import { VplLang } from '../../../redux/lang';
 
 class MostDifficultTestCardNoStyled extends React.Component {
 
@@ -41,17 +42,17 @@ class MostDifficultTestCardNoStyled extends React.Component {
           </ListItemIcon>
           <ListItemText
             inset
-            primary="Test Cases difficult"
-            secondary="These test cases required most effort to be solved" />
+            primary={<VplLang string="REPORT_TEST_CASE_DIFFICULT_TITLE" />}
+            secondary={<VplLang string="REPORT_TEST_CASE_DIFFICULT_DESCRIPTION" />} />
           {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
         <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Test</TableCell>
-                <TableCell >Objective</TableCell>
-                <TableCell >Failted attemps</TableCell>
+                <TableCell>{<VplLang string="REPORT_TEST_CASE_DIFFICULT_TABLE_TEST" />}</TableCell>
+                <TableCell >{<VplLang string="REPORT_TEST_CASE_DIFFICULT_TABLE_OBJECTIVE" />}</TableCell>
+                <TableCell >{<VplLang string="REPORT_TEST_CASE_DIFFICULT_TABLE_ATTEMPS" />}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

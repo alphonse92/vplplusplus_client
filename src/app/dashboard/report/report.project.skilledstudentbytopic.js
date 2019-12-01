@@ -19,7 +19,7 @@ import {
 } from '@material-ui/icons';
 
 import { withStyles } from '@material-ui/core/styles';
-
+import { VplLang } from '../../../redux/lang'
 class MostSkilledStudentsByTopicCardNoStyled extends React.Component {
 
   state = {
@@ -48,17 +48,17 @@ class MostSkilledStudentsByTopicCardNoStyled extends React.Component {
             </ListItemIcon>
             <ListItemText
               inset
-              primary="Most Skilled Students"
-              secondary="By topic" />
+              primary={<VplLang string="REPORT_MOST_SKILLED_STUDENTS_TITLE" />}
+              secondary={<VplLang string="REPORT_MOST_SKILLED_STUDENTS_DESCRIPTION" />} />
             {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
           <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Topic</TableCell>
-                  <TableCell >Student</TableCell>
-                  <TableCell >Skill</TableCell>
+                  <TableCell><VplLang string="REPORT_MOST_SKILLED_STUDENTS_TABLE_TOPIC" /></TableCell>
+                  <TableCell ><VplLang string="REPORT_MOST_SKILLED_STUDENTS_TABLE_STUDENT" /></TableCell>
+                  <TableCell ><VplLang string="REPORT_MOST_SKILLED_STUDENTS_TABLE_SKILL" /></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
