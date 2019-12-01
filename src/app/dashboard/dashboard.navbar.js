@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
@@ -16,8 +19,11 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { ListSubheader } from '@material-ui/core';
+import { ListSubheader, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+
 import { VplLang } from '../../redux/lang';
+import { ActionCreators } from '../../redux/lang/redux/actions';
+import { LanguageSchema } from '../../lang'
 
 const drawerWidth = 240;
 
@@ -84,6 +90,16 @@ const styles = theme => ({
 });
 
 class MiniDrawer extends React.Component {
+
+  static mapStateToProps = (state) => {
+    return { lang: state.lang.lang }
+  }
+
+  static mapDispatchToProps = (dispatch) => {
+    const DISPATCHERS = bindActionCreators({ ...ActionCreators }, dispatch)
+    return { DISPATCHERS }
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -97,6 +113,11 @@ class MiniDrawer extends React.Component {
 
   handleDrawerClose = () => {
     this.setState({ open: false });
+  };
+
+  setLang = event => {
+    const { value: lang } = event.target
+    this.props.DISPATCHERS.SET_LANG(lang)
   };
 
   render() {
@@ -151,6 +172,27 @@ class MiniDrawer extends React.Component {
         <Drawer variant="permanent" className={DrawerClassName} classes={DrawerClasses} open={isOpen}>
           <DrawerToolbar />
           <Divider />
+
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="age-simple">Age</InputLabel>
+            <Select
+              value={this.state.age}
+              onChange={this.setLang}
+              value={this.props.lang}
+            >
+
+              {
+                Object
+                  .keys(LanguageSchema)
+                  .map(shortName => {
+                    const name = LanguageSchema[shortName]
+                    return <MenuItem key={shortName} value={shortName}>{name}</MenuItem>
+                  })
+              }
+
+            </Select>
+          </FormControl>
+
           {
             menu.map((group) => {
               const { name } = group
@@ -189,4 +231,9 @@ MiniDrawer.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(MiniDrawer);
+const ConnectedComponent = connect(
+  MiniDrawer.mapStateToProps,
+  MiniDrawer.mapDispatchToProps
+)(MiniDrawer)
+
+export default withStyles(styles, { withTheme: true })(ConnectedComponent);
