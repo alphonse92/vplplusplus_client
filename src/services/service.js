@@ -1,4 +1,6 @@
 import qs from 'qs'
+import { LanguageService } from './language'
+
 export class WebService {
 	constructor(url, token) {
 
@@ -21,6 +23,7 @@ export class WebService {
 		const headers = new Headers()
 		const token = this.getToken()
 		headers.append('content-type', 'application/json')
+		headers.append('Content-Language:', LanguageService.getCurrengLanguage())
 		if (token) headers.append('Authorization', `Bearer ${token}`)
 		return headers
 	}
