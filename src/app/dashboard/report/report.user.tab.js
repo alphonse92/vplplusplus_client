@@ -37,7 +37,7 @@ export class UserReportTab extends React.Component {
     const { firstname, lastname, email, id, skill = 0 } = report
     const fullname = startCase(`${firstname} ${lastname}`)
     const fixed = +skill.toFixed(0)
-    const color = SkillMapColors[fixed - 1]
+    const color = SkillMapColors[fixed <= 0 ? 0 : fixed - 1]
     const iconStyle = {
       width: '100%',
       height: '100%',

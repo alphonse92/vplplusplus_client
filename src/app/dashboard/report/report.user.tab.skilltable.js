@@ -44,7 +44,7 @@ export const SkillLevelTag = props => {
   const { skill = 0 } = props
   const integer = +skill.toFixed(0)
   const fixed = +skill.toFixed(2)
-  const color = SkillMapColors[integer - 1]
+  const color = SkillMapColors[integer <= 0 ? 0 : (integer - 1)]
   return <span style={{ padding: '3px', backgroundColor: color.color, color: color.text }}>{fixed}%</span>
 }
 
@@ -96,11 +96,6 @@ class SkillMoreInfoNoStyled extends React.Component {
                 </ListItem>
                 <Collapse style={{ root: { padding: '0px' } }} in={isOpen} timeout="auto" unmountOnExit>
                   <Flex marginLeft="4em" vertical>
-
-
-                    <ActionButtonsComponent onOpenProjectReport={this.openProjectReport(project)} onOpenProject={this.openReportt(project)} />
-
-
                     <Flex vertical>
                       <List>
                         {
@@ -148,7 +143,7 @@ class SkillsTableNoStyled extends React.Component {
   }
 
   render() {
-    const { skills: noOrderedSkills, classes, onOpenProjectReport, onOpenProject } = this.props
+    const { skills: noOrderedSkills, classes } = this.props
     const skills = orderBy(noOrderedSkills, ['info.level'], ['desc'])
     return (
       <React.Fragment>
@@ -193,7 +188,7 @@ class SkillsTableNoStyled extends React.Component {
               const showMoreInfo = !!this.state.showMoreInfoMap[name]
               return (
                 <React.Fragment key={name} >
-                  <TableRow style={{ cursor: 'pointer' }}>
+                  <TableRow style={{ cursor: 'pointer' }} onClick={this.showMoreInfo(name)}>
                     <TableCell >{name}</TableCell>
                     <TableCell >{description}</TableCell>
                     <TableCell ><SkillLevelTag skill={level} /></TableCell>
@@ -208,7 +203,7 @@ class SkillsTableNoStyled extends React.Component {
                     <TableRow classes={classes}>
                       <TableCell colSpan="8">
                         <Collapse style={{ root: { padding: '0px' } }} in={showMoreInfo} timeout="auto" unmountOnExit>
-                          <SkillMoreInfo skill={skill} onOpenProjectReport={onOpenProjectReport} onOpenProject={onOpenProject} />
+                          <SkillMoreInfo skill={skill}/>
                         </Collapse>
                       </TableCell>
                     </TableRow>
