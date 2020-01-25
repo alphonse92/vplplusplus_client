@@ -94,12 +94,13 @@ Actions[SET_PROJECT_TIMELINE_FILTER_NAME] = {
 			steps = optionsFromStore.steps,
 			topic = optionsFromStore.topic,
 			projects = optionsFromStore.projects,
-			separeByTopic = optionsFromStore.separeByTopic,
 			showProjectFilter = optionsFromStore.showProjectFilter,
 			showStudentFilter = optionsFromStore.showStudentFilter,
 			showTopicFilter = optionsFromStore.showTopicFilter,
 			id = optionsFromStore.id,
 		} = data
+
+		const separeByTopic = !!(topic && topic.length)
 
 		const payload = { from, type, each, steps, topic, projects, id, showProjectFilter, showStudentFilter, separeByTopic, showTopicFilter }
 		const name = Actions[SET_PROJECT_TIMELINE_FILTER_NAME].ACTIONS.default.name
@@ -145,7 +146,8 @@ Actions[GET_PROJECT_TIMELINE_NAME] = {
 		const { stadistics = {}, type: report_type } = project
 		const { timeline = {} } = stadistics
 		const { options = {} } = timeline
-		const { from, type, each, steps, topic, projects, id, separeByTopic } = options
+		const { from, type, each, steps, topic, projects, id } = options
+		const separeByTopic = !!(topic && topic.length)
 		const actions = Actions[GET_PROJECT_TIMELINE_NAME].ACTIONS
 		const getRequest = TIMELINE_REQUESTS[report_type]
 		if (getRequest) requestDispatcher(dispatcher, actions, getRequest(report_type, id, from, type, each, steps, topic, projects, separeByTopic), opts)
