@@ -89,7 +89,7 @@ class SkillMoreInfoNoStyled extends React.Component {
                   <ListItemText primary={name} secondary={
                     <React.Fragment>
                       <Typography component="span">{objective}</Typography>
-                      {`Project: ${project.name}`}
+                      {project ? `Project: ${project.name}` : ""}
                     </React.Fragment>
                   } />
                   {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
