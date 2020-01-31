@@ -1,6 +1,6 @@
-# Vpl ++ Web client (Vwc)
+# Vpl ++ Web client
 
-Vwc is a client to allow to moodle teachers to get all VPL ++ information related to the students summaries. 
+This software is a client for VPL ++  to allow to moodle teachers creates projects, test and test cases. Also, the teacher can generate reports about the projects and students. In the other hand, the Moodle manager can manage the topics and the access of VPL ++ JLib Runner 
 
 ## Manual serving
 
@@ -15,7 +15,6 @@ Vwc is a client to allow to moodle teachers to get all VPL ++ information relate
 1. npx
 2. node v8 or greater
 
-
 ### Running
 
 1. run `npm start`
@@ -24,27 +23,17 @@ Vwc is a client to allow to moodle teachers to get all VPL ++ information relate
 
 1. run `npm run build`
 
-
 ### Serving local
 
 After install you can serve the client using serve package. That package mount a simple web server ready to go.
 
 1. install serve: `npm install -g serve`
-2. run: `npm install {PATH_TO_BUILD_FOLDER}`
+2. run: `npm install $PATH_TO_BUILD_FOLDER`
 
 
 ## Docker version
 
-### Building
-
-### No docker composer
-`docker build . `
-
-### docker composer
-
-#### Warning
-
-The container only expose the port 80, if you want to open another port please use port mapping.
+The container only exposes the port 80, if you want to open another port please use port mapping.
 
 #### Build
 
