@@ -222,7 +222,7 @@ const PreviewContent = props => {
 	return (
 		<ProjectsWrapper>
 			{props.projects.map(extractProjectComponent(rest))}
-			{props.editable && <div onClick={onCreateProject} className="shadowBtn"><i className="fa fa-plus " />Create Test </div>}
+			{props.editable && <div onClick={onCreateProject} className="shadowBtn"><i className="fa fa-plus " />{ <VplLang string="CREATE" />} Test </div>}
 		</ProjectsWrapper>
 	)
 }

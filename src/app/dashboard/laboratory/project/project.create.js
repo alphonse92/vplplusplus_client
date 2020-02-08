@@ -433,7 +433,7 @@ private StudentClass studentClassToBeTested;
 				/>
 				<CardActions>
 					{
-						!this.props.project._id && <Button onClick={this.handleCreateProject} color="primary">{this.props.project._id ? <VplLang string="SAVE" /> : <VplLang string="CREATE" />} Project <Save /></Button>
+						!this.props.project._id && <Button onClick={this.handleCreateProject} color="primary">{this.props.project._id ? <VplLang string="SAVE" /> : <VplLang string="CREATE" />} { <VplLang string="PROJECT" />} <Save /></Button>
 					}
 				</CardActions>
 			</Card>

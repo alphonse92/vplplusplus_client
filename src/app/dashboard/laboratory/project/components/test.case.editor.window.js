@@ -236,7 +236,7 @@ public void ${capitalize(camelCase(test.name))}() {
                   defaultValue={this.selectedTopics}
                   name='topics'
                   isDisabled={this.state.readOnly}
-                  placeholder="Select topic"
+                  placeholder=""
                 />
 
                <TextField

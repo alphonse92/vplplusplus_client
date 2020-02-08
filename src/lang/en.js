@@ -9,6 +9,7 @@ export const CLOSE = "Close"
 export const LOADING = "Loading"
 export const SAVE = "Save"
 export const CREATE = "Create"
+export const ERROR_UNKNOWED = "Something Happened"
 
 export const OBJECTIVE = "Objective"
 export const STUDENT = "Student"

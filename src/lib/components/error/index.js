@@ -1,5 +1,6 @@
 import React from 'react';
 import { Ok, Dialog } from "../material/modals/input";
+import { VplLang } from '../../../redux/lang';
 
 const MESSAGE_DEFAULT = 'Unknowed error. Please contact VPL plus plus support'
 const getErrorTextByType = {
@@ -33,7 +34,7 @@ export const DialogBroker = ({ error, handleClose, info }) => {
     component={Ok}
     open
     handleClose={handleClose}
-    title={'Something Happened'}
+    title={<VplLang string="ERROR_UNKNOWED" />}
     text={(getErrorTextByType[error.type] || getErrorTextByType.default)(error)} />
   if (info) return <Dialog
     component={Ok}
